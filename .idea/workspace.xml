@@ -20,248 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Comandos.MD" beforeDir="false" afterPath="$PROJECT_DIR$/Comandos.MD" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/PapelController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/PapelController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Concessionarias/ConcessionariasController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Concessionarias/ConcessionariasFaturamentoController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Concessionarias/ConcessionariasLeituraController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Concessionarias/ConcessionariasTarifasController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Pessoas/PessoaController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Produtos/CategoriaController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Produtos/GrupoController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Produtos/ProdutoController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Compliance/SalvarVerificacao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Compliance/salvarInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Cidades/Cidade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Cidades/Endereco.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Cidades/Estado.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Concessionarias/Fatura.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Concessionarias/Leitura.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Concessionarias/Tarifa.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Concessionarias/UnidadeConsumidora.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ItemDeInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/Itensdeinspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/Unidade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/Unidade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/Verificacao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/Inspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Pessoas/Pessoa.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Produtos/Categoria.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Produtos/Grupo.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Produtos/Produto.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_28_215801_add_campos_to_verificacoes_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_11_28_215801_add_campos_to_verificacoes_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2014_10_12_100000_create_password_resets_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_100000_create_password_resets_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2019_08_19_000000_create_failed_jobs_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_19_000000_create_failed_jobs_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_02_27_003621_create_slides_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_02_27_003621_create_slides_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_19_120609_create__permissaos_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_04_19_120609_create__permissaos_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_19_120610_create_papels_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_04_19_120610_create_papels_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_19_120636_create_papel_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_04_19_120636_create_papel_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_19_120700_create_pessoas_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_20_155802_create__papel_permissao__table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_04_20_155802_create__papel_permissao__table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_21_120240_create_estados_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_21_120317_create_cidades_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_22_191050_create_paginas_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_04_22_191050_create_paginas_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_23_200737_create_enderecos_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_04_28_130926_create_alarmes_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_04_28_130926_create_alarmes_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_05_14_143320_create__tipos_de_unidades_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_05_14_143320_create__tipos_de_unidades_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_05_14_144527_create__grupos_de_verificacao_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_05_14_144527_create__grupos_de_verificacao_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_05_14_162405_create__testes_de_verificacao_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_05_14_162405_create__testes_de_verificacao_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_05_15_131000_create__unidades_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_05_15_131000_create__unidades_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_05_20_173121_create_clientes_monitoramento_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_05_20_173121_create_clientes_monitoramento_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_06_04_004335_create__verificacoes_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_06_04_004335_create__verificacoes_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_06_06_121811_create__item_de_inspecao_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_06_06_121811_create__item_de_inspecao_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_06_20_124140_create__debito_empregado_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_06_20_124140_create__debito_empregado_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_06_28_235200_create_proters_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_06_28_235200_create_proters_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_01_003329_create__cadastral_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_01_003329_create__cadastral_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_01_224111_create__s_m_bx_b_d_f__nao_conciliado_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_01_224111_create__s_m_bx_b_d_f__nao_conciliado_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_04_020802_create__s_l02_bdf_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_04_020802_create__s_l02_bdf_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_04_142610_create_resp_definidas_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_04_142610_create_resp_definidas_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_09_160947_create_feriados_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_09_160947_create_feriados_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_10_190151_create__unidade_endereco_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_10_190151_create__unidade_endereco_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_27_155958_create__ferias_por_mcu_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_27_155958_create__ferias_por_mcu_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_27_173536_create__absenteismo_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_27_173536_create__absenteismo_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_07_28_005252_create__cftv_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_07_28_005252_create__cftv_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_04_124723_create__p_l_p_lista_pendente_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_04_124723_create__p_l_p_lista_pendente_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_04_124809_create__controle_de_viagem_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_04_124809_create__controle_de_viagem_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_07_173251_create__acesso_final_semana_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_07_173251_create__acesso_final_semana_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_08_024453_create__sgdo_distribuicao_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_08_024453_create__sgdo_distribuicao_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_08_221519_create__painel_extravio_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_08_221519_create__painel_extravio_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_08_223211_create__cie_eletronica_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_08_223211_create__cie_eletronica_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_10_170420_create__pagamentos_adicionais_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_10_170420_create__pagamentos_adicionais_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_13_233232_create__b_d_f__f_a_t_02_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_13_233232_create__b_d_f__f_a_t_02_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_17_110707_create__pgto_adicionais_temp.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_17_110707_create__pgto_adicionais_temp.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_08_17_165806_create__micro_strategy_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_08_17_165806_create__micro_strategy_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_09_09_103855_create__unidades_consumidora_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_09_10_103329_create__concessionarias_tarifa_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_09_10_145413_create__concessionarias_leitura_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_09_13_210147_create__concessionarias_fatura_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_10_30_161303_create_lancamentos_s_r_o_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_10_30_161303_create_lancamentos_s_r_o_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations_TEMP/2020_11_16_215431_create_compartilha_senha_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_11_16_215431_create_compartilha_senha_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/CidadesTableSeeder.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/EstadosTableSeeder.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/GruposDeVerificacaoTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/GruposDeVerificacaoTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/PapelTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/PapelTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285890.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285891.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285892.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285893.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285894.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285895.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285896.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285897.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931285898.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287070.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287071.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287072.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287073.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287074.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287075.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287076.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287077.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931287078.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931291670.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/15931291690.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/230001_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34001_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34002_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34003_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34004_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34005_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34006_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34007_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34008_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34009_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34010_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34011_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34012_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34013_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34014_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34015_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/34016_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/39050_01 INTERRUPTOR DR PLUS F362-80 (BIPOLAR) 30MA 80A.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/39050_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/62011_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/compliance/inspecao/1600162020/1/20200628230625.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/10/_img_97890.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/11/_img_42217.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/11/_img_42724.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/12/_img_89260.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/5/_img_16135.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/6/_img_27026.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/7/_img_68799.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/8/_img_96857.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasContas/9/_img_45785.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/concessionariasLeituras/04128172/_img_65005.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (1).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (10).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (2).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (3).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (4).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (5).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (6).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download (7).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/download.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/fora/modelo_img_home.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/fora/modelo_slide_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/fora/modelo_slide_2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/fora/modelo_slide_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/foto_slide_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/foto_slide_2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/foto_slide_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/foto_slide_4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/foto_slide_5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/images (3).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/images (4).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/images (6).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/images (7).jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/institucional/alex.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/institucional/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/load.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/mixto.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_detalhe_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_detalhe_2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_detalhe_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_detalhe_4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_10.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_12.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_13.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_14.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_3.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_6.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_8.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/modelo_foto_home_9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/pessoas/30502713100/_img_59289.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/slides/_img_30633.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/slides/_img_38031.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/slides/_img_90634.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/slides/_img_95147.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/slides/_img_96055.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/xml/compliance/inspecao/1601502020_86892517.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/_formCreateEndereco.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/_formEditEndereco.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/_formStep4.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/adicionarPessoa.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/editarEndereco.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/entradaCEP.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/entradaCPF_CNPJ.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/index.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/pessoas/manter.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/_form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/editar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/errors/posttoolarge.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarVerificacao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/verificacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/verificacoes/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/contas/_form.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/contas/adicionarContas.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/contas/editarContas.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/faturamento/_form.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/faturamento/imprimirFatura.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/faturamento/index.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/faturamento/pdffatura.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/index.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/index_tarifa.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/leituras/_form.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/leituras/editarLeitura.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/leituras/index.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/tarifas/_form.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/concessionarias/tarifas/adicionarTarifas.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_Admin/_footer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_Admin/_footer.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_Admin/_nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_Admin/_nav.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_gynPromo/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_gynPromo/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/_filtros.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/_lista_produtos.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-acessorios.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-bombas submersas.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-comando.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-conexoes.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-controle.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-ferramentas.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-iluminação.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-medição.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-proteção.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_site/grupo-sinalização.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/principal/cartaoAbilio.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/principal/cartaoDepartamento.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/principal/cartaoAlex.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/principal/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/principal/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/principal/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/principal/welcome.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/site/dashboard.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -283,8 +43,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/resources/views/compliance/inspecionados/pdfPapelTrabalho.blade.php" root0="SKIP_INSPECTION" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/resources/views/compliance/inspecionados/pdfPapelTrabalho.blade.php" root0="SKIP_INSPECTION" root1="SKIP_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4">
@@ -450,8 +210,8 @@
       <recent name="C:\xampp\htdocs\promo\database\migrations_TEMP" />
     </key>
   </component>
-  <component name="RunManager" selected="PHP Built-in Web Server.GynPromo">
-    <configuration name="GynPromo" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" singleton="false" document_root="$PROJECT_DIR$" port="8000">
+  <component name="RunManager" selected="PHP Built-in Web Server.SgiWeb-7-4">
+    <configuration name="SgiWeb-7-4" type="PhpBuiltInWebServerConfigurationType" factoryName="PHP Built-in Web Server" singleton="false" document_root="$PROJECT_DIR$" port="8000">
       <CommandLine parameters="C:\xampp\php" workingDirectory="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
@@ -469,6 +229,10 @@
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="npm.dev" />
+      <item itemvalue="PHP Built-in Web Server.SgiWeb-7-4" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev" />
@@ -902,6 +666,8 @@
       <workItem from="1607642465098" duration="996000" />
       <workItem from="1607647421519" duration="1335000" />
       <workItem from="1607649234297" duration="1168000" />
+      <workItem from="1607688911942" duration="1332000" />
+      <workItem from="1607691440111" duration="885000" />
     </task>
     <task id="LOCAL-00001" summary="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB.">
       <created>1607088888655</created>
@@ -965,11 +731,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="480" y="152" key="#Web_Browsers/0.0.1366.728@0.0.1366.728" timestamp="1602897518760" />
-    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603328598084">
+    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607690236617">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603107998421" />
-    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1603328598084" />
+    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1607690236617" />
     <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1606443747552">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1009,26 +775,26 @@
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602867117130" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1604166264358" />
-    <state width="1328" height="169" key="GridCell.Tab.0.bottom" timestamp="1603632366807">
+    <state width="1344" height="174" key="GridCell.Tab.0.bottom" timestamp="1607690276330">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.bottom/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1328" height="169" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1603632366807" />
-    <state width="1328" height="169" key="GridCell.Tab.0.center" timestamp="1603632366807">
+    <state width="1344" height="174" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1607690276330" />
+    <state width="1344" height="174" key="GridCell.Tab.0.center" timestamp="1607690276329">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.center/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1328" height="169" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1603632366807" />
-    <state width="1328" height="169" key="GridCell.Tab.0.left" timestamp="1603632366806">
+    <state width="1344" height="174" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1607690276329" />
+    <state width="1344" height="174" key="GridCell.Tab.0.left" timestamp="1607690276328">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.left/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1328" height="169" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1603632366806" />
-    <state width="1328" height="169" key="GridCell.Tab.0.right" timestamp="1603632366807">
+    <state width="1344" height="174" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1607690276328" />
+    <state width="1344" height="174" key="GridCell.Tab.0.right" timestamp="1607690276329">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.right/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1328" height="169" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1603632366807" />
+    <state width="1344" height="174" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1607690276329" />
     <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1602451474422">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
