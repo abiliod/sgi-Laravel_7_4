@@ -8,19 +8,44 @@ class UsuariosTableSeeder extends Seeder{
     */
     public function run(){
 
-        if(User::where('email','=','admin@gynpromo.com')->count()){
-            $usuario = User::where('email','=','admin@gynpromo.com')->first();
-            $usuario->name = "Abilio Ferreira";
-            $usuario->email = "admin@gynpromo.com";
+        if(User::where('email','=','admin@sgiweb.com')->count()){
+            $usuario = User::where('email','=','admin@sgiweb.com')->first();
+            $usuario->name = "Masterkey-Abilio";
+            $usuario->document	 = '83288082';
+            $usuario->businessUnit	 = '434448';
+            $usuario->email = "admin@sgiweb.com";
             $usuario->password = bcrypt("12345678");
             $usuario->save();
         }else{
             $usuario = new User();
-            $usuario->name = "Abilio Ferreira";
-            $usuario->email = "admin@gynpromo.com";
+            $usuario->name = "Masterkey-Abilio";
+            $usuario->email = "admin@sgiweb.com";
+            $usuario->document	 = '83288082';
+            $usuario->businessUnit	 = '434448';
             $usuario->password = bcrypt("12345678");
             $usuario->save();
         }
+
+
+        if(User::where('email','=','admin@compliance.com')->count()){
+            $usuario = User::where('email','=','admin@compliance.com')->first();
+            $usuario->name = "Masterkey-MarcosV";
+            $usuario->email = "admin@compliance.com";
+            $usuario->document	 = '89056582';
+            $usuario->businessUnit	 = '434063';
+            $usuario->password = bcrypt("12345678");
+            $usuario->save();
+        }else{
+            $usuario = new User();
+            $usuario->name = "Masterkey-MarcosV";
+            $usuario->email = "admin@compliance.com";
+            $usuario->document	 = '89056582';
+            $usuario->businessUnit	 = '434063';
+            $usuario->password = bcrypt("12345678");
+            $usuario->save();
+        }
+
+
 
 
         if(User::where('email','=','abiezerb@correios.com.br')->count()){
