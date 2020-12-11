@@ -21,7 +21,54 @@
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_100000_create_password_resets_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_19_000000_create_failed_jobs_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_02_27_003621_create_slides_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_04_19_120609_create__permissaos_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_04_19_120610_create_papels_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_04_19_120636_create_papel_users_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_04_20_155802_create__papel_permissao__table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_04_22_191050_create_paginas_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_04_28_130926_create_alarmes_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_05_14_143320_create__tipos_de_unidades_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_05_14_144527_create__grupos_de_verificacao_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_05_14_162405_create__testes_de_verificacao_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_05_15_131000_create__unidades_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_05_20_173121_create_clientes_monitoramento_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_06_04_004335_create__verificacoes_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_06_06_121811_create__item_de_inspecao_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_06_20_124140_create__debito_empregado_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_06_28_235200_create_proters_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_01_003329_create__cadastral_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_01_224111_create__s_m_bx_b_d_f__nao_conciliado_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_04_020802_create__s_l02_bdf_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_04_142610_create_resp_definidas_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_09_160947_create_feriados_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_10_190151_create__unidade_endereco_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_27_155958_create__ferias_por_mcu_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_27_173536_create__absenteismo_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_07_28_005252_create__cftv_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_04_124723_create__p_l_p_lista_pendente_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_04_124809_create__controle_de_viagem_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_07_173251_create__acesso_final_semana_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_08_024453_create__sgdo_distribuicao_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_08_221519_create__painel_extravio_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_08_223211_create__cie_eletronica_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_10_170420_create__pagamentos_adicionais_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_13_233232_create__b_d_f__f_a_t_02_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_17_110707_create__pgto_adicionais_temp.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_08_17_165806_create__micro_strategy_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_10_30_161303_create_lancamentos_s_r_o_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_16_215431_create_compartilha_senha_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_23_100519_add_campos_table_unidades.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_26_121614_add_campos_to_users_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_28_102115_add_campobolean_to_users_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_28_214728_add_campos_to_tipos_de_unidade_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_28_215801_add_campos_to_verificacoes_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_08_085326_create_sequence_inspcaos_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/PessoasTableSeeder.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/UnidadesTableSeeder.php" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +235,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="TODO_SCOPE" value="MySQL - promo@localhost" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/views/compliance/tipounidades" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sgiweb-Laravel_8_X" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -196,18 +243,19 @@
     <option name="SHOW_DETAILS_PANEL" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\sgiweb-Laravel_7_4\database\migrations" />
+      <recent name="C:\xampp\htdocs\promo\database" />
+      <recent name="C:\xampp\htdocs\promo\database\migrations" />
+      <recent name="C:\xampp\htdocs\promo\database\migrations\migrations_TEMP" />
+      <recent name="C:\xampp\htdocs\promo\database\migrations_TEMP" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\promo\resources\views\compliance\tipounidades" />
       <recent name="C:\xampp\htdocs\promo\app\Imports" />
       <recent name="C:\xampp\htdocs\promo\resources\views\compliance\importacoes" />
       <recent name="C:\xampp\htdocs\promo\resources\views\compliance\inspecionados" />
       <recent name="C:\xampp\htdocs\promo\resources\views\compliance\inspecao" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\promo\database" />
-      <recent name="C:\xampp\htdocs\promo\database\migrations" />
-      <recent name="C:\xampp\htdocs\promo\database\migrations\migrations_TEMP" />
-      <recent name="C:\xampp\htdocs\promo\database\migrations_TEMP" />
     </key>
   </component>
   <component name="RunManager" selected="PHP Built-in Web Server.SgiWeb-7-4">
@@ -667,7 +715,8 @@
       <workItem from="1607647421519" duration="1335000" />
       <workItem from="1607649234297" duration="1168000" />
       <workItem from="1607688911942" duration="1332000" />
-      <workItem from="1607691440111" duration="885000" />
+      <workItem from="1607691440111" duration="1737000" />
+      <workItem from="1607693914034" duration="1141000" />
     </task>
     <task id="LOCAL-00001" summary="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB.">
       <created>1607088888655</created>
@@ -690,7 +739,35 @@
       <option name="project" value="LOCAL" />
       <updated>1607091010403</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="11/12/2020 - ajuste git ignore">
+      <created>1607692427339</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1607692427339</updated>
+    </task>
+    <task id="LOCAL-00005" summary="11/12/2020 - ajuste read-me">
+      <created>1607692524384</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1607692524384</updated>
+    </task>
+    <task id="LOCAL-00006" summary="11/12/2020 - ajuste de projeto.">
+      <created>1607692579813</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1607692579813</updated>
+    </task>
+    <task id="LOCAL-00007" summary="11/12/2020 - ajuste para seeder de usuários.">
+      <created>1607695045128</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1607695045129</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -712,7 +789,11 @@
     <MESSAGE value="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB." />
     <MESSAGE value="04/12/2020 - ajuste de metodo  para adequação da funcionalidade SGIWEB." />
     <MESSAGE value="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB 2." />
-    <option name="LAST_COMMIT_MESSAGE" value="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB 2." />
+    <MESSAGE value="11/12/2020 - ajuste git ignore" />
+    <MESSAGE value="11/12/2020 - ajuste read-me" />
+    <MESSAGE value="11/12/2020 - ajuste de projeto." />
+    <MESSAGE value="11/12/2020 - ajuste para seeder de usuários." />
+    <option name="LAST_COMMIT_MESSAGE" value="11/12/2020 - ajuste para seeder de usuários." />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -758,10 +839,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607430495673" />
-    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1607091008901">
+    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1607695043953">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
+    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1607695043953" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -770,11 +852,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="550" y="113" width="736" height="501" key="EnvironmentVariablesDialog/0.0.1366.728@0.0.1366.728" timestamp="1602898039563" />
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1604166264358">
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1607694046871">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602867117130" />
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1604166264358" />
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1607694046871" />
     <state width="1344" height="174" key="GridCell.Tab.0.bottom" timestamp="1607690276330">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -812,10 +894,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607091026254">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607695047735">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1607695047735" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
