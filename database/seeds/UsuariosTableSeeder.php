@@ -45,9 +45,6 @@ class UsuariosTableSeeder extends Seeder{
             $usuario->save();
         }
 
-
-
-
         if(User::where('email','=','abiezerb@correios.com.br')->count()){
             $usuario = User::where('email','=','abiezerb@correios.com.br')->first();
             $usuario->name	 = 'ABIEZER BAZARELLO';
