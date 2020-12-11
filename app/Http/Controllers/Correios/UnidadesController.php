@@ -1,0 +1,623 @@
+<?php
+
+namespace App\Http\Controllers\Correios;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Correios\Unidade;
+use App\Models\Correios\TipoDeUnidade;
+use App\Models\Correios\Inspecao;
+use App\Models\Correios\Itensdeinspecao;
+use App\Http\Requests\Compliance\salvarInspecao;
+use App\Models\Correios\SequenceInspecao;
+
+class UnidadesController extends Controller
+{
+    public function salvarInspecao(salvarInspecao $request)
+    {
+
+
+        $dados = $request->all();
+        if($dados['inspetorcoordenador']  == $dados['inspetorcolaborador'] )
+        {
+            \Session::flash('mensagem',['msg'=>'Inspetores estão iguais !'
+                ,'class'=>'red white-text']);
+            return redirect()->back();
+        }
+
+        $id=$request->unidade_id;
+        $unidade = Unidade::find($id);
+        $sequence_inspcaos = DB::table('sequence_inspcaos')
+            ->Where([['se', '=', $unidade->se]])
+            ->Where([['ciclo', '=', $dados['ciclo']]])
+            ->get();
+
+        if(!empty($sequence_inspcaos->sequence))
+        {
+            $sequence = $sequence_inspcaos->max('sequence');
+            $sequence ++;
+        }
+        else
+        {
+           $sequence=1;
+        }
+
+        SequenceInspecao::updateOrCreate(
+            ['se' => $unidade->se, 'ciclo' => $dados['ciclo']],
+            ['sequence' => $sequence,'se' => $unidade->se]
+        );
+
+        $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
+
+        $codigo = $unidade->se.$sequence.$dados['ciclo'];
+
+//        $verificacao = Inspecao::create($req->all());
+
+        $req=$request->all();
+        $inspecao = new Inspecao;
+        $inspecao->ciclo      = $req['ciclo'];
+        $inspecao->descricao =  $unidade->descricao;
+        $inspecao->datainiPreInspeção      = $req['datainiPreInspeção'];
+        $inspecao->codigo      = $codigo;
+        $inspecao->tipoUnidade_id      = $req['tipoUnidade_id'];
+        $inspecao->tipoVerificacao      = $req['tipoVerificacao'];
+        $inspecao->status      = $req['status'];
+        $inspecao->inspetorcoordenador      = $req['inspetorcoordenador'];
+        $inspecao->inspetorcolaborador      = $req['inspetorcolaborador'];
+        $inspecao->numHrsPreInsp      = $req['numHrsPreInsp'];
+        $inspecao->numHrsDesloc      = $req['numHrsDesloc'];
+        $inspecao->numHrsInsp      = $req['numHrsInsp'];
+        $inspecao->unidade_id      = $id;
+        $inspecao->save();
+
+        $insertedId = $inspecao->id;
+        //  echo $insertedId ;
+        //dd();
+
+        $parametros = DB::table('tiposDeUnidade')
+            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+            ->join('testesDeVerificacao', 'grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
+            ->where([
+                    ['gruposDeVerificacao.tipoUnidade_id', '=',  $inspecao->tipoUnidade_id  ] //" tipoUnidade_id " => " 1 "
+            ])
+            ->where([
+                    ['gruposDeVerificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao  ] //" tipoVerificacao " => " Remoto "
+            ])
+            ->where([
+                    ['gruposDeVerificacao.ciclo', '=', $inspecao->ciclo  ]
+            ])
+        ->get();
+
+        foreach($parametros as $parametro)
+        {
+            $registro = new Itensdeinspecao;
+            $registro->inspecao_id =  $insertedId ; //veriricação relacionada
+
+            //$parametro é um objeto, não uma matriz, então deve acessá-lo da seguinte forma:
+            $registro->unidade_id =  $dados['unidade_id']; //unidade verificada
+            $registro->tipoUnidade_id =  $dados['tipoUnidade_id']; //Tipo de unidade
+            $registro->grupoVerificacao_id =  $parametro->grupoVerificacao_id;//grupo de verificação
+            $registro->testeVerificacao_id =  $parametro->id;// $registro->id teste de verificação
+            $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
+            $registro->consequencias =   $parametro->consequencias;
+            $registro->save();
+        }
+
+
+        \Session::flash('mensagem',['msg'=>'Inspeção Gerada com sucesso !'
+        ,'class'=>'green white-text']);
+        return redirect()->route('compliance.unidades');
+    }
+
+    public function gerarInspecao($id)
+    {
+        $registro = Unidade::find($id);
+
+        $tiposautorizado = DB::table('tiposDeUnidade')
+            ->where([
+                ['tiposDeUnidade.id', '=', $registro->tipoUnidade_id],
+            ])
+            ->first();
+        if ($tiposautorizado->inspecionar=='Sim')
+        {
+            $tiposDeUnidade = DB::table('tiposDeUnidade')
+                ->where([
+                    ['tiposDeUnidade.id', '=', $registro->tipoUnidade_id],
+                ])
+                ->get();
+
+            $businessUnitUser = DB::table('unidades')
+                ->Where([['mcu', '=', auth()->user()->businessUnit]])
+                ->select('unidades.*')
+                ->first();
+            if(!empty( $businessUnitUser ))
+            {
+                $papel_user = DB::table('papel_user')
+                    ->Where([['user_id', '=', auth()->user()->id]])
+                    ->Where([['papel_id', '>=', 1]])
+                    ->select('papel_id')
+                    ->first();
+
+
+                switch ($papel_user->papel_id)
+                {
+                    case 1:
+                    case 2:
+                        {
+                            //  dd('pare');
+                            $inspetores = DB::table('papel_user')
+                                ->join('users', 'users.id',  '=',   'user_id')
+                                ->select('users.*','papel_user.*')
+                                //->Where([['se', '=', $businessUnitUser->se]])
+                                ->Where([['papel_id', '=', 6]])
+                                ->get();
+                        }
+                        break;
+
+
+                    case 4:
+                    case 5:
+                        {
+                            \Session::flash('mensagem',['msg'=>'Perfil não autorizado.'
+                                ,'class'=>'red white-text']);
+                           // return redirect()->route('login');
+                        }
+                        break;
+                    case 3:
+                    case 6:
+                        {
+                          //  dd('pare');
+                            $inspetores = DB::table('papel_user')
+                                ->join('users', 'users.id',  '=',   'user_id')
+                                ->select('users.*','papel_user.*')
+                                ->Where([['se', '=', $businessUnitUser->se]])
+                                ->Where([['papel_id', '=', 6]])
+                                ->get();
+                        }
+                        break;
+                }
+
+
+                return view('compliance.unidades.gerarInspecao',compact('registro','tiposDeUnidade','inspetores'));
+            }
+            else
+            {
+                return redirect()->route('login');
+            }
+
+        }
+        else
+        {
+            \Session::flash('mensagem',['msg'=>'Esta unidade ainda não está liberada para Inspeção:  '.$registro->descricao.'  !'
+                ,'class'=>'red white-text']);
+            return redirect()->route('compliance.unidades');
+        }
+
+
+    }
+
+    public function atualizar (Request $request, $id)
+    {
+        $registro = Unidade::find($id);
+        $dados = $request->all();
+        $registro->se =  $dados['se'];
+        $registro->tipoUnidade_id =  $dados['tipoUnidade_id'];
+        $registro->descricao =  $dados['descricao'];
+        $registro->an8 =  $dados['an8'];
+        $registro->mcu =  $dados['mcu'];
+        $registro->sto =  $dados['sto'];
+        $registro->status_unidadeDesc =  $dados['status_unidadeDesc'];
+        $registro->inicio_expediente =  $dados['inicio_expediente'];
+        $registro->final_expediente =  $dados['final_expediente'];
+        $registro->inicio_intervalo_refeicao =  $dados['inicio_intervalo_refeicao'];
+        $registro->final_intervalo_refeicao =  $dados['final_intervalo_refeicao'];
+        $registro->trabalha_sabado =  $dados['trabalha_sabado'];
+        if( $registro->trabalha_sabado=="Não"){
+            $dados['inicio_expediente_sabado']=NULL;
+            $dados['final_expediente_sabado']=NULL;
+            $dados['horario_lim_post_final_semana']=NULL;
+        }
+        $registro->inicio_expediente_sabado =  $dados['inicio_expediente_sabado'];
+        $registro->final_expediente_sabado =  $dados['final_expediente_sabado'];
+        $registro->trabalha_domingo =  $dados['trabalha_domingo'];
+        if( $registro->trabalha_sabado=="Não"){
+            $dados['inicio_expediente_domingo']=NULL;
+            $dados['final_expediente_domingo']=NULL;
+            $dados['horario_lim_post_final_semana']=NULL;
+        }
+        $registro->inicio_expediente_domingo =  $dados['inicio_expediente_domingo'];
+        $registro->final_expediente_domingo =  $dados['final_expediente_domingo'];
+        $registro->tem_plantao =  $dados['tem_plantao'];
+        if( $registro->tem_plantao=="Não"){
+            $dados['inicio_plantao_sabado']=NULL;
+            $dados['final_plantao_sabado']=NULL;
+            $dados['inicio_plantao_domingo']=NULL;
+            $dados['final_plantao_domingo']=NULL;
+            $dados['horario_lim_post_final_semana']=NULL;
+        }
+        $registro->inicio_plantao_sabado =  $dados['inicio_plantao_sabado'];
+        $registro->final_plantao_sabado =  $dados['final_plantao_sabado'];
+        $registro->inicio_plantao_domingo =  $dados['inicio_plantao_domingo'];
+        $registro->final_plantao_domingo =  $dados['final_plantao_domingo'];
+        $registro->tem_distribuicao =  $dados['tem_distribuicao'];
+        if( $registro->tem_distribuicao=="Tem distribuição"){
+            $dados['inicio_distribuicao']=NULL;
+            $dados['final_distribuicao']=NULL;
+        }
+        $registro->inicio_distribuicao =  $dados['inicio_distribuicao'];
+        $registro->final_distribuicao =  $dados['final_distribuicao'];
+
+        if(($registro->tipoUnidade_id >= 13) && ($registro->tipoUnidade_id !=31) ){
+            $dados['horario_lim_post_na_semana']=NULL;
+            $dados['horario_lim_post_final_semana']=NULL;
+        }
+        $registro->horario_lim_post_na_semana =  $dados['horario_lim_post_na_semana'];
+        $registro->horario_lim_post_final_semana =  $dados['horario_lim_post_final_semana'];
+        $registro->telefone =  $dados['telefone'];
+        $registro->email =  $dados['email'];
+        $registro->update();
+
+        \Session::flash('mensagem',['msg'=>'Registro da Unidade:  '.$registro->descricao.' foi atualizado com sucesso !'
+        ,'class'=>'green white-text']);
+        return redirect()->route('compliance.unidades');
+    }
+
+    public function edit($id)
+    {
+        $status_unidadeDesc = DB::table('unidades')
+        ->select('status_unidadeDesc')
+        ->groupByRaw('status_unidadeDesc')
+        ->get();
+        $tiposDeUnidade = TipoDeUnidade::all();
+        $registro = Unidade::find($id);
+        return view('compliance.unidades.editar',compact('registro','tiposDeUnidade','status_unidadeDesc'));
+    }
+
+    public function search (Request $request)
+    {
+        $status = 'Criado e instalado';
+        $businessUnitUser = DB::table('unidades')
+            ->Where([['mcu', '=', auth()->user()->businessUnit]])
+            ->select('unidades.*')
+            ->first();
+        if(!empty( $businessUnitUser ))
+        {
+            $papel_user = DB::table('papel_user')
+                ->Where([['user_id', '=', auth()->user()->id]])
+                ->Where([['papel_id', '>=', 1]])
+                ->select('papel_id')
+                ->first();
+            switch ($papel_user->papel_id)
+            {
+                case 1:
+                case 2:
+                    {
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->where([
+                                ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+
+                            ])
+                            ->orWhere([
+                                ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
+                case 3:
+                    {
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->Where([['se', '=', $businessUnitUser->se]])
+                            ->where([
+                                ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+
+                            ])
+                            ->orWhere([
+                                ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
+                case 4:
+                    {
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->Where([['se', '=', $businessUnitUser->mcu_subordinacaoAdm]])
+                            ->where([
+                                ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+
+                            ])
+                            ->orWhere([
+                                ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
+                case 5:
+                    {
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->Where([['se', '=', $businessUnitUser->mcu]])
+
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
+                case 6:
+                    {
+                        //dd('caso 2');
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->Where([['se', '=', $businessUnitUser->se]])
+                            ->where([
+                                ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+
+                            ])
+                            ->orWhere([
+                                ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orWhere([
+                                ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                                ['status_unidadeDesc', '=', $status],
+                                ['tiposDeUnidade.inspecionar', '=',  'Sim']
+                            ])
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
+            }
+
+           // return view('compliance.unidades.index',compact('registros'));
+        }
+
+
+
+
+
+        return view('compliance.unidades.index',compact('registros'));
+    }
+
+    public function index()
+    {
+        $status = 'Criado e instalado';
+
+//        if(auth()){
+//            dd('autenticado', auth()->user()->businessUnit);
+//        }
+//        else
+//        {
+//            dd('convidado');
+//        }
+
+        $businessUnitUser = DB::table('unidades')
+            ->Where([['mcu', '=', auth()->user()->businessUnit]])
+            ->select('unidades.*')
+            ->first();
+
+
+
+
+        if(!empty( $businessUnitUser ))
+        {
+            $papel_user = DB::table('papel_user')
+                ->Where([['user_id', '=', auth()->user()->id]])
+                ->Where([['papel_id', '>=', 1]])
+                ->select('papel_id')
+                ->first();
+
+
+
+
+          //  dd( $registros  );
+
+
+
+            switch ($papel_user->papel_id)
+            {
+                case 1:
+                case 2:
+                     {
+                         $registros = DB::table('unidades')
+                             ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                             ->select(
+                                 'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                             )
+                             ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
+                             ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                             ->orderBy('seDescricao', 'desc')
+                             ->orderBy('tipoOrgaoDesc', 'asc')
+                             ->orderBy('descricao', 'asc')
+                             ->paginate(10);
+                         \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                break;
+                case 3:
+                    {
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->Where([['se', '=', $businessUnitUser->se]])
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                break;
+                case 4:
+                    {
+                        $registros = DB::table('unidades')
+                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                            ->select(
+                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                            )
+                            ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                            ->Where([['se', '=', $businessUnitUser->mcu_subordinacaoAdm]])
+                            ->orderBy('seDescricao', 'desc')
+                            ->orderBy('tipoOrgaoDesc', 'asc')
+                            ->orderBy('descricao', 'asc')
+                            ->paginate(10);
+
+
+                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                            ,'class'=>'orange white-text']);
+                    }
+                break;
+                case 5:
+                    {
+                      $registros = DB::table('unidades')
+                          ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                          ->select(
+                              'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                          )
+                          ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                          ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                          ->Where([['se', '=', $businessUnitUser->mcu]])
+                          ->orderBy('seDescricao', 'desc')
+                          ->orderBy('tipoOrgaoDesc', 'asc')
+                          ->orderBy('descricao', 'asc')
+                          ->paginate(10);
+                    \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                        ,'class'=>'orange white-text']);
+                    }
+                break;
+                case 6:
+                    {
+                            //dd('caso 2');
+                            $registros = DB::table('unidades')
+                                ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                                ->select(
+                                    'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                                )
+                                ->where([['tiposDeUnidade.inspecionar', '=',  'Sim']])
+                                ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                                ->Where([['se', '=', $businessUnitUser->se]])
+                                ->orderBy('seDescricao', 'desc')
+                                ->orderBy('tipoOrgaoDesc', 'asc')
+                                ->orderBy('descricao', 'asc')
+                                ->paginate(10);
+                            \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
+                                ,'class'=>'orange white-text']);
+                        }
+                break;
+            }
+
+
+            return view('compliance.unidades.index',compact('registros'));
+        }
+
+        else
+        {
+            \Session::flash('mensagem',['msg'=>'Não foi possivel localizar a Unidade do Usuário atualize o Cadastro desse usuário.'
+                ,'class'=>'red white-text']);
+            return redirect()->route('home');
+        }
+    }
+}

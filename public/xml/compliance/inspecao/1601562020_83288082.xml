@@ -1,0 +1,1029 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><rootelement>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificaram a posição do mês 09/2020, constataram que não havia Histórico de Pendências de Débitos de Empregados maior que 90 dias.MANAFI 19/1 - 2.2.19.2 a 2.2.19.4
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do Sistema Proter, do período de Janeiro/2017 a 29/07/2020, constataram que não havia pendências com mais de 90 dias.MANAFI 19/1 - 2.2.1; MANAFI 21/1 - Anexo 2
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>3</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise ao sistema SDE – Sistema de Depósito, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, em 26/10/2020, referente ao período de 30/07/2020 a 26/10/2020, verificou-se a inexistência de divergências."MANAFI 3/3            MANAFI 3/3 - Anexo 1"
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>4</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise ao Relatório "Saldo de Numerário em relação ao Limite de Saldo", do sistema BDF, referente ao período de 08/2020 a 10/2020, constataram que não houve descumprimento do limite de saldo estabelecido para a unidade.MANAFI 3/2
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>271</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise à Planilha de Controle de Processos de Apuração de Extravios de Objetos Indenizados com Responsabilidade Definida, disponibilizada pela área de Segurança da Regional (CSEP/GO), do período de 27/10/2020 a 29/07/2020, constatou-se a inexistência de processos pendentes de conclusão há mais de 90 dias sob responsabilidade da unidade.MANCAT 14/3;  MANORG 11/11.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>V</RIP_Resposta>
+		<RIP_Comentario>
+			Não foi possível analisar dado que o Equipamento da unidade não está configurado para acesso remoto.
+MANSEG 4/3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de 01/2020 a 19/10/2020, constatou-se que o sistema permaneceu desativado e fora de funcionamento nos períodos relacionados a seguir:
+Unidade em Risco. Abertura da unidade em horário fora do padrão em relação ao horário de fechamento da unidade conforme a seguir:
+
+Data	Horário Fechamento	Horário Abertura	Tempo Abertura
+21/07/2020	17:00:00	20:42:03	03:42:03
+
+Unidade em Risco. Abertura da unidade em dia de feriado conforme a seguir:
+
+Data	Hora
+07/09/2020	12:05:35
+"MANSEG 4/4 - 2.1.2.1, 2.1.2.2 e 2.1.4            MANSEG 4/2 - Anexo 4"
+Vulnerabilidade aos ativos guardados na unidade.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>3</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme do período de 01/02/2020 a 19/10/2020, constataram a utilização da senha de empregado em que no período mencionado não se encontrava na unidade. O que indicava a prática de compartilhamento de senha de alarme para acesso à unidade. Verificaram 62 - ocorrência(s) em períodos oficiais de ausência do trabalho conforme a seguir:
+Evento	Matricula	Data	Tipo Afastamento
+Desarme	83281231	03/02/2020	Ferias
+Desarme	83281231	04/02/2020	Ferias
+Desarme	83281231	05/02/2020	Ferias
+Desarme	83281231	06/02/2020	Ferias
+Desarme	83281231	07/02/2020	Ferias
+Desarme	83281231	10/02/2020	Ferias
+Desarme	83281231	11/02/2020	Ferias
+Desarme	83281231	12/02/2020	Ferias
+Desarme	83281231	13/02/2020	Ferias
+Desarme	83281231	14/02/2020	Ferias
+Desarme	83281231	17/02/2020	Ferias
+Desarme	83281231	18/02/2020	Ferias
+Desarme	83281231	19/02/2020	Ferias
+Desarme	83281231	20/02/2020	Ferias
+Desarme	83281231	21/02/2020	Ferias
+Desarme	83281231	26/02/2020	Ferias
+Desarme	83281231	27/02/2020	Ferias
+Desarme	83281231	28/02/2020	Ferias
+Desarme	83281231	03/04/2020	Ferias
+Desarme	83281231	06/04/2020	Ferias
+Desarme	83281231	07/04/2020	Ferias
+Desarme	83281231	08/04/2020	Ferias
+Desarme	83281231	09/04/2020	Ferias
+Desarme	83281231	13/04/2020	Ferias
+Desarme	83281231	14/04/2020	Ferias
+Desarme	83281231	15/04/2020	Ferias
+Desarme	83281231	16/04/2020	Ferias
+Desarme	83281231	17/04/2020	Ferias
+Desarme	83281231	20/04/2020	Ferias
+Desarme	83281231	22/04/2020	Ferias
+Desarme	83281231	23/04/2020	Ferias
+Desarme	83281231	24/04/2020	Ferias
+Desarme	83281231	27/04/2020	Ferias
+Desarme	8330428-2	28/04/2020	Ferias
+Desarme	83281231	29/04/2020	Ferias
+Desarme	83281231	30/04/2020	Ferias
+MANSEG 4/4 - 2.1.3; MANCAT 19/3 2.1.5,"b",
+Vulnerabilidade aos ativos guardados na unidade.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>4</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em inspeção online realizada na unidade, constatou-se que o sistema de imagens (CFTV) funcionava corretamente não havia obstrução das câmeras, tendo sido constatado acurácia das imagens e histórico de gravação de todas câmeras.MANSEG 4/5 - 2.1.1.2 a 2.1.1.6
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>273</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Até a data da inspeção, a relação de Processos de Apuração de Extravio de Bens Móveis Pendentes, não foi disponibilizada pela Gerência Regional de Serviços - GERES. A solicitação foi efetuada por meio do Oficio 13026536 - SEI: 53191.002165/2020-34 de 06/03/2020.
+
+"MANPAT 5/1; MANPAT 5/2            MANPAT 5/3;            MANPAT 5/4            "
+Prejuízo financeiro à empresa pelo extravio de bens sem providências de recuperação/responsabilização.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>274</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise à Relação de Listas Pendentes do sistema SARA, Planilha disponibilizada com maior data de registro de objetos pendentes datado de 30/06/2020, e aos eventos registrados no sistema SRO, constataram-se que não havia pendência para a unidade inspecionada.MANCAT 16/28
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>275</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em conferência aos dados disponíveis no Portal do SRO, opção Desempenho de Qualidade > Pendência de Baixa Unidades > LDI, de 27/10/2020, verificaram que não havia pendências de baixa.MANCAT 19/3; MANCAT 6/1 - Anexo 2 e MANDIS 9/3 - 2.4.5
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>276</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>E</RIP_Resposta>
+		<RIP_Comentario>
+			A unidade não executa a tarefa que é a cargo do CDD Rio Verde.
+"MANDIS 3/1 - 2.4;            MANTRA 3/1 - ANEXO 4 - 1.5; 1.6; 1.7            MANTRA 2/1 - ANEXO 4 - 2.2; 2.3; 2.4            MANTRA 4/3,  2.2.1 a 2.2.8 (LTU)"
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>E</RIP_Resposta>
+		<RIP_Comentario>
+			A unidade não executa a tarefa que fica a cargo do CDD Rio Verde.
+MANDIS 3/2 - 2.9 e MANDIS 3/9 - 2.1
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>E</RIP_Resposta>
+		<RIP_Comentario>
+			A unidade não executa a tarefa que fica a cargo do CDD Rio Verde.
+MANDIS 6/1 e MANDIS 6/1 - Anexo 2 e anexo 4
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>3</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>E</RIP_Resposta>
+		<RIP_Comentario>
+			A unidade não executa a tarefa que fica a cargo do CDD Rio Verde.
+MANDIS 6/1 e MANDIS 6/1 - anexo 4
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>4</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>E</RIP_Resposta>
+		<RIP_Comentario>
+			A unidade não executa a tarefa que fica a cargo do CDD Rio Verde.
+MANDIS 3/9
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>5</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>V</RIP_Resposta>
+		<RIP_Comentario>
+			Avaliado no Item 277.6 a Unidade Não está provida de Supervisor.
+MANENC 16/3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>6</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Foram verificados o período de dia 01/06/2020 até 02/10/2020, identificaram por meio dos dados contidos na coluna Gestão Pré-alerta que não havia ocorrência alusiva à Gestão Automática para objetos da unidade, que sugerisse falha na Gestão do diária da Conferência Eletrônica da unidade.MANENC 16/3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>7</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em consulta realizada no Sistema de CIE Eletrônica do período de 29/10/2019 a 27/10/2020 não foram constatadas inconformidades.MANENC 16/1
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>278</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos registros do Sistema PGP e aos dados do Relatório “Arme e Desarme” do Sistema Monitorado de Alarme, verificaram que não há inconsistências quanto ao lançamento de serviços extras no período de 01/04/2020 a 30/09/2020.MANPES 19/1; MANPES 19/2 , MANPES 19/1 - ANEXO 2
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>278</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Verificaram o período de 06/2020 até 09/2020. Não identificaram empregado(s) com recebimento pela(s) Rubricas AADC-Adic.Ativ. Distrib/Coleta Ext. Bem como, Adic. de Atend. em Guichê na unidade.MANPES 8/5 - Anexo 2 e 3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300688</RIP_Unidade>
+		<RIP_NumInspecao>1601562020</RIP_NumInspecao>
+		<RIP_NumGrupo>500</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430837</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>V</RIP_Resposta>
+		<RIP_Comentario>
+			Não existem neste momento, situações que ensejam aprimoramento. Além das que constam na presente Inspeção.
+Norma relativa ao Assunto abordado no apontamento.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>27/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>27/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>27/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>27/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>27/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>83304282 - FABIO HENRIQUE BORGES</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.329.980-z</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+</rootelement>

@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><rootelement>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificaram a posição do mês 08/2020, constataram que não havia Histórico de Pendências de Débitos de Empregados maior que 90 dias.MANAFI 19/1 - 2.2.19.2 a 2.2.19.4
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do Sistema Proter, do período de Janeiro/2017 a 25/07/2020 constataram-se as seguintes pendências com mais de 90 dias:
+Pendencia(s) de Contabilização: 1 Pendência(s):
+Data da Pendência	Número do Objeto	CEP Entrega
+06/01/2020	JT693506270BR	04506-970
+CEP Divergente : 1 Pendência(s):
+
+Data da Pendência	Número do Objeto	Diferença na Tarifação (R$)
+08/06/2018	DY249352198BR	R$ 49,60
+Total	R$ 49,60
+Total Geral
+R$ 49,60
+MANAFI 19/1 - 2.2.1; MANAFI 21/1 - Anexo 2
+Prejuízo Financeiro à Empresa; Reclamações de Clientes.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>3</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise ao sistema SDE – Sistema de Depósito, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, em 16/10/2020, referente ao período de 27/07/2020 a 16/10/2020, verificou-se a inexistência de divergências."MANAFI 3/3            MANAFI 3/3 - Anexo 1"
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>270</RIP_NumGrupo>
+		<RIP_NumItem>4</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise ao Relatório "Saldo de Numerário em relação ao Limite de Saldo", do sistema BDF, referente ao período de 08/2020 a 10/2020, constataram que não houve descumprimento do limite de saldo estabelecido para a unidade.MANAFI 3/2
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>271</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise à Planilha de Controle de Processos de Apuração de Extravios de Objetos Indenizados com Responsabilidade Definida, disponibilizada pela área de Segurança da Regional (CSEP/GO), do período de 23/10/2020 a 25/07/2020, constatou-se a inexistência de processos pendentes de conclusão há mais de 90 dias sob responsabilidade da unidade.MANCAT 14/3;  MANORG 11/11.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>V</RIP_Resposta>
+		<RIP_Comentario>
+			Não foi possível analisar dado que o Equipamento da unidade não está configurado para acesso remoto.
+MANSEG 4/3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de 01/2020 a 23/10/2020, constatou-se que o sistema de alarme permaneceu ativado quando dos horários fora de atendimento inclusive finais de semana.
+a) Não foi possível avaliar a utilização do alarme. A unidade não está sendo monitorada.
+"MANSEG 4/4 - 2.1.2.1, 2.1.2.2 e 2.1.4            MANSEG 4/2 - Anexo 4"
+Vulnerabilidade aos ativos guardados na unidade.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>3</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme do período de 31/12/1969 a 23/10/2020, constataram que:
+a) Não foi possível avaliar. A unidade não está sendo monitorada.
+MANSEG 4/4 - 2.1.3; MANCAT 19/3 2.1.5,"b",
+Vulnerabilidade aos ativos guardados na unidade.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>272</RIP_NumGrupo>
+		<RIP_NumItem>4</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Não foi possível acessar o sistema por meio do endereço de IP. O Sistema falha na conexão.  Não sendo possível determinar sobre o funcionamento das câmeras.
+
+MANSEG 4/5 - 2.1.1.2 a 2.1.1.6
+Vulnerabilidade aos objetos postais e demais ativos guardados na unidade.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>273</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Até a data da inspeção, a relação de Processos de Apuração de Extravio de Bens Móveis Pendentes, não foi disponibilizada pela Gerência Regional de Serviços - GERES. A solicitação foi efetuada por meio do Oficio 13026536 - SEI: 53191.002165/2020-34 de 06/03/2020.
+
+"MANPAT 5/1; MANPAT 5/2            MANPAT 5/3;            MANPAT 5/4            "
+Prejuízo financeiro à empresa pelo extravio de bens sem providências de recuperação/responsabilização.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>274</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise à Relação de Listas Pendentes do sistema SARA, Planilha disponibilizada com maior data de registro de objetos pendentes datado de 30/06/2020, e aos eventos registrados no sistema SRO, constataram-se que não havia pendência para a unidade inspecionada.MANCAT 16/28
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>275</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em verificação aos dados disponíveis no Sistema Portal do SRO, LDI, do dia 23/10/2020, constataram-se que não havia pendência de baixa referente a entrega interna no que diz respeito aos prazos de guarda e à baixa no Sistema SRO na unidade inspecionada.MANCAT 19/3; MANCAT 6/1 - Anexo 2 e MANDIS 9/3 - 2.4.5
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>276</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constataram o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir:
+170 - viagens prevista(s).
+Data Viagem	Número da Viagem	Tipo Operação	Quantidade Unitizadores	Peso Unitizadores	Tipo Unitizador	Tipo Serviço	Destino
+02/08/2020	14613962	DESEMBARQ	11	100		DIVERSOS (MISTO)	LOCALIDADE NAO INFORMADA
+31/05/2020	14385618	DESEMBARQ	8	49		DIVERSOS (MISTO)	LOCALIDADE NAO INFORMADA
+31/05/2020	14385618	EMBARQ	1	1		DIVERSOS (MISTO)	LOCALIDADE NAO INFORMADA
+
+a) Foram verificada(s) todas programações de viagens no período do dia 31/05/2020 até 28/09/2020 verificaram que houve 3 viagen(s) com operações de Embarque/Desembarque realizadas.
+b) Verificaram a necessidade de aprimoramento na qualidade do apontamento colunas com falhas ou informações genéricas/incompletas.
+c) Verificaram que no período havia 170 viagen(s) prevista(s) sendo que não houve apontamento de EMBARQUE/DESEMBARQUE para 167 viagens.
+"MANDIS 3/1 - 2.4;            MANTRA 3/1 - ANEXO 4 - 1.5; 1.6; 1.7            MANTRA 2/1 - ANEXO 4 - 2.2; 2.3; 2.4            MANTRA 4/3,  2.2.1 a 2.2.8 (LTU)"
+Falta de Fidedignidade das Informações relacionadas à Transporte com impactos na gestão dos contratos da área.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos registros do sistema SGDO (Relatório Detalhado das Distribuições), período de 06/07/2020 a 14/08/2020, constataram-se as seguintes inconsistências relacionadas aos lançamentos obrigatórios:
+Matricula	Data Início Atividade	Data Saída	Data Retorno	Data TPC	Data Término Atividade
+83292101	10/07/2020	10/07/2020	10/07/2020	10/07/2020	Falta Lançamento
+83292101	21/07/2020	21/07/2020	21/07/2020	Falta Lançamento	21/07/2020
+83292101	09/07/2020	09/07/2020	09/07/2020	09/07/2020	Falta Lançamento
+83292101	09/07/2020	09/07/2020	09/07/2020	Falta Lançamento	Falta Lançamento
+83292101	10/07/2020	10/07/2020	10/07/2020	10/07/2020	Falta Lançamento
+83292101	22/07/2020	22/07/2020	22/07/2020	Falta Lançamento	22/07/2020
+83292101	23/07/2020	23/07/2020	23/07/2020	Falta Lançamento	23/07/2020
+83292101	24/07/2020	24/07/2020	24/07/2020	Falta Lançamento	24/07/2020
+83292101	27/07/2020	27/07/2020	27/07/2020	Falta Lançamento	27/07/2020
+83292101	28/07/2020	28/07/2020	28/07/2020	Falta Lançamento	28/07/2020
+83292101	29/07/2020	29/07/2020	29/07/2020	Falta Lançamento	29/07/2020
+83292101	30/07/2020	30/07/2020	30/07/2020	Falta Lançamento	30/07/2020
+83292101	10/07/2020	10/07/2020	10/07/2020	10/07/2020	Falta Lançamento
+83292101	21/07/2020	21/07/2020	21/07/2020	Falta Lançamento	21/07/2020
+83292101	09/07/2020	09/07/2020	09/07/2020	09/07/2020	Falta Lançamento
+83292101	09/07/2020	09/07/2020	09/07/2020	Falta Lançamento	Falta Lançamento
+83292101	10/07/2020	10/07/2020	10/07/2020	10/07/2020	Falta Lançamento
+83292101	22/07/2020	22/07/2020	22/07/2020	Falta Lançamento	22/07/2020
+83292101	23/07/2020	23/07/2020	23/07/2020	Falta Lançamento	23/07/2020
+83292101	24/07/2020	24/07/2020	24/07/2020	Falta Lançamento	24/07/2020
+83292101	27/07/2020	27/07/2020	27/07/2020	Falta Lançamento	27/07/2020
+83292101	28/07/2020	28/07/2020	28/07/2020	Falta Lançamento	28/07/2020
+83292101	29/07/2020	29/07/2020	29/07/2020	Falta Lançamento	29/07/2020
+83292101	30/07/2020	30/07/2020	30/07/2020	Falta Lançamento	30/07/2020
+MANDIS 3/2 - 2.9 e MANDIS 3/9 - 2.1
+Deficiência no controle do tempo de percorrida e produtividade dos Carteiros. Falta de Fidedignidade de informações registradas em Sistemas Corporativos.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise, por amostragem, às anotações registradas nas Imagens dos comprovantes de entrega e anotação disponíveis no sistema SRO, foram constatadas as seguintes inconsistências relacionadas aos procedimentos de entrega:
+Objeto	Data	Falha detectada
+PY628551835BR	06/07/2020	Imaagem Não Registrada
+BO452257895BR	29/06/2020	Imaagem Não Registrada
+PW488571434BR	29/06/2020	Imaagem Não Registrada
+PY557091577BR	30/06/2020	Imaagem Não Registrada
+PY683350309BR	09/07/2020	Imaagem Não Registrada
+PY742011017BR	15/07/2020	Imaagem Não Registrada
+BL574115667BR	22/07/2020	Imaagem Não Registrada
+BK166494817BR	16/09/2020	Imaagem Não Registrada
+PZ478913749BR	11/09/2020	Imaagem Não Registrada
+PZ581710602BR	21/09/2020	Objeto Sem Informações de Baixa
+BK085158673BR	25/09/2020	Imaagem Não Registrada
+
+Foram avaliados 11 Imagens de Objetos, relativas ao período de 26/06/2020 até 01/10/2020, que representava 100 por cento, do total da amostra para o período mencionado, sendo que em 100 por cento, foram constatadas inconsistências.
+MANDIS 6/1 e MANDIS 6/1 - Anexo 2 e anexo 4
+Falta de Fidedignidade das Informações disponibilizadas em Sistemas Corporativo. Reclamações/Indenizações. Impossibilidade de identificar recebedor de Objeto Qualificado. Impossibilidade de apurar situações de atrasos/extravios.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>3</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Não foi possivel avaliar dado que não havia disponibilidade de registros.
+
+MANDIS 6/1 e MANDIS 6/1 - anexo 4
+Falta de Fidedignidade das Informações disponibilizadas em Sistemas Corporativo. Reclamações/Indenizações. Impossibilidade de identificar recebedor de Objeto Qualificado. Impossibilidade de apurar situações de atrasos/extravios.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>4</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos dados do sistema PORTAL DO SRO, na data da inspeção constatou-se a inexistência de pendências de Baixa atribuídas à unidade.MANDIS 3/9
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>5</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>V</RIP_Resposta>
+		<RIP_Comentario>
+			Avaliado no Item 277.6 a Unidade Não está provida de Supervisor.
+MANENC 16/3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>6</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos relatórios disponíveis no Sistema Painel de referente ao período de período de 27/05/2020 até 02/10/2020, identificaram por meio dos dados contidos na coluna "gesto pré-alerta" a ocorrência de "Gestão Automática" para 1 objetos, indicando que não era realizada a "gestão diária" do Pré-Alerta na unidade, conforme relatado a seguir:
+Objeto	Data Último Evento
+PM769523496BR	04/09/2020
+MANENC 16/3
+Falta de atualização das informações disponibilizadas ao cliente; Reclamações/Indenizações.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>277</RIP_NumGrupo>
+		<RIP_NumItem>7</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>N</RIP_Resposta>
+		<RIP_Comentario>
+			Em consulta realizada ao sistema de CIE Eletrônica do período de 24/10/2019 até 30/09/2020 foram constatadas as seguintes situações:
+1 - ocorrência(s) de Mensagens não respondida(s) com prazo superior a 3 dias, conforme a Seguir:
+Nº CIE	Data	Origem	Irregularidade	Categoria
+100/2020	15/09/2020 13:09:03		FORA DO PRAZO	DEMAIS OBJETOS INTERNACIONAIS
+MANENC 16/1
+Falta de adoção de medidas corretivas para falhas operacionais detectadas na unidade. Reincidências das irregularidades cometidas com possibilidade de Prejuízos à Empresa. Reclamações/Indenizações.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes>Doravante, atentar para os procedimentos previstos nos normativos referenciados neste apontamento. Informar em sua manifestação, a justificativa para ocorrência da falha detectada, Causa. Apresentar Plano de Ação com indicação de prazo para regularização da situação apontada. Anexar os comprovantes de regularização no sistema SNCI em formato PDF, quando couber. </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>278</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Em análise aos registros do Sistema PGP e aos dados do Relatório “Arme e Desarme” do Sistema Monitorado de Alarme, verificaram que não há inconsistências quanto ao lançamento de serviços extras no período de 01/04/2020 a 30/09/2020.MANPES 19/1; MANPES 19/2 , MANPES 19/1 - ANEXO 2
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>278</RIP_NumGrupo>
+		<RIP_NumItem>2</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>C</RIP_Resposta>
+		<RIP_Comentario>
+			Verificaram o período de 06/2020 até 09/2020. Não identificaram empregado(s) com recebimento pela(s) Rubricas AADC-Adic.Ativ. Distrib/Coleta Ext. Bem como, Adic. de Atend. em Guichê na unidade.MANPES 8/5 - Anexo 2 e 3
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+	<Dados>
+		<RIP_Unidade>16300556</RIP_Unidade>
+		<RIP_NumInspecao>1601552020</RIP_NumInspecao>
+		<RIP_NumGrupo>500</RIP_NumGrupo>
+		<RIP_NumItem>1</RIP_NumItem>
+		<RIP_CodDiretoria>16</RIP_CodDiretoria>
+		<RIP_CodReop>430838</RIP_CodReop>
+		<RIP_Ano>2020</RIP_Ano>
+		<RIP_Resposta>V</RIP_Resposta>
+		<RIP_Comentario>
+			Não existem neste momento, situações que ensejam aprimoramento. Além das que constam na presente Inspeção.
+Norma relativa ao Assunto abordado no apontamento.
+		</RIP_Comentario>
+		<RIP_Caractvlr>Não Quantificado</RIP_Caractvlr>
+		<RIP_Falta>0</RIP_Falta>
+		<RIP_Sobra>0</RIP_Sobra>
+		<RIP_EmRisco>0</RIP_EmRisco>
+		<RIP_DtUltAtu>23/10/2020</RIP_DtUltAtu>
+		<RIP_UserName>83288082</RIP_UserName>
+		<RIP_Recomendacoes> </RIP_Recomendacoes>
+		<RIP_ReincInspecao> </RIP_ReincInspecao>
+		<RIP_ReincGrupo> </RIP_ReincGrupo>
+		<RIP_ReincItem> </RIP_ReincItem>
+		<INP_HrsPreInspecao></INP_HrsPreInspecao>
+		<INP_DtInicDeslocamento>26/10/2020</INP_DtInicDeslocamento>
+		<INP_DtFimDeslocamento>23/10/2020</INP_DtFimDeslocamento>
+		<INP_HrsDeslocamento></INP_HrsDeslocamento>
+		<INP_DtInicInspecao>26/10/2020</INP_DtInicInspecao>
+		<INP_DtFimInspecao>23/10/2020</INP_DtFimInspecao>
+		<INP_HrsInspecao></INP_HrsInspecao>
+		<INP_Situacao>AN</INP_Situacao>
+		<INP_DtEncerramento>00:00:00</INP_DtEncerramento>
+		<INP_Coordenador>83288082</INP_Coordenador>
+		<INP_Responsavel>80700950 - MATEUS CUNHA AGUIAR</INP_Responsavel>
+		<INP_Motivo> </INP_Motivo>
+		<INP_Introducao> </INP_Introducao>
+		<INP_Conclusao> </INP_Conclusao>
+		<INP_Modalidade>1</INP_Modalidade>
+		<IPT_MatricInspetor>832880828.328.808-2</IPT_MatricInspetor>
+		<IPT_NumHrsPreInsp> </IPT_NumHrsPreInsp>
+		<IPT_NumHrsDesloc> </IPT_NumHrsDesloc>
+		<IPT_NumHrsInsp> </IPT_NumHrsInsp>
+	</Dados>
+</rootelement>
