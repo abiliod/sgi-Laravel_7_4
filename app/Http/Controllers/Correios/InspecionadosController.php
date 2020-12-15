@@ -33,14 +33,14 @@ class InspecionadosController extends Controller {
 
         $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('inspecoes.*'
                 , 'itensdeinspecoes.*'
-                ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                ,'gruposDeVerificacao.nomegrupo'
-                ,'testesDeVerificacao.numeroDoTeste'
-                ,'testesDeVerificacao.teste'
+                ,'gruposdeverificacao.numeroGrupoVerificacao'
+                ,'gruposdeverificacao.nomegrupo'
+                ,'testesdeverificacao.numeroDoTeste'
+                ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $id]])
             ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
@@ -224,14 +224,14 @@ class InspecionadosController extends Controller {
 
         $registros = DB::table('itensdeinspecoes')
         ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-        ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-        ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+        ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+        ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
         ->select('inspecoes.*'
             , 'itensdeinspecoes.*'
-            ,'gruposDeVerificacao.numeroGrupoVerificacao'
-            ,'gruposDeVerificacao.nomegrupo'
-            ,'testesDeVerificacao.numeroDoTeste'
-            ,'testesDeVerificacao.teste'
+            ,'gruposdeverificacao.numeroGrupoVerificacao'
+            ,'gruposdeverificacao.nomegrupo'
+            ,'testesdeverificacao.numeroDoTeste'
+            ,'testesdeverificacao.teste'
         )
         ->where([['inspecao_id', '=', $id]])
         ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
@@ -254,14 +254,14 @@ class InspecionadosController extends Controller {
 
         $registros = DB::table('itensdeinspecoes')
         ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-        ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-        ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+        ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+        ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
         ->select('inspecoes.*'
             , 'itensdeinspecoes.*'
-            ,'gruposDeVerificacao.numeroGrupoVerificacao'
-            ,'gruposDeVerificacao.nomegrupo'
-            ,'testesDeVerificacao.numeroDoTeste'
-            ,'testesDeVerificacao.teste'
+            ,'gruposdeverificacao.numeroGrupoVerificacao'
+            ,'gruposdeverificacao.nomegrupo'
+            ,'testesdeverificacao.numeroDoTeste'
+            ,'testesdeverificacao.teste'
         )
         ->where([['inspecao_id', '=', $id]])
         ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
@@ -288,8 +288,8 @@ class InspecionadosController extends Controller {
        }
         $dados = $request->all();
 
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
             ->groupByRaw('tipoUnidade_id')
             ->get();
@@ -308,7 +308,7 @@ class InspecionadosController extends Controller {
                 ->Where([['ciclo', '=', $dados['ciclo']]])
                 ->where([['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
         if ( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao']))  && (!empty($request->all()['inspetor']))  )
@@ -320,7 +320,7 @@ class InspecionadosController extends Controller {
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
         if ((!empty($request->all()['tipoVerificacao']))  && (!empty($request->all()['inspetor']))  )
@@ -332,7 +332,7 @@ class InspecionadosController extends Controller {
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
         if ((!empty($request->all()['tipoUnidade_id']))  && (!empty($request->all()['inspetor']))  )
@@ -344,7 +344,7 @@ class InspecionadosController extends Controller {
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
         if (!empty($request->all()['inspetor']))
@@ -354,7 +354,7 @@ class InspecionadosController extends Controller {
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
         if (!empty($request->all()['tipoUnidade_id']))
@@ -366,7 +366,7 @@ class InspecionadosController extends Controller {
                // ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
               //  ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
         if (!empty($request->all()['tipoVerificacao']))
         {
@@ -377,13 +377,13 @@ class InspecionadosController extends Controller {
                 // ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 //  ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
                 ->paginate(15);
-            return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+            return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
         $registros = DB::table('inspecoes')
             ->Where([['ciclo', '=', $dados['ciclo']]])
             ->paginate(15);
-        return view('compliance.inspecionados.index',compact('registros', 'tiposDeUnidade'));
+        return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
 
     }
 
@@ -395,8 +395,8 @@ class InspecionadosController extends Controller {
         ->orderBy('codigo' , 'asc')
         ->paginate(10);
 
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-        ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->select('tipoUnidade_id as id','sigla','tipodescricao')
         ->groupByRaw('tipoUnidade_id')
         ->get();

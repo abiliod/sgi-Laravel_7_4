@@ -85,7 +85,7 @@
                            </tr>
                            <tr>
                                <td>Guiches Ativos:</td>
-                               <td>{{ $dado->qtdGuicheOcupado }}</td>
+                               <td>{{ $dado->guiches_ocupados }}</td>
                            </tr>
                            <tr>
                                <td>Executa Distribuição Domiciliária?</td>

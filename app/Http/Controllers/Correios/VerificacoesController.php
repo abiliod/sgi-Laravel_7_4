@@ -28,8 +28,8 @@ class VerificacoesController extends Controller
         }
 
         $registros = Inspecao::orderBy('codigo')->paginate(10);
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-        ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->select('tipoUnidade_id as id','sigla','tipodescricao')
         ->groupByRaw('tipoUnidade_id')
         ->get();
@@ -40,8 +40,8 @@ class VerificacoesController extends Controller
     public function search (Request $request)
     {
         $dados = $request->all();
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
             ->groupByRaw('tipoUnidade_id')
             ->get();
@@ -415,8 +415,8 @@ class VerificacoesController extends Controller
         if(!empty( $businessUnitUser ))
         {
 
-             $tiposDeUnidade = DB::table('tiposDeUnidade')
-                ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+             $tiposDeUnidade = DB::table('tiposdeunidade')
+                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
                 ->select('tipoUnidade_id as id','sigla','tipodescricao')
                 ->groupByRaw('tipoUnidade_id')
                 ->get();

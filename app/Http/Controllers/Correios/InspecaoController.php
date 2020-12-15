@@ -358,9 +358,9 @@ class InspecaoController extends Controller
             $registro = DB::table('itensdeinspecoes')
                 ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
                 ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
-                ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
-                ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-                ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesDeVerificacao.*','gruposDeVerificacao.*')
+                ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
                 ->where([['itensdeinspecoes.id', '=', $id ]])
                 ->first();
            //  dd('avaliados '.$aval,'amostra '. $mostra);
@@ -390,9 +390,9 @@ class InspecaoController extends Controller
         $registro = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesDeVerificacao.*','gruposDeVerificacao.*')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
             ->where([['itensdeinspecoes.id', '=', $id ]])
             ->first();
 
@@ -2579,13 +2579,13 @@ class InspecaoController extends Controller
         // dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('itensdeinspecoes.*'
-                    ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                    ,'gruposDeVerificacao.nomegrupo'
-                    ,'testesDeVerificacao.numeroDoTeste'
-                    ,'testesDeVerificacao.teste'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $request->all()['id']]])
           //  ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
@@ -2602,13 +2602,13 @@ class InspecaoController extends Controller
             //dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('itensdeinspecoes.*'
-                    ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                    ,'gruposDeVerificacao.nomegrupo'
-                    ,'testesDeVerificacao.numeroDoTeste'
-                    ,'testesDeVerificacao.teste'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $request->all()['id']]])
           //  ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
@@ -2624,13 +2624,13 @@ class InspecaoController extends Controller
            // dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('itensdeinspecoes.*'
-                    ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                    ,'gruposDeVerificacao.nomegrupo'
-                    ,'testesDeVerificacao.numeroDoTeste'
-                    ,'testesDeVerificacao.teste'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $request->all()['id']]])
           //  ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
@@ -2646,16 +2646,16 @@ class InspecaoController extends Controller
            // dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('itensdeinspecoes.*'
-                    ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                    ,'gruposDeVerificacao.nomegrupo'
-                    ,'testesDeVerificacao.numeroDoTeste'
-                    ,'testesDeVerificacao.teste'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $request->all()['id']]])
-            ->where([['testesDeVerificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+            ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
            // ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
           //  ->Where([['itensdeinspecoes.status', '=', $request->all()['status']]])
           ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
@@ -2667,16 +2667,16 @@ class InspecaoController extends Controller
             //dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('itensdeinspecoes.*'
-                    ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                    ,'gruposDeVerificacao.nomegrupo'
-                    ,'testesDeVerificacao.numeroDoTeste'
-                    ,'testesDeVerificacao.teste'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $request->all()['id']]])
-            ->where([['testesDeVerificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+            ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
             ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
             ->Where([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
             ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
@@ -2690,8 +2690,8 @@ class InspecaoController extends Controller
 
         $inspecao = Inspecao::find($request->all()['id']);
 
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
-        ->select('gruposDeVerificacao.*')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
+        ->select('gruposdeverificacao.*')
         ->where([['tipoUnidade_id', '=', $inspecao['tipoUnidade_id']]])
         ->where([['tipoVerificacao', '=', $inspecao['tipoVerificacao']]])
         ->get();
@@ -2699,9 +2699,9 @@ class InspecaoController extends Controller
         $dado = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesDeVerificacao.*','gruposDeVerificacao.*')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
             ->where([['inspecoes.id', '=', $request->all()['id'] ]])
             ->first();
 
@@ -2713,14 +2713,14 @@ class InspecaoController extends Controller
         $inspecao = Inspecao::find($id);
         $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
             ->select('inspecoes.*'
                 , 'itensdeinspecoes.*'
-                ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                ,'gruposDeVerificacao.nomegrupo'
-                ,'testesDeVerificacao.numeroDoTeste'
-                ,'testesDeVerificacao.teste'
+                ,'gruposdeverificacao.numeroGrupoVerificacao'
+                ,'gruposdeverificacao.nomegrupo'
+                ,'testesdeverificacao.numeroDoTeste'
+                ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $id]])
             ->where([['situacao', '=', 'Em Inspeção' ]])
@@ -2732,14 +2732,14 @@ class InspecaoController extends Controller
         if($count == 0){
              $registros = DB::table('itensdeinspecoes')
                  ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-                 ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-                 ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+                 ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                 ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
                  ->select('inspecoes.*'
                      , 'itensdeinspecoes.*'
-                     ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                     ,'gruposDeVerificacao.nomegrupo'
-                     ,'testesDeVerificacao.numeroDoTeste'
-                     ,'testesDeVerificacao.teste'
+                     ,'gruposdeverificacao.numeroGrupoVerificacao'
+                     ,'gruposdeverificacao.nomegrupo'
+                     ,'testesdeverificacao.numeroDoTeste'
+                     ,'testesdeverificacao.teste'
                  )
             ->where([['inspecao_id', '=', $id]])
             ->Where([['situacao', '=', 'Inspecionado' ]])
@@ -2751,14 +2751,14 @@ class InspecaoController extends Controller
         if($count == 0){
                 $registros = DB::table('itensdeinspecoes')
                     ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-                    ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-                    ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
+                    ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                    ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
                     ->select('inspecoes.*'
                         , 'itensdeinspecoes.*'
-                        ,'gruposDeVerificacao.numeroGrupoVerificacao'
-                        ,'gruposDeVerificacao.nomegrupo'
-                        ,'testesDeVerificacao.numeroDoTeste'
-                        ,'testesDeVerificacao.teste'
+                        ,'gruposdeverificacao.numeroGrupoVerificacao'
+                        ,'gruposdeverificacao.nomegrupo'
+                        ,'testesdeverificacao.numeroDoTeste'
+                        ,'testesdeverificacao.teste'
                     )
             ->where([['inspecao_id', '=', $id]])
             ->Where([['situacao', '!=', 'Corroborado' ]])
@@ -2781,8 +2781,8 @@ class InspecaoController extends Controller
 
 
 
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
-        ->select('gruposDeVerificacao.*')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
+        ->select('gruposdeverificacao.*')
         ->where([['tipoUnidade_id', '=', $inspecao['tipoUnidade_id']]])
         ->where([['tipoVerificacao', '=', $inspecao['tipoVerificacao']]])
         ->get();
@@ -2790,9 +2790,9 @@ class InspecaoController extends Controller
         $dado = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
-            ->join('testesDeVerificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesDeVerificacao.id')
-            ->join('gruposDeVerificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
-            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesDeVerificacao.*','gruposDeVerificacao.*')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
             ->where([['inspecoes.id', '=', $id ]])
             ->first();
 

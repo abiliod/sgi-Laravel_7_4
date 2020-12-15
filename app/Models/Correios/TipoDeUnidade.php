@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoDeUnidade extends Model
 {
-    protected $table = "tiposDeUnidade";
+    protected $table = "tiposdeunidade";
+
     protected $fillable = ['codigo' , 'sigla', 'tipodescricao', 'inspecionar', 'tipoInspecao'];
+
     public function unidade() {
         return $this->hasMany('App\Models\Correios\Unidade',' tipoUnidade_id');
     }

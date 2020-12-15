@@ -20,11 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/ClientesMonitoramentoTableSeeder.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/MicroStrategyTableSeeder.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/UsuariosTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/UsuariosTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Correios/TipoDeUnidade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/TipoDeUnidade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -675,6 +678,17 @@
       <workItem from="1607693914034" duration="1571000" />
       <workItem from="1607695603676" duration="146000" />
       <workItem from="1607707600427" duration="362000" />
+      <workItem from="1607948288471" duration="1882000" />
+      <workItem from="1607951122973" duration="1434000" />
+      <workItem from="1607952948551" duration="1503000" />
+      <workItem from="1607956171059" duration="1336000" />
+      <workItem from="1607969300657" duration="1110000" />
+      <workItem from="1607984296846" duration="808000" />
+      <workItem from="1607989672506" duration="1184000" />
+      <workItem from="1608023795668" duration="699000" />
+      <workItem from="1608033731291" duration="1250000" />
+      <workItem from="1608035541820" duration="1788000" />
+      <workItem from="1608037380577" duration="1410000" />
     </task>
     <task id="LOCAL-00001" summary="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB.">
       <created>1607088888655</created>
@@ -867,11 +881,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="669" y="83" key="NewPhpClassDialog/0.0.1366.728@0.0.1366.728" timestamp="1607433429787" />
-    <state x="519" y="65" key="RollbackChangesDialog" timestamp="1607089167749">
+    <state x="519" y="65" key="RollbackChangesDialog" timestamp="1607969719925">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="519" y="65" key="RollbackChangesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607089167749" />
-    <state x="519" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1606499732656" />
+    <state x="519" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607969719925" />
     <state width="553" height="446" key="SwitcherDM" timestamp="1607453353390">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -889,10 +903,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="263" y="18" key="com.intellij.database.dbimport.ImportDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1606133572522" />
-    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1603767256857">
+    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1607990268145">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1603767256857" />
+    <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1607990268145" />
     <state x="339" y="157" key="run.anything.popup" timestamp="1607420578593">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
