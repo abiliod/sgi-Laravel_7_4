@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 
 @section('content')
 <div class="container">
@@ -20,7 +20,7 @@
                     <div class="input-field col s3">
                         <select name="tipoUnidade_id" id="tipoUnidade_id" onchange="ativaBtnFiltro();">
                         <option value="0" selected>Tipo de Unidade</option>
-                            @foreach($tiposDeUnidade as $tipoDeUnidade)
+                            @foreach( $tiposDeUnidade as $tipoDeUnidade)
                             <option value="{{ $tipoDeUnidade->id }}">{{ $tipoDeUnidade->sigla }} - {{ $tipoDeUnidade->tipodescricao }}</option>
                             @endforeach
                         </select>

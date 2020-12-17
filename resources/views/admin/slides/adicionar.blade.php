@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 <!-- 26022020 inclusao da funcionalidade Slide-->
 @section('content')
 <div class="container">

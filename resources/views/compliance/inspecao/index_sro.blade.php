@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 @section('content')
 <div class="container">
 	<h3 class="center">Verificação: {{$registro->descricao}}</h3>

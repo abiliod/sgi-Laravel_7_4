@@ -1,12 +1,12 @@
 <?php
 namespace App\Imports;
 use App\Models\Correios\Unidade;
-use Illuminate\Support\Facades\Hash;
+//use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Support\Collection;
+//use Maatwebsite\Excel\Concerns\Importable;
+//use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow; //linha de cabeççalho
-use Maatwebsite\Excel\Excel;
+//use Maatwebsite\Excel\Excel;
 
 class ImportUnidades implements
       ToModel

@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 @section('content')
 <div class="container">
 	<h2 class="center">Lista de Papéis</h2>
@@ -29,7 +29,7 @@
 					<td>{{ $registro->nome }}</td>
 					<td>{{ $registro->descricao }}</td>
 					<td>
-                   
+
 						@can('papel_editar')
 
 						<!-- Desabilita edição de papel para administrador e  Cliente/Fornecedor ----->

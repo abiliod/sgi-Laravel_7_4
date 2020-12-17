@@ -6,16 +6,15 @@
         <div class="card-stacked">
             <div class="card-content">
                 <p>
-               Quero estabelecer com você um relacionamento de confiança. Alqui iremos:
-
+               Quero estabelecer com você um relacionamento de confiança. Aqui iremos:
                 <br><h5>
-                   Planejar Inspeções |  Inspecionar |
+                   Planejar Inspeções |  Inspecionar
                 </h5>
                     <h6>.</h6>
                 </p>
             </div>
             <div class="card-action">
-                <a href="#">Cadastre-se Aqui</a>  <!--- route('register')  -->
+                <a href="#">CADASTRE-SE AQUI</a>  <!--- route('register')  -->
             </div>
         </div>
     </div>

@@ -21,13 +21,69 @@
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/TipoDeUnidade.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/TipoDeUnidade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/GruposDeVerificacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/GruposDeVerificacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/TipoDeUnidadeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/TipoDeUnidadeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Imports/ImportUnidades.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/ImportUnidades.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Correios/GrupoDeVerificacao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/GrupoDeVerificacao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/paginas/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/paginas/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/paginas/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/paginas/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/papel/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/papel/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/papel/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/papel/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/papel/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/papel/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/papel/permissao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/papel/permissao.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/slides/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/slides/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/slides/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/slides/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/slides/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/slides/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/usuarios/papel.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/usuarios/papel.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/debitoEmpregado.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/debitoEmpregado.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/feriado.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/feriado.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/proter.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/proter.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/editar.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/index_sro.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/index_sro.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecionados/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecionados/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecionados/papelTrabalho.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecionados/papelTrabalho.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/tipounidades/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/tipounidades/_form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/tipounidades/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/tipounidades/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/tipounidades/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/tipounidades/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/tipounidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/tipounidades/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/verificacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/verificacoes/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_gynPromo/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_sgiweb/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/principal/cartaoDepartamento.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/principal/cartaoDepartamento.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/principal/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/principal/home.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/site/contato.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/site/contato.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/site/sobre.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/site/sobre.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -688,7 +744,16 @@
       <workItem from="1608023795668" duration="699000" />
       <workItem from="1608033731291" duration="1250000" />
       <workItem from="1608035541820" duration="1788000" />
-      <workItem from="1608037380577" duration="1410000" />
+      <workItem from="1608037380577" duration="3430000" />
+      <workItem from="1608054608915" duration="634000" />
+      <workItem from="1608075614788" duration="1658000" />
+      <workItem from="1608078275596" duration="1238000" />
+      <workItem from="1608083440029" duration="903000" />
+      <workItem from="1608149654697" duration="1142000" />
+      <workItem from="1608151950126" duration="1496000" />
+      <workItem from="1608161197256" duration="1812000" />
+      <workItem from="1608163038143" duration="1784000" />
+      <workItem from="1608164845122" duration="988000" />
     </task>
     <task id="LOCAL-00001" summary="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB.">
       <created>1607088888655</created>
@@ -760,7 +825,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607695185940</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="15/12/20 - Otimização;">
+      <created>1608038869127</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1608038869127</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -789,7 +861,8 @@
     <MESSAGE value="11/12/2020 - ajuste de workspace." />
     <MESSAGE value="11/12/2020 - ajuste de migrations." />
     <MESSAGE value="11/12/2020 - exclusao de migrations." />
-    <option name="LAST_COMMIT_MESSAGE" value="11/12/2020 - exclusao de migrations." />
+    <MESSAGE value="15/12/20 - Otimização;" />
+    <option name="LAST_COMMIT_MESSAGE" value="15/12/20 - Otimização;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -835,11 +908,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607430495673" />
-    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1607695185174">
+    <state x="308" y="0" key="CommitChangelistDialog2" timestamp="1608038867055">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1607695185174" />
+    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608038867055" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -890,11 +963,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1607695145193">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608038871651">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1607695145193" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608038871651" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -76,6 +76,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+
+
     <script src="{{asset('js/init.js')}}"></script>
     <script src="{{asset('js/script.js')}}"></script>
     </body>

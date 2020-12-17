@@ -55,12 +55,12 @@ class GruposDeVerificacaoController extends Controller
         //if(!auth()->user()->can('usuario_adicionar')){
         //   return redirect()->route('home');
        // }
-       $tiposDeUnidade = DB::table('tiposDeUnidade')
-       ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+       $tiposDeUnidade = DB::table('tiposdeunidade')
+       ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
        ->select('tipoUnidade_id as id','sigla','descricao')
        ->groupByRaw('tipoUnidade_id')
        ->get();
-      //      dd($tiposDeUnidade );
+      //      dd($tiposdeunidade );
         return view('compliance.grupoVerificacao.adicionar', compact( 'tiposDeUnidade'));
     }
 
@@ -82,6 +82,8 @@ class GruposDeVerificacaoController extends Controller
 
     public function edit($id)
     {
+
+   //     dd("pare");
         $registro = GrupoDeVerificacao::find($id);
 //        dd($registro );
         $tiposDeUnidade = TipoDeUnidade::all();
@@ -104,43 +106,43 @@ class GruposDeVerificacaoController extends Controller
         if (($dados['tipoUnidade_id'] >= 1)&&($dados['tipoVerificacao']!==0 )){
             if (($dados['nomegrupo'] == "0")||($dados['nomegrupo'] == "Selecione um Grupo de Unidade") ) { $dados['nomegrupo'] = ""; }
 
-            $registros = DB::table('tiposDeUnidade')
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+            $registros = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
                 ->where([
-                        ['gruposDeVerificacao.tipoUnidade_id', '=', $dados['tipoUnidade_id']]
+                        ['gruposdeverificacao.tipoUnidade_id', '=', $dados['tipoUnidade_id']]
                 ])
                 ->where([
-                        ['gruposDeVerificacao.tipoVerificacao', '=', $dados['tipoVerificacao']]
+                        ['gruposdeverificacao.tipoVerificacao', '=', $dados['tipoVerificacao']]
                 ])
                 ->where([
-                    ['gruposDeVerificacao.ciclo', '=', $dados['ciclo']]
+                    ['gruposdeverificacao.ciclo', '=', $dados['ciclo']]
                 ])
 
                 ->where([
-                        ['gruposDeVerificacao.nomegrupo', 'like','%' . $dados['nomegrupo'] .'%']
+                        ['gruposdeverificacao.nomegrupo', 'like','%' . $dados['nomegrupo'] .'%']
                 ])
                 ->paginate(15);
 
         }else if ($dados['tipoVerificacao']!==0 ) {
-            $registros = DB::table('tiposDeUnidade')
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+            $registros = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->where([
-                ['gruposDeVerificacao.nomegrupo', '=', $dados['nomegrupo']]
+                ['gruposdeverificacao.nomegrupo', '=', $dados['nomegrupo']]
             ])
             ->where([
-                ['gruposDeVerificacao.ciclo', '=', $dados['ciclo']]
+                ['gruposdeverificacao.ciclo', '=', $dados['ciclo']]
             ])
 
             ->paginate(15);
         }
 
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
         ->select('nomegrupo')
         ->groupByRaw('nomegrupo')
         ->get();
 
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-        ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->select('tipoUnidade_id as id','sigla','tipodescricao')
         ->groupByRaw('tipoUnidade_id')
         ->get();
@@ -150,12 +152,12 @@ class GruposDeVerificacaoController extends Controller
 
     public function index()
     {
-        $registros = DB::table('tiposDeUnidade')
-        ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $registros = DB::table('tiposdeunidade')
+        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->paginate(15);
 
 
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
+        $gruposdeverificacao   = DB::table('gruposdeverificacao')
         ->select('nomegrupo')
         ->groupByRaw('nomegrupo')
         ->get();
@@ -166,8 +168,8 @@ class GruposDeVerificacaoController extends Controller
         $dados->sigla='Selecione um ';
         $dados->descricao='Tipo de Unidade';
 
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-        ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->select('tipoUnidade_id as id','sigla','tipodescricao')
         ->groupByRaw('tipoUnidade_id')
         ->get();

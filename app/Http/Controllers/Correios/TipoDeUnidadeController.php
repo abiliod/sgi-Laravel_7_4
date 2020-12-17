@@ -36,7 +36,7 @@ class TipoDeUnidadeController extends Controller
 
     public function index()
     {
-        $registros = DB::table('tiposDeUnidade')
+        $registros = DB::table('tiposdeunidade')
             ->orderBy('tipodescricao' , 'asc')
             ->paginate(10);
         return view('compliance.tipounidades.index',compact('registros'));  //

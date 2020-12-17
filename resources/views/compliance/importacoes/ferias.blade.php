@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 @section('content')
 <div class="container">
     <h2 class="center">Importação</h2>
@@ -17,7 +17,7 @@
         <div class="col s12 m12">
             <div class="card deep-orange">
                 <div class="card-content white-text">
-                
+
                 <span class="card-title">Sistema Segurança</span>
                 <p>Grupo/Item: 272.3, Função: Verif. Compart. de Senhas - FÉRIAS <br>Arquivo: 272-3-WebSGQ3 - Fruicao de ferias por MCU</p>
 

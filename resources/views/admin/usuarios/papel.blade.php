@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 @section('content')
 	<div class="container">
 		<h2 class="center">Lista de Papéis para {{$usuario->name}}</h2>

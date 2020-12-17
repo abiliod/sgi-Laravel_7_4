@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GrupoDeVerificacao extends Model
 {
-    protected $table = "gruposDeVerificacao";
+    protected $table = "gruposdeverificacao";
 
     protected $fillable=
     [

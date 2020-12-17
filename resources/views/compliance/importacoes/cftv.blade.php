@@ -1,4 +1,4 @@
-@extends('layouts._gynPromo.app')
+@extends('layouts._sgiweb.app')
 @section('content')
 <div class="container">
     <h2 class="center">Importação</h2>
@@ -22,7 +22,7 @@
                 <span class="card-title">Sistema Segurança Patrimonial</span>
                 <p>Grupo/Item: 272.4, Função: Verif. Funcionamento do equipamento CFTV
                  <br>Arquivo: 272-4-SEGURANÇA-Monitoramento-CFTV</p>
-           
+
 
                     <thead>
                         <tr>
