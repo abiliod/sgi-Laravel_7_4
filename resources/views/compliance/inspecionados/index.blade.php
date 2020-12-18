@@ -33,15 +33,13 @@
                 </div>
                 <div class="input-field col s6">
                     <select name="inspetor" id="inspetor">
-                        <option value="">Inspetor Envolvido</option>
-                        <option value="8.328.808-2">Abilio Dias Ferreira</option>
-                        <option value="8.329.980-7">Wellington Silva</option>
-                        <option value="8.329.980-x">Elias Silva</option>
-                        <option value="8.329.980-y">Marcelo Wollf</option>
-                        <option value="8.329.980-z">Ana Coracy</option>
-                        <option value="8.329.980-j">Jorge Antônio</option>
-                    </select>
-                    <label for="inspetor" >Inspetor Envolvido</label>
+                        <select name="inspetor" id="inspetor">
+                            <option value="">Inspetor Envolvido</option>
+                            @foreach($inspetores as $inspetor)
+                                <option value="{{$inspetor->document}}">{{$inspetor->name }}</option>
+                            @endforeach
+                        </select>
+                        <label for="inspetor" >Inspetor Envolvido</label>
                 </div>
                 <div class="input-field col s6">
                         <input type="text" name="codigo" value="">
@@ -86,7 +84,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($registros as $registro)
+
+                @forelse($registros as $registro)
                 <tr>
                     <td>{{ $registro->ciclo }}</td>
                     <td>{{ $registro->tipoVerificacao }}</td>
@@ -112,7 +111,20 @@
                        <a class="btn red" href="javascript: if(confirm('Devolver a Inspeção {{ $registro->codigo }} para Ajuste?')){ window.location.href = '{{ route('compliance.inspecionados.recusar',$registro->id) }}' }">Devolver</a>
                     </td>
                 </tr>
-                @endforeach
+
+                @empty
+                    <tr>
+                    <td>
+                    <p class="red" >Não Há inspeções para o Status.</p>
+                    </td>
+                    </tr>
+                @endforelse
+
+
+
+
+
+
 			</tbody>
 		</table>
     </div>
