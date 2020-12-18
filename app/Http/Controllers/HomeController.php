@@ -122,25 +122,27 @@ class HomeController extends Controller {
 //                 verifica qual o papel do usuario
                  $papel_id = Papel::where('id', $user->papel_id)->first();
 //                  direciona usuario para a view Dashboard padrão do perfil do usuário
+
+
                  switch ($papel_id->nome)
                  {
                      case $papel_id->nome:"admin";
                          return view('principal/home'); // criar a view padrão
                          break;
                      case $papel_id->nome:"gestor-ac";
-                         return view('principal/home'); // criar a view padrão
+                         return view('principal/home', compact('papel_id')); // criar a view padrão
                          break;
                      case $papel_id->nome:"gestor-se";
-                         return view('principal/home'); // criar a view padrão
+                         return view('principal/home', compact('papel_id')); // criar a view padrão
                          break;
                      case $papel_id->nome:"gerente-de-area";
-                         return view('principal/home'); // criar a view padrão
+                         return view('principal/home', compact('papel_id')); // criar a view padrão
                          break;
                      case $papel_id->nome:"Cliente/Fornecedor";
-                         return view('principal/home'); // direcionar para o carrinho
+                         return view('principal/home', compact('papel_id')); // direcionar para o carrinho
                          break;
                      default:
-                         return view('principal/home');
+                         return view('principal/home', compact('papel_id'));
                  }
              }
          }
