@@ -1,14 +1,24 @@
 @if($count== 0)
-    <div id="aprimoramento">
+    @if($registro->tem_distribuicao == 'Não tem distribuição')
+        <div id="aprimoramento">
         <span class="lever rigth">
-                Não há registro na base de dados para verificação. É possível que a unidade não executa essa tarefa, verifique a existência de SmartPhone na unidade.
+                A unidade não executa essa tarefa.
         </span>
         </div>
-    <div id="historico">  </div>
-    <div id="historico1"></div>
+        <div id="historico"> </div>
+        <div id="historico1"></div>
+        @else
+        <div id="aprimoramento">
+        <span class="lever rigth">
+                Não há registro na base de dados para verificação. verifique a existência de SmartPhone na unidade.
+        </span>
+        </div>
+        <div id="historico">  </div>
+        <div id="historico1"></div>
+    @endif
 @endif
 
-@if($qtd_falhas == 0)
+@if (($qtd_falhas == 0) && ($registro->tem_distribuicao <> 'Não tem distribuição'))
     <div id="aprimoramento">
         <span class="lever rigth">
                 Foram avaliados {{$amostra}} Imagens de Objetos, relativas ao período de {{substr($dtini,8,2)}}/{{substr($dtini,5,2)}}/{{substr($dtini,0,4)}} até {{substr($dtfim,8,2)}}/{{substr($dtfim,5,2)}}/{{substr($dtfim,0,4)}}, que representava 100 por cento, do total da amostra para o período mencionado, sendo que em 100 por cento, não constataram inconsistências.
@@ -16,9 +26,7 @@
     </div>
     <div id="historico">  </div>
     <div id="historico1"></div>
-@else
-
-
+@elseif ($res >  0)
     <div id="aprimoramento">
         <span class="lever rigth">
             Em análise, por amostragem, às anotações registradas nas Imagens dos comprovantes
