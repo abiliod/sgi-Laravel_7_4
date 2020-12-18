@@ -37,10 +37,10 @@
                         <select name="inspetor" id="inspetor">
                             <option value="">Inspetor Envolvido</option>
                             @foreach($inspetores as $inspetor)
-                                <option value="{{$inspetor->document}}">{{$inspetor->name }}</option>
+                                <option value="{{$inspetor->document}}">{{ $inspetor->se .' - '. $inspetor->name }}</option>
                             @endforeach
                         </select>
-                        <label for="inspetor" >Inspetor Envolvido</label>
+                        <label for="inspetor" >SE - Inspetor Envolvido</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="status" id="status">
@@ -104,14 +104,20 @@
                         <td>{{ $registro->inspetorcolaborador }}</td>
                         <td>{{ $registro->datainiPreInspeção }}</td>
 						<td>
-                            <a class="waves-effect waves-light btn orange"
-                             href="{{ route('compliance.inspecao', $registro->id) }}">Inspecionar</a>
 
-                            <a class="waves-effect waves-light btn blue"
-                               href="{{ route('compliance.inspecionados.papelTrabalho',$registro->id) }}">Previa_Rel</a>
+                            @can('inspecao_editar')
+                                <a class="waves-effect waves-light btn orange"
+                                   href="{{ route('compliance.inspecao', $registro->id) }}">Inspecionar</a>
 
-                             <a class="btn red" href="javascript: if(confirm('Deletar esse registro?'))
-                             { window.location.href = '{{ route('compliance.verificacoes.destroy',$registro->id) }}' }">Deletar</a>
+                                <a class="waves-effect waves-light btn blue"
+                                   href="{{ route('compliance.inspecionados.papelTrabalho',$registro->id) }}">Previa_Rel</a>
+                            @endcan
+
+                            @can('inspecao_deletar')
+                                <a class="btn red" href="javascript: if(confirm('Deletar esse registro?'))
+                                { window.location.href = '{{ route('compliance.verificacoes.destroy',$registro->id) }}' }">Deletar</a>
+                            @endcan
+
                         </td>
 					</tr>
                     @endforeach
@@ -121,9 +127,11 @@
 			     {!! $registros->links() !!}
             </div>
 		</div>
-		<div class="row">
-			<a class="btn blue" href="{{ route('compliance.unidades') }}">Adicionar</a>
-		</div>
+            @can('inspecao_adicionar')
+            <div class="row">
+                <a class="btn blue" href="{{ route('compliance.unidades') }}">Adicionar</a>
+            </div>
+            @endcan
        </div>
 
 @endsection
