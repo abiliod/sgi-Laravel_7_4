@@ -46,12 +46,18 @@
                         <td>{{ $registro->email }}</td>
                         <td>{{ $registro->inicio_expediente }}</td>
 						<td>
-                        <a class="waves-effect waves-light btn orange" href="{{ route('compliance.unidades.editar',$registro->id) }}">Editar</a>
-                        <a class="waves-effect waves-light btn blue" href="{{ route('compliance.unidades.gerarInspecao',$registro->id) }}">Gerar Inspeção</a>
-                        <a class="waves-effect waves-light btn red disabled " href="" >Deletar</a>
 
+                        @can('unidade_editar')
+                                <a class="waves-effect waves-light btn orange" href="{{ route('compliance.unidades.editar',$registro->id) }}">Editar</a>
+                        @endcan
 
+                        @can('inspecao_adicionar')
+                                <a class="waves-effect waves-light btn blue" href="{{ route('compliance.unidades.gerarInspecao',$registro->id) }}">Gerar Inspeção</a>
+                        @endcan
 
+                        @can('unidade_deletar')
+                                <a class="waves-effect waves-light btn red " href="" >Deletar</a>
+                        @endcan
 
                         </td>
 					</tr>
@@ -64,10 +70,12 @@
             </div>
 
 		</div>
-
+    @can('unidade_adicionar')
 		<div class="row">
 			<a class="btn blue" href="!#">Adicionar</a>
 		</div>
+    @endcan
+
    	</div>
 
 @endsection
