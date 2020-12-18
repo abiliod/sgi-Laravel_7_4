@@ -8,7 +8,7 @@
 					@csrf
                     <input type="hidden" name="id" value="{{$inspecao->id}}">
                     <div class="input-field col s6">
-                        <select name="gruposdeverificacao">
+                        <select name="gruposdeverificacao" id="gruposdeverificacao">
                            <option value="" selected>Grupo de Inspeção</option>
                             @foreach($gruposdeverificacao as $grupodeverificacao)
                                <option value="{{$grupodeverificacao->id}}">{{ $grupodeverificacao->nomegrupo }}</option>
@@ -61,17 +61,19 @@
                                <td>Superintendência:</td>
                                <td>{{ $dado->se }}</td>
                            </tr>
+                           <tr>
                                <td>MCU:</td>
                                <td>{{ $dado->mcu }}</td>
                            </tr>
+                           <tr>
                                <td>STO:</td>
                                <td>{{ $dado->sto }}</td>
                            </tr>
-                           </tr>
+                           <tr>
                                <td>Subordinação administrativa:</td>
                                <td>{{ $dado->desc_subordinacaoAdm }}</td>
                            </tr>
-                           </tr>
+                           <tr>
                                <td>Responsável pela unidade:</td>
                                <td>Documento: {{ $dado->documentRespUnidade }} Nome: {{ $dado->nomeResponsavelUnidade }}</td>
                            </tr>
@@ -103,6 +105,7 @@
                              <td>Início do Expediente:</td>
                              <td>{{ $dado->inicio_expediente }}</td>
                           </tr>
+                           <tr>
                              <td>Final do Expediente:</td>
                              <td>{{ $dado->final_expediente }}</td>
                           </tr>
@@ -121,7 +124,7 @@
 
  				      </tbody>
 			        </table>
-                  </p>
+
                 </div>
 			</li>
 			<li>
@@ -192,7 +195,8 @@
  				      </tbody>
 			        </table>
 
-              .</p></div>
+
+                </div>
 			</li>
 		</ul>
 	</div>
@@ -221,8 +225,10 @@
 
                         @if($registro->situacao == 'Inspecionado')
                             <th>
-                                <a class="btn blue" href="javascript: if(confirm('Corroborar Todos Registros dessa Inspeção?'))
-                             { window.location.href = '{{ route('compliance.inspecao.corroborar',$registro->verificacao_id) }}' }">Corroborar_Tudo</a>
+                                @if($dado->inspetorcolaborador ==  auth()->user()->document)
+                                     <a class="btn blue" href="javascript: if(confirm('Corroborar Todos Registros dessa Inspeção?'))
+                                     { window.location.href = '{{ route('compliance.inspecao.corroborar',$registro->inspecao_id) }}' }">Corroborar_Tudo</a>
+                                @endif
                             </th>
                         @else
                             <th>Ação:</th>
@@ -241,14 +247,13 @@
                             <td class="card-panel teal lighten-2">
                                     {{ $registro->situacao }}
                             </td>
-
                             <td>
-                            <a class="waves-effect waves-light btn orange"
-                             href="{{ route('compliance.inspecao.editar',$registro->id) }}">Corroborar</a>
+                                @if($dado->inspetorcolaborador ==  auth()->user()->document)
+                                    <a class="waves-effect waves-light btn orange"
+                                       href="{{ route('compliance.inspecao.editar',$registro->id) }}">Corroborar</a>
+                                @endif
                             </td>
-
                         @elseif($registro->situacao == 'Corroborado')
-
                         <td class="card-panel teal lighten-2">
                             <button
                                 data-target="modal1"
@@ -264,8 +269,12 @@
                             </td>
 
                             <td>
-                            <a class="waves-effect waves-light btn orange"
-                             href="{{ route('compliance.inspecao.editar',$registro->id) }}">Avaliar</a>
+
+                                @can('inspecao_editar')
+                                    <a class="waves-effect waves-light btn orange"
+                                       href="{{ route('compliance.inspecao.editar',$registro->id) }}">Avaliar</a>
+                                @endcan
+
                             </td>
                         @endif
 
