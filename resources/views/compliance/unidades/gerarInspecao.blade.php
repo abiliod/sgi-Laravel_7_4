@@ -105,10 +105,12 @@
                 <input type="text" name="numHrsInsp"  id="numHrsInsp" value="{{ !empty($registro->categoria>=5) ? '4' : '10' }}">
                 <label for="numHrsInsp" >Horas Inspeção</label>
             </div>
+            @can('inspecao_adicionar')
+                <div class="row">
+                    <button class="btn blue">Gerar Inspeção</button>
+                </div>
+            @endcan
 
-            <div class="row">
-                 <button class="btn blue">Gerar Inspeção</button>
-            </div>
         </form>
     </div>
 </div>
