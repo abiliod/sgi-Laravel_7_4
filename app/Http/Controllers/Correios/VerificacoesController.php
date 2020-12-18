@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Correios;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Correios\Inspecao;
@@ -42,6 +41,7 @@ class VerificacoesController extends Controller
         $dados = $request->all();
         $tiposDeUnidade = DB::table('tiposdeunidade')
             ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
+            ->Where([['inspecionar', '=','Sim']])
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
             ->groupByRaw('tipoUnidade_id')
             ->get();
@@ -392,10 +392,8 @@ class VerificacoesController extends Controller
                             ->Where([['status', '=', $dados['status']]])
                             ->where([['codigo', 'LIKE', '%' . $request->all()['codigo'] .'%' ]])
                             ->where([['inspetorcoordenador', '=', auth()->user()->document]])
-                            ->orWhere([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Filtro Aplicado, [Por Número da Inspeção].'
-                            ,'class'=>'orange white-text']);
                     }
 
                 }
@@ -414,12 +412,14 @@ class VerificacoesController extends Controller
             ->first();
         if(!empty( $businessUnitUser ))
         {
-
              $tiposDeUnidade = DB::table('tiposdeunidade')
                 ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-                ->select('tipoUnidade_id as id','sigla','tipodescricao')
+                 ->Where([['inspecionar', '=','Sim']])
+                 ->select('tipoUnidade_id as id','sigla','tipodescricao')
+
                 ->groupByRaw('tipoUnidade_id')
                 ->get();
+
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])
                 ->Where([['papel_id', '>=', 1]])
@@ -443,9 +443,7 @@ class VerificacoesController extends Controller
                             ->where([['status', '=', 'Em Inspeção']])
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando Inspeções em andamento.'
-                            ,'class'=>'orange white-text']);
-                    }
+                        }
                     break;
                 case 3:
                     {
@@ -483,12 +481,13 @@ class VerificacoesController extends Controller
                             ->Where([['user_id', '=', auth()->user()->id]])
                             ->Where([['papel_id', '=', 6]])
                             ->get();
+
                         $registros = DB::table('unidades')
                             ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
                             ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['status', '=', 'Em Inspeção']])
                             ->where([['inspetorcoordenador', '=', auth()->user()->document]])
-                            ->orWhere([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
                     }

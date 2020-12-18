@@ -19,4 +19,21 @@ class Permissao extends Model
     	return $this->belongsToMany(Papel::class);
     }
 
+    public function create()
+    {
+        //
+    }
+    public function where()
+    {
+        //
+    }
+    public function count()
+    {
+        //
+    }
+    public function first()
+    {
+        //
+    }
+
 }

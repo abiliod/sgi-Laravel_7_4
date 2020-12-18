@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Database\Seeder;
 use App\Permissao;
+use Illuminate\Support\Facades\DB;
 
 class PermissaoTableSeeder extends Seeder {
 /**
@@ -9,6 +10,7 @@ class PermissaoTableSeeder extends Seeder {
 * @return void
 */
 public function run() {
+    DB::table('permissaos')->truncate(); //excluir e zerar a tabela
 
     if(!Permissao::where('nome','=','usuario_listar')->count()) {
         Permissao::create([
@@ -61,6 +63,8 @@ public function run() {
             'descricao'=>'Deletar Usuários'
         ]);
     }
+
+
 
     if(!Permissao::where('nome','=','papel_listar')->count()) {
         Permissao::create([

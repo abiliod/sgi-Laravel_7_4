@@ -51,7 +51,33 @@ class UsuarioController extends Controller {
             return redirect()->route('home');
         }
 
+
         $usuario = User::find($id);
+        //dd(    $usuario->papel_user->papel_id);
+
+        if ($usuario->id == auth()->user()->getAuthIdentifier())
+        {
+           $papel_user = DB::table('papel_user')
+                            ->Where([['user_id', '=', auth()->user()->id]])
+                            //->Where([['papel_id', '<=', 4]])
+                            ->select('papel_id')
+                            ->first();
+
+           if(!empty($papel_user))
+           {
+               $usuario->papel_id = $papel_user->papel_id;
+           }
+           else
+           {
+               $usuario->papel_id = 100;
+           }
+
+        }
+        else
+        {
+            $usuario->papel_user = 100;
+        }
+         // dd(    $usuario);
         return view('admin.usuarios.editar', compact('usuario'));
     }
 
@@ -73,25 +99,32 @@ class UsuarioController extends Controller {
         $usuario ->update($dados);
         \Session::flash('mensagem',['msg'=>'Registro atualizado com sucesso!','class'=>'green white-text']);
 
-        return redirect()->route('admin.usuarios');
+
+        $papel_user = DB::table('papel_user')
+            ->Where([['user_id', '=', auth()->user()->id]])
+           // ->Where([['papel_id', '>=', 1]])
+            ->select('papel_id')
+            ->first();
+        if($papel_user->papel_id  <= 4 )
+        {
+            return redirect()->route('admin.usuarios');
+        }
+        else
+        {
+            return redirect()->route('home');
+        }
     }
 
     public function deletar($id) {
-
         if(!auth()->user()->can('usuario_deletar')){
             return redirect()->route('home');
         }
-
         User::find($id)->delete();
-
         \Session::flash('mensagem',['msg'=>'Registro deletado com sucesso!','class'=>'green white-text']);
-
         return redirect()->route('admin.usuarios');
-
     }
 
     public function login(Request $request) {
-
         $dados = $request->all();
 
         if(Auth::attempt(['email'=>$dados['email'],'password'=>$dados['password']])){
@@ -227,8 +260,6 @@ class UsuarioController extends Controller {
 
     public function index()
     {
-
-
         $usuarios = User::all();
         $businessUnitUser = DB::table('unidades')
             ->Where([['mcu', '=', auth()->user()->businessUnit]])
@@ -236,9 +267,8 @@ class UsuarioController extends Controller {
             ->first();
         if(!empty( $businessUnitUser ))
         {
-
-
-            if (auth()->user()->can('usuario_listar')) {
+            if (auth()->user()->can('usuario_listar'))
+            {
                 $papel_user = DB::table('papel_user')
                     ->Where([['user_id', '=', auth()->user()->id]])
                     ->Where([['papel_id', '>=', 1]])
@@ -259,16 +289,14 @@ class UsuarioController extends Controller {
                             $user->tipoOrgaoCod = $res->tipoOrgaoCod;
                             $user->descricao =  $res->descricao;
                             $user->tipoUnidade_id =  $res->tipoUnidade_id;
+                            $user->telefone_ect =  $res->ddd . $res->telefone;
                             $user->save();
                         }
 
                     }
 
                 }
-
                 unset($usuarios);
-
-              //  dd(($papel_user->papel_id));
 
                 switch ($papel_user->papel_id)
                 {
@@ -280,7 +308,7 @@ class UsuarioController extends Controller {
                                 ->orderBy('name', 'asc')
                                 ->paginate(10);
                             \Session::flash('mensagem',['msg'=>'Listando todos usuários do sistema.'
-                                ,'class'=>'orange white-text']);
+                                ,'class'=>'blue white-text']);
                         }
                         break;
                     case 3:
@@ -291,7 +319,7 @@ class UsuarioController extends Controller {
                                 ->orderBy('name', 'asc')
                                 ->paginate(10);
                             \Session::flash('mensagem',['msg'=>'Listando todos usuários da Superintendência.'
-                                ,'class'=>'orange white-text']);
+                                ,'class'=>'blue white-text']);
                         }
                         break;
                     case 4:
@@ -315,12 +343,23 @@ class UsuarioController extends Controller {
                                 ->orderBy('name', 'asc')
                                 ->paginate(10);
                             \Session::flash('mensagem',['msg'=>'Listando Usuários de Unidades operacionais cadastrados.'
-                                ,'class'=>'orange white-text']);
+                                ,'class'=>'blue white-text']);
                         }
                         break;
                 }
 
-                return view('admin.usuarios.index', compact('usuarios'));
+                if ($papel_user->papel_id <= 4)
+                {
+                    return view('admin.usuarios.index', compact('usuarios'));
+                }
+                else
+                {
+                    \Session::flash('mensagem',['msg'=>'Não foi possivel processar Perfil insuficiente.'
+                        ,'class'=>'red white-text']);
+                    return redirect()->route('home');
+                }
+
+
             }
             else
             {
@@ -336,6 +375,5 @@ class UsuarioController extends Controller {
             return redirect()->route('home');
         }
     }
-
 
 }

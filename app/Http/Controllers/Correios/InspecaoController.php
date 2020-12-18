@@ -383,6 +383,9 @@ class InspecaoController extends Controller
         $dtmenos90dias->subDays(90);
         $dtmes3mesesatras = new Carbon();
         $dtmes3mesesatras->subMonth(2);
+
+
+
       //  $now = Carbon::now();
        // $now->format('Y-m-d');
         $periodo = new CarbonPeriod();
@@ -1150,8 +1153,15 @@ class InspecaoController extends Controller
                 $riscoAbertura ='';//armazena risco abertura fora do horário de atendimento
 
                 if( !empty($eventos)){
-                    $minutosinicioExpediente = (substr($registro->inicio_expediente,0,2)*60)+substr($registro->inicio_expediente,3,2);
-                    $minutosfinalExpediente = (substr($registro->final_expediente,0,2)*60)+substr($registro->final_expediente,3,2);
+                    try {
+                        $minutosinicioExpediente = (substr($registro->inicio_expediente,0,2)*60)+substr($registro->inicio_expediente,3,2);
+                        $minutosfinalExpediente = (substr($registro->final_expediente,0,2)*60)+substr($registro->final_expediente,3,2);
+                    } catch (Exception $e) {
+                        \Session::flash('mensagem',['msg'=> auth()->user()->name.', Base de Dados da Unidade não atualizada.
+                         Atualize os horários de funcionamento.'
+                            ,'class'=>'red white-text']);
+                        return redirect()->route('compliance.unidades.editar',$registro->unidade_id);
+                    }
                     $rowtempoAbertura=0;
                     $rowriscoAbertura=0;
                     $rowtempoAberturaAntecipada=0;
@@ -1282,6 +1292,8 @@ class InspecaoController extends Controller
             }
 
             if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3)) {
+//dd($registro);
+
 
                 $now = Carbon::now();
                 $now = $now->format('Y-m-d');
@@ -1592,13 +1604,269 @@ class InspecaoController extends Controller
                 $media=null;
                 $random=null;
                 $amostra=null;
+                $qtd_falhas=null;
+                $percentagem_falhas=null;
 
                 $lancamentossros =  DB::table('lancamentossro')
                     ->where('codigo', '=', $registro->codigo)
                     ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                     ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                     ->get();
-                if (!empty($lancamentossros))
+                $res = $lancamentossros->count('codigo');
+
+                if ($res > 0)
+                {
+                    //existe registros
+                    $pend = 0;
+                    $aval = 0;
+                    foreach ($lancamentossros as $register) {
+                        if ($register->estado == 'Pendente') {
+                            $pend++;
+                        } else {
+                            $aval++;
+                        }
+                    }
+                    $mostra = $pend + $aval;
+                    if ($mostra == 0)
+                    {   // não existe registros
+                        //dd(   ' Não existe lançamentos sro' );
+                        $micro_strategys = DB::table('micro_strategys')
+                            ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
+                            ->where([['data_do_evento', '>=', $dtmenos120dias]])
+                            ->where(function ($query) {
+                                $query
+                                    ->where('codigo_do_objeto', 'not like', 'B%')
+                                    ->where('codigo_do_objeto', 'not like', 'E%')
+                                    ->where('codigo_do_objeto', 'not like', 'F%')
+                                    ->where('codigo_do_objeto', 'not like', 'I%')
+                                    ->where('codigo_do_objeto', 'not like', 'J%')
+                                    ->where('codigo_do_objeto', 'not like', 'L%')
+                                    ->where('codigo_do_objeto', 'not like', 'M%')
+                                    ->where('codigo_do_objeto', 'not like', 'N%')
+                                    ->where('codigo_do_objeto', 'not like', 'R%')
+                                    ->where('codigo_do_objeto', 'not like', 'T%')
+                                    ->where('codigo_do_objeto', 'not like', 'U%')
+//                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE' )
+                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
+                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
+                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
+                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
+                                    ->orderBy('data_do_evento', 'asc')
+                                    ->groupBy('codigo_do_objeto');
+                            })
+                        ->get();
+                        if ($micro_strategys->count('codigo_do_objeto') >= 1)
+                        {
+                            $count = $micro_strategys->count('codigo_do_objeto');
+                            $dtini = $micro_strategys->min('data_do_evento');
+                            $dtfim = $micro_strategys->max('data_do_evento');
+                            $periodo = CarbonPeriod::create($dtini, $dtfim);
+                            $dias = $periodo->count() - 1;
+                            // $media = intval($count / $dias);
+                            $amostra = 0;  //- tamanho da amostra
+                            $N = intval($count / $dias) * 30;   //N =  tamanho universo da população;
+                            $z = 1.9;   //Z = nível de confiança desejado 90%
+                            $e = 900;   // e = a margem de erro máximo que é admitida;
+                            $d = 4000;  //d Desvio padrão 4000 da população determinado
+                            //  formula       (z^2*desvio^2*N)/(z^2*desvio^2+e^2*(N-1))
+                            $dividendo = (pow($z, 2) * pow($d, 2) * $N);
+                            $divisor = (pow($z, 2) * pow($d, 2) + pow($e, 2) * ($N - 1));
+                            $amostra = intval($dividendo / $divisor);
+                            if ($amostra >= 1)
+                            {
+                                $random = $micro_strategys->random($amostra);
+                            }
+                            if ($amostra == 0)
+                            {
+                                if ($count <= 60)
+                                    $random = $micro_strategys->random($count);
+                                else
+                                    $random = $micro_strategys->random(25);
+                            }
+                            $random->all();
+                            $sro = DB::table('lancamentossro')
+                                ->where('codigo', '=', $registro->codigo)
+                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                            ->get();
+                            $row = 0;
+                            $row = $sro->count('codigo');
+                            if ($row == 0)
+                            {
+                                foreach ($random as $dado)
+                                {
+                                    $lancamentossro = new LancamentosSRO();
+                                    $lancamentossro->codigo = $registro->codigo;
+                                    $lancamentossro->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                                    $lancamentossro->numeroDoTeste = $registro->numeroDoTeste;
+                                    $lancamentossro->objeto = $dado->codigo_do_objeto;
+                                    $lancamentossro->data = $dado->data_do_evento;
+                                    $lancamentossro->localBaixa1tentativa = $dado->descricao_do_evento;
+                                    $lancamentossro->estado = 'Pendente';
+                                    $lancamentossro->save();
+                                }
+                                $res = DB::table('lancamentossro')
+                                    ->where('codigo', '=', $registro->codigo)
+                                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                                    ->where('estado', '=', 'Pendente')
+                                ->get();
+                                return view('compliance.inspecao.index_sro', compact
+                                (
+                                    'registro'
+                                    , 'id'
+                                    , 'res'
+                                ));
+                            }
+                        }
+                    }
+                    if ($aval == $mostra)
+                    {
+                        //   dd(' Nao existe pendencias ' . $row);
+                        $avaliados = DB::table('lancamentossro')
+                            ->where('codigo', '=', $registro->codigo)
+                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                            ->where('estado', '=', 'Avaliado')
+                        ->get();
+                        $lancamentossro = DB::table('lancamentossro')
+                            ->where('codigo', '=', $registro->codigo)
+                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                        ->get();
+                        $qtd_falhas = 0;
+                        $amostra = 0;
+                        foreach ($lancamentossro as $lancamento)
+                        {
+                            if (($lancamento->falhaDetectada <> 'Ok') && ($lancamento->estado == 'Avaliado'))
+                            {
+                                $qtd_falhas++;
+                            }
+                            if ($lancamento->estado == 'Avaliado')
+                            {
+                                $amostra++;
+                            }
+                        }
+                        //   dd($registro->codigo);
+                        //dd($qtd_falhas, $amostra);
+                        // if($amostra==0) $amostra=1;
+                        $percentagem_falhas = (($qtd_falhas / $amostra) * 100);
+                        $percentagem_falhas = number_format($percentagem_falhas, 2, ',', '.');
+                        $res = DB::table('lancamentossro')
+                            ->where('codigo', '=', $registro->codigo)
+                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                            ->where('falhaDetectada', '<>', 'Ok')
+                            ->where('estado', '=', 'Avaliado')
+                        ->get();
+                        $micro_strategys = DB::table('micro_strategys')
+                            ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
+                            ->where([['data_do_evento', '>=', $dtmenos120dias]])
+                            ->where(function ($query) {
+                                $query
+                                    ->where('codigo_do_objeto', 'not like', 'B%')
+                                    ->where('codigo_do_objeto', 'not like', 'E%')
+                                    ->where('codigo_do_objeto', 'not like', 'F%')
+                                    ->where('codigo_do_objeto', 'not like', 'I%')
+                                    ->where('codigo_do_objeto', 'not like', 'J%')
+                                    ->where('codigo_do_objeto', 'not like', 'L%')
+                                    ->where('codigo_do_objeto', 'not like', 'M%')
+                                    ->where('codigo_do_objeto', 'not like', 'N%')
+                                    ->where('codigo_do_objeto', 'not like', 'R%')
+                                    ->where('codigo_do_objeto', 'not like', 'T%')
+                                    ->where('codigo_do_objeto', 'not like', 'U%')
+//                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE')
+                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
+                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
+                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
+                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
+                                    ->orderBy('data_do_evento', 'asc')
+                                    ->groupBy('codigo_do_objeto');
+                            })
+                        ->get();
+                        $count = $micro_strategys->count('codigo_do_objeto');
+                        $dtini = $micro_strategys->min('data_do_evento');
+                        $dtfim = $micro_strategys->max('data_do_evento');
+                        $periodo = CarbonPeriod::create($dtini, $dtfim);
+                        $dias = $periodo->count() - 1;
+                        return view('compliance.inspecao.editar', compact
+                        (
+                            'registro'
+                            , 'id'
+                            , 'total'
+                            , 'count' // x
+                            , 'dtini' // x
+                            , 'dtfim' //
+                            , 'media'
+                            , 'random'
+                            , 'amostra'
+                            , 'item'
+                            , 'res'
+                            , 'qtd_falhas'
+                            , 'percentagem_falhas'
+                        ));
+                    }
+                    if ($pend <= $mostra) {
+                        $res = DB::table('lancamentossro')
+                            ->where('codigo', '=', $registro->codigo)
+                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                            ->where('estado', '=', 'Pendente')
+                        ->get();
+                        // dd(  $res , $registro, $id);
+                        return view('compliance.inspecao.index_sro', compact
+                        (
+                            'registro'
+                            , 'id'
+                            , 'res'
+                        ));
+                    }
+                }
+                else
+                {
+                    return view('compliance.inspecao.editar', compact
+                    (
+                        'registro'
+                        , 'id'
+                        , 'total'
+                        , 'count'
+                        , 'dtini'
+                        , 'dtfim'
+                        , 'media'
+                        , 'random'
+                        , 'amostra'
+                        , 'item'
+                        , 'res'
+                        , 'qtd_falhas'
+                        , 'percentagem_falhas'
+                    ));
+                }
+            }
+
+            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==3))
+            {
+                $dtmenos120dias = new Carbon();
+                $dtmenos120dias = $dtmenos120dias->subDays(120);
+                $count = 0;
+                $total=0.00;
+                $item=1;
+                $dtini=null;
+                $dtfim=null;
+                $media=null;
+                $random=null;
+                $amostra=null;
+                $qtd_falhas=null;
+                $percentagem_falhas=null;
+
+                $lancamentossros =  DB::table('lancamentossro')
+                    ->where('codigo', '=', $registro->codigo)
+                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                    ->get();
+                $res = $lancamentossros->count('codigo');
+
+                if ($res > 0)
+
                 { //existe registros
                     $pend = 0;
                     $aval = 0;
@@ -1630,11 +1898,11 @@ class InspecaoController extends Controller
                                     ->where('codigo_do_objeto', 'not like', 'R%')
                                     ->where('codigo_do_objeto', 'not like', 'T%')
                                     ->where('codigo_do_objeto', 'not like', 'U%')
-//                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE' )
-                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
-                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
-                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
-                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
+                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE' )
+//                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
+//                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
+//                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
+//                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
                                     ->orderBy('data_do_evento', 'asc')
                                     ->groupBy('codigo_do_objeto');
                             })
@@ -1758,238 +2026,6 @@ class InspecaoController extends Controller
                                     ->where('codigo_do_objeto', 'not like', 'R%')
                                     ->where('codigo_do_objeto', 'not like', 'T%')
                                     ->where('codigo_do_objeto', 'not like', 'U%')
-//                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE')
-                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
-                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
-                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
-                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
-                                    ->orderBy('data_do_evento', 'asc')
-                                    ->groupBy('codigo_do_objeto');
-                            })
-                            ->get();
-                        $count = $micro_strategys->count('codigo_do_objeto');
-                        $dtini = $micro_strategys->min('data_do_evento');
-                        $dtfim = $micro_strategys->max('data_do_evento');
-                        $periodo = CarbonPeriod::create($dtini, $dtfim);
-                        $dias = $periodo->count() - 1;
-// dd('parou');
-                        return view('compliance.inspecao.editar', compact
-                        (
-                            'registro'
-                            , 'id'
-                            , 'total'
-                            , 'count'
-                            , 'dtini'
-                            , 'dtfim'
-                            , 'media'
-                            , 'random'
-                            , 'amostra'
-                            , 'item'
-                            , 'res'
-                            , 'qtd_falhas'
-                            , 'percentagem_falhas'
-                        ));
-
-
-                    }
-
-                    if ($pend <= $mostra) {
-                        $res = DB::table('lancamentossro')
-                            ->where('codigo', '=', $registro->codigo)
-                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                            ->where('estado', '=', 'Pendente')
-                            ->get();
-                        // dd(  $res , $registro, $id);
-                        return view('compliance.inspecao.index_sro', compact
-                        (
-                            'registro'
-                            , 'id'
-                            , 'res'
-                        ));
-                    }
-
-                }
-            }
-
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==3))
-            {
-                $dtmenos120dias = new Carbon();
-                $dtmenos120dias = $dtmenos120dias->subDays(120);
-                $count = 0;
-                $total=0.00;
-                $item=1;
-                $dtini=null;
-                $dtfim=null;
-                $media=null;
-                $random=null;
-                $amostra=null;
-
-                $lancamentossros =  DB::table('lancamentossro')
-                    ->where('codigo', '=', $registro->codigo)
-                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                    ->get();
-                if (!empty($lancamentossros))
-                { //existe registros
-                    $pend = 0;
-                    $aval = 0;
-                    foreach ($lancamentossros as $register) {
-                        if ($register->estado == 'Pendente') {
-                            $pend++;
-                        } else {
-                            $aval++;
-                        }
-                    }
-                    $mostra = $pend + $aval;
-
-
-                    if ($mostra == 0) { // não existe registros
-                        //dd(   ' Não existe lançamentos sro' );
-                        $micro_strategys = DB::table('micro_strategys')
-                            ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
-                            ->where([['data_do_evento', '>=', $dtmenos120dias]])
-                            ->where(function ($query) {
-                                $query
-                                    ->where('codigo_do_objeto', 'not like', 'B%')
-                                    ->where('codigo_do_objeto', 'not like', 'E%')
-                                    ->where('codigo_do_objeto', 'not like', 'F%')
-                                    ->where('codigo_do_objeto', 'not like', 'I%')
-                                    ->where('codigo_do_objeto', 'not like', 'J%')
-                                    ->where('codigo_do_objeto', 'not like', 'L%')
-                                    ->where('codigo_do_objeto', 'not like', 'M%')
-                                    ->where('codigo_do_objeto', 'not like', 'N%')
-                                    ->where('codigo_do_objeto', 'not like', 'R%')
-                                    ->where('codigo_do_objeto', 'not like', 'T%')
-                                    ->where('codigo_do_objeto', 'not like', 'U%')
-                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE' )
-//                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
-//                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
-//                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
-//                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
-                                    ->orderBy('data_do_evento', 'asc')
-                                    ->groupBy('codigo_do_objeto');
-                            })
-                            ->get();
-
-                        if ($micro_strategys->count('codigo_do_objeto') >= 1) {
-
-                            $count = $micro_strategys->count('codigo_do_objeto');
-                            $dtini = $micro_strategys->min('data_do_evento');
-                            $dtfim = $micro_strategys->max('data_do_evento');
-                            $periodo = CarbonPeriod::create($dtini, $dtfim);
-                            $dias = $periodo->count() - 1;
-
-                            // $media = intval($count / $dias);
-                            $amostra = 0;  //- tamanho da amostra
-                            $N = intval($count / $dias) * 30;   //N =  tamanho universo da população;
-                            $z = 1.9;   //Z = nível de confiança desejado 90%
-                            $e = 900;   // e = a margem de erro máximo que é admitida;
-                            $d = 4000;  //d Desvio padrão 4000 da população determinado
-                            //  formula       (z^2*desvio^2*N)/(z^2*desvio^2+e^2*(N-1))
-                            $dividendo = (pow($z, 2) * pow($d, 2) * $N);
-                            $divisor = (pow($z, 2) * pow($d, 2) + pow($e, 2) * ($N - 1));
-                            $amostra = intval($dividendo / $divisor);
-
-                            if ($amostra >= 1) {
-                                $random = $micro_strategys->random($amostra);
-                            }
-                            if ($amostra == 0) {
-                                if ($count <= 60)
-                                    $random = $micro_strategys->random($count);
-                                else
-                                    $random = $micro_strategys->random(25);
-                            }
-                            $random->all();
-                            $sro = DB::table('lancamentossro')
-                                ->where('codigo', '=', $registro->codigo)
-                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                                ->get();
-                            $row = 0;
-                            $row = $sro->count('codigo');
-                            if ($row == 0) {
-                                foreach ($random as $dado) {
-                                    $lancamentossro = new LancamentosSRO();
-                                    $lancamentossro->codigo = $registro->codigo;
-                                    $lancamentossro->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
-                                    $lancamentossro->numeroDoTeste = $registro->numeroDoTeste;
-                                    $lancamentossro->objeto = $dado->codigo_do_objeto;
-                                    $lancamentossro->data = $dado->data_do_evento;
-                                    $lancamentossro->localBaixa1tentativa = $dado->descricao_do_evento;
-                                    $lancamentossro->estado = 'Pendente';
-                                    $lancamentossro->save();
-                                }
-                                $res = DB::table('lancamentossro')
-                                    ->where('codigo', '=', $registro->codigo)
-                                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                                    ->where('estado', '=', 'Pendente')
-                                    ->get();
-                                return view('compliance.inspecao.index_sro', compact
-                                (
-                                    'registro'
-                                    , 'id'
-                                    , 'res'
-                                ));
-                            }
-                        }
-                    }
-
-                    if ($aval == $mostra) {
-                     //   dd(' Nao existe pendencias ' . $row);
-                        $avaliados = DB::table('lancamentossro')
-                            ->where('codigo', '=', $registro->codigo)
-                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                            ->where('estado', '=', 'Avaliado')
-                            ->get();
-
-                        $lancamentossro = DB::table('lancamentossro')
-                            ->where('codigo', '=', $registro->codigo)
-                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                            ->get();
-                        $qtd_falhas = 0;
-                        $amostra = 0;
-
-                        foreach ($lancamentossro as $lancamento) {
-                            if (($lancamento->falhaDetectada <> 'Ok') && ($lancamento->estado == 'Avaliado')) {
-                                $qtd_falhas++;
-                            }
-                            if ($lancamento->estado == 'Avaliado') {
-                                $amostra++;
-                            }
-                        }
-                         //   dd($registro->codigo);
-
-                        $percentagem_falhas = (($qtd_falhas / $amostra) * 100);
-                        $percentagem_falhas = number_format($percentagem_falhas, 2, ',', '.');
-
-                        $res = DB::table('lancamentossro')
-                            ->where('codigo', '=', $registro->codigo)
-                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                            ->where('falhaDetectada', '<>', 'Ok')
-                            ->where('estado', '=', 'Avaliado')
-                            ->get();
-
-                        $micro_strategys = DB::table('micro_strategys')
-                            ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
-                            ->where([['data_do_evento', '>=', $dtmenos120dias]])
-                            ->where(function ($query) {
-                                $query
-                                    ->where('codigo_do_objeto', 'not like', 'B%')
-                                    ->where('codigo_do_objeto', 'not like', 'E%')
-                                    ->where('codigo_do_objeto', 'not like', 'F%')
-                                    ->where('codigo_do_objeto', 'not like', 'I%')
-                                    ->where('codigo_do_objeto', 'not like', 'J%')
-                                    ->where('codigo_do_objeto', 'not like', 'L%')
-                                    ->where('codigo_do_objeto', 'not like', 'M%')
-                                    ->where('codigo_do_objeto', 'not like', 'N%')
-                                    ->where('codigo_do_objeto', 'not like', 'R%')
-                                    ->where('codigo_do_objeto', 'not like', 'T%')
-                                    ->where('codigo_do_objeto', 'not like', 'U%')
                                     ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE')
 //                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
 //                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
@@ -2042,6 +2078,27 @@ class InspecaoController extends Controller
                     }
 
                 }
+                else
+                {
+                    return view('compliance.inspecao.editar', compact
+                    (
+                        'registro'
+                        , 'id'
+                        , 'total'
+                        , 'count'
+                        , 'dtini'
+                        , 'dtfim'
+                        , 'media'
+                        , 'random'
+                        , 'amostra'
+                        , 'item'
+                        , 'res'
+                        , 'qtd_falhas'
+                        , 'percentagem_falhas'
+                    ));
+                }
+
+
             }
 
             if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==5)) {
@@ -2796,8 +2853,6 @@ class InspecaoController extends Controller
             ->where([['inspecoes.id', '=', $id ]])
             ->first();
 
-//        dd(  $dado);
-
         return view('compliance.inspecao.index',compact('inspecao','registros','gruposdeverificacao','dado'));
     }
 
@@ -2845,7 +2900,7 @@ class InspecaoController extends Controller
                     "Corroborado por: ".Auth::user()->name." em ".$now
                     ."\n"
                     .$registro->eventosSistema;
-                // $dado->situacao = 'Corroborado' ;
+                 $dado->situacao = 'Corroborado' ;
                 // dd($dado->eventosSistema);
                 $dado->save();
             }
