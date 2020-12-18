@@ -18,7 +18,11 @@
 		{{csrf_field()}}
 		<input type="hidden" name="_method" value="put">
 		    @include('compliance.unidades._form')
-        <button class="btn blue">Atualizar</button>
+
+            @can('unidade_atualizar')
+                <button class="btn blue">Atualizar</button>
+            @endcan
+
 		</form>
 	</div>
 </div>
