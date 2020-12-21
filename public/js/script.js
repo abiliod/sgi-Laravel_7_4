@@ -170,17 +170,17 @@ function avalia(el) { // muda o estado do apontamento pelo click do usuário na 
 
             historico =  historico  +  '\n' + document.getElementById("historico1").innerText;
             //alert( historico );
-                document.getElementById("evidencia").style.display = 'block';
+            document.getElementById("evidencia").style.display = 'block';
 
-                document.getElementById("evidencia").value = historico;
+            document.getElementById("evidencia").value = historico;
 
-                document.getElementById("norma").style.display = 'block';
-                document.getElementById("consequencias").style.display = 'block';
-                document.getElementById("orientacao").style.display = 'block';
-                document.getElementById("evidencias").style.display = 'block';
-                document.getElementById("itemsQuantificados").style.display = 'block';
-                document.getElementById("ereincidencia").style.display = 'block';
-                document.getElementById("imagens").style.display = 'block';
+            document.getElementById("norma").style.display = 'block';
+            document.getElementById("consequencias").style.display = 'block';
+            document.getElementById("orientacao").style.display = 'block';
+            document.getElementById("evidencias").style.display = 'block';
+            document.getElementById("itemsQuantificados").style.display = 'block';
+            document.getElementById("ereincidencia").style.display = 'block';
+            document.getElementById("imagens").style.display = 'block';
 
                 if ((totalfalta !=0) || (totalrisco !=0) || (totalsobra !=0)){
 
@@ -210,18 +210,16 @@ function avalia(el) { // muda o estado do apontamento pelo click do usuário na 
 
                 document.getElementById("avaliacao3").checked = valor;
                 conteudo = document.getElementById("aprimoramento").innerText;
+          //  alert( conteudo );
                 document.getElementById("oportunidadeAprimoramento").value = conteudo;
-
                 document.getElementById("norma").style.display = 'block';
                 document.getElementById("consequencias").style.display = 'none';
                 document.getElementById("orientacao").style.display = 'none';
                 document.getElementById("evidencias").style.display = 'none';
-                document.getElementById("oportunidadeAprimoramento").value ="";
                 document.getElementById("ereincidencia").style.display = 'none';
                 document.getElementById("imagens").style.display = 'none';
                 document.getElementById("quantificacao").style.display = 'none';
                 document.getElementById("itemsQuantificados").style.display = 'none';
-
             }
 
           //  id="fecharModal"
@@ -229,8 +227,6 @@ function avalia(el) { // muda o estado do apontamento pelo click do usuário na 
           document.getElementById("oportunidadeAprimoramento").blur();
           document.getElementById("oportunidadeAprimoramento").focus();
           document.getElementById("modal1").style.display = 'none';
-
-
 }
 
 
@@ -302,7 +298,7 @@ function mudarApontamento(el) { // muda o estado do apontamento pelo click do us
                 document.getElementById("consequencias").style.display = 'none';
                 document.getElementById("orientacao").style.display = 'none';
                 document.getElementById("evidencias").style.display = 'none';
-                document.getElementById("oportunidadeAprimoramento").value ="";
+             //   document.getElementById("oportunidadeAprimoramento").value ="";
                 document.getElementById("ereincidencia").style.display = 'none';
                 document.getElementById("imagens").style.display = 'none';
                 document.getElementById("quantificacao").style.display = 'none';
