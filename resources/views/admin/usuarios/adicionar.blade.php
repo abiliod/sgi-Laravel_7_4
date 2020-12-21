@@ -20,14 +20,10 @@
 		{{csrf_field()}}
 		@include('admin.usuarios._form')
 
-		<button class="btn blue">Adicionar</button>
-
-
+            @can('usuario_adicionar')
+                <button class="btn blue">Adicionar</button>
+            @endcan
 		</form>
-
 	</div>
-
 </div>
-
-
 @endsection
