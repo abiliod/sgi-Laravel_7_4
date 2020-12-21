@@ -93,7 +93,7 @@
 				</thead>
 				<tbody>
 
-				    @foreach($registros as $registro)
+				    @forelse($registros as $registro)
 					<tr>
 				    	<td>{{ $registro->ciclo }}</td>
                         <td>{{ $registro->tipoVerificacao }}</td>
@@ -120,7 +120,14 @@
 
                         </td>
 					</tr>
-                    @endforeach
+
+                    @empty
+                        <tr>
+                            <td>
+                                <p class="red" >Não Há inspeções disponíveis.</p>
+                            </td>
+                        </tr>
+                    @endforelse
 				</tbody>
 			</table>
             <div class="row">
