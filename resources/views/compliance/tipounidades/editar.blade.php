@@ -18,9 +18,13 @@
 		@CSRF
 		<input type="hidden" name="_method" value="put">
 		    @include('compliance.tipounidades._form')
-            <div class="input-field col s12">
-                <button class="btn blue">Atualizar</button>
-            </div>
+
+            @can('tipoUnidade_editar')
+                <div class="input-field col s12">
+                    <button class="btn blue">Atualizar</button>
+                </div>
+            @endcan
+
 		</form>
 	</div>
 </div>
