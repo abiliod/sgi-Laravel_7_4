@@ -1,10 +1,8 @@
 @extends('layouts._sgiweb.app')
-
 @section('content')
 <div class="container">
 	<h2 class="center">Tipo de Unidades</h2>
 	    <div class="row">
-
 		<div class="row">
 		</div>
         <nav>
@@ -20,7 +18,6 @@
 		<table>
 				<thead>
 					<tr>
-
                         <th>Codigo</th>
 						<th>Sigla</th>
                         <th>Descricao</th>
@@ -38,9 +35,13 @@
                         <td>{{ $registro->inspecionar }}</td>
                         <td>{{ $registro->tipoInspecao }}</td>
 						<td>
-                            <a class="waves-effect waves-light btn orange"
-                             href="{{ route('compliance.tipounidades.editar',$registro->id) }}">Editar</a>
-                            <a class="waves-effect waves-light btn red disabled" href="">Deletar</a>
+                        @can('tipoUnidade_editar')
+                                <a class="waves-effect waves-light btn orange"
+                                   href="{{ route('compliance.tipounidades.editar',$registro->id) }}">Editar</a>
+                        @endcan
+                        @can('tipoUnidade_deletar')
+                                <a class="waves-effect waves-light btn red " href="">Deletar</a>
+                        @endcan
 
                         </td>
 					</tr>
@@ -51,12 +52,11 @@
             <div class="row">
 			     {!! $registros->links() !!}
             </div>
-
 		</div>
-
-		<div class="row">
-			<a class="btn blue disabled" href="!#" >Adicionar</a>
-		</div>
+    @can('tipoUnidade_adicionar')
+        <div class="row">
+            <a class="btn blue" href="!#" >Adicionar</a>
+        </div>
+    @endcan
    	</div>
-
 @endsection
