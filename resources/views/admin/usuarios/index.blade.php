@@ -82,9 +82,12 @@
             {!! $usuarios->links() !!}
         </div>
 
-		<div class="row">
-			<a class="btn blue" href="{{route('admin.usuarios.adicionar')}}">Adicionar</a>
-		</div>
+        @can('usuario_adicionar')
+            <div class="row">
+                <a class="btn blue" href="{{route('admin.usuarios.adicionar')}}">Adicionar</a>
+            </div>
+        @endcan
+
 
 	</div>
 
