@@ -15,12 +15,12 @@ class AddNovoscamposTableUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 
-            $table->string('se')->nulllable()->after('activeUser');
-            $table->string('seDescricao')->nulllable()->after('se');
-            $table->string('tipoOrgaoCod')->nulllable()->after('seDescricao');
-            $table->string('descricao')->nulllable()->after('tipoOrgaoCod');
-            $table->string('tipoUnidade_id')->nulllable()->after('descricao');
-      
+            $table->string('se')->nullable()->after('activeUser');
+            $table->string('seDescricao')->nullable()->after('se');
+            $table->string('tipoOrgaoCod')->nullable()->after('seDescricao');
+            $table->string('descricao')->nullable()->after('tipoOrgaoCod');
+            $table->string('tipoUnidade_id')->nullable()->after('descricao');
+
         });
     }
 
