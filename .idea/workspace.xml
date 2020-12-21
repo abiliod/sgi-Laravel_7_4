@@ -19,17 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
+    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="21/12/20 - Ajuste de inclusão de campos para usuários;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Permissao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Permissao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/PapelTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/PapelTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/PermissaoTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/PermissaoTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/UsuariosTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/UsuariosTableSeeder.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,6 +172,7 @@
     <hideBySeverity>
       <option value="15" />
     </hideBySeverity>
+    <option name="showPreview" value="true" />
     <option name="sortByName" value="true" />
   </component>
   <component name="ProjectId" id="1ikQrsrxYH0z3NYwomcnRwDv7fy" />
@@ -720,55 +712,35 @@
       <workItem from="1608255531971" duration="1825000" />
       <workItem from="1608257393396" duration="1854000" />
       <workItem from="1608259313132" duration="1688000" />
-    </task>
-    <task id="LOCAL-00001" summary="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB.">
-      <created>1607088888655</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1607088888655</updated>
-    </task>
-    <task id="LOCAL-00002" summary="04/12/2020 - ajuste de metodo  para adequação da funcionalidade SGIWEB.">
-      <created>1607090411345</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1607090411346</updated>
-    </task>
-    <task id="LOCAL-00003" summary="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB 2.">
-      <created>1607091010403</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1607091010403</updated>
-    </task>
-    <task id="LOCAL-00004" summary="11/12/2020 - ajuste git ignore">
-      <created>1607692427339</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1607692427339</updated>
-    </task>
-    <task id="LOCAL-00005" summary="11/12/2020 - ajuste read-me">
-      <created>1607692524384</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1607692524384</updated>
-    </task>
-    <task id="LOCAL-00006" summary="11/12/2020 - ajuste de projeto.">
-      <created>1607692579813</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1607692579813</updated>
-    </task>
-    <task id="LOCAL-00007" summary="11/12/2020 - ajuste para seeder de usuários.">
-      <created>1607695045128</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1607695045129</updated>
+      <workItem from="1608261123734" duration="1035000" />
+      <workItem from="1608294409550" duration="1776000" />
+      <workItem from="1608296222731" duration="1782000" />
+      <workItem from="1608298059691" duration="1822000" />
+      <workItem from="1608299909398" duration="1787000" />
+      <workItem from="1608301723657" duration="1789000" />
+      <workItem from="1608303819434" duration="1232000" />
+      <workItem from="1608312408611" duration="970000" />
+      <workItem from="1608315201538" duration="1913000" />
+      <workItem from="1608317520206" duration="796000" />
+      <workItem from="1608340392700" duration="1357000" />
+      <workItem from="1608343574629" duration="1447000" />
+      <workItem from="1608345390361" duration="1785000" />
+      <workItem from="1608347203489" duration="1077000" />
+      <workItem from="1608415497004" duration="987000" />
+      <workItem from="1608556437332" duration="1643000" />
+      <workItem from="1608558249998" duration="1782000" />
+      <workItem from="1608560085340" duration="1513000" />
+      <workItem from="1608562339444" duration="1826000" />
+      <workItem from="1608564209237" duration="648000" />
+      <workItem from="1608567345908" duration="1438000" />
+      <workItem from="1608569163938" duration="1321000" />
+      <workItem from="1608570979378" duration="1706000" />
+      <workItem from="1608573304824" duration="1932000" />
+      <workItem from="1608577391298" duration="2165000" />
+      <workItem from="1608579597211" duration="936000" />
+      <workItem from="1608581292334" duration="157000" />
+      <workItem from="1608589919534" duration="603000" />
+      <workItem from="1608591102302" duration="916000" />
     </task>
     <task id="LOCAL-00008" summary="11/12/2020 - ajuste de workspace.">
       <created>1607695085189</created>
@@ -882,7 +854,238 @@
       <option name="project" value="LOCAL" />
       <updated>1608261068367</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="18/12/20 - Ajuste perfil de segurança, correção de entrada de dados e ajuste de funções;">
+      <created>1608261197456</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1608261197456</updated>
+    </task>
+    <task id="LOCAL-00025" summary="18/12/20 - Ajuste de workspace;">
+      <created>1608261235626</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1608261235626</updated>
+    </task>
+    <task id="LOCAL-00026" summary="18/12/20 - Ajuste de inclusão de campos para usuários;">
+      <created>1608261269253</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1608261269253</updated>
+    </task>
+    <task id="LOCAL-00027" summary="21/12/20 - Ajuste de inclusão de campos para usuários;">
+      <created>1608591221813</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591221813</updated>
+    </task>
+    <task id="LOCAL-00028" summary="21/12/20 - Correção de bug na verificação de registros inexistentes;">
+      <created>1608591329969</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591329969</updated>
+    </task>
+    <task id="LOCAL-00029" summary="21/12/20 - Correção de bug na verificação de registros inexistentes;">
+      <created>1608591386191</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591386191</updated>
+    </task>
+    <task id="LOCAL-00030" summary="21/12/20 - Correção de bug na verificação de registros inexistentes;">
+      <created>1608591416834</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591416834</updated>
+    </task>
+    <task id="LOCAL-00031" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591461939</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591461939</updated>
+    </task>
+    <task id="LOCAL-00032" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591483808</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591483808</updated>
+    </task>
+    <task id="LOCAL-00033" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591505844</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591505844</updated>
+    </task>
+    <task id="LOCAL-00034" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591525712</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591525712</updated>
+    </task>
+    <task id="LOCAL-00035" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591545894</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591545894</updated>
+    </task>
+    <task id="LOCAL-00036" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591562567</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591562567</updated>
+    </task>
+    <task id="LOCAL-00037" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591576670</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591576670</updated>
+    </task>
+    <task id="LOCAL-00038" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591612839</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591612839</updated>
+    </task>
+    <task id="LOCAL-00039" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591635437</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591635437</updated>
+    </task>
+    <task id="LOCAL-00040" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591655402</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591655402</updated>
+    </task>
+    <task id="LOCAL-00041" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591677792</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591677792</updated>
+    </task>
+    <task id="LOCAL-00042" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591699816</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591699816</updated>
+    </task>
+    <task id="LOCAL-00043" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591726201</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591726201</updated>
+    </task>
+    <task id="LOCAL-00044" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários; inclusão de campos para usuários;">
+      <created>1608591748077</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591748077</updated>
+    </task>
+    <task id="LOCAL-00045" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591765835</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591765835</updated>
+    </task>
+    <task id="LOCAL-00046" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591780389</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591780389</updated>
+    </task>
+    <task id="LOCAL-00047" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591801031</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591801031</updated>
+    </task>
+    <task id="LOCAL-00048" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591822669</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591822669</updated>
+    </task>
+    <task id="LOCAL-00049" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591849413</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591849413</updated>
+    </task>
+    <task id="LOCAL-00050" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591878435</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591878436</updated>
+    </task>
+    <task id="LOCAL-00051" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591900699</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591900700</updated>
+    </task>
+    <task id="LOCAL-00052" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591929695</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591929695</updated>
+    </task>
+    <task id="LOCAL-00053" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591949910</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591949910</updated>
+    </task>
+    <task id="LOCAL-00054" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591968953</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591968954</updated>
+    </task>
+    <task id="LOCAL-00055" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608591991263</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1608591991263</updated>
+    </task>
+    <task id="LOCAL-00056" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
+      <created>1608592011183</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1608592011183</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -916,7 +1119,14 @@
     <MESSAGE value="18/12/20 - Correção de entrada de dados no modal;" />
     <MESSAGE value="18/12/20 - Correção de entrada de dados seeders;" />
     <MESSAGE value="18/12/20 - Ajuste perfil de segurança;" />
-    <option name="LAST_COMMIT_MESSAGE" value="18/12/20 - Ajuste perfil de segurança;" />
+    <MESSAGE value="18/12/20 - Ajuste perfil de segurança, correção de entrada de dados e ajuste de funções;" />
+    <MESSAGE value="18/12/20 - Ajuste de workspace;" />
+    <MESSAGE value="18/12/20 - Ajuste de inclusão de campos para usuários;" />
+    <MESSAGE value="21/12/20 - Ajuste de inclusão de campos para usuários;" />
+    <MESSAGE value="21/12/20 - Correção de bug na verificação de registros inexistentes;" />
+    <MESSAGE value="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários; inclusão de campos para usuários;" />
+    <MESSAGE value="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;" />
+    <option name="LAST_COMMIT_MESSAGE" value="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -966,11 +1176,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607430495673" />
-    <state x="346" y="0" key="CommitChangelistDialog2" timestamp="1608261067672">
+    <state x="401" y="0" key="CommitChangelistDialog2" timestamp="1608591725548">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="346" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608261067672" />
+    <state x="401" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608591725548" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1021,11 +1231,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608261070281">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608591728560">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608261070281" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608591728560" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
