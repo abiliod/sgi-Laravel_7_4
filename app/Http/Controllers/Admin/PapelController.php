@@ -93,7 +93,7 @@ class PapelController extends Controller{
         return redirect()->back();
     }
 
-    public function removerPermissao($id,$id_permissao)
+    public function removerPermissao($id,$id_permissao) //debugar  elemento não esta sendo utilizado  18/12/2020- abilio
     {
         if(!auth()->user()->can('papel_editar')){
             return redirect()->route('home');
