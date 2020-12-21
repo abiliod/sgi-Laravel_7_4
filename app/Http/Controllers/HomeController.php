@@ -45,21 +45,7 @@ class HomeController extends Controller {
         * atribui papel inicial "Cliente/Fornecedor" para o novo usuário
         * em seguida devolve o controle para a view Home.
         **/
-       /* 06/03/2020  Cria pessoa em  relacionamento com Usuario pelo campo email sem foreng*/
-//        $email = Auth::user()->email;
-//
-//        $pessoa = Pessoa::where('email', $email)->first();
-//
-//        if (!$pessoa) {
-//
-//            Pessoa::firstOrCreate(
-//
-//               ['priName_Razao' => Auth::user()->name],
-//               ['email' => Auth::user()->email]
-//            );
-//
-//        }
-//        $registro = Pessoa::where('email', $email)->first();
+
 
         $usuario = User::where('email','=','admin@sgiweb.com')->first();
 
@@ -77,24 +63,43 @@ class HomeController extends Controller {
                 'papel_id'=>'1'
             ]);
         }
-
-         $usuario = User::where('email','=','admin@compliance.com')->first();
-
-         if ($usuario) {
-             /**
-              *Abilio 20-02-2020  atribuir/manter papel admin ao usuario do sistema cujo o email é 'admin@gynpromo.com
-              * @return void
-              */
-             if(!Papel_user::where('user_id', '=', $usuario->id )
-                 ->where('papel_id', '=', '1')->count()
-             ) //consulta com 2 parametros
-
-                 Papel_user::UpdateOrCreate([
-                     'user_id'=>$usuario->id ,
-                     'papel_id'=>'1'
-                 ]);
-         }
-
+        else
+        {
+            if(User::where('email','=','admin@sgiweb.com')->count()){
+                $usuario = User::where('email','=','admin@sgiweb.com')->first();
+                $usuario->se	 = '16';
+                $usuario->name	 = 'ABILIO DIAS FERREIRA';
+                $usuario->document	 = '83288082';
+                $usuario->businessUnit	 = '434446';
+                $usuario->coordenacao	 = 'BSB';
+                $usuario->funcao	 = 'INSPETOR REGIONAL - G4';
+                $usuario->localizacao	 = 'GOIÂNIA';
+                $usuario->telefone_ect	 = '';
+                $usuario->telefone_pessoal	 = '';
+                $usuario->email	 = 'admin@sgiweb.com';
+                $usuario->password = bcrypt('83288082');
+                $usuario->save();
+            }else{
+                $usuario = new User();
+                $usuario->id	 = '1';
+                $usuario->se	 = '16';
+                $usuario->name	 = 'ABILIO DIAS FERREIRA';
+                $usuario->document	 = '83288082';
+                $usuario->businessUnit	 = '434448';
+                $usuario->coordenacao	 = 'BSB';
+                $usuario->funcao	 = 'INSPETOR REGIONAL - G4';
+                $usuario->localizacao	 = 'GOIÂNIA';
+                $usuario->telefone_ect	 = '';
+                $usuario->telefone_pessoal	 = '';
+                $usuario->email	 = 'admin@sgiweb.com';
+                $usuario->password = bcrypt('83288082');
+                $usuario->save();
+            }
+            Papel_user::UpdateOrCreate([
+                'user_id'=>$usuario->id ,
+                'papel_id'=>'1'
+            ]);
+        }
 
          /*Estabelece relacionamento com papel pelo campo user_id */
         //verifica se o usuário tem papel
@@ -102,8 +107,6 @@ class HomeController extends Controller {
          $activeUser = Auth::user()->activeUser;
          if($activeUser==true)
          {
-          //   dd(  $usuario,        $activeUser );
-
              $user_id = Auth::user()->id;
              $user = Papel_user::where('user_id', $user_id)->first();
              if (!$user) { //usuario sem papel
@@ -122,20 +125,21 @@ class HomeController extends Controller {
 //                 verifica qual o papel do usuario
                  $papel_id = Papel::where('id', $user->papel_id)->first();
 //                  direciona usuario para a view Dashboard padrão do perfil do usuário
-
-
                  switch ($papel_id->nome)
                  {
                      case $papel_id->nome:"admin";
                          return view('principal/home'); // criar a view padrão
                          break;
-                     case $papel_id->nome:"gestor-ac";
+                    case $papel_id->nome:"gestor_ac";
+                        return view('principal/home', compact('papel_id')); // criar a view padrão
+                        break;
+                     case $papel_id->nome:"gestor_cvco";
                          return view('principal/home', compact('papel_id')); // criar a view padrão
                          break;
-                     case $papel_id->nome:"gestor-se";
+                     case $papel_id->nome:"gestor_scoi";
                          return view('principal/home', compact('papel_id')); // criar a view padrão
                          break;
-                     case $papel_id->nome:"gerente-de-area";
+                     case $papel_id->nome:"Inspetor";
                          return view('principal/home', compact('papel_id')); // criar a view padrão
                          break;
                      case $papel_id->nome:"Cliente/Fornecedor";
