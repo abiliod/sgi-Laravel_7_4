@@ -26,9 +26,13 @@
 		<form action="{{ route('compliance.grupoVerificacao.salvar') }}" method="post">
 		    @CSRF
             @include('compliance.grupoVerificacao._form')
-            <div class="input-field col s12">
-                <button class="btn blue">Adicionar</button>
-            </div>
+
+            @can('grupoverificacao_adicionar')
+                <div class="input-field col s12">
+                    <button class="btn blue">Adicionar</button>
+                </div>
+            @endcan
+
 		</form>
 	</div>
 </div>
