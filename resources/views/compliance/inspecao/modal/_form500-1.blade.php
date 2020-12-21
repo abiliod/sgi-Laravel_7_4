@@ -1,5 +1,5 @@
 <div class="row">
-    <span class="lever" text-align="rigth">Marque no Formulario a Opção NÃO VERIFICADO.</span>
+    <span class="lever" text-align="rigth">Caso esse item não seja avaliado. Marque no Formulario a Opção NÃO VERIFICADO.</span>
     <div id="aprimoramento">
         <span class="lever" text-align="rigth"> Não existem neste momento, situações que ensejam aprimoramento. Além das que constam na presente Inspeção. </span>
     </div>
