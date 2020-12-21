@@ -18,7 +18,10 @@
 		@CSRF
 		<input type="hidden" name="_method" value="put">
 		    @include('compliance.grupoVerificacao._form')
-        <button class="btn blue">Atualizar</button>
+
+            @can('grupoverificacao_editar')
+                <button class="btn blue">Atualizar</button>
+            @endcan
 		</form>
 	</div>
 </div>
