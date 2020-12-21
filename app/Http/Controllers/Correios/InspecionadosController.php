@@ -174,14 +174,13 @@ class InspecionadosController extends Controller {
 
         $registros = DB::table('itensdeinspecoes')
             ->select('itensdeinspecoes.*'
-
             )
             ->where([['inspecao_id', '=', $id]])
             ->where([['situacao', '=', 'Corroborado' ]])
+        ->get();
 
-            ->get();
         $count = $registros->count('situacao');
-    //    dd($count);
+       // dd('Situação - > '. $count);
         if($count >= 1){
             foreach ($registros as $registro){
                 $dado = Itensdeinspecao::find($registro->id);
@@ -271,28 +270,25 @@ class InspecionadosController extends Controller {
         return view('compliance.inspecionados.papelTrabalho',compact('inspecao','registros'));
     }
 
-
-////////////////
-
-
-
     public function search (Request $request)  {
+        // Pendencia gerar querys de uniao para adequar ao perfil 18/12/2020  -Abilio
         if($request->all()['ciclo']==NULL)
-       {
-        \Session::flash('mensagem',['msg'=>'Ciclo é requerido para esse Filtro!'
-        ,'class'=>'red white-text']);
-       }else{
-        \Session::flash('mensagem',['msg'=>'Filtro Aplicado!'
-        ,'class'=>'orange white-text']);
+        {
+            \Session::flash('mensagem',['msg'=>'Ciclo é requerido para esse Filtro!'
+            ,'class'=>'red white-text']);
+        }
+        else
+        {
+            \Session::flash('mensagem',['msg'=>'Filtro Aplicado!'
+            ,'class'=>'orange white-text']);
+        }
 
-       }
         $dados = $request->all();
-
         $tiposDeUnidade = DB::table('tiposdeunidade')
             ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
             ->groupByRaw('tipoUnidade_id')
-            ->get();
+        ->get();
 
         if ($request->all()['codigo'] >1)
         {
@@ -319,7 +315,7 @@ class InspecionadosController extends Controller {
                 ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
-                ->paginate(15);
+            ->paginate(15);
             return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
@@ -331,7 +327,7 @@ class InspecionadosController extends Controller {
                 ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
-                ->paginate(15);
+            ->paginate(15);
             return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
@@ -343,17 +339,16 @@ class InspecionadosController extends Controller {
                // ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
-                ->paginate(15);
+            ->paginate(15);
             return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
-
         if (!empty($request->all()['inspetor']))
         {
             $registros = DB::table('inspecoes')
                 ->Where([['ciclo', '=', $dados['ciclo']]])
                 ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
-                ->paginate(15);
+            ->paginate(15);
             return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
 
@@ -365,7 +360,7 @@ class InspecionadosController extends Controller {
                 // ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
                // ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
               //  ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
-                ->paginate(15);
+            ->paginate(15);
             return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
         if (!empty($request->all()['tipoVerificacao']))
@@ -376,15 +371,15 @@ class InspecionadosController extends Controller {
                  ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
                 // ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
                 //  ->Where([['inspetorcolaborador', '=', $dados['inspetor']]])
-                ->paginate(15);
+            ->paginate(15);
             return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
         }
-
         $registros = DB::table('inspecoes')
             ->Where([['ciclo', '=', $dados['ciclo']]])
-            ->paginate(15);
-        return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
+        ->paginate(15);
+        // Pendencia gerar querys de uniao para adequar ao perfil 18/12/2020  -Abilio
 
+        return view('compliance.inspecionados.index',compact('registros', 'tiposdeunidade'));
     }
 
     public function index()
@@ -447,6 +442,25 @@ class InspecionadosController extends Controller {
                     }
                     break;
                 case 4:
+                    {
+                        $inspetores = DB::table('papel_user')
+                            ->join('users', 'users.id',  '=',   'user_id')
+                            ->select('users.*','papel_user.*')
+                            ->Where([['se', '=', $businessUnitUser->se]])
+                            //  ->Where([['user_id', '=', auth()->user()->id]])
+                            ->Where([['papel_id', '=', 6]])
+                            ->get();
+                        $registros = DB::table('unidades')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
+                            ->where([['status', '=', 'Inspecionado']])
+                            ->Where([['unidades.se', '=', $businessUnitUser->se]])
+                            ->orderBy('codigo' , 'asc')
+                            ->paginate(10);
+                        \Session::flash('mensagem',['msg'=>'Listando Inspeções da '.$businessUnitUser->seDescricao
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
                 case 5:
                     {
                         \Session::flash('mensagem',['msg'=>'Não autorizado.'
@@ -462,19 +476,27 @@ class InspecionadosController extends Controller {
                             ->Where([['user_id', '=', auth()->user()->id]])
                             ->Where([['papel_id', '=', 6]])
                             ->get();
+
+                        $first = DB::table('unidades')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
+                            ->where([['status', '=', 'Inspecionado']])
+                            ->where([['inspetorcoordenador', '=', auth()->user()->document]]);
                         $registros = DB::table('unidades')
                             ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
                             ->select('inspecoes.*','unidades.se','unidades.seDescricao')
-                            ->where([['status', '=', 'Em Inspeção']])
-                            ->where([['inspetorcoordenador', '=', auth()->user()->document]])
-                            ->orWhere([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->where([['status', '=', 'Inspecionado']])
+                            ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->union($first)
                             ->orderBy('codigo' , 'asc')
-                            ->paginate(10);
+                        ->paginate(10);
+
                     }
                     break;
                 default:  return redirect()->route('home');
             }
-            return view('compliance.verificacoes.index',compact('registros','tiposDeUnidade', 'inspetores'));
+//            return view('compliance.verificacoes.index',compact('registros','tiposDeUnidade', 'inspetores'));
+            return view('compliance.inspecionados.index',compact('registros','tiposDeUnidade', 'inspetores'));
         }
         else
         {
@@ -499,6 +521,6 @@ class InspecionadosController extends Controller {
 
 
 
-        return view('compliance.inspecionados.index',compact('registros','tiposDeUnidade', 'inspetores'));
+
     }
 }
