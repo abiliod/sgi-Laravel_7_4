@@ -282,7 +282,8 @@ class InspecaoController extends Controller
         }
 
 
-
+        var_dump(  $registro);
+                dd();
         $registro->update();
 
         \Session::flash('mensagem',['msg'=>'Registro inspecionado com sucesso!'
@@ -2901,9 +2902,10 @@ class InspecaoController extends Controller
                     ."\n"
                     .$registro->eventosSistema;
                  $dado->situacao = 'Corroborado' ;
-                // dd($dado->eventosSistema);
+
                 $dado->save();
             }
+
             $inspecao->status = 'Inspecionado';
             $inspecao->eventoInspecao = $inspecao->eventoInspecao . "\r\n".'Inspecionado, inspeção concluida por '.Auth::user()->name." em ".\Carbon\Carbon::parse($now)->format( 'd/m/Y' );
             $inspecao->save();
