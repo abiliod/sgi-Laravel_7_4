@@ -324,8 +324,13 @@ class UsuarioController extends Controller {
                         break;
                     case 4:
                         {
-                            \Session::flash('mensagem',['msg'=>'Não autorizado.'
-                                ,'class'=>'red white-text']);
+                            $usuarios = DB::table('users')
+                                ->select('users.*')
+                                ->Where([['se', '=', $businessUnitUser->se]])
+                                ->orderBy('name', 'asc')
+                                ->paginate(10);
+                            \Session::flash('mensagem',['msg'=>'Listando todos usuários da Superintendência.'
+                                ,'class'=>'blue white-text']);
                         }
                         break;
                     case 5:
