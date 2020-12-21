@@ -19,8 +19,17 @@
 		{{csrf_field()}}
 		<input type="hidden" name="_method" value="put">
 		@include('admin.usuarios._form')
-		<button class="btn blue">Atualizar</button>
+
+            @can('usuario_editar')
+                <button class="btn blue">Atualizar</button>
+            @endcan
+
 		</form>
 	</div>
 </div>
 @endsection
+
+
+
+
+
