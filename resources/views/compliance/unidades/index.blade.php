@@ -1,5 +1,4 @@
 @extends('layouts._sgiweb.app')
-
 @section('content')
 <div class="container">
 	<h2 class="center">Lista de Unidades</h2>
@@ -46,7 +45,6 @@
                         <td>{{ $registro->email }}</td>
                         <td>{{ $registro->inicio_expediente }}</td>
 						<td>
-
                         @can('unidade_editar')
                                 <a class="waves-effect waves-light btn orange" href="{{ route('compliance.unidades.editar',$registro->id) }}">Editar</a>
                         @endcan
@@ -77,5 +75,4 @@
     @endcan
 
    	</div>
-
 @endsection
