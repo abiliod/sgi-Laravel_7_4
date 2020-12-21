@@ -1,6 +1,7 @@
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="#">Administrativo</a></li>
+    <li class="disabled"><a href="#">Administrativo</a></li>
+    <li class="divider"></li>
     @can('usuario_listar')
         <li><a href="{{ route('admin.usuarios') }}">Usuários</a></li>
     @endcan
@@ -20,12 +21,12 @@
         <li><a href="{{route('compliance.relatos')}}">Relatos</a></li>
     @endcan
     <li class="divider"></li>
-    @can('compliance_listar_importacoes')
+    @can('listar_importacoes')
+        <li class="divider"></li>
         <li><a href="{{route('importacao')}}">Importações</a></li>
+        <li class="divider"></li>
     @endcan
     <li class="divider"></li>
-
-
     <li><a href="#">Operacional</a></li>
     <li class="divider"></li>
     @can('unidade_listar')
@@ -33,14 +34,19 @@
     @endcan
 
     @can('inspecao_listar')
-        <li><a href="{{route('compliance.verificacoes')}}">Inspecionar</a></li>
+        <li><a href="{{route('compliance.verificacoes')}}">Inspeções</a></li>
     @endcan
 
     @can('inspecao_listar')
         <li><a href="{{route('compliance.inspecionados')}}">Inspecionadas</a></li>
     @endcan
     <li class="divider"></li>
-    <li><a href="#">Site Conteúdo</a></li>
+
+    @can('slide_listar')
+        <li class="divider"></li>
+        <li><a href="#">Site Conteúdo</a></li>
+        <li class="divider"></li>
+    @endcan
 
     @can('slide_listar')   {{--- inicio 26/02/2020 inclusao da funcionalidade Slide ---}}
     <li><a href="{{route('admin.slides')}}">Slides</a></li>
@@ -85,6 +91,7 @@
                     <li><a href="{{ route('sair') }}">Sair</a>
                 @else
                     <li><a href="#">Administrativo</a></li>
+                    <li class="divider"></li>
                     @can('usuario_listar')
                         <li><a href="{{ route('admin.usuarios') }}">Usuários</a></li>
                     @endcan
@@ -99,25 +106,32 @@
                     @can('relato_listar')
                         <li><a href="{{route('compliance.relatos')}}">Relatos</a></li>
                     @endcan
-                    <li class="divider"></li>
-                    @can('compliance_listar_importacoes')
+
+                    @can('listar_importacoes')
+                        <li class="divider"></li>
                         <li><a href="{{route('importacao')}}">Importações</a></li>
+                        <li class="divider"></li>
                     @endcan
                     <li class="divider"></li>
-                    <li><a href="#">Operacional</a></li>
+                    <li><a href="#">Operaçoes</a></li>
+                    <li class="divider"></li>
                     @can('unidade_listar')
                         <li><a href="{{route('compliance.unidades')}}">Unidades</a></li>
                     @endcan
 
                     @can('inspecao_listar')
-                        <li><a href="{{route('compliance.verificacoes')}}">Inspecionar</a></li>
+                        <li><a href="{{route('compliance.verificacoes')}}">Inspeções</a></li>
                     @endcan
 
                     @can('inspecao_listar')
                         <li><a href="{{route('compliance.inspecionados')}}">Inspecionadas</a></li>
                     @endcan
                     <li class="divider"></li>
-                    <li><a href="#">Site Conteúdo</a></li>
+                    @can('slide_listar')
+                        <li class="divider"></li>
+                        <li><a href="#">Site Conteúdo</a></li>
+                        <li class="divider"></li>
+                    @endcan
 
                     @can('slide_listar')   {{--- inicio 26/02/2020 inclusao da funcionalidade Slide ---}}
                     <li><a href="{{route('admin.slides')}}">Slides</a></li>
