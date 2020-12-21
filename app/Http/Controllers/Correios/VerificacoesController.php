@@ -392,7 +392,7 @@ class VerificacoesController extends Controller
                             ->Where([['status', '=', $dados['status']]])
                             ->where([['codigo', 'LIKE', '%' . $request->all()['codigo'] .'%' ]])
                             ->where([['inspetorcoordenador', '=', auth()->user()->document]])
-                            ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->orWhere([['inspetorcolaborador', '=', auth()->user()->document]])
                             ->paginate(10);
                     }
 
@@ -454,18 +454,54 @@ class VerificacoesController extends Controller
                           //  ->Where([['user_id', '=', auth()->user()->id]])
                             ->Where([['papel_id', '=', 6]])
                             ->get();
+
+                        $first = DB::table('unidades')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
+                            ->where([['status', '=', 'Em Inspeção']])
+                            ->where([['inspetorcoordenador', '=', auth()->user()->document]]);
                         $registros = DB::table('unidades')
                             ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
                             ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['status', '=', 'Em Inspeção']])
-                            ->Where([['unidades.se', '=', $businessUnitUser->se]])
+                            ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->union($first)
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
+
                         \Session::flash('mensagem',['msg'=>'Listando Inspeções da '.$businessUnitUser->seDescricao
                             ,'class'=>'orange white-text']);
                     }
                     break;
                 case 4:
+                    {
+                        $inspetores = DB::table('papel_user')
+                            ->join('users', 'users.id',  '=',   'user_id')
+                            ->select('users.*','papel_user.*')
+                            ->Where([['se', '=', $businessUnitUser->se]])
+                            //  ->Where([['user_id', '=', auth()->user()->id]])
+                            ->Where([['papel_id', '=', 6]])
+                            ->get();
+
+                        $first = DB::table('unidades')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
+                            ->where([['status', '=', 'Em Inspeção']]);
+                           // ->where([['inspetorcoordenador', '=', auth()->user()->document]]);
+
+                        $registros = DB::table('unidades')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
+                            ->where([['status', '=', 'Em Inspeção']])
+                          //  ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->union($first)
+                            ->orderBy('codigo' , 'asc')
+                            ->paginate(10);
+
+                        \Session::flash('mensagem',['msg'=>'Listando Inspeções da '.$businessUnitUser->seDescricao
+                            ,'class'=>'orange white-text']);
+                    }
+                    break;
                 case 5:
                     {
                         \Session::flash('mensagem',['msg'=>'Não autorizado.'
@@ -482,12 +518,17 @@ class VerificacoesController extends Controller
                             ->Where([['papel_id', '=', 6]])
                             ->get();
 
+                        $first = DB::table('unidades')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
+                            ->where([['status', '=', 'Em Inspeção']])
+                            ->where([['inspetorcoordenador', '=', auth()->user()->document]]);
                         $registros = DB::table('unidades')
                             ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
                             ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['status', '=', 'Em Inspeção']])
-                            ->where([['inspetorcoordenador', '=', auth()->user()->document]])
                             ->Where([['inspetorcolaborador', '=', auth()->user()->document]])
+                            ->union($first)
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
                     }
