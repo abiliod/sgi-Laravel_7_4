@@ -280,6 +280,9 @@
 
 					</tr>
                 @endforeach
+
+
+
 				</tbody>
 			</table>
             <div class="row">
