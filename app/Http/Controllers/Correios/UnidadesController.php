@@ -159,6 +159,16 @@ class UnidadesController extends Controller
                         }
                         break;
                     case 4:
+                        {
+                           $inspetores = DB::table('papel_user')
+                                ->join('users', 'users.id',  '=',   'user_id')
+                                ->select('users.*','papel_user.*')
+                                ->Where([['se', '=', $businessUnitUser->se]])
+                                ->Where([['papel_id', '=', 6]])
+                                ->orderBy('users.name', 'asc')
+                           ->get();
+                        }
+                        break;
                     case 5:
                         {
                             \Session::flash('mensagem',['msg'=>'Perfil não autorizado.'
@@ -276,6 +286,7 @@ class UnidadesController extends Controller
         ->get();
         $tiposDeUnidade = TipoDeUnidade::all();
         $registro = Unidade::find($id);
+        //dd('pare');
         return view('compliance.unidades.editar',compact('registro','tiposDeUnidade','status_unidadeDesc'));
     }
 
@@ -330,8 +341,7 @@ class UnidadesController extends Controller
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
+
                     }
                     break;
                 case 3:
@@ -369,8 +379,7 @@ class UnidadesController extends Controller
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
+
                     }
                     break;
                 case 4:
@@ -408,8 +417,7 @@ class UnidadesController extends Controller
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
+
                     }
                     break;
                 case 5:
@@ -427,8 +435,7 @@ class UnidadesController extends Controller
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
+
                     }
                     break;
                 case 6:
@@ -467,8 +474,6 @@ class UnidadesController extends Controller
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
                     }
                     break;
             }
@@ -486,23 +491,10 @@ class UnidadesController extends Controller
     public function index()
     {
         $status = 'Criado e instalado';
-
-//        if(auth()){
-//            dd('autenticado', auth()->user()->businessUnit);
-//        }
-//        else
-//        {
-//            dd('convidado');
-//        }
-
         $businessUnitUser = DB::table('unidades')
             ->Where([['mcu', '=', auth()->user()->businessUnit]])
             ->select('unidades.*')
             ->first();
-
-
-
-
         if(!empty( $businessUnitUser ))
         {
             $papel_user = DB::table('papel_user')
@@ -510,14 +502,6 @@ class UnidadesController extends Controller
                 ->Where([['papel_id', '>=', 1]])
                 ->select('papel_id')
                 ->first();
-
-
-
-
-          //  dd( $registros  );
-
-
-
             switch ($papel_user->papel_id)
             {
                 case 1:
@@ -534,8 +518,7 @@ class UnidadesController extends Controller
                              ->orderBy('tipoOrgaoDesc', 'asc')
                              ->orderBy('descricao', 'asc')
                              ->paginate(10);
-                         \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
+
                     }
                 break;
                 case 3:
@@ -552,12 +535,12 @@ class UnidadesController extends Controller
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
+
                     }
                 break;
                 case 4:
                     {
+
                         $registros = DB::table('unidades')
                             ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
                             ->select(
@@ -565,15 +548,15 @@ class UnidadesController extends Controller
                             )
                             ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
                             ->where([['unidades.status_unidadeDesc', '=',  $status]])
-                            ->Where([['se', '=', $businessUnitUser->mcu_subordinacaoAdm]])
+                            ->Where([['se', '=', $businessUnitUser->se]])
                             ->orderBy('seDescricao', 'desc')
                             ->orderBy('tipoOrgaoDesc', 'asc')
                             ->orderBy('descricao', 'asc')
                             ->paginate(10);
+                       // ->get(1);
 
+                       // dd($businessUnitUser, $registros);
 
-                        \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                            ,'class'=>'orange white-text']);
                     }
                 break;
                 case 5:
@@ -590,8 +573,7 @@ class UnidadesController extends Controller
                           ->orderBy('tipoOrgaoDesc', 'asc')
                           ->orderBy('descricao', 'asc')
                           ->paginate(10);
-                    \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                        ,'class'=>'orange white-text']);
+
                     }
                 break;
                 case 6:
@@ -609,8 +591,7 @@ class UnidadesController extends Controller
                                 ->orderBy('tipoOrgaoDesc', 'asc')
                                 ->orderBy('descricao', 'asc')
                                 ->paginate(10);
-                            \Session::flash('mensagem',['msg'=>'Listando todas unidades sistema.'
-                                ,'class'=>'orange white-text']);
+
                         }
                 break;
             }
