@@ -9,14 +9,14 @@
                 <div class="input-field col s4">
                     <select name="ciclo" id="ciclo">
                         <option value="2019">2019</option>
-                        <option value="2020 "selected>2020</option>
+                        <option value="2020 " selected >2020</option>
                         <option value="2021">2021</option>
                     </select>
                     <label for="ciclo">Ciclo de Verificação</label>
                 </div>
                 <div class="input-field col s4">
-                    <select name="tipoUnidade_id">
-                        <option value="" selected>Tipo de Unidade</option>
+                    <select name="tipoUnidade_id" id="tipoUnidade_id">
+                        <option value="" selected >Tipo de Unidade</option>
                         @foreach($tiposDeUnidade as $tipoDeUnidade)
                             <option value="{{$tipoDeUnidade->id}}">{{$tipoDeUnidade->sigla }} - {{ $tipoDeUnidade->tipodescricao }}</option>
                         @endforeach
@@ -31,8 +31,8 @@
                     </select>
                     <label for="tipoVerificacao">Tipo de Verificação</label>
                 </div>
+
                 <div class="input-field col s6">
-                    <select name="inspetor" id="inspetor">
                         <select name="inspetor" id="inspetor">
                             <option value="">Inspetor Envolvido</option>
                             @foreach($inspetores as $inspetor)
@@ -41,9 +41,10 @@
                         </select>
                         <label for="inspetor" >Inspetor Envolvido</label>
                 </div>
+
                 <div class="input-field col s6">
-                        <input type="text" name="codigo" value="">
-                        <label>Código Inspeção</label>
+                        <input type="text" name="codigo" id="codigo" value="">
+                        <label for="codigo" >Código Inspeção</label>
                 </div>
 
                 <div class="input-field col s8">
@@ -93,25 +94,28 @@
                     <td>{{ $registro->descricao }}</td>
                     <td>{{ $registro->status }}</td>
                     <td> {{ \Carbon\Carbon::parse($registro->datainiPreInspeção)->format( 'd/m/Y' ) }} </td>
-
                     <td>
                         <a class="waves-effect waves-light btn blue"
                          href="{{ route('compliance.inspecionados.papelTrabalho',$registro->id) }}">Papel_Rel</a>
 
                     </td>
-                    <td>
-                        <a class="waves-effect waves-light btn orange"
-                           href="{{ route('compliance.inspecionados.xml',$registro->id) }}">XML</a>
-                    </td>
+                    @can('inspecao_gerar_xml')
+                        <td>
+                            <a class="waves-effect waves-light btn orange"
+                               href="{{ route('compliance.inspecionados.xml',$registro->id) }}">XML</a>
+                        </td>
+                    @endcan
                     <td>
                          <a class="btn btn-primary"
                          href="{{ route('compliance.inspecionados.pdfPapelTrabalho',$registro->id) }}">Papel_PDF</a>
                     </td>
+                    @can('inspecao_recusar')
                     <td>
-                       <a class="btn red" href="javascript: if(confirm('Devolver a Inspeção {{ $registro->codigo }} para Ajuste?')){ window.location.href = '{{ route('compliance.inspecionados.recusar',$registro->id) }}' }">Devolver</a>
+                         <a class="btn red" href="javascript: if(confirm('Devolver a Inspeção {{ $registro->codigo }} para Ajuste?')){ window.location.href = '{{ route('compliance.inspecionados.recusar',$registro->id) }}' }">Devolver</a>
                     </td>
-                </tr>
+                    @endcan
 
+                </tr>
                 @empty
                     <tr>
                     <td>
@@ -119,12 +123,6 @@
                     </td>
                     </tr>
                 @endforelse
-
-
-
-
-
-
 			</tbody>
 		</table>
     </div>
