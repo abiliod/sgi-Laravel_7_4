@@ -19,15 +19,10 @@
 
 		{{csrf_field()}}
 		@include('admin.papel._form')
-
-		<button class="btn blue">Adicionar</button>
-
-
+            @can('unidade_adicionar')
+                <button class="btn blue">Adicionar</button>
+            @endcan
 		</form>
-
 	</div>
-
 </div>
-
-
 @endsection
