@@ -3,9 +3,7 @@
 @section('content')
 <div class="container">
 	<h2 class="center">Grupos de Verificação</h2>
-
 	    <div class="row">
-
 			<div class="nav-wrapper green">
                <form action="{{route('compliance.grupoVerificacao.search')}}" method="post">
 					@csrf
@@ -25,7 +23,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="input-field col s2">
                         <select name="tipoVerificacao" id="tipoVerificacao" onchange="ativaBtnFiltro();">
                             <option value="0" selected>Tipo de Verificação</option>
@@ -62,34 +59,28 @@
 		<table>
 				<thead>
 					<tr>
-
                         <th>Ciclo</th>
 						<th>Tipo de Unidade</th>
                         <th>Tipo de Verificação</th>
                         <th>Grupo</th>
-
-
 						<th>Ação</th>
 					</tr>
 				</thead>
 				<tbody>
 				@foreach($registros as $registro)
 					<tr>
-
 				    	<td>{{ $registro->ciclo }}</td>
                         <td>{{ $registro->sigla }}</td>
                         <td>{{ $registro->tipoVerificacao }}</td>
                         <td>{{ $registro->numeroGrupoVerificacao }}-{{ $registro->nomegrupo }}</td>
-
-
 						<td>
-
-                            <a class="waves-effect waves-light btn orange"
-                             href="{{ route('compliance.grupoVerificacao.editar',$registro->id) }}">Editar</a>
-
-                            <a class="btn red" href="javascript: if(confirm('Deletar esse registro?')){ window.location.href = '{{ route('compliance.grupoVerificacao.destroy',$registro->id) }}' }">Deletar</a>
-
-
+                            @can('grupoverificacao_editar')
+                                <a class="waves-effect waves-light btn orange"
+                                   href="{{ route('compliance.grupoVerificacao.editar',$registro->id) }}">Editar</a>
+                            @endcan
+                            @can('grupoverificacao_deletar')
+                                    <a class="btn red" href="javascript: if(confirm('Deletar esse registro?')){ window.location.href = '{{ route('compliance.grupoVerificacao.destroy',$registro->id) }}' }">Deletar</a>
+                            @endcan
                         </td>
 					</tr>
                 @endforeach
@@ -103,9 +94,9 @@
 		</div>
 
 		<div class="row" >
-
-			<a class="btn blue" href="{{route('compliance.grupoVerificacao.adicionar')}}">Adicionar</a>
-
+            @can('grupoverificacao_adicionar')
+                <a class="btn blue" href="{{route('compliance.grupoVerificacao.adicionar')}}">Adicionar</a>
+            @endcan
 		</div>
    	</div>
 
