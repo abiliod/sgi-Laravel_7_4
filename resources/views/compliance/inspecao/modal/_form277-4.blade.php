@@ -1,4 +1,12 @@
-<div class="row">
+@if($registro->tem_distribuicao == 'Não tem distribuição')
+    <div id="aprimoramento">
+                <span class="lever rigth">
+                        A unidade não executa essa tarefa.
+                </span>
+    </div>
+    <div id="historico"></div>
+    <div id="historico1"></div>
+@else
     <br>
     <p><span class="lever" text-align="rigth"> Link.</span></p>
     <p>
@@ -17,7 +25,7 @@
     <div id="historico">
         <p>
             Objeto                         Data (Lançado)
-           <br> Xxxxxxxxxxxxxxx                xx/xx/xx
+            <br> Xxxxxxxxxxxxxxx                xx/xx/xx
         </p>
         <p>
             Da análise, por amostragem, dos dados de rastreamento dos objetos pendentes, constatou-se a ocorrência de lançamentos invertidos conforme exemplificamos a seguir:
@@ -29,10 +37,7 @@
         </p>
     </div>
     <div id="historico1"></div>
-</div>
-
+@endif
 <input type="hidden"  id="totalfalta" value="{{ isset($total) ?  str_replace(',', '', $total) : '' }}" readonly>
 <input type="hidden"  id="totalrisco" value="0.00">
 <input type="hidden"  id="totalsobra" value="0.00">
-
-
