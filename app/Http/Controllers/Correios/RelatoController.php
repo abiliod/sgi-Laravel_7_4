@@ -33,10 +33,10 @@ class RelatoController extends Controller
   //      }
 
 
-            $registro = TesteDeVerificacao::find($id);
+      //      $registro = TesteDeVerificacao::find($id);
         //     $registro->delete();
-             \Session::flash('mensagem',['msg'=>'Registro Nâo NâoNâoNâoNâoNâo deletado com sucesso!'
-             ,'class'=>'green white-text']);
+             \Session::flash('mensagem',['msg'=>'Registro Nâo deletado! Funcionalidade não disponibilizada  por motivos  de segurança.'
+             ,'class'=>'red white-text']);
              return redirect()->route('compliance.relatos');
 
 
