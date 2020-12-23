@@ -12,7 +12,7 @@
                     <div class="input-field col s8">
                         <input id="search" type="search"  name="search"  value="">
                         <label class="label-icon" for="search">
-                            <i class="material-icons">search</i>Lotação, Matricula ou parte do Nome</label>
+                            <i class="material-icons">search</i>McuLotação, Matricula ou Parte do Nome</label>
                         <i class="material-icons">close</i>
                     </div>
 
@@ -38,7 +38,7 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Id</th>
+
                         <th>Localização</th>
 						<th>Matricula</th>
                         <th>Nome</th>
@@ -51,8 +51,8 @@
 				<tbody>
 				@foreach($usuarios as $usuario)
 					<tr>
-						<td>{{ $usuario->id }}</td>
-                        <td>{{ $usuario->businessUnit }}</td>
+
+                        <td>{{ $usuario->descricao }} - {{ $usuario->localizacao }}</td>
 						<td>{{ $usuario->document }}</td>
                         <td>{{ $usuario->name }}</td>
 						<td>{{ $usuario->email }}</td>
