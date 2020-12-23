@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Pagina;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
@@ -11,58 +10,67 @@ use App\Papel;
 
 use Illuminate\Support\Facades\DB;
 
-class UsuarioController extends Controller {
-
-    public function sair() {
+class UsuarioController extends Controller
+{
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function sair()
+    {
         Auth::logout();
         return redirect()->route('login');
     }
 
-
-
-    public function adicionar() {
-
-        if(!auth()->user()->can('usuario_adicionar')){
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function adicionar()
+    {
+        if(!auth()->user()->can('usuario_adicionar'))
+        {
            return redirect()->route('home');
         }
         return view('admin.usuarios.adicionar');
     }
 
-    public function salvar(Request $request) {
-
-        if(!auth()->user()->can('usuario_adicionar')){
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function salvar(Request $request)
+    {
+        if(!auth()->user()->can('usuario_adicionar'))
+        {
             return redirect()->route('home');
         }
-
         $dados = $request->all();
         $usuario = new User();
         $usuario->name = $dados['name'];
         $usuario->email = $dados['email'];
         $usuario->password = bcrypt($dados['password']);
         $usuario->save();
-
         \Session::flash('mensagem',['msg'=>'Registro criado com sucesso!','class'=>'green white-text']);
-
         return redirect()->route('admin.usuarios');
     }
 
-    public function editar($id) {
-        if(!auth()->user()->can('usuario_editar')){
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function editar($id)
+    {
+        if(!auth()->user()->can('usuario_editar'))
+        {
             return redirect()->route('home');
         }
-
-
         $usuario = User::find($id);
-        //dd(    $usuario->papel_user->papel_id);
 
         if ($usuario->id == auth()->user()->getAuthIdentifier())
         {
            $papel_user = DB::table('papel_user')
-                            ->Where([['user_id', '=', auth()->user()->id]])
-                            //->Where([['papel_id', '<=', 4]])
-                            ->select('papel_id')
-                            ->first();
-
+                ->Where([['user_id', '=', auth()->user()->id]])
+                ->select('papel_id')
+           ->first();
            if(!empty($papel_user))
            {
                $usuario->papel_id = $papel_user->papel_id;
@@ -71,38 +79,40 @@ class UsuarioController extends Controller {
            {
                $usuario->papel_id = 100;
            }
-
         }
         else
         {
             $usuario->papel_user = 100;
         }
-         // dd(    $usuario);
         return view('admin.usuarios.editar', compact('usuario'));
     }
 
-    public function atualizar(Request $request, $id) {
-
-        if(!auth()->user()->can('usuario_editar')){
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function atualizar(Request $request, $id)
+    {
+        if(!auth()->user()->can('usuario_editar'))
+        {
            return redirect()->route('home');
         }
-
         $usuario = User::find($id);
         $dados = $request->all();
-
-        if(isset($dados['password']) && strlen($dados['password']) >= 8 ){
+        if(isset($dados['password']) && strlen($dados['password']) >= 8 )
+        {
             $dados['password'] = bcrypt($dados['password']);
-        }else{
+        }
+        else
+        {
             unset($dados['password']); //tira do request o campo pass para aplicar o update
         }
-
         $usuario ->update($dados);
         \Session::flash('mensagem',['msg'=>'Registro atualizado com sucesso!','class'=>'green white-text']);
 
-
         $papel_user = DB::table('papel_user')
             ->Where([['user_id', '=', auth()->user()->id]])
-           // ->Where([['papel_id', '>=', 1]])
             ->select('papel_id')
             ->first();
         if($papel_user->papel_id  <= 4 )
@@ -115,49 +125,67 @@ class UsuarioController extends Controller {
         }
     }
 
-    public function deletar($id) {
-        if(!auth()->user()->can('usuario_deletar')){
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deletar($id)
+    {
+        if(!auth()->user()->can('usuario_deletar'))
+        {
             return redirect()->route('home');
         }
         User::find($id)->delete();
+
         \Session::flash('mensagem',['msg'=>'Registro deletado com sucesso!','class'=>'green white-text']);
         return redirect()->route('admin.usuarios');
     }
 
-    public function login(Request $request) {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function login(Request $request)
+    {
         $dados = $request->all();
-
-        if(Auth::attempt(['email'=>$dados['email'],'password'=>$dados['password']])){
-
+        if(Auth::attempt(['email'=>$dados['email'],'password'=>$dados['password']]))
+        {
             \Session::flash('mensagem',['msg'=>'Login realizado com sucesso!'
                 ,'class'=>'green white-text']);
-
             return redirect()->route('admin.principal');
         }
-
         \Session::flash('mensagem',['msg'=>'Erro! Confira seus dados.'
             ,'class'=>'red white-text']);
 
         return redirect()->route('admin.login');
     }
 
-    public function papel($id) {
-        if(!auth()->user()->can('usuario_editar')){
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function papel($id)
+    {
+        if(!auth()->user()->can('usuario_editar'))
+        {
            return redirect()->route('home');
-       }
-
+        }
        $usuario = User::find($id);
        $papel = Papel::all();
-
        return view('admin.usuarios.papel',compact('usuario','papel'));
     }
 
-    public function salvarPapel(Request $request,$id) {
-
-        if(!auth()->user()->can('usuario_editar')){
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function salvarPapel(Request $request, $id)
+    {
+        if(!auth()->user()->can('usuario_editar'))
+        {
             return redirect()->route('home');
         }
-
         $usuario = User::find($id);
         $dados = $request->all();
         $papel = Papel::find($dados['papel_id']);
@@ -165,9 +193,15 @@ class UsuarioController extends Controller {
         return redirect()->back();
     }
 
-    public function removerPapel($id,$papel_id) {
-
-        if(!auth()->user()->can('usuario_editar')){
+    /**
+     * @param $id
+     * @param $papel_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removerPapel($id, $papel_id)
+    {
+        if(!auth()->user()->can('usuario_editar'))
+        {
             return redirect()->route('home');
         }
         $usuario = User::find($id);
@@ -176,8 +210,17 @@ class UsuarioController extends Controller {
         return redirect()->back();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function search (Request $request )
     {
+        $businessUnitUser = DB::table('unidades')
+            ->Where([['mcu', '=', auth()->user()->businessUnit]])
+            ->select('unidades.*')
+        ->first();
+
         if(auth()->user()->can('usuario_listar'))
         {
             if ($request->all()['search']==NULL){
@@ -185,14 +228,6 @@ class UsuarioController extends Controller {
                     ,'class'=>'red white-text']);
                 return redirect()->back();
             }
-
-//            $usuarios = DB::table('users')
-//                ->select('users.*')
-//                ->where('name', 'like', '%' . trim($request->all()['search']) . '%')  //trim($registro->descricao)
-//                ->orWhere([['document', '=', $request->all()['search']]])
-//                ->orWhere([['businessUnit', '=', $request->all()['search']]])
-//                ->orderBy('name' , 'asc')
-//                ->paginate(10);
 
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])
@@ -206,30 +241,53 @@ class UsuarioController extends Controller {
                     {
                         $usuarios = DB::table('users')
                             ->select('users.*')
+                           // ->Where([['coordenacao', '=', auth()->user()->coordenacao]])
                             ->where('name', 'like', '%' . trim($request->all()['search']) . '%')  //trim($registro->descricao)
                             ->orWhere([['document', '=', $request->all()['search']]])
                             ->orWhere([['businessUnit', '=', $request->all()['search']]])
+                            ->orWhere([['localizacao', '=', $request->all()['search']]])
+                            ->orWhere([['seDescricao', '=', $request->all()['search']]])
+                            ->orderBy('name', 'asc')
                             ->orderBy('name', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todos usuários do sistema.'
-                            ,'class'=>'orange white-text']);
+                        \Session::flash('mensagem',['msg'=>'Listando Usuários do Sistema.'
+                            ,'class'=>'blue white-text']);
                     }
                     break;
                 case 3:
                     {
                         $usuarios = DB::table('users')
                             ->select('users.*')
-                            ->Where([['se', '=', $businessUnitUser->se]])
+                            ->Where([['coordenacao', '=', auth()->user()->coordenacao]])
                             ->where('name', 'like', '%' . trim($request->all()['search']) . '%')  //trim($registro->descricao)
                             ->orWhere([['document', '=', $request->all()['search']]])
                             ->orWhere([['businessUnit', '=', $request->all()['search']]])
+                            ->orWhere([['localizacao', '=', $request->all()['search']]])
+                            ->orWhere([['seDescricao', '=', $request->all()['search']]])
+                            ->orderBy('name', 'asc')
                             ->orderBy('name', 'asc')
                             ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando todos usuários da Superintendência.'
-                            ,'class'=>'orange white-text']);
+                        \Session::flash('mensagem',['msg'=>'Listando Usuários de Sua CVCO.'
+                            ,'class'=>'blue white-text']);
                     }
                     break;
                 case 4:
+                {
+                    $usuarios = DB::table('users')
+                        ->select('users.*')
+                        ->Where([['se', '=', $businessUnitUser->se]])
+                        ->where('name', 'like', '%' . trim($request->all()['search']) . '%')  //trim($registro->descricao)
+                        ->orWhere([['document', '=', $request->all()['search']]])
+                        ->orWhere([['businessUnit', '=', $request->all()['search']]])
+                        ->orWhere([['localizacao', '=', $request->all()['search']]])
+                        ->orWhere([['seDescricao', '=', $request->all()['search']]])
+                        ->orderBy('name', 'asc')
+                        ->orderBy('name', 'asc')
+                        ->paginate(10);
+                    \Session::flash('mensagem',['msg'=>'Listando Usuários de Sua SCOI.'
+                        ,'class'=>'blue white-text']);
+                }
+                break;
                 case 5:
                     {
                         \Session::flash('mensagem',['msg'=>'Não autorizado.'
@@ -237,19 +295,8 @@ class UsuarioController extends Controller {
                     }
                     break;
                 case 6:
-                    {
-                        $usuarios = DB::table('users')
-                            ->select('users.*')
-                            ->Where([['se', '=', $businessUnitUser->se]])
-                            ->whereIn('tipoOrgaoCod', [9, 4, 6])
-                            ->where('name', 'like', '%' . trim($request->all()['search']) . '%')  //trim($registro->descricao)
-                            ->orWhere([['document', '=', $request->all()['search']]])
-                            ->orWhere([['businessUnit', '=', $request->all()['search']]])
-                            ->orderBy('name', 'asc')
-                            ->paginate(10);
-                        \Session::flash('mensagem',['msg'=>'Listando Usuários de Unidades operacionais cadastrados.'
-                            ,'class'=>'orange white-text']);
-                    }
+                    \Session::flash('mensagem',['msg'=>'Não autorizado.'
+                        ,'class'=>'red white-text']);
                     break;
             }
             return view('admin.usuarios.index',compact('usuarios'));
@@ -258,13 +305,17 @@ class UsuarioController extends Controller {
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function index()
     {
         $usuarios = User::all();
         $businessUnitUser = DB::table('unidades')
             ->Where([['mcu', '=', auth()->user()->businessUnit]])
             ->select('unidades.*')
-            ->first();
+        ->first();
+
         if(!empty( $businessUnitUser ))
         {
             if (auth()->user()->can('usuario_listar'))
@@ -281,7 +332,7 @@ class UsuarioController extends Controller {
                         $res = DB::table('unidades')
                             ->Where([['mcu', '=', $user->businessUnit]])
                             ->select('unidades.*')
-                            ->first();
+                        ->first();
                         if($res)
                         {
                             $user->se =  $res->se;
@@ -292,12 +343,9 @@ class UsuarioController extends Controller {
                             $user->telefone_ect =  $res->ddd . $res->telefone;
                             $user->save();
                         }
-
                     }
-
                 }
                 unset($usuarios);
-
                 switch ($papel_user->papel_id)
                 {
                     case 1:
@@ -315,10 +363,10 @@ class UsuarioController extends Controller {
                         {
                             $usuarios = DB::table('users')
                                 ->select('users.*')
-                                ->Where([['se', '=', $businessUnitUser->se]])
+                                ->Where([['coordenacao', '=', auth()->user()->coordenacao]])
                                 ->orderBy('name', 'asc')
                                 ->paginate(10);
-                            \Session::flash('mensagem',['msg'=>'Listando todos usuários da Superintendência.'
+                            \Session::flash('mensagem',['msg'=>'Listando todos usuários da SCOI.'
                                 ,'class'=>'blue white-text']);
                         }
                         break;
@@ -346,7 +394,7 @@ class UsuarioController extends Controller {
                                 ->Where([['se', '=', $businessUnitUser->se]])
                                 ->whereIn('tipoOrgaoCod', [9, 4, 6])
                                 ->orderBy('name', 'asc')
-                                ->paginate(10);
+                            ->paginate(10);
                             \Session::flash('mensagem',['msg'=>'Listando Usuários de Unidades operacionais cadastrados.'
                                 ,'class'=>'blue white-text']);
                         }
@@ -363,12 +411,10 @@ class UsuarioController extends Controller {
                         ,'class'=>'red white-text']);
                     return redirect()->route('home');
                 }
-
-
             }
             else
             {
-                \Session::flash('mensagem',['msg'=>'Não foi possivel processar Perfil insuficiente.'
+                \Session::flash('mensagem',['msg'=>'Perfil insuficiente.'
                     ,'class'=>'red white-text']);
                 return redirect()->route('home');
             }
@@ -380,5 +426,4 @@ class UsuarioController extends Controller {
             return redirect()->route('home');
         }
     }
-
 }
