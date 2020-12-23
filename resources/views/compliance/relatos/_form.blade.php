@@ -10,7 +10,7 @@
         </option>
         @endforeach
     </select>
-	<label>Ciclo/Tipo de Verificação/Tipo de Unidade/Grupo de Verificação</label>
+	<label>Ciclo/Tipo de Inspeção/Tipo de Unidade/Grupo de Inspeção</label>
 </div>
 <div class="input-field col s2">
 	<input type="text" name="numeroDoTeste" class="validate" value="{{ isset($registro->numeroDoTeste) ? $registro->numeroDoTeste : '' }}">
@@ -144,7 +144,7 @@
     <label for="roteiroNaoVerificado">Roteiro Relato Não Verificado:</label>
 </div>
 
-<div class="input-field col s12" id="itemanosanteriores">
+<div class="input-field col s12" id="itemanosanteriores" style="display: none">
     <i class="material-icons prefix">mode_edit</i>
     <textarea  id="itemanosanteriores" name="itemanosanteriores" class="materialize-textarea">
     {{ isset($registro->itemanosanteriores) ? $registro->itemanosanteriores : '' }}
