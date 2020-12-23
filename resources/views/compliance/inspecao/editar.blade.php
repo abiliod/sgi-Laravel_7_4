@@ -8,7 +8,7 @@
 		      	<div class="col s12">
 			        <a href="{{ route('home')}}" class="breadcrumb">Início</a>
 			        <a href="{{route('compliance.verificacoes.search')}}" class="breadcrumb">Verificação</a>
-			        <a class="breadcrumb">Verificação </a>
+			        <a class="breadcrumb">Inspeção </a>
 		      	</div>
 		    </div>
 		</nav>
