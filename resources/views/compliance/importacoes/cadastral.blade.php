@@ -17,13 +17,25 @@
         <div class="col s12 m12">
             <div class="card #004d40 teal darken-4">
                 <div class="card-content white-text">
-                    <span class="card-title">Sistema Cadastral</span>
-                    <p>Função Auxiliar de Sistema
-                         Assunto: Ativos de Rh.<br>Mimes: xlsx</p>
-                        <tr>
-                            <p>Relatório Cadastral fornecido pela SE | Cadastral.xlsx</p>
-                            <p><b>Modo Truncate</b> necessita ajuste para aderencia Nacional</p>
-                        </tr>
+                    <span class="card-title">Cadastral</span>
+                    <p>Cadastro do Efetivo<br>Assunto: Auxiliar do Sistema.</p>
+                    <p>WebSGQ 3 - Efetivo analitico por MCU | WebSGQ 3 - Efetivo analitico por MCU-SE.xlsx</p>
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                                Imprima o Relatório WebSGQ 3 - Efetivo analitico por MCU VEJA o lay-out:
+                                [SE/CS	Matrícula	Nome	Lotação	MCU	Cargo	Especialidade	Função]
+                                Sistema: http://intranetmg2/WebSGQ3/principal.asp MENU consulta->efetivo->analitico por mcu .
+                                Pesquisar  Superintendencia, selecionar a SE interessada marcar incluir orgãos subordinados. importar o excel
+                            ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ 3 - Efetivo analitico por MCU-GO.xlsx).
+                                </textarea>
+                    </div>
 
                     <form action="{{ route('compliance.importacao.cadastral') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
