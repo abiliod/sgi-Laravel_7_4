@@ -105,6 +105,9 @@ Route::post('/compliance/verificacoes/{search?}', 'Correios\VerificacoesControll
 Route::put('/compliance/tipounidades/atualizar/{id}','Correios\TipoDeUnidadeController@update')->name('compliance.tipounidades.atualizar');
 Route::get('/compliance/tipounidades', 'Correios\TipoDeUnidadeController@index')->name('compliance.tipounidades');
 Route::get('/compliance/tipounidades/editar/{id}', 'Correios\TipoDeUnidadeController@edit')->name('compliance.tipounidades.editar');
+Route::get('/compliance/tipounidades/adicionar', 'Correios\TipoDeUnidadeController@adicionar')->name('compliance.tipounidades.adicionar');
+Route::post('/compliance/tipounidades/salvar', 'Correios\TipoDeUnidadeController@salvar')->name('compliance.tipounidades.salvar');
+Route::post('/compliance/tipounidades/{search?}', 'Correios\TipoDeUnidadeController@search')->name('compliance.tipounidades.search');
 
 Route::get('/compliance/inspecao/destroyfiles/{id}', 'Correios\InspecaoController@deletefiles')->name('compliance.inspecao.destroyfiles');
 Route::put('/compliance/inspecao/atualizar/{id}','Correios\InspecaoController@update')->name('compliance.inspecao.atualizar');
