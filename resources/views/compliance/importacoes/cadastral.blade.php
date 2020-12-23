@@ -32,9 +32,9 @@
                                 Imprima o Relatório WebSGQ 3 - Efetivo analitico por MCU VEJA o lay-out:
                                 [SE/CS	Matrícula	Nome	Lotação	MCU	Cargo	Especialidade	Função]
                                 Sistema: http://intranetmg2/WebSGQ3/principal.asp MENU consulta->efetivo->analitico por mcu .
-                                Pesquisar  Superintendencia, selecionar a SE interessada marcar incluir orgãos subordinados. importar o excel
-                            ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ 3 - Efetivo analitico por MCU-GO.xlsx).
-                                </textarea>
+                                Pesquisar  Superintendencia, selecionar a SE interessada marcar incluir orgãos subordinados, em seguida importar para o excel.
+                                Ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ 3 - Efetivo analitico por MCU-GO.xlsx).
+                        </textarea>
                     </div>
 
                     <form action="{{ route('compliance.importacao.cadastral') }}" method="POST" name="importform"

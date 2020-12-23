@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\ToModel;
+use phpDocumentor\Reflection\Types\Null_;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Carbon\Carbon;
 
@@ -1071,6 +1072,7 @@ class ImportacaoController extends Controller {
     public function exportCadastral() {
         return Excel::download(new ExportCadastral, 'cadastrals.xlsx');
     }
+
     public function importCadastral(Request $request)
     {
         $row=0;
@@ -1087,7 +1089,7 @@ class ImportacaoController extends Controller {
 
         if($validator->passes())
         {
-            DB::table('cadastral')->truncate(); //excluir e zerar a tabela
+          //  DB::table('cadastral')->truncate(); //excluir e zerar a tabela
             $cadastrals = Excel::toArray(new ImportCadastral,  request()->file('file'));
             $dt = Carbon::now();
             ini_set('max_input_time', 350);
@@ -1096,17 +1098,17 @@ class ImportacaoController extends Controller {
             {
                 foreach($registros as $dado)
                 {
-                    $cadastral = DB::table('cadastral')
+                    $cad = DB::table('cadastral')
                         ->where('matricula', '=',  $dado['matricula'])
                         ->select(
                             'cadastral.id'
                         )
                         ->first();
-                    if(!empty(  $cadastral->id ))
+                    if(!empty(  $cad->id ))
                     {
-                        $registro = Cadastral::find($cadastral->id);
+                        $registro = Cadastral::find($cad->id);
                         $registro->se      = $dado['secs'];
-                        $registro->mcu      = $dado['mcu'];
+                        $registro->mcu      = (int)$dado['mcu'];
                         $registro->lotacao      = $dado['lotacao'];
                         $registro->matricula      = $dado['matricula'];
                         $registro->nome_do_empregado      = $dado['nome'];
@@ -1115,28 +1117,30 @@ class ImportacaoController extends Controller {
                         $registro->funcao      = $dado['funcao'];
                         $registro->situacao      = 'ATIVO';
                         $registro->updated_at = Carbon::now();
-                        $registro ->save();
                     }
                     else
                     {
-                        Cadastral::Create([
-                            'se'=>$dado['secs'],
-                            'mcu'=>$dado['mcu'],
-                            'lotacao'=>$dado['lotacao'],
-                            'matricula'=>$dado['matricula'],
-                            'nome_do_empregado'=>$dado['nome'],
-                            'cargo'=>$dado['cargo'],
-                            'especializ'=>$dado['especialidade'],
-                            'funcao'=>$dado['funcao'],
-                            'situacao'=>'Ativo'
-                        ]);
+                        $registro = new Cadastral();
+                        $registro->se      = $dado['secs'];
+                        $registro->mcu      = (int)$dado['mcu'];
+                        $registro->lotacao      = $dado['lotacao'];
+                        $registro->matricula      = $dado['matricula'];
+                        $registro->nome_do_empregado      = $dado['nome'];
+                        $registro->cargo      = $dado['cargo'];
+                        $registro->especializ      = $dado['especialidade'];
+                        $registro->funcao      = $dado['funcao'];
+                        $registro->situacao      = 'ATIVO';
                     }
+                    $registro ->save();
                     $row++;
                }
                 $affected = DB::table('cadastral')
                     ->where('se', $dado['secs'])
                     ->where('updated_at', '<', $dt)
-                ->update(['situacao' => '']);
+               // ->get();
+                ->update(['situacao' => null]);
+
+                       dd('afetados ->', $affected);
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);

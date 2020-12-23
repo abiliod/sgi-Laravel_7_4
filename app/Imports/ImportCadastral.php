@@ -40,6 +40,10 @@ class ImportCadastral implements
             'sexo'      => $row['sexo'],
             'situacao'      => $row['situacao'],
             'data_admissao'      => $row['data_admissao'],
+            'se'      => $row['se'],
+            'mcu'      => $row['mcu'],
+
+
 
         ]);
     }
