@@ -18,7 +18,7 @@
     @endcan
 
     @can('relato_listar')
-        <li><a href="{{route('compliance.relatos')}}">Relatos</a></li>
+        <li><a href="{{route('compliance.relatos')}}">Testes de Inspeção</a></li>
     @endcan
     <li class="divider"></li>
     @can('listar_importacoes')
