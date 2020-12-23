@@ -21,9 +21,9 @@
                 <div class="card green darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Unidades</span>
-                        <p>Unidades<br>Assunto: Atualização da Base de Unidades.</p>
-                        <p>Relatório ERP | R55001A.xlsx  FULL</p>
-                        <p><b>Modo Update</b>Mantem cadastro nacional</p>
+                        <p>Unidades<br>Assunto: Cadastro de Unidades.</p>
+                        <p>Relatório ERP | R55001A.xlsx</p>
+                        <p>Manter Cadastro de Unidades</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.unidades')}}">Importar Planilha</a>
@@ -37,9 +37,8 @@
                 <div class="card #004d40 teal darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Cadastral</span>
-                        <p>Cadastral<br>Assunto: Auxiliar do Sistema.</p>
-                        <p>Relatório Cadastral fornecido pela SE | Cadastral.xlsx</p>
-                        <p><b>Modo Truncate</b> necessita ajuste para aderencia Nacional</p>
+                        <p>Cadastro do Efetivo<br>Assunto: Auxiliar do Sistema.</p>
+                        <p>WebSGQ 3 - Efetivo analitico por MCU | WebSGQ 3 - Efetivo analitico por MCU-SE.xlsx</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.cadastral')}}">Importar Planilha</a>
