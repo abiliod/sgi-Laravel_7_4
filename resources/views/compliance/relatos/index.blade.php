@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<h2 class="center">Testes de Verificação</h2>
+	<h2 class="center">Testes de Inspeção</h2>
 	    <div class="row">
 			<div class="nav-wrapper green">
                 <form action="{{route('compliance.relatos.search')}}" method="post">
@@ -21,7 +21,7 @@
 
                     <div class="input-field col s3">
                         <select name="tipoVerificacao" id="tipoVerificacao">
-                            <option value="">Tipo de Verificação</option>
+                            <option value="">Tipo de Inspeção</option>
                             <option value="Presencial">Presencial</option>
                             <option value="Remoto">Remoto</option>
                         </select>
@@ -33,7 +33,7 @@
 
                     <div class="input-field col s4">
                     <select name="nomegrupo">
-                    <option value="">Grupo de Verificação</option>
+                    <option value="">Grupo de Inspeção</option>
                             @foreach($gruposdeverificacao as $grupodeverificacao)
                                  <option value="{{ $grupodeverificacao->nomegrupo }}">{{ $grupodeverificacao->nomegrupo }}</option>
                             @endforeach
@@ -50,7 +50,7 @@
 			<div class="nav-wrapper green">
 				<div class="col s12">
 					<a href="{{ route('home')}}" class="breadcrumb">Início</a>
-					<a class="breadcrumb">Testes de Verificação</a>
+					<a class="breadcrumb">Testes de Inspeção</a>
 				</div>
 			</div>
 		</nav>
@@ -61,7 +61,7 @@
 					<tr>
 
                         <th>Ciclo</th>
-						<th>Tipo de Verificação</th>
+						<th>Tipo de Inspeção</th>
                         <th>Tipo de Unidade</th>
                         <th>Grupo</th>
                         <th>Nº do Teste</th>
