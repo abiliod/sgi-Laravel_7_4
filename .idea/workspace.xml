@@ -19,8 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="21/12/20 - Ajuste de inclusão de campos para usuários;">
+    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/TipoDeUnidadeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/TipoDeUnidadeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,6 +225,9 @@
       <CommandLine workingDirectory="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="UsuarioController.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/app/Http/Controllers/Admin/UsuarioController.php">
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -233,9 +241,11 @@
     <list>
       <item itemvalue="npm.dev" />
       <item itemvalue="PHP Built-in Web Server.SgiWeb-7-4" />
+      <item itemvalue="PHP Script.UsuarioController.php" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="PHP Script.UsuarioController.php" />
         <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
@@ -740,105 +750,26 @@
       <workItem from="1608579597211" duration="936000" />
       <workItem from="1608581292334" duration="157000" />
       <workItem from="1608589919534" duration="603000" />
-      <workItem from="1608591102302" duration="916000" />
-    </task>
-    <task id="LOCAL-00008" summary="11/12/2020 - ajuste de workspace.">
-      <created>1607695085189</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1607695085189</updated>
-    </task>
-    <task id="LOCAL-00009" summary="11/12/2020 - ajuste de migrations.">
-      <created>1607695138539</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1607695138539</updated>
-    </task>
-    <task id="LOCAL-00010" summary="11/12/2020 - exclusao de migrations.">
-      <created>1607695185940</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1607695185940</updated>
-    </task>
-    <task id="LOCAL-00011" summary="15/12/20 - Otimização;">
-      <created>1608038869127</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1608038869127</updated>
-    </task>
-    <task id="LOCAL-00012" summary="18/12/20 - inclusão de campos no formulario de usuarios ;">
-      <created>1608260721622</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260721622</updated>
-    </task>
-    <task id="LOCAL-00013" summary="18/12/20 - Correção de entrada de dados no modal;">
-      <created>1608260807225</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260807225</updated>
-    </task>
-    <task id="LOCAL-00014" summary="18/12/20 - Correção de entrada de dados no modal;">
-      <created>1608260830067</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260830067</updated>
-    </task>
-    <task id="LOCAL-00015" summary="18/12/20 - Correção de entrada de dados seeders;">
-      <created>1608260877988</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260877988</updated>
-    </task>
-    <task id="LOCAL-00016" summary="18/12/20 - Ajuste perfil de segurança;">
-      <created>1608260928807</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260928807</updated>
-    </task>
-    <task id="LOCAL-00017" summary="18/12/20 - Ajuste perfil de segurança;">
-      <created>1608260950009</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260950009</updated>
-    </task>
-    <task id="LOCAL-00018" summary="18/12/20 - Ajuste perfil de segurança;">
-      <created>1608260973873</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260973873</updated>
-    </task>
-    <task id="LOCAL-00019" summary="18/12/20 - Ajuste perfil de segurança;">
-      <created>1608260995491</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1608260995491</updated>
-    </task>
-    <task id="LOCAL-00020" summary="18/12/20 - Ajuste perfil de segurança;">
-      <created>1608261012838</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1608261012838</updated>
-    </task>
-    <task id="LOCAL-00021" summary="18/12/20 - Ajuste perfil de segurança;">
-      <created>1608261032171</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1608261032171</updated>
+      <workItem from="1608591102302" duration="1657000" />
+      <workItem from="1608636681616" duration="720000" />
+      <workItem from="1608638824803" duration="1789000" />
+      <workItem from="1608641201001" duration="1800000" />
+      <workItem from="1608643030739" duration="1559000" />
+      <workItem from="1608644846844" duration="1789000" />
+      <workItem from="1608646749984" duration="1782000" />
+      <workItem from="1608648559591" duration="1787000" />
+      <workItem from="1608650380661" duration="1628000" />
+      <workItem from="1608655475740" duration="1783000" />
+      <workItem from="1608657292191" duration="1788000" />
+      <workItem from="1608659120873" duration="958000" />
+      <workItem from="1608663761382" duration="2120000" />
+      <workItem from="1608665913378" duration="1783000" />
+      <workItem from="1608667720614" duration="1263000" />
+      <workItem from="1608676350929" duration="1785000" />
+      <workItem from="1608678174742" duration="3532000" />
+      <workItem from="1608683690410" duration="1840000" />
+      <workItem from="1608685564004" duration="1853000" />
+      <workItem from="1608687933199" duration="625000" />
     </task>
     <task id="LOCAL-00022" summary="18/12/20 - Ajuste perfil de segurança;">
       <created>1608261051076</created>
@@ -1085,7 +1016,105 @@
       <option name="project" value="LOCAL" />
       <updated>1608592011183</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="21/12/20 - Ajuste de inclusão de workspace;">
+      <created>1608592049738</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1608592049738</updated>
+    </task>
+    <task id="LOCAL-00058" summary="21/12/20 - Ajuste de inclusão de workspace;">
+      <created>1608592104169</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1608592104169</updated>
+    </task>
+    <task id="LOCAL-00059" summary="22/12/20 - Ajuste de supressão de campo;">
+      <created>1608688013715</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688013716</updated>
+    </task>
+    <task id="LOCAL-00060" summary="22/12/20 - Ajuste de navegação;">
+      <created>1608688052430</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688052430</updated>
+    </task>
+    <task id="LOCAL-00061" summary="22/12/20 - Ajuste inclusão de funcionalidade add tipo de unidade;">
+      <created>1608688102673</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688102673</updated>
+    </task>
+    <task id="LOCAL-00062" summary="22/12/20 - Ajuste adequação de funcionalidade para importação da cadastral;">
+      <created>1608688158152</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688158152</updated>
+    </task>
+    <task id="LOCAL-00063" summary="22/12/20 - Ajuste adequação de funcionalidade ;">
+      <created>1608688213202</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688213202</updated>
+    </task>
+    <task id="LOCAL-00064" summary=" 22/12/20 - Ajuste de apontamento de itens de inspeção;">
+      <created>1608688282583</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688282583</updated>
+    </task>
+    <task id="LOCAL-00065" summary=" 22/12/20 - Ajuste de apontamento de itens de relatos inspeção;">
+      <created>1608688323312</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688323312</updated>
+    </task>
+    <task id="LOCAL-00066" summary=" 22/12/20 - Ajuste de importação nas funções unidades e cadastral;">
+      <created>1608688364827</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688364827</updated>
+    </task>
+    <task id="LOCAL-00067" summary=" 22/12/20 - Ajuste de funcionalidade para usuários;">
+      <created>1608688409458</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688409459</updated>
+    </task>
+    <task id="LOCAL-00068" summary=" 22/12/20 - Ajuste de funcionalidade para importações de usuários e unidades no formulario blade;">
+      <created>1608688449519</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688449519</updated>
+    </task>
+    <task id="LOCAL-00069" summary=" 22/12/20 - Ajuste de funcionalidade para relatos formulario blade;">
+      <created>1608688502362</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688502363</updated>
+    </task>
+    <task id="LOCAL-00070" summary=" 22/12/20 - Ajuste de funcionalidade para tipo de unidades formulario blade;">
+      <created>1608688532010</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1608688532010</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1104,16 +1133,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB." />
-    <MESSAGE value="04/12/2020 - ajuste de metodo  para adequação da funcionalidade SGIWEB." />
-    <MESSAGE value="04/12/2020 - ajuste de navegação para adequação da funcionalidade SGIWEB 2." />
-    <MESSAGE value="11/12/2020 - ajuste git ignore" />
-    <MESSAGE value="11/12/2020 - ajuste read-me" />
-    <MESSAGE value="11/12/2020 - ajuste de projeto." />
-    <MESSAGE value="11/12/2020 - ajuste para seeder de usuários." />
-    <MESSAGE value="11/12/2020 - ajuste de workspace." />
-    <MESSAGE value="11/12/2020 - ajuste de migrations." />
-    <MESSAGE value="11/12/2020 - exclusao de migrations." />
     <MESSAGE value="15/12/20 - Otimização;" />
     <MESSAGE value="18/12/20 - inclusão de campos no formulario de usuarios ;" />
     <MESSAGE value="18/12/20 - Correção de entrada de dados no modal;" />
@@ -1126,7 +1145,20 @@
     <MESSAGE value="21/12/20 - Correção de bug na verificação de registros inexistentes;" />
     <MESSAGE value="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários; inclusão de campos para usuários;" />
     <MESSAGE value="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;" />
-    <option name="LAST_COMMIT_MESSAGE" value="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;" />
+    <MESSAGE value="21/12/20 - Ajuste de inclusão de workspace;" />
+    <MESSAGE value="22/12/20 - Ajuste de supressão de campo;" />
+    <MESSAGE value="22/12/20 - Ajuste de navegação;" />
+    <MESSAGE value="22/12/20 - Ajuste inclusão de funcionalidade add tipo de unidade;" />
+    <MESSAGE value="22/12/20 - Ajuste adequação de funcionalidade para importação da cadastral;" />
+    <MESSAGE value="22/12/20 - Ajuste adequação de funcionalidade ;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de inspeção;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de relatos inspeção;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de importação nas funções unidades e cadastral;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para usuários;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para importações de usuários e unidades no formulario blade;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para relatos formulario blade;" />
+    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para tipo de unidades formulario blade;" />
+    <option name="LAST_COMMIT_MESSAGE" value=" 22/12/20 - Ajuste de funcionalidade para tipo de unidades formulario blade;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -1154,10 +1186,10 @@
     </state>
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603107998421" />
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1607690236617" />
-    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1606443747552">
+    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1608648586571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1606443747552" />
+    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1608648586571" />
     <state x="413" y="153" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1604673092524">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1171,16 +1203,16 @@
     </state>
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607101487361" />
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1603632333326" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1607430495673">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1608667517668">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1607430495673" />
-    <state x="401" y="0" key="CommitChangelistDialog2" timestamp="1608592049063">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608667517668" />
+    <state x="213" y="0" key="CommitChangelistDialog2" timestamp="1608688586197">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="401" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608592049063" />
+    <state x="213" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608688586197" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1194,26 +1226,42 @@
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602867117130" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1607694046871" />
-    <state width="1344" height="174" key="GridCell.Tab.0.bottom" timestamp="1607690276330">
+    <state width="1344" height="174" key="GridCell.Tab.0.bottom" timestamp="1608645949150">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.bottom/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1344" height="174" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1607690276330" />
-    <state width="1344" height="174" key="GridCell.Tab.0.center" timestamp="1607690276329">
+    <state width="1344" height="174" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1608645949150" />
+    <state width="1344" height="174" key="GridCell.Tab.0.center" timestamp="1608645949149">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.center/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1344" height="174" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1607690276329" />
-    <state width="1344" height="174" key="GridCell.Tab.0.left" timestamp="1607690276328">
+    <state width="1344" height="174" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1608645949149" />
+    <state width="1344" height="174" key="GridCell.Tab.0.left" timestamp="1608645949148">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.left/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1344" height="174" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1607690276328" />
-    <state width="1344" height="174" key="GridCell.Tab.0.right" timestamp="1607690276329">
+    <state width="1344" height="174" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1608645949148" />
+    <state width="1344" height="174" key="GridCell.Tab.0.right" timestamp="1608645949149">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1328" height="169" key="GridCell.Tab.0.right/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603465371150" />
-    <state width="1344" height="174" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1607690276329" />
+    <state width="1344" height="174" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1608645949149" />
+    <state width="1344" height="217" key="GridCell.Tab.1.bottom" timestamp="1608645778875">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1344" height="217" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1608645778875" />
+    <state width="1344" height="217" key="GridCell.Tab.1.center" timestamp="1608645778875">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1344" height="217" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1608645778875" />
+    <state width="1344" height="217" key="GridCell.Tab.1.left" timestamp="1608645778874">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1344" height="217" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1608645778874" />
+    <state width="1344" height="217" key="GridCell.Tab.1.right" timestamp="1608645778875">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1344" height="217" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1608645778875" />
     <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1602451474422">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1231,11 +1279,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608592051580">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608688589112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608592051580" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608688589112" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
