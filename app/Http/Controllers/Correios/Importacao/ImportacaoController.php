@@ -1071,76 +1071,84 @@ class ImportacaoController extends Controller {
     public function exportCadastral() {
         return Excel::download(new ExportCadastral, 'cadastrals.xlsx');
     }
-    public function importCadastral(Request $request) {
-
+    public function importCadastral(Request $request)
+    {
+        $row=0;
         $validator = Validator::make($request->all(),[
-            'file' => 'required|mimes:xlsx,xls,csv'
+            'file' => 'required|mimes:xlsx'
         ]);
-
-        if($request->file('file') == "") {
+        if($request->file('file') == "")
+        {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser  Cadastral_GO.xlsx! Selecione Corretamente'
+            O Arquivo de ser  WebSGQ 3 - Efetivo analitico por MCU.xlsx! Selecione Corretamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
 
-        if( $request->file('file')->getClientOriginalName() != "Cadastral.xlsx") {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser Cadastral.xlsx! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-        if($validator->passes()) {
+        if($validator->passes())
+        {
             DB::table('cadastral')->truncate(); //excluir e zerar a tabela
             $cadastrals = Excel::toArray(new ImportCadastral,  request()->file('file'));
-            foreach($cadastrals as $registros) {
-                $row=0;
-                foreach($registros as $dado) {
-                    $registro = new Cadastral;
-                    $registro->lotacao      = $dado['lotacao'];
-                    $registro->matricula      = $dado['matricula'];
-                    $registro->nome_do_empregado      = $dado['nome_do_empregado'];
-                    $registro->cargo      = $dado['cargo'];
-                    $registro->especializ      = $dado['especializ'];
-                    $registro->funcao      = $dado['funcao'];
-                    if(!empty($dado['data_nascto'])) {
-                        try {
-                            $dt         = $this->transformDate($registro['data_nascto']);
-                            $registro->data_nascto         = $dt;
-                            //$registro->data_nascto  = Carbon::createFromFormat('m/d/Y', $dado['data_nascto'])->format('Y-m-d');
-                        }
-                        catch (Exception $e) {
-                            $registro->data_nascto='';
-                        }
+            $dt = Carbon::now();
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
+            foreach($cadastrals as $registros)
+            {
+                foreach($registros as $dado)
+                {
+                    $cadastral = DB::table('cadastral')
+                        ->where('matricula', '=',  $dado['matricula'])
+                        ->select(
+                            'cadastral.id'
+                        )
+                        ->first();
+                    if(!empty(  $cadastral->id ))
+                    {
+                        $registro = Cadastral::find($cadastral->id);
+                        $registro->se      = $dado['secs'];
+                        $registro->mcu      = $dado['mcu'];
+                        $registro->lotacao      = $dado['lotacao'];
+                        $registro->matricula      = $dado['matricula'];
+                        $registro->nome_do_empregado      = $dado['nome'];
+                        $registro->cargo      = $dado['cargo'];
+                        $registro->especializ      = $dado['especialidade'];
+                        $registro->funcao      = $dado['funcao'];
+                        $registro->situacao      = 'ATIVO';
+                        $registro->updated_at = Carbon::now();
+                        $registro ->save();
                     }
-                    $registro->sexo      = $dado['sexo'];
-                    $registro->situacao      = $dado['situacao'];
-
-                    if(!empty($dado['data_admissao'])) {
-                        try {
-                            $dt         = $this->transformDate($registro['data_admissao']);
-                            $registro->data_admissao         = $dt;
-                            //$registro->data_nascto  = Carbon::createFromFormat('m/d/Y', $dado['data_nascto'])->format('Y-m-d');
-                        } catch (Exception $e) {
-                            $registro->data_nascto='';
-                        }
+                    else
+                    {
+                        Cadastral::Create([
+                            'se'=>$dado['secs'],
+                            'mcu'=>$dado['mcu'],
+                            'lotacao'=>$dado['lotacao'],
+                            'matricula'=>$dado['matricula'],
+                            'nome_do_empregado'=>$dado['nome'],
+                            'cargo'=>$dado['cargo'],
+                            'especializ'=>$dado['especialidade'],
+                            'funcao'=>$dado['funcao'],
+                            'situacao'=>'Ativo'
+                        ]);
                     }
-                    $registro ->save();
                     $row++;
-                }
+               }
+                $affected = DB::table('cadastral')
+                    ->where('se', $dado['secs'])
+                    ->where('updated_at', '<', $dt)
+                ->update(['situacao' => '']);
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
             return redirect()->route('importacao');
         }else{
-            //    return back()->with(['errors'=>$validator->errors()->all()]);
             \Session::flash('mensagem',['msg'=>'Registros Cadastral Não pôde ser importado! Tente novamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
     }
     public function cadastral() {
-        return view('compliance.importacoes.cadastral');  //
+        return view('compliance.importacoes.cadastral');
     }
     /// ######################### FIM CADASTRAL #######################
 
