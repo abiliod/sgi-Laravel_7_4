@@ -35,7 +35,7 @@
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
                         Acessar o sistema SDE ( http://intranetsistemas/SDE/default.cfm ) Opção
                         Contabilização->Conciliação->Conciliação SMB x BDF.
-                        Execute a consulta passando os parâmetros de data, período no mínimo 90 dias.
+                        Execute a consulta passando os parâmetros de data, período no mínimo 90 dias para sua Superintendência.
                         Após a exibição da tela selecione a aba NÃO CONCILIADOS.
                         Estabeleca filtro para as unidades com Situação = "TODOS".
                         Marque a partir do cabeçãlho da tabela até o final do relatório exceto a linha total. Copie e cole especial em uma Planílha  excel.xlsx
