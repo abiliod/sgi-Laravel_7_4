@@ -596,7 +596,11 @@ class ImportacaoController extends Controller {
         return Excel::download(new ExportSMBxBDF_NaoConciliado, 'SMBxBDF_NaoConciliado.xlsx');
     }
 
-    public function importSmb_bdf(Request $request) {
+    public function importSmb_bdf(Request $request)
+    {
+        $row = 0;
+        $dtmenos90dias = Carbon::now();
+        $dtmenos90dias = $dtmenos90dias->subDays(90);
 
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
@@ -609,28 +613,98 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
 
-        if( $request->file('file')->getClientOriginalName() != "270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xlsx") {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser  270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+//        if( $request->file('file')->getClientOriginalName() != "270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser  270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-        if($validator->passes()) {
-
-            /** d)	270-3-FINANCEIRO-SMB_ BDF_DepositosNãoaoConciliados – semanal mente acrescentar a partir da última data. Informações da aba  Não Conciliados. Obs: fazer o tratamento dos dados para adequar ao Lay-out da planilha. É necessário fazer a exclusão de 4 linhas geradas pelo sistema exportador para ficar apenas as informações relevantes para a importação. (Importação por incremento. O Sistema ao Importar a tabela grava apenas os registros não existentes.);
-             *
-             */
-
+        if($validator->passes())
+        {
             $SMBxBDF_NaoConciliado = Excel::toArray(new ImportSMBxBDF_NaoConciliado,  request()->file('file'));
-            foreach($SMBxBDF_NaoConciliado as $registros) {
-                $row = 0;
-                foreach($registros as $dado) {
+            foreach($SMBxBDF_NaoConciliado as $registros)
+            {
+                foreach($registros as $dado)
+                {
                     $dt         = $this->transformDate($dado['data'])->format('Y-m-d');
-
-
                     $dt =   substr(   $dt,0,10);
-                    //    dd($dt);
+                    try {
+                        $dt         = $this->transformDate($dado['data']);
+                    }catch (Exception $e)
+                    {
+                        $dt ='';
+                    }
+
+                    if($dado['smbdinheiro'] != 0){
+                        $smbdinheiro = str_replace(",", ".", $dado['smbdinheiro']);
+                    }
+                    else
+                    {
+                        $smbdinheiro = 0.00;
+                    }
+
+                    if($dado['smbcheque'] != 0) {
+                        $smbcheque = str_replace(",", ".", $dado['smbcheque']);
+                    }
+                    else
+                    {
+                        $smbcheque = 0.00;
+                    }
+
+                    if($dado['smbboleto'] != 0)
+                    {
+                        $smbboleto = str_replace(",", ".", $dado['smbboleto']);
+                    }
+                    else
+                    {
+                        $smbboleto = 0.00;
+                    }
+
+                    if($dado['smbestorno'] != 0)
+                    {
+                        $smbestorno = str_replace(",", ".", $dado['smbestorno']);
+                    }
+                    else
+                    {
+                        $smbestorno = 0.00;
+                    }
+
+                    if($dado['bdfdinheiro'] != 0)
+                    {
+                        $bdfdinheiro = str_replace(",", ".", $dado['bdfdinheiro']);
+                    }
+                    else
+                    {
+                        $bdfdinheiro = 0.00;
+                    }
+
+                    if($dado['bdfcheque'] != 0)
+                    {
+                        $bdfcheque = str_replace(",", ".", $dado['bdfcheque']);
+                    }
+                    else
+                    {
+                        $bdfcheque = 0.00;
+                    }
+
+                    if($dado['bdfboleto'] != 0)
+                    {
+                        $bdfboleto = str_replace(",", ".", $dado['bdfboleto']);
+                    }
+                    else
+                    {
+                        $bdfboleto = 0.00;
+                    }
+
+                    if($dado['divergencia'] != 0)
+                    {
+                        $divergencia = str_replace(",", ".", $dado['divergencia']);
+                    }
+                    else
+                    {
+                        $divergencia = 0.00;
+                    }
 
                     $res = DB::table('smb_bdf_NaoConciliados')
                         ->where('mcu', '=',  $dado['mcu'])
@@ -638,82 +712,56 @@ class ImportacaoController extends Controller {
                         ->select(
                             'smb_bdf_NaoConciliados.id'
                         )
-                        ->first();
-                    if (!$res){
+                    ->first();
 
-
-                        try {
-                            $dt         = $this->transformDate($dado['data']);
-                        }catch (Exception $e) {
-                            $dt ='';
+                    if(!empty(  $res->id ))
+                    {
+                        if ($dado['status'] <> 'Pendente')
+                        {
+                            $smb_bdf_naoconciliados = SMBxBDF_NaoConciliado::find($res->id);
+                            $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
+                            $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
+                            $smb_bdf_naoconciliados->cnpj  = $dado['cnpj'];
+                            $smb_bdf_naoconciliados->status  = $dado['status'];
+                            $smb_bdf_naoconciliados->Data = $dt;
+                            $smb_bdf_naoconciliados->smbdinheiro = $smbdinheiro;
+                            $smb_bdf_naoconciliados->smbcheque = $smbcheque;
+                            $smb_bdf_naoconciliados->smbboleto = $smbboleto;
+                            $smb_bdf_naoconciliados->smbestorno = $smbestorno;
+                            $smb_bdf_naoconciliados->bdfdinheiro = $bdfdinheiro;
+                            $smb_bdf_naoconciliados->bdfcheque = $bdfcheque;
+                            $smb_bdf_naoconciliados->bdfboleto = $bdfboleto;
+                            $smb_bdf_naoconciliados->divergencia = $divergencia;
                         }
-
-                        if($dado['smbdinheiro'] != 0){
-                            $smbdinheiro = str_replace(",", ".", $dado['smbdinheiro']);
-                        }else{
-                            $smbdinheiro = 0.00;
-                        }
-
-                        if($dado['smbcheque'] != 0) {
-                            $smbcheque = str_replace(",", ".", $dado['smbcheque']);
-                        }else {
-                            $smbcheque = 0.00;
-                        }
-
-                        if($dado['smbboleto'] != 0) {
-                            $smbboleto = str_replace(",", ".", $dado['smbboleto']);
-                        }else {
-                            $smbboleto = 0.00;
-                        }
-
-                        if($dado['smbestorno'] != 0) {
-                            $smbestorno = str_replace(",", ".", $dado['smbestorno']);
-                        }else {
-                            $smbestorno = 0.00;
-                        }
-
-                        if($dado['bdfdinheiro'] != 0) {
-                            $bdfdinheiro = str_replace(",", ".", $dado['bdfdinheiro']);
-                        }else {
-                            $bdfdinheiro = 0.00;
-                        }
-
-                        if($dado['bdfcheque'] != 0) {
-                            $bdfcheque = str_replace(",", ".", $dado['bdfcheque']);
-                        }else{
-                            $bdfcheque = 0.00;
-                        }
-
-                        if($dado['bdfboleto'] != 0){
-                            $bdfboleto = str_replace(",", ".", $dado['bdfboleto']);
-                        }else {
-                            $bdfboleto = 0.00;
-                        }
-
-                        if($dado['divergencia'] != 0) {
-                            $divergencia = str_replace(",", ".", $dado['divergencia']);
-                        }else {
-                            $divergencia = 0.00;
-                        }
-
-                        $smb_bdf_naoconciliados = new SMBxBDF_NaoConciliado;
-                        $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
-                        $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
-                        $smb_bdf_naoconciliados->cnpj  = $dado['cnpj'];
-                        $smb_bdf_naoconciliados->status  = $dado['status'];
-                        $smb_bdf_naoconciliados->Data = $dt;
-                        $smb_bdf_naoconciliados->smbdinheiro = $smbdinheiro;
-                        $smb_bdf_naoconciliados->smbcheque = $smbcheque;
-                        $smb_bdf_naoconciliados->smbboleto = $smbboleto;
-                        $smb_bdf_naoconciliados->smbestorno = $smbestorno;
-                        $smb_bdf_naoconciliados->bdfdinheiro = $bdfdinheiro;
-                        $smb_bdf_naoconciliados->bdfcheque = $bdfcheque;
-                        $smb_bdf_naoconciliados->bdfboleto = $bdfboleto;
-                        $smb_bdf_naoconciliados->divergencia = $divergencia;
-                        $smb_bdf_naoconciliados->save();
-                        $row ++;
                     }
+                    else
+                    {
+                        if ($dado['status']== 'Pendente')
+                        {
+                            $smb_bdf_naoconciliados = new SMBxBDF_NaoConciliado;
+                            $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
+                            $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
+                            $smb_bdf_naoconciliados->cnpj  = $dado['cnpj'];
+                            $smb_bdf_naoconciliados->status  = $dado['status'];
+                            $smb_bdf_naoconciliados->Data = $dt;
+                            $smb_bdf_naoconciliados->smbdinheiro = $smbdinheiro;
+                            $smb_bdf_naoconciliados->smbcheque = $smbcheque;
+                            $smb_bdf_naoconciliados->smbboleto = $smbboleto;
+                            $smb_bdf_naoconciliados->smbestorno = $smbestorno;
+                            $smb_bdf_naoconciliados->bdfdinheiro = $bdfdinheiro;
+                            $smb_bdf_naoconciliados->bdfcheque = $bdfcheque;
+                            $smb_bdf_naoconciliados->bdfboleto = $bdfboleto;
+                            $smb_bdf_naoconciliados->divergencia = $divergencia;
+                        }
+                    }
+                    $smb_bdf_naoconciliados->save();
+                    $row ++;
                 }
+                $affected = DB::table('smb_bdf_naoconciliados')
+                    ->where('data', '<', $dtmenos90dias)
+                    // ->get();
+                    ->delete();
+                //    dd('nao atualizados -> ', $affected );
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
