@@ -53,7 +53,8 @@
                     <div class="card-content white-text">
                         <span class="card-title">Feriados</span>
                         <p><br>Relatório Feriado ERP | Feriado.xlsx</p> <br>
-                        <p><b>Modo Truncate</b> necessita ajuste para aderencia Nacional</p>
+                         <p>Manter cadastro de feriados.</p>
+
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.feriado')}}">Importar Planilha</a>
@@ -67,12 +68,9 @@
                 <div class="card   orange darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema WebCont</span>
-                        <p>Grupo de Verificação 270, Função Prevenção de Perdas.</p>
-                        <tr>
-                            <p>Assunto: Débito de Empregado: WebCont | 270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx</p>
-                            <p><b>Modo Truncate</b> necessita ajuste para aderencia Nacional</p>
-                        </tr>
-
+                        <p>Função: Prevenção de Perdas.</p>
+                        <p>Assunto: Débito de Empregado: Conta  11202.994000</p>
+                        <p>Item: 270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx<br/></p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.webcont')}}">Importar Planilha</a>
@@ -86,10 +84,9 @@
                 <div class="card #0d47a1 blue darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema Proter</span>
-                        <p>Grupo de Verificação 270, Função Prevenção de Perdas.</p>
-                        <tr>
-                            <p>Assunto: Proteção de Receitas. PROTER | 270-2-FINANCEIRO-Proter_ProtecaoReceita.xlsx<b>Modo Truncate</b> Talvez necessita ajuste para aderencia Nacional</p>
-                        </tr>
+                        <p>Função Prevenção de Perdas.</p>
+                        <p>Assunto: Proteção de Receitas. PROTER</p>
+                        <p>Item: 270-2 - FINANCEIRO </p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.proter')}}">Importar Planilha</a>
