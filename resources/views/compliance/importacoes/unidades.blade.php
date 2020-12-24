@@ -35,6 +35,8 @@
                                 Utilize uma planilha de apoio por nome de  R55001A.xlsx, Mantenha a Linha de cabeçalho.
                                 Copiar os dados da planilha original, colar salvar em seguida marque para importar. O Sistema incrementa atualiza essa planilha máximo 1000 linhas.
                                 A opção Exportar está desabilitada por questões de segurança empresarial.
+                                Frequencia: Início do ciclo.
+                                Se o sistema der erro TIME-OUT, divida a planilha para que a mesma tenha uma quantidade menor de registros.
                                 </textarea>
                         </div>
 
