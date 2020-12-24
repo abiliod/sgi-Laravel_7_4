@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Correios;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Illuminate\Database\Query\Builder;
+//use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Correios\TesteDeVerificacao;
-use App\Models\Correios\GrupoDeVerificacao;
+//use App\Models\Correios\GrupoDeVerificacao;
 use App\Models\Correios\TipoDeUnidade;
 use App\Http\Requests\Compliance\SalvarTesteDeVerificacao;
 
@@ -52,9 +52,9 @@ class RelatoController extends Controller
 
     public function adicionar()
     {
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
-        ->join('tiposDeUnidade', 'tiposDeUnidade.id',  '=',   'gruposDeVerificacao.tipoUnidade_id')
-        ->select('gruposDeVerificacao.id','ciclo','tipoVerificacao','sigla','tipodescricao','numeroGrupoVerificacao','nomegrupo')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
+        ->join('tiposdeunidade', 'tiposdeunidade.id',  '=',   'gruposdeverificacao.tipoUnidade_id')
+        ->select('gruposdeverificacao.id','ciclo','tipoVerificacao','sigla','tipodescricao','numeroGrupoVerificacao','nomegrupo')
         -> orderBy ('ciclo', 'ASC')
         -> orderBy ('tipoUnidade_id', 'ASC')
         -> orderBy ('numeroGrupoVerificacao', 'ASC')
@@ -99,9 +99,9 @@ class RelatoController extends Controller
     public function edit($id)
     {
         $registro = TesteDeVerificacao::find($id);
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
-        ->join('tiposDeUnidade', 'tiposDeUnidade.id',  '=',   'gruposDeVerificacao.tipoUnidade_id')
-        ->select('gruposDeVerificacao.id','ciclo','tipoVerificacao','sigla','tipodescricao','numeroGrupoVerificacao','nomegrupo')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
+        ->join('tiposdeunidade', 'tiposdeunidade.id',  '=',   'gruposdeverificacao.tipoUnidade_id')
+        ->select('gruposdeverificacao.id','ciclo','tipoVerificacao','sigla','tipodescricao','numeroGrupoVerificacao','nomegrupo')
         -> orderBy ('ciclo', 'ASC')
         -> orderBy ('tipoUnidade_id', 'ASC')
         -> orderBy ('numeroGrupoVerificacao', 'ASC')
@@ -125,39 +125,39 @@ class RelatoController extends Controller
             return redirect()->back();
         }else if($dados['tipoUnidade_id'] >= "1"){
                         //dd("elseif");
-                        $registros = DB::table('tiposDeUnidade')
-                        ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
-                        ->join('testesDeVerificacao', 'grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
+                        $registros = DB::table('tiposdeunidade')
+                        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
+                        ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
                         ->where([
-                                ['gruposDeVerificacao.tipoUnidade_id', '=', $dados['tipoUnidade_id'] ]
+                                ['gruposdeverificacao.tipoUnidade_id', '=', $dados['tipoUnidade_id'] ]
                                 ])
                         ->where([
-                                ['gruposDeVerificacao.tipoVerificacao', '=', $dados['tipoVerificacao'] ]
+                                ['gruposdeverificacao.tipoVerificacao', '=', $dados['tipoVerificacao'] ]
                                 ])
                         ->where([
-                                ['gruposDeVerificacao.nomegrupo', 'like','%' . $dados['nomegrupo'] .'%' ]
+                                ['gruposdeverificacao.nomegrupo', 'like','%' . $dados['nomegrupo'] .'%' ]
                                 ])
                         ->paginate(100);
                 }else{
             //   dd('else');
-                $registros = DB::table('tiposDeUnidade')
-                ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
-                ->join('testesDeVerificacao', 'grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
+                $registros = DB::table('tiposdeunidade')
+                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
+                ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
                 ->where([
-                        ['gruposDeVerificacao.tipoVerificacao', '=', $dados['tipoVerificacao'] ]
+                        ['gruposdeverificacao.tipoVerificacao', '=', $dados['tipoVerificacao'] ]
                         ])
                 ->where([
-                        ['gruposDeVerificacao.nomegrupo', 'like','%' . $dados['nomegrupo'] .'%' ]
+                        ['gruposdeverificacao.nomegrupo', 'like','%' . $dados['nomegrupo'] .'%' ]
                         ])
                 ->paginate(100);
         }
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('nomegrupo')
             ->groupByRaw('nomegrupo')
             ->get();
 
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
             ->groupByRaw('tipoUnidade_id')
             ->get();
@@ -168,12 +168,12 @@ class RelatoController extends Controller
 
     public function index() {
 
-        $registros = DB::table('tiposDeUnidade')
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
-            ->join('testesDeVerificacao', 'grupoVerificacao_id', '=', 'gruposDeVerificacao.id')
+        $registros = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
+            ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
             ->paginate(15);
 
-        $gruposdeverificacao = DB::table('gruposDeVerificacao')
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('nomegrupo')
             ->groupByRaw('nomegrupo')
             ->get();
@@ -185,9 +185,9 @@ class RelatoController extends Controller
         $dados->nomegrupo='Selecione um Grupo de Unidade';
 
 
-        $tiposDeUnidade = DB::table('tiposDeUnidade')
+        $tiposDeUnidade = DB::table('tiposdeunidade')
 
-            ->join('gruposDeVerificacao', 'tiposDeUnidade.id',  '=',   'tipoUnidade_id')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
             ->groupByRaw('tipoUnidade_id')
             ->get();
