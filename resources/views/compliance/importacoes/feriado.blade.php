@@ -18,11 +18,27 @@
             <div class="card blue darken-1">
                 <div class="card-content white-text">
                     <span class="card-title">Sistema de Feriados</span>
-                    <p>Feriados: Assunto:  Auxiliar do Sistema.<br>Mimes: xlsx</p>
-                    <tr>
-                        <p>Relatório Feriado ERP | Feriado.xlsx</p>
-                        <p><b>Modo Truncate</b> necessita ajuste para aderencia Nacional</p>
-                    </tr>
+                    <p>Cadastro do Feriados<br>Assunto: Auxiliar do Sistema.</p>
+                    <p>Relatório Feriado ERP | Feriado.xlsx</p>
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                                Imprima o Relatório ERP: Cadastro Geral -> Feriados -> Relatório de Feriados.
+                                Submeter -> Impressora  -> OK, aguarde o processamento em seguida.
+                                Relatório de Feriados Exib. saída.
+                                Relatório Feriados VEJA o lay-out:
+                                [UF	Nome Município	Tipo Feriado	Descrição Feriado	Data do Feriado]
+                                Frequencia: INÍCIO DO CICLO.
+                                Se o sistema der erro TIME-OUT, divida a planilha para que a mesma tenha uma quantidade menor de registros.
+                        </textarea>
+                    </div>
+
                     <form action="{{ route('compliance.importacao.feriado') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
