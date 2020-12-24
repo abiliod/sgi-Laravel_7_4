@@ -19,9 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment=" 23/12/20 - ajuste filtro;">
+    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -783,14 +785,11 @@
       <workItem from="1608769026264" duration="1832000" />
       <workItem from="1608770892855" duration="1784000" />
       <workItem from="1608800914083" duration="1815000" />
-      <workItem from="1608802845884" duration="522000" />
-    </task>
-    <task id="LOCAL-00040" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591655402</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591655402</updated>
+      <workItem from="1608802845884" duration="1317000" />
+      <workItem from="1608813649547" duration="1784000" />
+      <workItem from="1608815479010" duration="1784000" />
+      <workItem from="1608817293027" duration="1564000" />
+      <workItem from="1608819279974" duration="1627000" />
     </task>
     <task id="LOCAL-00041" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
       <created>1608591677792</created>
@@ -1128,7 +1127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608772545415</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary=" 23/12/20 - ajuste filtro relatos;">
+      <created>1608803444219</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1608803444222</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1147,7 +1153,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="22/12/20 - Ajuste adequação de funcionalidade ;" />
     <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de inspeção;" />
     <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de relatos inspeção;" />
     <MESSAGE value=" 22/12/20 - Ajuste de importação nas funções unidades e cadastral;" />
@@ -1172,7 +1177,8 @@
     <MESSAGE value=" 23/12/20 - ajuste  para importar;" />
     <MESSAGE value=" 23/12/20 - ajuste  para importar proter;" />
     <MESSAGE value=" 23/12/20 - ajuste filtro;" />
-    <option name="LAST_COMMIT_MESSAGE" value=" 23/12/20 - ajuste filtro;" />
+    <MESSAGE value=" 23/12/20 - ajuste filtro relatos;" />
+    <option name="LAST_COMMIT_MESSAGE" value=" 23/12/20 - ajuste filtro relatos;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -1222,11 +1228,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608667517668" />
-    <state x="197" y="0" key="CommitChangelistDialog2" timestamp="1608803137044">
+    <state x="197" y="0" key="CommitChangelistDialog2" timestamp="1608803443126">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="197" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608803137044" />
+    <state x="197" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608803443126" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1293,11 +1299,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608772547333">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608803447326">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608772547333" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608803447326" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
