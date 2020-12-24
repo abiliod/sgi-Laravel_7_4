@@ -18,10 +18,30 @@
             <div class="card #42a5f5 orange lighten-1">
                 <div class="card-content white-text">
                     <p>Grupo de Verificação 270, Função Prevenção de Perdas.</p>
-                    <tr>
-                        <p>Assunto: Débito de Empregado: WebCont | 270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx</p>
-                        <p><b>Modo Truncate</b> necessita ajuste para aderencia Nacional</p>
-                    </tr>
+                        <p>Função: Prevenção de Perdas.</p>
+                        <p>Assunto: Débito de Empregado: Conta  11202.994000</p>
+                        <p>Item: 270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx<br/></p>
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                                Endereço:  http://snu0074/webcont/menu_conciliacoes/
+                                As informações são obtidas por meio: Menu Consultas > Conciliações.
+                                Selecionar a competência mais recente: Selecionar a CIA (Superintendência).
+                                Informar a conta 11202.994000. Se não hover dados informe outra competéncia anterior até obter registros.
+                                Gerar o arquivo no formato CSV, em seguida e importar para Excel.xlsx
+                                lay-out: [Cia	Conta	Competência	Data	Lote	Tp	MCU (Doc1)	Nome Agência (Doc2)	Histórico	Valor	Observações	Documento (Ref1)	Matrícula (Ref2)	Nome Empregado (Ref3)	Ação	Justificativa (Ad1)	Ad2	Ad3	Ad4	Ad5	Ad6	Ad7	Regularização	Anexo]
+                                Sugestão de nome do Arquivo: 270-1-WebCont_DebitoEmpregado.xlsx .
+                                Frequencia: Mensal, sempre que for disponibilizado nova prévia pelo departamento.
+                                Se o sistema der erro TIME-OUT, divida a planilha para que a mesma tenha uma quantidade menor de registros.
+                        </textarea>
+                    </div>
+
                     <form action="{{ route('compliance.importacao.webcont') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
