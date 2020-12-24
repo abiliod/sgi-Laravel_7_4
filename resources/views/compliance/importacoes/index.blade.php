@@ -100,10 +100,10 @@
                 <div class="card #424242 grey darken-3">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema de Depósito Bancário</span>
-                        <p>Grupo de Verificação 270, Função Prevenção de Perdas.</p>
-                        <tr>
-                            <p>Assunto: Integridade de Depósitos Bancários. SMB - BDF | 270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xlsx <b>Modo Icremento</b></p>
-                        </tr>
+                        <p>Função Prevenção de Perdas.</p>
+                        <p>Assunto:  Integridade de Depósitos Bancários. SMB - BDF</p>
+                        <p>Item: 270-3 - FINANCEIRO</p>
+                        <p></p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.smb_bdf')}}">Importar Planilha</a>
