@@ -20,11 +20,37 @@
 
 
                     <span class="card-title">Sistema de Depósito Bancário</span>
-            <P>Grupo de Verificação 270, Função Prevenção de Perdas <br></p>
-                    <tr>
-                        <p>Assunto: Integridade de Depósitos Bancários. SMB - BDF | 270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xlsx</p>
-                        <p><b>Modo Icremento</b></p>
-                    </tr>
+                    <p>Função Prevenção de Perdas.</p>
+                    <p>Assunto:  Integridade de Depósitos Bancários. SMB - BDF</p>
+                    <p>Item: 270-3 - FINANCEIRO</p>
+
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                        Acessar o sistema SDE ( http://intranetsistemas/SDE/default.cfm ) Opção
+                        Contabilização->Conciliação->Conciliação SMB x BDF.
+                        Execute a consulta passando os parâmetros de data, período no mínimo 90 dias.
+                        Após a exibição da tela selecione a aba NÃO CONCILIADOS.
+                        Estabeleca filtro para as unidades com Situação = "TODOS".
+                        Marque a partir do cabeçãlho da tabela até o final do relatório exceto a linha total. Copie e cole especial em uma Planílha  excel.xlsx
+                        Frequencia: Diaria. (obs: pelo menos uma vez por semana deve-se fazer uma importação com período de 90 dias.)
+
+                        Obs: COLAR ESPECIAL fazer o tratamento dos dados para adequar ao Lay-out da planilha.
+                        É necessário fazer a exclusão de 4 linhas geradas pelo sistema exportador a cada mudança de unidade para ficar apenas as informações relevantes para a importação.
+                        Após o tratamento da planilha exclua a coluna (A) observe o lay-out.
+                        VEJA o lay-out:
+                        [MCU	Agencia	CNPJ	Data	SMBDinheiro	SMBCheque	SMBBoleto	SMBEstorno	BDFDinheiro	BDFCheque	BDFBoleto	Divergencia	Status]
+                        (Tipo de importação: Por incremento.
+                        O Sistema ao importar a planilha grava apenas os registros não existentes que estão com status Pendente e atualizará os registros existentes com status atual encontrado na importação que por ventura estejam  diferente de Pendente. Em seguida irá apagará os registros com data de movimento maior que 90 dias.);
+                        </textarea>
+                    </div>
+
                     <form action="{{ route('compliance.importacao.smb_bdf') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
