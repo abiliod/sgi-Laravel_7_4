@@ -1065,14 +1065,11 @@ class ImportacaoController extends Controller {
                     $registro ->save();
                     $row++;
                 }
-
                 $affected = DB::table('proters')
                     ->where('updated_at', '<', $dt)
-                    ->get();
-                dd('nao atualizados -> ', $affected );
-
-
-
+                   // ->get();
+                ->delete();
+            //    dd('nao atualizados -> ', $affected );
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
