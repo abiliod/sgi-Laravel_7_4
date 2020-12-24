@@ -737,13 +737,12 @@ class ImportacaoController extends Controller {
         return Excel::download(new ExportProter, 'proters.xlsx');
     }
 
-    public function importProter(Request $request) {
-
+    public function importProter(Request $request)
+    {
+        $row=0;
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
-
-
         if($request->file('file') == "")
         {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
@@ -751,157 +750,335 @@ class ImportacaoController extends Controller {
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
-        if( $request->file('file')->getClientOriginalName() != "270-2-FINANCEIRO-Proter_ProtecaoReceita.xlsx")
+//        if( $request->file('file')->getClientOriginalName() != "270-2-FINANCEIRO-Proter_ProtecaoReceita.xlsx")
+//        {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//    O Arquivo de ser 270-2-FINANCEIRO-Proter_ProtecaoReceita.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
+
+        if($validator->passes())
         {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-    O Arquivo de ser 270-2-FINANCEIRO-Proter_ProtecaoReceita.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-
-        if($validator->passes()) {
-
-//         ini_set('memory_limit', '1024M');
-//           ini_set('upload_max_filesize', '1024M');
-//          ini_set('post_max_size', '1024M');
-//           ini_set('max_input_time', 350);
-//           ini_set('max_execution_time', 350);
-
-            /**
-             * c)	270-2-FINANCEIRO-Proter_ProtecaoReceita – Mensal As pendências apresentadas no PROTER referem-se ao período de Janeiro/2017 em diante. Sistema SPN->Itens Monitorados->Objeto Postal->Relatório Pendências Geral. Efetuar as pesquisas a partir desta data. Copiar e colar as informações na planilha de acordo com o lay-out. Para melhorar a performance da importação exclua as linhas  DUP e ORD Obs  a pesquisa deve ser feita como
-             * um
-             *
-            //todo pois há possibilidade de uma pendência em anos anteriores ter sido regularizada recentemente. (Importação por Substituição. O Sistema ao Importar a tabela apagará os dados existentes anteriormente automaticamente);
-             */
-            DB::table('proters')->truncate(); //excluir e zerar a tabela
-
+           ini_set('max_input_time', 350);
+           ini_set('max_execution_time', 350);
+//            DB::table('proters')->truncate(); //excluir e zerar a tabela
             $proters = Excel::toArray(new ImportProter,  request()->file('file'));
+            $dt = Carbon::now();
+            foreach($proters as $registros)
+            {
 
-            // var_dump(  $proters  );
-            // dd();
+                foreach($registros as $dado)
+                {
+                    $proter = DB::table('proters')
+                        ->where('no_do_objeto', '=', $dado['no_do_objeto'])
+                        ->select('proters.*')
+                    ->first();
+                    if(!empty(  $proter->id ))
+                    {
+                        $affected = DB::table('proters')
+                            ->where('no_do_objeto', '=', $dado['no_do_objeto'])
+                            ->where('status_da_pendencia', '<>', 'Pendente')
+                        ->delete();
+                        if( $affected == 0)
+                        {
+                            if(($dado['tipo_de_pendencia']  == 'CON' )or($dado['tipo_de_pendencia']  == 'DPC' ) && ($dado['status_da_pendencia'] == 'Pendente'))
+                            {
+                                $registro = Proter::find($proter->id);
+                                if($this->transformDate($dado['data_da_pendencia'])=='1970-01-01 00:00:00')
 
-            foreach($proters as $registros) {
-                $row=0;
-                foreach($registros as $dado) {
+                                {
+                                    $registro->data_da_pendencia = null;
+                                }
+                                else
+                                {
+                                    $registro->data_da_pendencia = $this->transformDate($dado['data_da_pendencia']);
+                                }
 
-                    $registro = new Proter;
-                    $registro->tipo_de_pendencia      = $dado['tipo_de_pendencia'];
-                    $registro->divergencia_peso  = $dado['divergencia_peso'];
-                    $registro->divergencia_cep  = $dado['divergencia_cep'];
-                    $registro->origem_pendencia  = $dado['origem_pendencia'];
-                    $registro->se  = $dado['se'];
-                    $registro->tipo_de_unidade  = $dado['tipo_de_unidade'];;
-                    $registro->mcu  = $dado['stomcu'];  //ok
-                    $registro->nome_da_unidade  = $dado['nome_da_unidade'];
-                    $registro->tipo_de_atendimento  = $dado['tipo_de_atendimento'];
-                    $registro->matricula_atendente  = $dado['matricula_atendente'];
-                    $registro->no_do_objeto  = $dado['no_do_objeto'];
-                    if(!empty($dado['data_da_postagem'])) {
-                        try {
-                            //   $registro->data_da_postagem = $this->transformDate($registro['data_da_postagem']);
-                            $registro->data_da_postagem = substr($dado['data_da_postagem'],6,4)
-                                .'-'. substr($dado['data_da_postagem'],3,2)
-                                .'-'. substr($dado['data_da_postagem'],0,2);
-                            // $registro->data_da_postagem  = Carbon::createFromFormat('m/d/Y', $dado['data_da_postagem'])->format('Y-m-d');
-                        }
-                        catch (Exception $e) {
-                            $registro->data_da_postagem='';
+                                if($this->transformDate($dado['data_da_entrega'])=='1970-01-01 00:00:00')
+                                {
+                                    $registro->data_da_entrega = null;
+                                }
+                                else
+                                {
+                                    $registro->data_da_entrega = $this->transformDate($dado['data_da_entrega']);
+                                }
+
+                                if($this->transformDate($dado['data_da_postagem'])=='1970-01-01 00:00:00')
+                                {
+                                    $registro->data_da_postagem = null;
+                                }
+                                else
+                                {
+                                    $registro->data_da_postagem = $this->transformDate($dado['data_da_postagem']);
+                                }
+
+                                if($this->transformDate($dado['data_de_leitura'])=='1970-01-01 00:00:00')
+                                {
+                                    $registro->data_de_leitura = null;
+                                }
+                                else
+                                {
+                                    $registro->data_de_leitura = $this->transformDate($dado['data_de_leitura']);
+                                }
+
+                                if(!empty($dado['data_ultima_manifestacao']))
+                                {
+                                    if($this->transformDate($dado['data_ultima_manifestacao'])=='1970-01-01 00:00:00')
+                                    {
+                                        $registro->data_ultima_manifestacao = null;
+                                    }
+                                    else
+                                    {
+                                        $registro->data_ultima_manifestacao = $this->transformDate($dado['data_ultima_manifestacao']);
+                                    }
+                                }
+
+
+
+                                $registro->tipo_de_pendencia      = $dado['tipo_de_pendencia'];
+                                $registro->divergencia_peso  = $dado['divergencia_peso'];
+                                $registro->divergencia_cep  = $dado['divergencia_cep'];
+                                $registro->origem_pendencia  = $dado['origem_pendencia'];
+                                $registro->se  = $dado['se'];
+                                $registro->tipo_de_unidade  = $dado['tipo_de_unidade'];;
+                                $registro->mcu  = $dado['stomcu'];  //ok
+                                $registro->nome_da_unidade  = $dado['nome_da_unidade'];
+                                $registro->tipo_de_atendimento  = $dado['tipo_de_atendimento'];
+                                $registro->matricula_atendente  = $dado['matricula_atendente'];
+                                $registro->no_do_objeto  = $dado['no_do_objeto'];
+                                $registro->status_da_pendencia  = $dado['status_da_pendencia'];
+                                $registro->status_da_unidade  = $dado['status_da_unidade'];
+                                $registro->codigo_do_servico  = $dado['codigo_do_servico'];
+                                $registro->cep_contabilizado_sara  = $dado['cep_contabilizado_sara'];
+                                $registro->cep_entrega_sro  = $dado['cep_entrega_sro'];
+                                $registro->peso_tarifado_financeiro  = $dado['peso_tarifado_financeiro'];
+                                $registro->comprimento_financeiro  = $dado['comprimento_financeiro'];
+                                $registro->largura_financeiro  = $dado['largura_financeiro'];
+                                $registro->altura_financeiro  = $dado['altura_financeiro'];
+                                $registro->peso_cubico_financeiro  = $dado['peso_cubico_financeiro'];
+                                $registro->peso_real_mectri  = $dado['peso_real_mectri'];
+                                $registro->comprimento_mectri  = $dado['comprimento_mectri'];
+                                $registro->largura_mectri  = $dado['largura_mectri'];
+                                $registro->altura_mectri  = $dado['altura_mectri'];
+                                $registro->peso_cubico_mectri  = $dado['peso_cubico_mectri'];
+                                $registro->peso_tarifado_mectri  = $dado['peso_tarifado_mectri'];
+
+                                if($dado['valor_tarifado_financeiro'] == '---------')
+                                {
+                                    $registro->valor_tarifado_financeiro =0.00;
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        $registro->valor_tarifado_financeiro =str_replace(",", ".", $dado['valor_tarifado_financeiro']);
+                                    }
+                                    catch (Exception $e)
+                                    {
+                                        $registro->valor_tarifado_financeiro=0.00;
+                                    }
+                                }
+
+                                if($dado['valor_tarifado_mectri'] == '---------')
+                                {
+                                    $registro->valor_tarifado_mectri =0.00;
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        $registro->valor_tarifado_mectri =str_replace(",", ".", $dado['valor_tarifado_mectri']);
+                                    }
+                                    catch (Exception $e)
+                                    {
+                                        $registro->valor_tarifado_mectri=0.00;
+                                    }
+                                }
+
+                                if($dado['diferenca_a_recolher'] == '---------')
+                                {
+                                    $registro->diferenca_a_recolher =0.00;
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        $registro->diferenca_a_recolher =str_replace(",", ".", $dado['diferenca_a_recolher']);
+                                    }
+                                    catch (Exception $e)
+                                    {
+                                        $registro->diferenca_a_recolher=0.00;
+                                    }
+                                }
+                                $registro->cnpj_do_cliente  = $dado['cnpj_do_cliente'];
+                                $registro->contrato  = $dado['contrato'];
+                                $registro->cartao_postagem  = $dado['cartao_postagem'];
+                                $registro->nome_do_cliente  = $dado['nome_do_cliente'];
+                                $registro->qtd_duplicidades  = $dado['qtd_duplicidades'];
+                            }
                         }
 
                     }
-//dd( $registro->data_da_postagem );
-                    if(!empty($dado['data_da_entrega'])) {
-                        try {
-                            $registro->data_da_entrega = substr($dado['data_da_entrega'],6,4)
-                                .'-'. substr($dado['data_da_entrega'],3,2)
-                                .'-'. substr($dado['data_da_entrega'],0,2);
-                            // $registro->data_da_entrega = $this->transformDate($registro['data_da_entrega']);
-                            //      $registro->data_da_entrega  = Carbon::createFromFormat('m/d/Y', $dado['data_da_entrega'])->format('Y-m-d');
-                        }
-                        catch (Exception $e) {
-                            $registro->data_da_entrega='';
-                        }
-                    }
-                    if(!empty($dado['data_da_pendencia'])) {
-                        try {
-                            $registro->data_da_entrega = substr($dado['data_da_pendencia'],6,4)
-                                .'-'. substr($dado['data_da_pendencia'],3,2)
-                                .'-'. substr($dado['data_da_pendencia'],0,2);
-                        }
-                        catch (Exception $e) {
-                            $registro->data_da_entrega='';
-                        }
-                    }
-                    $registro->status_da_pendencia  = $dado['status_da_pendencia'];
-                    $registro->status_da_unidade  = $dado['status_da_unidade'];
-                    $registro->codigo_do_servico  = $dado['codigo_do_servico'];
-                    $registro->cep_contabilizado_sara  = $dado['cep_contabilizado_sara'];
-                    $registro->cep_entrega_sro  = $dado['cep_entrega_sro'];
-                    $registro->peso_tarifado_financeiro  = $dado['peso_tarifado_financeiro'];
-                    $registro->comprimento_financeiro  = $dado['comprimento_financeiro'];
-                    $registro->largura_financeiro  = $dado['largura_financeiro'];
-                    $registro->altura_financeiro  = $dado['altura_financeiro'];
-                    $registro->peso_cubico_financeiro  = $dado['peso_cubico_financeiro'];
-                    $registro->peso_real_mectri  = $dado['peso_real_mectri'];
-                    $registro->comprimento_mectri  = $dado['comprimento_mectri'];
-                    $registro->largura_mectri  = $dado['largura_mectri'];
-                    $registro->altura_mectri  = $dado['altura_mectri'];
-                    $registro->peso_cubico_mectri  = $dado['peso_cubico_mectri'];
-                    $registro->peso_tarifado_mectri  = $dado['peso_tarifado_mectri'];
+                    else
+                    {
+                        if(($dado['tipo_de_pendencia']  == 'CON' )or($dado['tipo_de_pendencia']  == 'DPC' ) && ($dado['status_da_pendencia'] == 'Pendente'))
+                        {
+                         //   dd($dado);
+                            $registro = new Proter;
 
-                    if($dado['valor_tarifado_financeiro'] == '---------') {
-                        $registro->valor_tarifado_financeiro =0.00;
-                    }else {
-                        try {
-                            $registro->valor_tarifado_financeiro =str_replace(",", ".", $dado['valor_tarifado_financeiro']);
+                            if($this->transformDate($dado['data_da_pendencia'])=='1970-01-01 00:00:00')
+
+                            {
+                                $registro->data_da_pendencia = null;
+                            }
+                            else
+                            {
+                                $registro->data_da_pendencia = $this->transformDate($dado['data_da_pendencia']);
+                            }
+
+                            if($this->transformDate($dado['data_da_entrega'])=='1970-01-01 00:00:00')
+                            {
+                                $registro->data_da_entrega = null;
+                            }
+                            else
+                            {
+                                $registro->data_da_entrega = $this->transformDate($dado['data_da_entrega']);
+                            }
+
+                            if($this->transformDate($dado['data_da_postagem'])=='1970-01-01 00:00:00')
+                            {
+                                $registro->data_da_postagem = null;
+                            }
+                            else
+                            {
+                                $registro->data_da_postagem = $this->transformDate($dado['data_da_postagem']);
+                            }
+
+                            if($this->transformDate($dado['data_de_leitura'])=='1970-01-01 00:00:00')
+                            {
+                                $registro->data_de_leitura = null;
+                            }
+                            else
+                            {
+                                $registro->data_de_leitura = $this->transformDate($dado['data_de_leitura']);
+                            }
+
+                            if(!empty($dado['data_ultima_manifestacao']))
+                            {
+                                if($this->transformDate($dado['data_ultima_manifestacao'])=='1970-01-01 00:00:00')
+                                {
+                                    $registro->data_ultima_manifestacao = null;
+                                }
+                                else
+                                {
+                                    $registro->data_ultima_manifestacao = $this->transformDate($dado['data_ultima_manifestacao']);
+                                }
+                            }
+
+                            $registro->tipo_de_pendencia      = $dado['tipo_de_pendencia'];
+                            $registro->divergencia_peso  = $dado['divergencia_peso'];
+                            $registro->divergencia_cep  = $dado['divergencia_cep'];
+                            $registro->origem_pendencia  = $dado['origem_pendencia'];
+                            $registro->se  = $dado['se'];
+                            $registro->tipo_de_unidade  = $dado['tipo_de_unidade'];;
+                            $registro->mcu  = $dado['stomcu'];  //ok
+                            $registro->nome_da_unidade  = $dado['nome_da_unidade'];
+                            $registro->tipo_de_atendimento  = $dado['tipo_de_atendimento'];
+                            $registro->matricula_atendente  = $dado['matricula_atendente'];
+                            $registro->no_do_objeto  = $dado['no_do_objeto'];
+                            $registro->status_da_pendencia  = $dado['status_da_pendencia'];
+                            $registro->status_da_unidade  = $dado['status_da_unidade'];
+                            $registro->codigo_do_servico  = $dado['codigo_do_servico'];
+                            $registro->cep_contabilizado_sara  = $dado['cep_contabilizado_sara'];
+                            $registro->cep_entrega_sro  = $dado['cep_entrega_sro'];
+                            $registro->peso_tarifado_financeiro  = $dado['peso_tarifado_financeiro'];
+                            $registro->comprimento_financeiro  = $dado['comprimento_financeiro'];
+                            $registro->largura_financeiro  = $dado['largura_financeiro'];
+                            $registro->altura_financeiro  = $dado['altura_financeiro'];
+                            $registro->peso_cubico_financeiro  = $dado['peso_cubico_financeiro'];
+                            $registro->peso_real_mectri  = $dado['peso_real_mectri'];
+                            $registro->comprimento_mectri  = $dado['comprimento_mectri'];
+                            $registro->largura_mectri  = $dado['largura_mectri'];
+                            $registro->altura_mectri  = $dado['altura_mectri'];
+                            $registro->peso_cubico_mectri  = $dado['peso_cubico_mectri'];
+                            $registro->peso_tarifado_mectri  = $dado['peso_tarifado_mectri'];
+
+                            if($dado['valor_tarifado_financeiro'] == '---------')
+                            {
+                                $registro->valor_tarifado_financeiro =0.00;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    $registro->valor_tarifado_financeiro =str_replace(",", ".", $dado['valor_tarifado_financeiro']);
+                                }
+                                catch (Exception $e)
+                                {
+                                    $registro->valor_tarifado_financeiro=0.00;
+                                }
+                            }
+
+                            if($dado['valor_tarifado_mectri'] == '---------')
+                            {
+                                $registro->valor_tarifado_mectri =0.00;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    $registro->valor_tarifado_mectri =str_replace(",", ".", $dado['valor_tarifado_mectri']);
+                                }
+                                catch (Exception $e)
+                                {
+                                    $registro->valor_tarifado_mectri=0.00;
+                                }
+                            }
+
+                            if($dado['diferenca_a_recolher'] == '---------')
+                            {
+                                $registro->diferenca_a_recolher =0.00;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    $registro->diferenca_a_recolher =str_replace(",", ".", $dado['diferenca_a_recolher']);
+                                }
+                                catch (Exception $e)
+                                {
+                                    $registro->diferenca_a_recolher=0.00;
+                                }
+                            }
+                            $registro->cnpj_do_cliente  = $dado['cnpj_do_cliente'];
+                            $registro->contrato  = $dado['contrato'];
+                            $registro->cartao_postagem  = $dado['cartao_postagem'];
+                            $registro->nome_do_cliente  = $dado['nome_do_cliente'];
+                            $registro->qtd_duplicidades  = $dado['qtd_duplicidades'];
+
+
                         }
-                        catch (Exception $e) {
-                            $registro->valor_tarifado_financeiro=0.00;
-                        }
+
                     }
-
-                    if($dado['valor_tarifado_mectri'] == '---------') {
-                        $registro->valor_tarifado_mectri =0.00;
-                    }else {
-                        try {
-                            $registro->valor_tarifado_mectri =str_replace(",", ".", $dado['valor_tarifado_mectri']);
-                        }
-                        catch (Exception $e) {
-                            $registro->valor_tarifado_mectri=0.00;
-                        }
-                    }
-
-                    if($dado['diferenca_a_recolher'] == '---------') {
-                        $registro->diferenca_a_recolher =0.00;
-                    }else {
-                        try {
-                            $registro->diferenca_a_recolher =str_replace(",", ".", $dado['diferenca_a_recolher']);
-                        }
-                        catch (Exception $e) {
-                            $registro->diferenca_a_recolher=0.00;
-                        }
-                    }
-
-                    $registro->cnpj_do_cliente  = $dado['cnpj_do_cliente'];
-                    $registro->contrato  = $dado['contrato'];
-                    $registro->cartao_postagem  = $dado['cartao_postagem'];
-                    $registro->nome_do_cliente  = $dado['nome_do_cliente'];
-                    $registro->qtd_duplicidades  = $dado['qtd_duplicidades'];
-                    $registro->ultima_manifestacao  = null; //$dado['ultima_manifestacao'];
-                    //      var_dump($dado);
-
+              //      dd( $registro );
                     $registro ->save();
-                    //dd($registro);
                     $row++;
                 }
-            }
 
+                $affected = DB::table('proters')
+                    ->where('updated_at', '<', $dt)
+                    ->get();
+                dd('nao atualizados -> ', $affected );
+
+
+
+            }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
             return redirect()->route('importacao');
         }else{
-            //    return back()->with(['errors'=>$validator->errors()->all()]);
-            \Session::flash('mensagem',['msg'=>'Registros PROTER Não pôde ser importado! Tente novamente'
+              \Session::flash('mensagem',['msg'=>'Registros PROTER Não pôde ser importado! Tente novamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
@@ -919,57 +1096,40 @@ class ImportacaoController extends Controller {
         return Excel::download(new ExportDebitoEmpregados, 'debitoEmpregados.xlsx');
     }
 
-    public function importDebitoEmpregados(Request $request) {
+    public function importDebitoEmpregados(Request $request)
+    {
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
-
-        if($request->file('file') == "") {
-
+        if($request->file('file') == "")
+        {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
             O Arquivo de ser  270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
 
-        if( $request->file('file')->getClientOriginalName() != "270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx") {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+//        if( $request->file('file')->getClientOriginalName() != "270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-        if($validator->passes()) {
-
-            /**
-             * 1)	270-1-FINANCEIRO-WebCont_DebitoEmpregado – Mensal. Sempre no início do mês após o dia 5
-             * importar a competência mais recente encontrada, atualizar a planilha 270-1-FINANCEIRO-WebCont_DebitoEmpregado,
-             * da seguinte forma:
-             * a)	No Sistema WebCont acessar a opção consulta Conciliações selecione a competência,
-             * a cia e a conta 11202.994000 e marque exibir todas colunas = SIM. Em seguida faça o download.
-             * b)	Abra a planilha 270-1-FINANCEIRO-WebCont_DebitoEmpregado, marque todos registros e exclua.
-             * Em seguida posicione o cursor na coluna A linha 1 e importe o arquivo pelo sistema excel selecione
-             * origem de dados txt, selecione a planilha CSV e importe, salve a planilha e feche.
-             * No sistema de avaliação importe a planilha. (Importação por Substituição.
-             *  O Sistema ao Importar a tabela apagará os dados existentes anteriormente automaticamente);
-             * SE NÃO seguir estes passos o sistema ao validar a data vai da erro ou poderá informar que algum index não existe.
-             */
-
-            DB::table('debitoempregados')->truncate();
-
+        if($validator->passes())
+        {
+            //  DB::table('debitoempregados')->truncate();
             $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
-            foreach($debitoEmpregados as $dados) {
+            foreach($debitoEmpregados as $dados)
+            {
                 $row=0;
-                foreach($dados as $registro) {
+                foreach($dados as $registro)
+                {
                     $debitoEmpregado = new DebitoEmpregado;
                     $debitoEmpregado->cia      = $registro['cia'];
                     $debitoEmpregado->conta  = $registro['conta'];
                     $debitoEmpregado->competencia  = $registro['competencia'];
-
-                    //  $dt = substr($registro['data'],6,4).'-'. substr($registro['data'],3,2) .'-'. substr($registro['data'],0,2);
-
                     $dt         = $this->transformDate($registro['data']);
-                    //dd($dt);
                     $debitoEmpregado->data         = $dt;
                     $debitoEmpregado->lote  = $registro['lote'];
                     $debitoEmpregado->tp  = $registro['tp'];
@@ -986,17 +1146,21 @@ class ImportacaoController extends Controller {
                     $debitoEmpregado->acao  = $registro['acao'];
                     $debitoEmpregado->regularizacao  = $registro['regularizacao'];
                     $debitoEmpregado->anexo  = $registro['anexo'];
-
                     $debitoEmpregado ->save();
                     $row++;
                 }
             }
+            $affected = DB::table('debitoempregados')
+                ->where('cia', '=', $registro['cia'])
+                ->where('conta', '=', $registro['conta'])
+                ->where('competencia', '<', $registro['competencia'])
+            ->delete();
+//          dd($affected);
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
             return redirect()->route('importacao');
         }else{
-            //    return back()->with(['errors'=>$validator->errors()->all()]);
             \Session::flash('mensagem',['msg'=>'Registros WebCont Não pôde ser importado! Tente novamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
@@ -1015,44 +1179,69 @@ class ImportacaoController extends Controller {
     {
         return Excel::download(new ExportFeriado, 'feriados.xlsx');
     }
-    public function importFeriado(Request $request) {
+    public function importFeriado(Request $request)
+    {
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
-        if(empty($request->file('file'))){
-
+        if(empty($request->file('file')))
+        {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
             O Arquivo de ser feriados.xlsx ! Selecione Corretamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
-        if( $request->file('file')->getClientOriginalName() != "Feriados.xlsx") {
+//        if( $request->file('file')->getClientOriginalName() != "Feriados.xlsx") {
+//
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser  Feriados.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser  Feriados.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-
-        if($validator->passes()) {
-
+        if($validator->passes())
+        {
             $feriados = Excel::toArray(new ImportFeriado,  request()->file('file'));
-            DB::table('feriados')->truncate(); //excluir e zerar a tabela
-            foreach($feriados as $dados) {
+          //  DB::table('feriados')->truncate(); //excluir e zerar a tabela
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
+            foreach($feriados as $dados)
+            {
+                $row = 0;
+                foreach($dados as $registro)
+                {
+                    $cad = DB::table('feriados')
+                        ->where('uf', '=',  $registro['uf'])
+                        ->where('nome_municipio', '=',  $registro['nome_municipio'])
+                        ->where('tipo_feriado', '=',  $registro['tipo_feriado'])
+                        ->where('data_do_feriado', '=', $this->transformDateMesDia($registro['data_do_feriado']))
+                        ->select(
+                            'feriados.id'
+                        )
+                        ->first();
 
-                $row = 1;
-                foreach($dados as $registro) {
-                    //  var_dump($feriados);
-                    $feriado = new Feriado;
-                    $feriado->uf      = $registro['uf'];
-                    $feriado->nome_municipio  = $registro['nome_municipio'];
-                    $feriado->tipo_feriado  = $registro['tipo_feriado'];
-                    $feriado->descricao_feriado  = $registro['descricao_feriado'];
-                    $dt         = $this->transformDateMesDia($registro['data_do_feriado']);
-                    $feriado->data_do_feriado         = $dt;
+                    if(!empty(  $cad->id ))
+                    {
+                        $feriado = Feriado::find($cad->id);
+                        $feriado->uf      = $registro['uf'];
+                        $feriado->nome_municipio  = $registro['nome_municipio'];
+                        $feriado->tipo_feriado  = $registro['tipo_feriado'];
+                        $feriado->descricao_feriado  = $registro['descricao_feriado'];
+                        $dt         = $this->transformDateMesDia($registro['data_do_feriado']);
+                        $feriado->data_do_feriado         = $dt;
+                    }
+                    else
+                    {
+                        $feriado = new Feriado;
+                        $feriado->uf      = $registro['uf'];
+                        $feriado->nome_municipio  = $registro['nome_municipio'];
+                        $feriado->tipo_feriado  = $registro['tipo_feriado'];
+                        $feriado->descricao_feriado  = $registro['descricao_feriado'];
+                        $dt         = $this->transformDateMesDia($registro['data_do_feriado']);
+                        $feriado->data_do_feriado         = $dt;
+                    }
                     $feriado ->save();
                     $row ++;
-                    // var_dump($feriado);
                 }
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
@@ -1137,10 +1326,7 @@ class ImportacaoController extends Controller {
                 $affected = DB::table('cadastral')
                     ->where('se', $dado['secs'])
                     ->where('updated_at', '<', $dt)
-               // ->get();
                 ->update(['situacao' => null]);
-
-                       dd('afetados ->', $affected);
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
