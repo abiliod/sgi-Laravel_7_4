@@ -20,15 +20,30 @@
                   <div class="card #b71c1c red darken-4">
 
                   <span class="card-title">Sistema: Distribuição Domiciliária <br>Pré Alerta</span>
-                        <p>Grupo/Item: 277.5, Função: Gestão SRO
-                        <br>Conferência Eletrônica.
-                        <br>Arquivo: 277-5-PainelExtravio</p>
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
-                    <form action="{{ route('compliance.importacao.painelExtravio') }}" method="POST" name="importform"
+                      <p>Grupo de Verificação 277</p>
+                      <p>Função: Gestão de Recursos SRO</p>
+                      <p>Assunto: Conferência Eletrônica</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+
+                                Painel de extravios,    http://paineldeextravios.correiosnet.int – MENU:  Folha de Selecione a Regional, na aba Relatórios Operacionais  ->Trechos Totais, informe o período. Fazer o download do período
+                                VEJA o lay-out:
+                                [objeto	data_evento	evento	cliente	trecho	evento_trecho	unid_origem	unid_destino	dr_origem	dr_destino	gestao_prealerta	automatico	manual	total	macroprocesso	postado	ultimo_evento_extraviado	ultimo_evento_em_transito	ultimo_evento	ultimo_evento_data	evento_finalizador	tipo	analise_sro	unid_origem_apelido	unid_destino_apelido	trecho_real	se_postagem	unidade_postagem	data_postagem	familia	ultimo_evento_sinistro]
+                                Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
+                                O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
+                                Frequencia: diária.
+                            </textarea>
+                      </div>
+
+
+                      <form action="{{ route('compliance.importacao.painelExtravio') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="file-field input-field">

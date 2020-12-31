@@ -118,11 +118,8 @@
                     <div class="card-content white-text">
                         <span class="card-title">Gestão de Numerário</span>
                         <p>Grupo de Verificação 270, Função Prevenção de Perdas.</p>
-                        <b/>
-                        <tr>
-                            <p>Assunto: Saldo que passa | 270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe.xlsx</p>
-                            <p><b>Modo Icremento</b></p>
-                        </tr>
+                            <p>Assunto: Saldo que passa</p>
+                            <p>Item: 270-4 - FINANCEIRO</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.SL02_bdf')}}">Importar Planilha</a>
@@ -136,7 +133,9 @@
                 <div class="card #dd2c00 deep-orange accent-4">
                     <div class="card-content white-text">
                         <span class="card-title">Segurança Postal</span>
-                        <p>Grupo de Verificação 271, Função: Processos Administrativos <br><br>Assunto: Responsabilidade Definida.</p>
+                        <p>Grupo de Verificação 271</p>
+                        <p>Função: Processos Administrativos</p>
+                        <p>Assunto: Responsabilidade Definida</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.RespDefinida')}}">Importar Planilha</a>
@@ -150,11 +149,10 @@
                 <div class="card blue darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema de Alarme</span>
-                        <p>Grupo de Verificação 272, Alarme Monitorado.</p>
-                        <tr>
-                            <p>Assunto: Ativação / Desativação | 272-2-SEGURANÇA-SistemaMonitoramento.xlsx</p>
-                            <p><b>Modo Icremento</b></p>
-                        </tr>
+                        <p>Grupo de Verificação 272.</p>
+                        <p>Função: Gestão do Alarme Monitorado</p>
+                        <p>Assunto: Ativação / Desativação</p>
+                        <p></p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.alarme')}}">Importar Planilha</a>
@@ -168,10 +166,9 @@
                 <div class="card #0d47a1 blue darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema Segurança</span>
-                        <p>Grupo de Verificação 272, Senhas Alarme Monitorado.</p>
-                        <tr>
-                            <p>Assunto: Verif. Compart. de Senhas | 272-3-WebSGQ3 - Frequencia por SE.xlsx</p>
-                        </tr>
+                        <p>Grupo de Verificação 272</p>
+                        <p>Assunto: Compartilhamento de Senhas Alarme Monitorado</p>
+                        <p>WebSGQ3 - Frequencia por SE</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.absenteismo')}}">Importar Planilha</a>
@@ -185,8 +182,10 @@
                 <div class="card #b71c1c red darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema Segurança Patrimonial</span>
-                        <p>Grupo/Item: 272.4, Função: Verif. Funcionamento do equipamento CFTV
-                            <br>Arquivo: 272-4-SEGURANÇA-Monitoramento-CFTV</p>
+                        <p>Grupo de Verificação 272</p>
+                        <p>Assunto: Gestão do Funcionamento do equipamento CFTV</p>
+                        <p>Qualidade do Funcionamento</p>
+
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.cftv')}}">Importar Planilha</a>
@@ -200,8 +199,9 @@
                 <div class="card deep-orange">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema Segurança</span>
-                        <p>Grupo/Item: 272.3, Função: Verif. Compart. de Senhas - FÉRIAS<p/>
-                        <P></P><br>Arquivo: 272-3-WebSGQ3 - Fruicao de ferias por MCU<p/>
+                        <p>Grupo de Verificação 272</p>
+                        <p>Assunto: Compartilhamento de Senhas Alarme Monitorado</p>
+                        <p>WebSGQ3 - Fruicao de ferias por MCU</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.ferias')}}">Importar Planilha</a>
@@ -216,8 +216,9 @@
 
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Atendimento Comercial</span>
-                        <br/> <p>Grupo/Item: 274.1, Função: Condições de Aceitação, Classificação e Tarifação de Objetos
-                            <br>Arquivo: 274-1-PLP-ListasPendentes</p>
+                        <p>Grupo de Verificação 274 ListasPendentes PLPs</p>
+                        <p>Assunto: Condições de Aceitação, Classificação e Tarifação de Objetos</p>
+
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.plpListaPendente')}}">Importar Planilha</a>
@@ -231,8 +232,9 @@
                 <div class="card #424242 grey darken-3">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Movimentação de Carga Postal</span>
-                        <p>Grupo/Item: 276.1, Função: Controle de viagem Apontamentos
-                            <br>Arquivo: 276-1-ControleDeViagem</p>
+                        <p>Grupo de Verificação 276</p>
+                        <p>Assunto: Controle de viagem Apontamentos</p>
+                        <p>Verificação do Apontamento de Embarque/Desembarque</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.controleDeViagem')}}">Importar Planilha</a>
@@ -246,9 +248,9 @@
                 <div class="card green darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Distribuição Domiciliária <br>SGDO</span>
-                        <p>Grupo/Item: 277.1, Função: Lançamentos SGDO
-                            <br>Lançamentos obrigatórios
-                            <br>Arquivo: 277-1-SGDO-Distribuição</p>
+                        <p>Grupo de Verificação 277</p>
+                        <p>Assunto: Lançamentos Obrigatórios SGDO</p>
+                        <p>Verificação do Lançamentos  SGDO</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.sgdoDistribuicao')}}">Importar Planilha</a>
@@ -256,15 +258,29 @@
                 </div>
             </div>
         @endcan
-
+        @can('importar_microStrategy')
+            <div class="col s12 m6">
+                <div class="card  #424242 grey darken-3">
+                    <div class="card-content white-text">
+                        <span class="card-title">Sistema: Gestão da Distribuição Domiciliaria</span>
+                        <p>Grupo de Verificação 277</p>
+                        <p>Função: Gestão de Recursos SRO</p>
+                        <p>Assunto: Objetos Não Entregues Primeira Tentativa</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" href="{{route('importacao.microStrategy')}}">Importar Planilha</a>
+                    </div>
+                </div>
+            </div>
+        @endcan
         @can('importar_painelExtravio')
             <div class="col s12 m6">
                 <div class="card #b71c1c red darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Distribuição Domiciliária <br>Pré Alerta</span>
-                        <p>Grupo/Item: 277.5, Função: Gestão SRO
-                            <br>Conferência Eletrônica.
-                            <br>Arquivo: 277-5-PainelExtravio</p>
+                        <p>Grupo de Verificação 277</p>
+                        <p>Função: Gestão de Recursos SRO</p>
+                        <p>Assunto: Conferência Eletrônica</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.painelExtravio')}}">Importar Planilha</a>
@@ -278,9 +294,9 @@
                 <div class="card #0d47a1 blue darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Plano de Triagem <br>Encaminhamento</span>
-                        <p>Grupo/Item: 277.7, Função: Gestão SRO</p>
-                        <P><br>Arquivo: 277-7-CieEletronica<p/>
-
+                        <p>Grupo de Verificação 277</p>
+                        <p>Função: Gestão de Mensagens Cie Eletronica</p>
+                        <p>Assunto: Integridade de mensagens</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.cieEletronica')}}">Importar Planilha</a>
@@ -294,8 +310,9 @@
                 <div class="card #004d40 teal darken-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Gestão de Recursos Humanos</span>
-                        <p>Grupo/Item: 278.2, Função: Gestão de Recursos Humanos</p>
-                        <P><br>Arquivo: 278-2-WebSGQ-3-PagamentosAdicionais</P>
+                        <p>Grupo de Verificação 278</p>
+                        <p>Função: Gestão de Recursos Humanos</p>
+                        <p>Assunto: Integridade de pagamentos</p>
 
                     </div>
                     <div class="card-action">
@@ -310,8 +327,9 @@
                 <div class="card #dd2c00 deep-orange accent-4">
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Gestão de Recursos Humanos </span>
-                        <p>Grupo/Item: 278.2, Função: Recebimentos
-                            Arquivo: 278-2-BDF_FAT_02.xlsx - Unidades que irão ser inspecionadas ultimos 210 dias.</p>
+                        <p>Grupo de Verificação 278  BDF_FAT_02</p>
+                        <p>Função: Gestão de Recursos Humanos</p>
+                        <p>Assunto: Integridade de pagamentos</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.bdf_fat_02')}}">Importar Planilha</a>
@@ -320,20 +338,7 @@
             </div>
         @endcan
 
-            @can('importar_microStrategy')
-                <div class="col s12 m6">
-                    <div class="card  #424242 grey darken-3">
-                        <div class="card-content white-text">
-                            <span class="card-title">Sistema: Gestão da Distribuição Domiciliaria</span>
-                            <p>Grupo/Item: 277.2, Função: Gestão de Recursos SRO
-                                <br>Arquivo: 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa</p>
-                        </div>
-                        <div class="card-action">
-                            <a class="white-text" href="{{route('importacao.microStrategy')}}">Importar Planilha</a>
-                        </div>
-                    </div>
-                </div>
-            @endcan
+
 
 
 

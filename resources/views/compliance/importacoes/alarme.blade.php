@@ -18,13 +18,29 @@
             <div class="card #42a5f5 blue lighten-1">
                 <div class="card-content white-text">
                     <span class="card-title">Sistema de Alarme</span>
+                    <p>Grupo de Verificação 272.</p>
+                    <p>Função: Gestão do Alarme Monitorado</p>
+                    <p>Assunto: Ativação / Desativação</p>
+                    <p></p>
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                        Importar os dados do relatório de alarme monitorado ARME/DESARME para uma planilha formato xlsx.
+                        VEJA o lay-out:
+                        [CLIENTE	MCU	USUÁRIO	MATRÍCULA	ARME/DESARME	DATA	HORA]
+                        (Tipo de importação: Por incremento.
+                        O Sistema ao importar a planilha grava os registros não existentes
+                        Em seguida irá apagará os registros existentes na tabela com data  maior que 12 meses.);
+                        </textarea>
+                    </div>
 
-                    <p>Grupo de Verificação 272, Alarme Monitorado.</p>
-                    <b/>
-                    <tr>
-                        <p>Assunto: Ativação / Desativação | 272-2-SEGURANÇA-SistemaMonitoramento.xlsx</p>
-                        <p><b>Modo Icremento</b></p>
-                    </tr>
+
                     <form action="{{ route('compliance.importacao.alarme') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

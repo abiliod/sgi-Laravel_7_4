@@ -21,6 +21,7 @@ class ImportCftv implements
     public function model(array $row){
         return new Cftv([
             'unidade'      => $row['unidade'],
+            'mcu'      => $row['mcu'],
             'cameras_fixa_cf'      => $row['cameras_fixa_cf'],
             'cameras_infra_vermelho_cir'      => $row['cameras_infra_vermelho_cir'],
             'dome'      => $row['dome'],
@@ -29,8 +30,8 @@ class ImportCftv implements
             'hack'      => $row['hack'],
             'pc_auxiliar'      => $row['pc_auxiliar'],
             'portaweb'      => $row['portaweb'],
-            'novo_ip'      => $row['novo_ip'],
-            'novo_link'      => $row['novo_link'],
+            'end_ip'      => $row['end_ip'],
+            'link'      => $row['link'],
             'user'      => $row['user'],
             'password'      => $row['password'],
             'port'      => $row['port'],

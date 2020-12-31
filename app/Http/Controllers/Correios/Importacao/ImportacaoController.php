@@ -117,74 +117,89 @@ class ImportacaoController extends Controller {
     }
 
     // ######################### INICIO   Microestraetegy #######################
-    public function exportMicroStrategy(){
+    public function exportMicroStrategy()
+    {
         return Excel::download(new ExportMicroStrategy, 'microStrategy.xlsx');
     }
-
-    public function importMicroStrategy(Request $request) {
-        $dtmenos365dias = Carbon::now();
-        $dtmenos365dias->subDays(365);
-
+    public function importMicroStrategy(Request $request)
+    {
+        $row = 0;
+        $dtmenos210dias = Carbon::now();
+        $dtmenos210dias = $dtmenos210dias->subDays(210);
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
-
-        if(empty($request->file('file'))){
+        if(empty($request->file('file')))
+        {
 
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
             O Arquivo de ser 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xlsx ! Selecione Corretamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
-        if( $request->file('file')->getClientOriginalName() != "277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xlsx") {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+//        if( $request->file('file')->getClientOriginalName() != "277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-        if($validator->passes()) {
-            $row = 0;
-            $dtmenos10meses = new Carbon();
-            $dtmenos10meses->subMonth(10);
-            $ref = substr($dtmenos10meses,0,4). substr($dtmenos10meses,5,2);
-
+        if($validator->passes())
+        {
             //   DB::table('micro_strategys')->truncate(); //excluir e zerar a tabela
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
             $micro_strategy = Excel::toArray(new ImportMicroStrategy,  request()->file('file'));
-            //   importMicroStrategy
-            //var_dump($micro_strategy);
-            // dd();
 
-            foreach($micro_strategy as $dados) {
-                foreach($dados as $registro) {
-                    // if ($registro['codigo_do_evento']=='BDE'){
-                    $data_do_evento       = null;
-                    if(!empty($registro['data_do_evento'])) {
-                        try {
-                            $data_do_evento = $this->transformDate($registro['data_do_evento']);
-                            //$dt =  Carbon::createFromFormat('m/d/Y', $registro['data'])->format('Y-m-d');
-                        } catch (Exception $e) {
-                            $data_do_evento      = null;
+            foreach($micro_strategy as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                    if ($registro['codigo_do_evento']=='BDE')
+                    {
+                        $data_do_evento  = null;
+                        if(!empty($registro['data_do_evento'])) {
+                            try {
+                                $data_do_evento = $this->transformDate($registro['data_do_evento']);
+                            } catch (Exception $e) {
+                                $data_do_evento      = null;
+                            }
                         }
+//                         var_dump($micro_strategy);
+//                          dd();
+//                        $micro_strategy = new MicroStrategy;
+//                        $micro_strategy->dr_de_destino      = $registro['dr_de_destino'];
+//                        $micro_strategy->nome_da_unidade      = $registro['nome_da_unidade'];
+//                        $micro_strategy->codigo_do_objeto      = $registro['codigo_do_objeto'];
+//                        $micro_strategy->descricao_do_evento      = $registro['descricao_do_evento'];
+//                        $micro_strategy->codigo_do_evento      = $registro['codigo_do_evento'];
+//                        $micro_strategy->data_do_evento      = $data_do_evento;
+//                        $micro_strategy->codigo_do_evento      = $registro['data_do_evento'];
+//                        $micro_strategy->save();
+
+
+                        MicroStrategy::updateOrCreate([
+                               'codigo_do_objeto' => $registro['codigo_do_objeto']
+                               , 'dr_de_destino' => $registro['dr_de_destino']
+                               , 'nome_da_unidade' => $registro['nome_da_unidade']
+                            ],[
+                                'codigo_do_objeto' => $registro['codigo_do_objeto']
+                                , 'dr_de_destino' => $registro['dr_de_destino']
+                                , 'nome_da_unidade' => $registro['nome_da_unidade']
+                                , 'descricao_do_evento' => $registro['descricao_do_evento']
+                                , 'codigo_do_evento' => $registro['codigo_do_evento']
+                                , 'data_do_evento' => $registro['data_do_evento']
+                                , 'data_do_evento' => $data_do_evento
+                            ]
+                        );
+                        $row ++;
                     }
-                    // var_dump($micro_strategy);
-                    //  dd();
-                    $micro_strategy = new MicroStrategy;
-                    $micro_strategy->dr_de_destino      = $registro['dr_de_destino'];
-                    $micro_strategy->nome_da_unidade      = $registro['nome_da_unidade'];
-                    $micro_strategy->codigo_do_objeto      = $registro['codigo_do_objeto'];
-                    $micro_strategy->descricao_do_evento      = $registro['descricao_do_evento'];
-                    $micro_strategy->codigo_do_evento      = $registro['codigo_do_evento'];
-                    $micro_strategy->data_do_evento      = $data_do_evento;
-                    $micro_strategy->codigo_do_evento      = $registro['data_do_evento'];
-                    $micro_strategy->save();
-                    $row ++;
-                    // }
                 }
             }
-            $dtmenos210dias = Carbon::now();
-            $dtmenos210dias = $dtmenos210dias->subDays(210);
-            DB::table('micro_strategys')->where('data_do_evento', '<=', $dtmenos210dias)->delete();
+
+            DB::table('micro_strategys')
+                ->where('data_do_evento', '<=', $dtmenos210dias)
+            ->delete();
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
@@ -193,10 +208,9 @@ class ImportacaoController extends Controller {
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-
     public function microStrategy()
     {
-        return view('compliance.importacoes.microStrategy');  //
+        return view('compliance.importacoes.microStrategy');
     }
     // ######################### FIM  Microestrategy
 
@@ -206,9 +220,9 @@ class ImportacaoController extends Controller {
         return Excel::download(new ExportBDF_FAT_02, 'bdf_fat_02.xlsx');
     }
     public function importBDF_FAT_02(Request $request) {
-        // $dtmenos210dias = Carbon::now();
-        //$dtmenos210dias->subDays(210);
-        //  DB::table('bdf_fat_02')->where('dt_postagem', '<=', $dtmenos210dias)->delete();
+        $dtmenos210dias = Carbon::now();
+        $dtmenos210dias->subDays(210);
+        DB::table('bdf_fat_02')->where('dt_postagem', '<=', $dtmenos210dias)->delete();
         $row = 0;
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx'
@@ -222,59 +236,63 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
 
-        if( $request->file('file')->getClientOriginalName() != "278-2-BDF_FAT_02.xlsx") {
+//        if( $request->file('file')->getClientOriginalName() != "278-2-BDF_FAT_02.xlsx") {
+//
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser 278-2-BDF_FAT_02.xlsx! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser 278-2-BDF_FAT_02.xlsx! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-
-        if($validator->passes()) {
-
+        if($validator->passes())
+        {
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
             $bdf_fat_02 = Excel::toArray(new ImportBDF_FAT_02,  request()->file('file'));
-            foreach($bdf_fat_02 as $dados) {
-                foreach($dados as $registro) {
+            foreach($bdf_fat_02 as $dados)
+            {
+                foreach($dados as $registro)
+                {
                     $dt_mov       = null;
-                    if(!empty($registro['dt_mov'])) {
-                        try {
+                    if(!empty($registro['dt_mov']))
+                    {
+                        try
+                        {
                             // $dt_mov = $this->transformDate($registro['dt_mov']);
                             $dt_mov = $this->transformDate($registro['dt_mov'])->format('Y-m-d');
                             // $dt_mov =  Carbon::createFromFormat($registro['dt_mov'])->format('Y-m-d');
-                        } catch (Exception $e) {
-
+                        }
+                        catch (Exception $e)
+                        {
+                            $dt_mov = null;
                         }
                     }
 
                     $dt_postagem       = null;
-                    if(!empty($registro['dt_postagem'])) {
+                    if(!empty($registro['dt_postagem']))
+                    {
                         try {
                             $dt_postagem = $this->transformDate($registro['dt_postagem'])->format('Y-m-d');
                             // $dt_postagem =  Carbon::createFromFormat($registro['dt_postagem'])->format('Y-m-d');
-                        } catch (Exception $e) {
-
+                        }
+                        catch (Exception $e)
+                        {
+                            $dt_postagem       = null;
                         }
                     }
 
                     $res = DB::table('bdf_fat_02')
                         ->where('dt_mov','=', $dt_mov)
                         ->where('cd_orgao', '=',  $registro['cd_orgao'])
-
                         ->where('servico', '=',  $registro['servico'])
                         ->where('nome_servico', '=',  $registro['nome_servico'])
                         ->where('vlr_final', '=',  $registro['vlr_final'])
                         ->select(
-                            'bdf_fat_02.*'
+                            'bdf_fat_02.id'
                         )
-                        ->first();
-                    //   dd( $res);
-
-                    if (!$res){
-                        //   var_dump( $registro,   $res );
-                        //   dd('pare'.   $dt_mov .', '.  $registro['ag_postagem'] .', '.  $registro['etiqueta'] .', '.   $registro['servico'].', '.   $registro['atendimento'] .', '.   $registro['vlr_final']);
-
+                    ->first();
+                    if (empty($res->id)){
                         $bdf_fat_02 = new BDF_FAT_02;
-
                         $bdf_fat_02->cd_orgao      = $registro['cd_orgao'];
                         $bdf_fat_02->orgao  = $registro['orgao'];
                         $bdf_fat_02->dt_postagem = $dt_postagem;
@@ -322,76 +340,75 @@ class ImportacaoController extends Controller {
     }
     // ######################### FIM  BDF_FAT_02
 
-
-
-
-
-
-
-
     // ######################### INICIO ABSENTEISMO POR MCU   Frequencia por SE #######################
-
-    public function exportAbsenteismo(){
-
-
+    public function exportAbsenteismo()
+    {
         return Excel::download(new ExportAbsenteismo, 'absenteismo.xlsx');
     }
-
-    public function importAbsenteismo(Request $request) {
-
+    public function importAbsenteismo(Request $request)
+    {
+        $row = 0;
+        $dtmenos12meses = Carbon::now();
+        $dtmenos12meses = $dtmenos12meses->subMonth(12);
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
-
-        if(empty($request->file('file'))){
-
+        if(empty($request->file('file')))
+        {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
         O Arquivo de ser 272-3-WebSGQ3 - Frequencia por SE.xlsx ! Selecione Corretamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
 
-        if( $request->file('file')->getClientOriginalName() != "272-3-WebSGQ3 - Frequencia por SE.xlsx") {
+//        if( $request->file('file')->getClientOriginalName() != "272-3-WebSGQ3 - Frequencia por SE.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//        O Arquivo de ser  272-3-WebSGQ3 - Frequencia por SE.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-        O Arquivo de ser  272-3-WebSGQ3 - Frequencia por SE.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-
-        if($validator->passes()) {
-
+        if($validator->passes())
+        {
             $absenteismos = Excel::toArray(new ImportAbsenteismo,  request()->file('file'));
-            foreach($absenteismos as $dados) {
-
-                $row = 0;
-                foreach($dados as $registro) {
-
+            foreach($absenteismos as $dados)
+            {
+                foreach($dados as $registro)
+                {
                     $dt = substr($registro['data_evento'],6,4).'-'. substr($registro['data_evento'],3,2) .'-'. substr($registro['data_evento'],0,2);
-
                     $res = DB::table('absenteismos')
                         ->where('matricula', '=',  $registro['matricula'])
-                        ->where('lotacao', '=',  $registro['lotacao'])
+                      //  ->where('lotacao', '=',  $registro['lotacao'])
                         ->where('data_evento','=', $dt)
                         ->select(
                             'absenteismos.id'
                         )
-                        ->first();
+                    ->first();
 
-                    if (!$res) {
-                        $absenteismos = new Absenteismo;
-                        $absenteismos->matricula = $registro['matricula'];
-                        $absenteismos->nome = $registro['nome'];
-                        $absenteismos->lotacao = $registro['lotacao'];
-                        $absenteismos->cargo = $registro['cargo'];
-                        $absenteismos->motivo = $registro['motivo'];
-                        $absenteismos->dias = $registro['dias'];
-                        $absenteismos->data_evento = $dt;
-                        $absenteismos->save();
-                        $row++;
+                    if(!empty(  $res->id ))
+                    {
+                        $absenteismos = Absenteismo::find($res->id);
                     }
+                    else
+                    {
+                        $absenteismos = new Absenteismo;
+                    }
+                    $absenteismos->matricula = $registro['matricula'];
+                    $absenteismos->nome = $registro['nome'];
+                    $absenteismos->lotacao = $registro['lotacao'];
+                    $absenteismos->cargo = $registro['cargo'];
+                    $absenteismos->motivo = $registro['motivo'];
+                    $absenteismos->dias = $registro['dias'];
+                    $absenteismos->data_evento = $dt;
+                    $absenteismos->save();
+                    $row++;
                 }
             }
+            $affected = DB::table('absenteismos')
+                ->where('data_evento', '<', $dtmenos12meses)
+                ->delete();
+
+
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
             return redirect()->route('importacao');
@@ -399,68 +416,71 @@ class ImportacaoController extends Controller {
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-
     public function absenteismo()
     {
         return view('compliance.importacoes.absenteismo');  //
     }
-
     // ######################### FIM ABSENTEISMO  Frequencia por SE #######################
 
 
 
 
     // ######################### INICIO ALARMES #######################
-
     public function exportAlarme()
     {
         return Excel::download(new ExportAlarmes, 'alarme.xlsx');
     }
-
-    public function importAlarme(Request $request) {
+    public function importAlarme(Request $request)
+    {
+        $row = 0;
+        $dtmenos12meses = Carbon::now();
+        $dtmenos12meses = $dtmenos12meses->subMonth(12);
 
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
-        if(empty($request->file('file'))) {
+        if(empty($request->file('file')))
+        {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
             O Arquivo de ser 272-2-SEGURANÇA-SistemaMonitoramento_ALARMES *.xlsx ! Selecione Corretamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
 
-        if($validator->passes()) {
-            /** a)	272-2-SEGURANÇA-SistemaMonitoramento_ALARME*.  Atualizar a planilha a partir do primeiro dia subsequente ao último dia da planilha que foi importada por último.  (Importação por Incremento).
-             *
-             */
-
-            //   ini_set('memory_limit', '1024M');
-            //   ini_set('upload_max_filesize', '1024M');
-            //  ini_set('post_max_size', '1024M');
+        if($validator->passes())
+        {
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
-
             $alarmes = Excel::toArray(new ImportAlarmes,  request()->file('file'));
-
-            foreach($alarmes as $dados) {
-                $row = 0;
-                foreach($dados as $registro) {
+            foreach($alarmes as $dados)
+            {
+                foreach($dados as $registro)
+                {
                     $dt     = $this->transformDate($registro['data']);
                     $hora   = $this->transformTime($registro['hora']);
-
                     $res = DB::table('alarmes')
                         ->where('mcu', '=',  $registro['mcu'])
-                        // ->where('armedesarme', '=', $registro['armedesarme'] )
                         ->where('data','=', $dt)
                         ->where('hora', '=', $hora )
                         ->select(
                             'alarmes.id'
                         )
-                        ->first();
-                    if (!$res){
-                        //  $dt     = $this->transformDate($registro['data']);
-                        //  $hora   = $this->transformTime($registro['hora']);
+                    ->first();
+                    if(!empty(  $res->id ))
+                    {
+                        $alarme = Alarme::find($res->id);
+                        $alarme->cliente      = $registro['cliente'];
+                        $alarme->armedesarme  = $registro['armedesarme'];
+                        $alarme->usuario  = $registro['usuario'];
+                        $alarme->mcu  = $registro['mcu'];
+                        $alarme->matricula  = $registro['matricula'];
+                        $alarme->diaSemana    = $dt->dayOfWeek;
+                        $alarme->data = $dt;
+                        $alarme->hora = $hora;
+                    }
+                    else
+                    {
                         $alarme = new Alarme;
                         $alarme->cliente      = $registro['cliente'];
                         $alarme->armedesarme  = $registro['armedesarme'];
@@ -470,16 +490,18 @@ class ImportacaoController extends Controller {
                         $alarme->diaSemana    = $dt->dayOfWeek;
                         $alarme->data = $dt;
                         $alarme->hora = $hora;
-                        $alarme->save();
                         $row ++;
                     }
+                    $alarme->save();
                 }
             }
+
+            $affected = DB::table('alarmes')
+                ->where('data', '<', $dtmenos12meses)
+            ->delete();
+
             if ($row >= 1){
                 \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                    ,'class'=>'green white-text']);
-            }else{
-                \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
                     ,'class'=>'green white-text']);
             }
             return redirect()->route('importacao');
@@ -487,19 +509,20 @@ class ImportacaoController extends Controller {
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-
-    public function alarme() {
+    public function alarme()
+    {
         return view('compliance.importacoes.alarme');  //
     }
-
     /// ######################### FIM ALARMES #######################
 
     /// ######################### BLOCO  SL02 BDF #######################
     public function exportSL02_bdf() {
         return Excel::download(new ExportSL02_bdf, 'SL02_bdf.xlsx');
     }
-
     public function importSL02_bdf(Request $request) {
+        $row = 0;
+        $dtmenos120dias = Carbon::now();
+        $dtmenos120dias = $dtmenos120dias->subDays(120);
 
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
@@ -512,32 +535,37 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
 
-        if( $request->file('file')->getClientOriginalName() != "270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe.xlsx") {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser  270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+//        if( $request->file('file')->getClientOriginalName() != "270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser  270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-        if($validator->passes()) {
+        if($validator->passes())
+        {
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
 
             $SL02_bdfs = Excel::toArray(new ImportSL02_bdf,  request()->file('file'));
-            foreach($SL02_bdfs as $registros) {
-                $row = 0;
-                foreach($registros as $dado) {
-                    if(!empty($dado['dt_movimento'])) {
-                        try {
+            foreach($SL02_bdfs as $registros)
+            {
+                foreach($registros as $dado)
+                {
+                    if(!empty($dado['dt_movimento']))
+                    {
+                        try
+                        {
                             $dt = $this->transformDate(strtr($dado['dt_movimento'], '/', '-'));
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $registro->Data='';
-                            // dd("erro conversão de data");
                         }
                     }
-                    //var_dump($dado);
-                    //dd(  $dt );
-                    //  dd( $sl02bdfs);
+                    $saldo_atual = floatval($dado['saldo_atual']);
+                    $limite = floatval($dado['limitevlr_limite_banco_postal_e_ect']);
+                    $diferenca = $saldo_atual - $limite;
 
                     $res = DB::table('sl02bdfs')
                         ->where('cod_orgao', '=',  $dado['cod_orgao'])
@@ -545,18 +573,21 @@ class ImportacaoController extends Controller {
                         ->select(
                             'sl02bdfs.id'
                         )
-                        ->first();
-
-                    // dd(  $res, $dt );
-                    if (!$res){
-
-
-
-                        $saldo_atual = floatval($dado['saldo_atual']);
-                        $limite = floatval($dado['limitevlr_limite_banco_postal_e_ect']);
-                        $diferenca = $saldo_atual - $limite;
-
-
+                    ->first();
+                    if(!empty(  $res->id ))
+                    {
+                        $sl02bdfs = SL02_bdf::find($res->id);
+                        $sl02bdfs->dr      = $dado['dr'];
+                        $sl02bdfs->cod_orgao  = $dado['cod_orgao'];
+                        $sl02bdfs->reop  = $dado['reop'];
+                        $sl02bdfs->orgao  = $dado['orgao'];
+                        $sl02bdfs->dt_movimento = $dt;
+                        $sl02bdfs->saldo_atual = $saldo_atual;
+                        $sl02bdfs->limite = $limite;
+                        $sl02bdfs->diferenca = $diferenca;
+                    }
+                    else
+                    {
                         $sl02bdfs = new SL02_bdf;
                         $sl02bdfs->dr      = $dado['dr'];
                         $sl02bdfs->cod_orgao  = $dado['cod_orgao'];
@@ -566,41 +597,40 @@ class ImportacaoController extends Controller {
                         $sl02bdfs->saldo_atual = $saldo_atual;
                         $sl02bdfs->limite = $limite;
                         $sl02bdfs->diferenca = $diferenca;
-                        // var_dump($dado);
-                        //   dd( $sl02bdfs);
-                        $sl02bdfs->save();
-                        $row ++;
                     }
+                   // dd(          $sl02bdfs);
+                    $sl02bdfs->save();
+                    $row ++;
                 }
+                $affected = DB::table('sl02bdfs')
+                    ->where('dt_movimento', '<', $dtmenos120dias)
+                    ->delete();
 
                 \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                     ,'class'=>'green white-text']);
                 return redirect()->route('importacao');
             }
         } else {
-            //    return back()->with(['errors'=>$validator->errors()->all()]);
             \Session::flash('mensagem',['msg'=>'Registros SL02_bdf Não pôde ser importado! Tente novamente'
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
     }
-
-    public function SL02_bdf() {
+    public function SL02_bdf()
+    {
         return view('compliance.importacoes.sld02_bdf');  //
     }
-
     /// ######################### FIM SL02 BDF ########################
 
     /// ######################### BLOCO  SMB BDF #######################
     public function exportSmb_bdf() {
         return Excel::download(new ExportSMBxBDF_NaoConciliado, 'SMBxBDF_NaoConciliado.xlsx');
     }
-
     public function importSmb_bdf(Request $request)
     {
         $row = 0;
-        $dtmenos90dias = Carbon::now();
-        $dtmenos90dias = $dtmenos90dias->subDays(90);
+        $dtmenos120dias = Carbon::now();
+        $dtmenos120dias = $dtmenos120dias->subDays(120);
 
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
@@ -716,27 +746,24 @@ class ImportacaoController extends Controller {
 
                     if(!empty(  $res->id ))
                     {
-                        if ($dado['status'] <> 'Pendente')
-                        {
-                            $smb_bdf_naoconciliados = SMBxBDF_NaoConciliado::find($res->id);
-                            $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
-                            $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
-                            $smb_bdf_naoconciliados->cnpj  = $dado['cnpj'];
-                            $smb_bdf_naoconciliados->status  = $dado['status'];
-                            $smb_bdf_naoconciliados->Data = $dt;
-                            $smb_bdf_naoconciliados->smbdinheiro = $smbdinheiro;
-                            $smb_bdf_naoconciliados->smbcheque = $smbcheque;
-                            $smb_bdf_naoconciliados->smbboleto = $smbboleto;
-                            $smb_bdf_naoconciliados->smbestorno = $smbestorno;
-                            $smb_bdf_naoconciliados->bdfdinheiro = $bdfdinheiro;
-                            $smb_bdf_naoconciliados->bdfcheque = $bdfcheque;
-                            $smb_bdf_naoconciliados->bdfboleto = $bdfboleto;
-                            $smb_bdf_naoconciliados->divergencia = $divergencia;
-                        }
+                        $smb_bdf_naoconciliados = SMBxBDF_NaoConciliado::find($res->id);
+                        $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
+                        $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
+                        $smb_bdf_naoconciliados->cnpj  = $dado['cnpj'];
+                        $smb_bdf_naoconciliados->status  = $dado['status'];
+                        $smb_bdf_naoconciliados->Data = $dt;
+                        $smb_bdf_naoconciliados->smbdinheiro = $smbdinheiro;
+                        $smb_bdf_naoconciliados->smbcheque = $smbcheque;
+                        $smb_bdf_naoconciliados->smbboleto = $smbboleto;
+                        $smb_bdf_naoconciliados->smbestorno = $smbestorno;
+                        $smb_bdf_naoconciliados->bdfdinheiro = $bdfdinheiro;
+                        $smb_bdf_naoconciliados->bdfcheque = $bdfcheque;
+                        $smb_bdf_naoconciliados->bdfboleto = $bdfboleto;
+                        $smb_bdf_naoconciliados->divergencia = $divergencia;
                     }
                     else
                     {
-                        if ($dado['status']== 'Pendente')
+                        if($dado['status'] == 'Pendente' )
                         {
                             $smb_bdf_naoconciliados = new SMBxBDF_NaoConciliado;
                             $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
@@ -758,10 +785,8 @@ class ImportacaoController extends Controller {
                     $row ++;
                 }
                 $affected = DB::table('smb_bdf_naoconciliados')
-                    ->where('data', '<', $dtmenos90dias)
-                    // ->get();
+                    ->where('data', '<', $dtmenos120dias)
                     ->delete();
-                //    dd('nao atualizados -> ', $affected );
             }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
@@ -772,11 +797,9 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
     }
-
     public function smb_bdf() {
         return view('compliance.importacoes.smb_bdf');  //
     }
-
     /// ######################### FIM SMB BDF #######################
 
     /// ######################### BLOCO  PROTER#######################
@@ -784,7 +807,6 @@ class ImportacaoController extends Controller {
     {
         return Excel::download(new ExportProter, 'proters.xlsx');
     }
-
     public function importProter(Request $request)
     {
         $row=0;
@@ -1128,7 +1150,6 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
     }
-
     public function proter()
     {
         return view('compliance.importacoes.proter');  //
@@ -1140,7 +1161,6 @@ class ImportacaoController extends Controller {
     {
         return Excel::download(new ExportDebitoEmpregados, 'debitoEmpregados.xlsx');
     }
-
     public function importDebitoEmpregados(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -1211,7 +1231,6 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
     }
-
     public function debitoEmpregados()
     {
         return view('compliance.importacoes.debitoEmpregado');  //
@@ -1303,10 +1322,10 @@ class ImportacaoController extends Controller {
     /// ######################### FIM FERIADOS #######################
 
     /// ######################### BLOCO  CADASTRAL #######################
-    public function exportCadastral() {
+    public function exportCadastral()
+    {
         return Excel::download(new ExportCadastral, 'cadastrals.xlsx');
     }
-
     public function importCadastral(Request $request)
     {
         $row=0;
@@ -1382,7 +1401,8 @@ class ImportacaoController extends Controller {
             return redirect()->route('importacao');
         }
     }
-    public function cadastral() {
+    public function cadastral()
+    {
         return view('compliance.importacoes.cadastral');
     }
     /// ######################### FIM CADASTRAL #######################
@@ -1613,225 +1633,82 @@ class ImportacaoController extends Controller {
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-    public function unidades() {
+    public function unidades()
+    {
         return view('compliance.importacoes.unidades');  //
     }
     // ######################### FIM IMPORTAR UNIDADES #######################
 
-
-
-
-
-
-// ######################### INICIO    Pagamentos adicionais  #######################
-public function exportpagamentosAdicionais(){
-
-    return Excel::download(new ExportPagamentosAdicionais, 'pagamentosAdicionais.xlsx');
-}
-
-public function importPagamentosAdicionais(Request $request) {
-    $dtmenos365dias = Carbon::now();
-    $dtmenos365dias->subDays(365);
-    $validator = Validator::make($request->all(),[
-        'file' => 'required|mimes:xlsx,xls,csv'
-    ]);
-
-    if(empty($request->file('file'))){
-        \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-        O Arquivo de ser 278-2-WebSGQ-3-PagamentosAdicionais.xlsx ! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
+    // ######################### INICIO    Pagamentos adicionais  #######################
+    public function exportpagamentosAdicionais()
+    {
+        return Excel::download(new ExportPagamentosAdicionais, 'pagamentosAdicionais.xlsx');
     }
-
-
-    if( $request->file('file')->getClientOriginalName() != "278-2-WebSGQ-3-PagamentosAdicionais.xlsx") {
-        \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-        O Arquivo de ser 278-2-WebSGQ-3-PagamentosAdicionais.xls! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if($validator->passes()) {
-        $dtmenos10meses = new Carbon();
-        $dtmenos10meses->subMonth(10);
-        $row = 0;
-        $ref = substr($dtmenos10meses,0,4). substr($dtmenos10meses,5,2);
-        DB::table('pagamentos_adicionais')->where('ref', '<=', $ref)->delete();
-        $pagamentos_adicionais = Excel::toArray(new ImportPagamentosAdicionais,  request()->file('file'));
-       // var_dump($pagamentos_adicionais);
-       // dd();
-        foreach($pagamentos_adicionais as $dados) {
-            foreach($dados as $registro) {
-
-                //dd($registro);
-                $res = DB::table('pagamentos_adicionais')
-                    ->where('se', '=',  $registro['se'])
-                    ->where('sigla_lotacao', '=',  $registro['sigla_lotacao'])
-                    ->where('matricula', '=',  $registro['matricula'])
-                    ->where('rubrica', '=',  $registro['rubrica'])
-                    ->where('ref', '=',  $registro['ref'])
-                    ->select(
-                        'pagamentos_adicionais.id'
-                    )
-                ->first();
-
-                if (!$res){
-                    $pgtoAdicionais = new PagamentosAdicionais;
-                    $pgtoAdicionais->se      = $registro['se'];
-                    $pgtoAdicionais->sigla_lotacao  = $registro['sigla_lotacao'];
-                    $pgtoAdicionais->matricula  = $registro['matricula'];
-                    $pgtoAdicionais->nome  = $registro['nome'];
-                    $pgtoAdicionais->cargo  = $registro['cargo'];
-                    $pgtoAdicionais->espec  = $registro['espec'];
-                    $pgtoAdicionais->titular_da_funcao  = $registro['titular_da_funcao'];
-                    $pgtoAdicionais->dif_mer  = $registro['dif_mer'];
-                    $pgtoAdicionais->rubrica  = $registro['rubrica'];
-                    $pgtoAdicionais->qtd  = $registro['qtd'];
-                    $pgtoAdicionais->valor  = $registro['valor'];
-                    $pgtoAdicionais->ref  = $registro['ref'];
-                    $pgtoAdicionais->save();
-                    $row ++;
-                }
-
-            }
-        }
-        if ($row >= 1){
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                ,'class'=>'green white-text']);
-        }else{
-            \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
-                ,'class'=>'green white-text']);
-        }
-        return redirect()->route('importacao');
-    }else{
-        return back()->with(['errors'=>$validator->errors()->all()]);
-    }
-}
-
-public function pagamentosAdicionais()
-{
-    return view('compliance.importacoes.pagamentosAdicionais');  //
-}
-// ######################### FIM  Pagamentos adicionais
-
-
- // ######################### INICIO    Painel de extravio  #######################
-     public function exportpainelExtravio(){
-
-        return Excel::download(new ExportPainelExtravio, 'painelExtravio.xlsx');
-    }
-
-    public function importPainelExtravio(Request $request) {
-
-        $dtmenos545dias = Carbon::now();
-        $dtmenos545dias->subDays(545);
-
+    public function importPagamentosAdicionais(Request $request)
+    {
+        $dtmenos365dias = Carbon::now();
+        $dtmenos365dias->subDays(365);
         $validator = Validator::make($request->all(),[
-              'file' => 'required|mimes:xlsx,xls,csv'
+            'file' => 'required|mimes:xlsx'
         ]);
 
         if(empty($request->file('file'))){
-
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser 277-5-PainelExtravio.xlsx ! Selecione Corretamente'
+            O Arquivo de ser 278-2-WebSGQ-3-PagamentosAdicionais.xlsx ! Selecione Corretamente'
             ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
 
+//        if( $request->file('file')->getClientOriginalName() != "278-2-WebSGQ-3-PagamentosAdicionais.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser 278-2-WebSGQ-3-PagamentosAdicionais.xls! Selecione Corretamente'
+//            ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-        if( $request->file('file')->getClientOriginalName() != "277-5-PainelExtravio.xlsx") {
+        if($validator->passes())
+        {
+            $dtmenos10meses = new Carbon();
+            $dtmenos10meses->subMonth(10);
+            $row = 0;
+            $ref = substr($dtmenos10meses,0,4). substr($dtmenos10meses,5,2);
 
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser 277-5-PainelExtravio.xls! Selecione Corretamente'
-            ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+            DB::table('pagamentos_adicionais')->where('ref', '<=', $ref)->delete();
 
-
-
-        if($validator->passes()) {
-
-
-            DB::table('painel_extravios')->where('data_evento', '<=', $dtmenos545dias)->delete();
-
-            $painel_extravios = Excel::toArray(new ImportPainelExtravio,  request()->file('file'));
-            foreach($painel_extravios as $dados) {
-
-                $row = 0;
-                foreach($dados as $registro) {
-
-                    if(!empty($registro['data_evento'])) {
-                        try {
-                            $data_evento = $this->transformDate($registro['data_evento']);
-                            //$dt =  Carbon::createFromFormat('m/d/Y', $registro['data'])->format('Y-m-d');
-                        } catch (Exception $e) {
-                            $data_evento       = "";
-                        }
-                    }
-                    $ultimo_evento_data       = null;
-
-                    if(!empty($registro['ultimo_evento_data'])) {
-                        try {
-                            $ultimo_evento_data = $this->transformDate($registro['ultimo_evento_data']);
-                            //$dt =  Carbon::createFromFormat('m/d/Y', $registro['data'])->format('Y-m-d');
-                        } catch (Exception $e) {
-                            $ultimo_evento_data       = "";
-                        }
-                    }
-                    $data_postagem       = null;
-                    if(!empty($registro['data_postagem'])) {
-                        try {
-                            $data_postagem = $this->transformDate($registro['data_postagem']);
-                            //$dt =  Carbon::createFromFormat('m/d/Y', $registro['data'])->format('Y-m-d');
-                        } catch (Exception $e) {
-                            $data_postagem          = null;
-                        }
-                    }
-
-                    $res = DB::table('painel_extravios')
-                        ->where('objeto', '=',  $registro['objeto'])
-                        ->where('data_evento','=', $data_evento)
-
+            $pagamentos_adicionais = Excel::toArray(new ImportPagamentosAdicionais,  request()->file('file'));
+            foreach($pagamentos_adicionais as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                    $res = DB::table('pagamentos_adicionais')
+                        ->where('se', '=',  $registro['se'])
+                        ->where('sigla_lotacao', '=',  $registro['sigla_lotacao'])
+                        ->where('matricula', '=',  $registro['matricula'])
+                        ->where('rubrica', '=',  $registro['rubrica'])
+                        ->where('ref', '=',  $registro['ref'])
                         ->select(
-                            'painel_extravios.objeto'
+                            'pagamentos_adicionais.id'
                         )
-                        ->first();
-
-                    if (!$res){
-                        $painelExtravio = new PainelExtravio;
-                        $painelExtravio->objeto      = $registro['objeto'];
-                        $painelExtravio->data_evento      = $data_evento;
-                        $painelExtravio->evento      = $registro['evento'];
-                        $painelExtravio->cliente      = $registro['cliente'];
-                        $painelExtravio->trecho      = $registro['trecho'];
-                        $painelExtravio->evento_trecho      = $registro['evento_trecho'];
-                        $painelExtravio->unid_origem      = $registro['unid_origem'];
-                        $painelExtravio->unid_destino      = $registro['unid_destino'];
-                        $painelExtravio->dr_origem      = $registro['dr_origem'];
-                        $painelExtravio->dr_destino      = $registro['dr_destino'];
-                        $painelExtravio->gestao_prealerta      = $registro['gestao_prealerta'];
-                        $painelExtravio->automatico      = $registro['automatico'];
-                        $painelExtravio->manual      = $registro['manual'];
-                        $painelExtravio->total      = $registro['total'];
-                        $painelExtravio->macroprocesso      = $registro['macroprocesso'];
-                        $painelExtravio->ultimo_evento_extraviado      = $registro['ultimo_evento_extraviado'];
-                        $painelExtravio->ultimo_evento_em_transito      = $registro['ultimo_evento_em_transito'];
-                        $painelExtravio->ultimo_evento      = $registro['ultimo_evento'];
-                        $painelExtravio->ultimo_evento_data      = $ultimo_evento_data;
-                        $painelExtravio->evento_finalizador      = $registro['evento_finalizador'];
-                        $painelExtravio->tipo      = $registro['tipo'];
-                        $painelExtravio->analise_sro      = $registro['analise_sro'];
-                        $painelExtravio->unid_origem_apelido      = $registro['unid_origem_apelido'];
-                        $painelExtravio->unid_destino_apelido      = $registro['unid_destino_apelido'];
-                        $painelExtravio->trecho_real      = $registro['trecho_real'];
-                        $painelExtravio->se_postagem      = $registro['se_postagem'];
-                        $painelExtravio->unidade_postagem      = $registro['unidade_postagem'];
-                        $painelExtravio->data_postagem      = $data_postagem;
-                        $painelExtravio->familia      = $registro['familia'];
-                        $painelExtravio->ultimo_evento_sinistro      = $registro['ultimo_evento_sinistro'];
-                        $painelExtravio->save();
+                    ->first();
+                    if (empty($res->id))
+                    {
+                        $pgtoAdicionais = new PagamentosAdicionais;
+                        $pgtoAdicionais->se      = $registro['se'];
+                        $pgtoAdicionais->sigla_lotacao  = $registro['sigla_lotacao'];
+                        $pgtoAdicionais->matricula  = $registro['matricula'];
+                        $pgtoAdicionais->nome  = $registro['nome'];
+                        $pgtoAdicionais->cargo  = $registro['cargo'];
+                        $pgtoAdicionais->espec  = $registro['espec'];
+                        $pgtoAdicionais->titular_da_funcao  = $registro['titular_da_funcao'];
+                        $pgtoAdicionais->dif_mer  = $registro['dif_mer'];
+                        $pgtoAdicionais->rubrica  = $registro['rubrica'];
+                        $pgtoAdicionais->qtd  = $registro['qtd'];
+                        $pgtoAdicionais->valor  = $registro['valor'];
+                        $pgtoAdicionais->ref  = $registro['ref'];
+                        $pgtoAdicionais->save();
                         $row ++;
                     }
+
                 }
             }
             if ($row >= 1){
@@ -1846,262 +1723,459 @@ public function pagamentosAdicionais()
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-
-    public function painelExtravio()
+    public function pagamentosAdicionais()
     {
-        return view('compliance.importacoes.painelExtravio');  //
+        return view('compliance.importacoes.pagamentosAdicionais');  //
     }
-    // ######################### FIM  painel de extravio #######################
-// ######################### INICIO    cie eletronica  #######################
+    // ######################### FIM  Pagamentos adicionais
 
-public function exportcieEletronica(){
 
-    return Excel::download(new ExportCieEletronica, 'cieEletronica.xlsx');
-}
+     // ######################### INICIO    Painel de extravio  #######################
+         public function exportpainelExtravio()
+         {
+            return Excel::download(new ExportPainelExtravio, 'painelExtravio.xlsx');
+         }
 
-public function importCieEletronica(Request $request) {
-   $validator = Validator::make($request->all(),[
-    'file' => 'required|mimes:xlsx,xls,csv'
-    ]);
-
-    if(empty($request->file('file'))){
-
-        \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-        O Arquivo de ser 277-7-CieEletronica.xlsx ! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if( $request->file('file')->getClientOriginalName() != "277-7-CieEletronica.xlsx") {
-
-        \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-        O Arquivo de ser  277-7-CieEletronica.xls! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if($validator->passes()) {
-        $cie_eletronicas = Excel::toArray(new ImportCieEletronica,  request()->file('file'));
-        foreach($cie_eletronicas as $dados) {
+        public function importPainelExtravio(Request $request)
+        {
+            $dtmenos365dias = Carbon::now();
+            $dtmenos365dias->subDays(365);
             $row = 0;
-            foreach($dados as $registro) {
-                $emissao       = null;
-                if(!empty($registro['emissao'])) {
-                    if (strlen($registro['emissao']) > 11 ){
-                        try {
-                            //  31/07/2020 22:10:29
-                            //$emissao=substr($registro['emissao'],6,4);
-                            //$emissao=substr($registro['emissao'],3,2);
-                            //$emissao=substr($registro['emissao'],0,2).'/'.substr($registro['emissao'],3,2).'/'.substr($registro['emissao'],6,4).' '.$emissao=substr($registro['emissao'],11,8);
-                            //$emissao=substr($registro['emissao'],0,2).'/'.substr($registro['emissao'],3,2).'/'.substr($registro['emissao'],6,4).' '.$emissao=substr($registro['emissao'],11,8);
-                            $emissao =substr($registro['emissao'],6,4).'-'.$emissao=substr($registro['emissao'],3,2).'-'.$emissao=substr($registro['emissao'],0,2).' '.$emissao=substr($registro['emissao'],11,8);
-                            //var_dump($emissao );
-                            //->toDateTimeString();
-                            //$emissao = $this->transformDate($registro['emissao']).' '.$this->transformTime($registro['emissao']);
-                            //Carbon::createFromFormat('m/d/Y H:i:s', $registro['emissao'])->format('Y-m-d H:i:s');
-                        } catch (Exception $e) {
-                            $emissao        = null;
-                        }
-                    }else{
-                        try {
-                            $emissao = $this->transformDate($registro['emissao']);
-                       } catch (Exception $e) {
-                            $emissao      = null;
-                        }
+            $validator = Validator::make($request->all(),[
+                  'file' => 'required|mimes:xlsx,xls,csv'
+            ]);
 
-                    }
-                }
-
-                $data_de_resposta       = null;
-                if(!empty($registro['data_de_resposta'])) {
-                    try {
-                        $data_de_resposta = $this->transformDate($registro['data_de_resposta']);
-                   } catch (Exception $e) {
-                        $data_de_resposta      = null;
-                    }
-                }
-
-                $res = DB::table('cie_eletronicas')
-                    ->where('emissao','=',  $emissao)
-                    ->where('numero', '=',  $registro['numero'])
-                    ->where('se_origem', '=',  $registro['se_origem'])
-                    ->where('destino', '=',  $registro['destino'])
-                    ->where('se_destino', '=',  $registro['se_destino'])
-                    ->select(
-                        'cie_eletronicas.id'
-                    )
-                    ->first();
-                if (!$res){
-                    $cie_eletronica = new CieEletronica;
-                    $cie_eletronica->numero      = $registro['numero'];
-                    $cie_eletronica->emissao = $emissao;
-                    $cie_eletronica->se_origem  = $registro['se_origem'];
-                    $cie_eletronica->destino  = $registro['destino'];
-                    $cie_eletronica->se_destino  = $registro['se_destino'];
-                    $cie_eletronica->irregularidade  = $registro['irregularidade'];
-                    $cie_eletronica->categoria  = $registro['categoria'];
-                    $cie_eletronica->numero_objeto  = $registro['numero_objeto'];
-                    $cie_eletronica->lida  = $registro['lida'];
-                    $cie_eletronica->respondida  = $registro['respondida'];
-                    $cie_eletronica->fora_do_prazo  = $registro['fora_do_prazo'];
-                    $cie_eletronica->resposta  = $registro['resposta'];
-                    $cie_eletronica->data_de_resposta  = $data_de_resposta;
-                    $cie_eletronica->save();
-                    $row ++;
-                }
+            if(empty($request->file('file')))
+            {
+                \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
+                O Arquivo de ser 277-5-PainelExtravio.xlsx ! Selecione Corretamente'
+                ,'class'=>'red white-text']);
+                return redirect()->route('importacao');
             }
+//            if( $request->file('file')->getClientOriginalName() != "277-5-PainelExtravio.xlsx")
+//            {
+//                \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//                O Arquivo de ser 277-5-PainelExtravio.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//                return redirect()->route('importacao');
+//            }
 
+            if($validator->passes())
+            {
+                $painel_extravios = Excel::toArray(new ImportPainelExtravio,  request()->file('file'));
+                foreach($painel_extravios as $dados)
+                {
+                    foreach($dados as $registro)
+                    {
+                        if(!empty($registro['data_evento'])) {
+                            try {
+                                $data_evento = $this->transformDate($registro['data_evento']);
+                            }
+                            catch (Exception $e)
+                            {
+                                $data_evento       = "";
+                            }
+                        }
+                        $ultimo_evento_data       = null;
+                        if(!empty($registro['ultimo_evento_data']))
+                        {
+                            try
+                            {
+                                $ultimo_evento_data = $this->transformDate($registro['ultimo_evento_data']);
+                            }
+                            catch (Exception $e)
+                            {
+                                $ultimo_evento_data       = "";
+                            }
+                        }
+                        $data_postagem       = null;
+                        if(!empty($registro['data_postagem']))
+                        {
+                            try
+                            {
+                                $data_postagem = $this->transformDate($registro['data_postagem']);
+                            }
+                            catch (Exception $e)
+                            {
+                                $data_postagem          = null;
+                            }
+                        }
+
+                        $res = DB::table('painel_extravios')
+                            ->where('objeto', '=',  $registro['objeto'])
+                            ->where('data_evento','=', $data_evento)
+                            ->select(
+                                'painel_extravios.objeto'
+                            )
+                        ->first();
+                        if(!empty($res->objeto))
+                        {
+                            $painelExtravio = new PainelExtravio;
+                            $painelExtravio->objeto      = $registro['objeto'];
+                            $painelExtravio->data_evento      = $data_evento;
+                            $painelExtravio->evento      = $registro['evento'];
+                            $painelExtravio->cliente      = $registro['cliente'];
+                            $painelExtravio->trecho      = $registro['trecho'];
+                            $painelExtravio->evento_trecho      = $registro['evento_trecho'];
+                            $painelExtravio->unid_origem      = $registro['unid_origem'];
+                            $painelExtravio->unid_destino      = $registro['unid_destino'];
+                            $painelExtravio->dr_origem      = $registro['dr_origem'];
+                            $painelExtravio->dr_destino      = $registro['dr_destino'];
+                            $painelExtravio->gestao_prealerta      = $registro['gestao_prealerta'];
+                            $painelExtravio->automatico      = $registro['automatico'];
+                            $painelExtravio->manual      = $registro['manual'];
+                            $painelExtravio->total      = $registro['total'];
+                            $painelExtravio->macroprocesso      = $registro['macroprocesso'];
+                            $painelExtravio->ultimo_evento_extraviado      = $registro['ultimo_evento_extraviado'];
+                            $painelExtravio->ultimo_evento_em_transito      = $registro['ultimo_evento_em_transito'];
+                            $painelExtravio->ultimo_evento      = $registro['ultimo_evento'];
+                            $painelExtravio->ultimo_evento_data      = $ultimo_evento_data;
+                            $painelExtravio->evento_finalizador      = $registro['evento_finalizador'];
+                            $painelExtravio->tipo      = $registro['tipo'];
+                            $painelExtravio->analise_sro      = $registro['analise_sro'];
+                            $painelExtravio->unid_origem_apelido      = $registro['unid_origem_apelido'];
+                            $painelExtravio->unid_destino_apelido      = $registro['unid_destino_apelido'];
+                            $painelExtravio->trecho_real      = $registro['trecho_real'];
+                            $painelExtravio->se_postagem      = $registro['se_postagem'];
+                            $painelExtravio->unidade_postagem      = $registro['unidade_postagem'];
+                            $painelExtravio->data_postagem      = $data_postagem;
+                            $painelExtravio->familia      = $registro['familia'];
+                            $painelExtravio->ultimo_evento_sinistro      = $registro['ultimo_evento_sinistro'];
+                            $painelExtravio->save();
+                            $row ++;
+                        }
+                    }
+                }
+                DB::table('painel_extravios')
+                    ->where('data_evento', '<=', $dtmenos365dias)
+                ->delete();
+
+                if ($row >= 1){
+                    \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+                        ,'class'=>'green white-text']);
+                }else{
+                    \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
+                        ,'class'=>'green white-text']);
+                }
+                return redirect()->route('importacao');
+            }else{
+                return back()->with(['errors'=>$validator->errors()->all()]);
+            }
         }
-        if ($row >= 1){
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                ,'class'=>'green white-text']);
-        }else{
-            \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
-                ,'class'=>'green white-text']);
+
+        public function painelExtravio()
+        {
+            return view('compliance.importacoes.painelExtravio');  //
         }
-        return redirect()->route('importacao');
-    }else{
-        return back()->with(['errors'=>$validator->errors()->all()]);
+        // ######################### FIM  painel de extravio #######################
+    // ######################### INICIO    cie eletronica  #######################
+
+    public function exportcieEletronica()
+    {
+        return Excel::download(new ExportCieEletronica, 'cieEletronica.xlsx');
     }
-}
 
-public function cieEletronica()
-{
-    return view('compliance.importacoes.cieEletronica');  //
-}
-// ######################### FIM  cieEletronica #######################
+    public function importCieEletronica(Request $request)
+    {
+        $row = 0;
+        $dtmenos365dias = Carbon::now();
+        $dtmenos365dias->subDays(365);
+        $validator = Validator::make($request->all(),[
+        'file' => 'required|mimes:xlsx'
+        ]);
 
-// ######################### INICIO SGDO DISTRIBUIÇÃO  #######################
+        if(empty($request->file('file')))
+        {
+            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
+            O Arquivo de ser 277-7-CieEletronica.xlsx ! Selecione Corretamente'
+            ,'class'=>'red white-text']);
+            return redirect()->route('importacao');
+        }
 
+//        if( $request->file('file')->getClientOriginalName() != "277-7-CieEletronica.xlsx") {
+//
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser  277-7-CieEletronica.xls! Selecione Corretamente'
+//            ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
+
+        if($validator->passes())
+        {
+            $cie_eletronicas = Excel::toArray(new ImportCieEletronica,  request()->file('file'));
+            foreach($cie_eletronicas as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                    $emissao       = null;
+                    if(!empty($registro['emissao']))
+                    {
+                        if (strlen($registro['emissao']) > 11 )
+                        {
+                            try
+                            {
+                                //  31/07/2020 22:10:29
+                                //$emissao=substr($registro['emissao'],6,4);
+                                //$emissao=substr($registro['emissao'],3,2);
+                                //$emissao=substr($registro['emissao'],0,2).'/'.substr($registro['emissao'],3,2).'/'.substr($registro['emissao'],6,4).' '.$emissao=substr($registro['emissao'],11,8);
+                                //$emissao=substr($registro['emissao'],0,2).'/'.substr($registro['emissao'],3,2).'/'.substr($registro['emissao'],6,4).' '.$emissao=substr($registro['emissao'],11,8);
+                                $emissao =substr($registro['emissao'],6,4).'-'.$emissao=substr($registro['emissao'],3,2).'-'.$emissao=substr($registro['emissao'],0,2).' '.$emissao=substr($registro['emissao'],11,8);
+                                //var_dump($emissao );
+                                //->toDateTimeString();
+                                //$emissao = $this->transformDate($registro['emissao']).' '.$this->transformTime($registro['emissao']);
+                                //Carbon::createFromFormat('m/d/Y H:i:s', $registro['emissao'])->format('Y-m-d H:i:s');
+                            }
+                            catch (Exception $e)
+                            {
+                                $emissao        = null;
+                            }
+                        }
+                        else
+                        {
+                            try
+                            {
+                                $emissao = $this->transformDate($registro['emissao']);
+                           }
+                           catch (Exception $e)
+                           {
+                                $emissao      = null;
+                           }
+                        }
+                    }
+                    $data_de_resposta       = null;
+                    if(!empty($registro['data_de_resposta']))
+                    {
+                        try
+                        {
+                            $data_de_resposta = $this->transformDate($registro['data_de_resposta']);
+                        }
+                        catch (Exception $e)
+                        {
+                            $data_de_resposta      = null;
+                        }
+                    }
+
+                    $res = DB::table('cie_eletronicas')
+                        ->where('emissao','=',  $emissao)
+                        ->where('numero', '=',  $registro['numero'])
+                        ->where('se_origem', '=',  $registro['se_origem'])
+                        ->where('destino', '=',  $registro['destino'])
+                        ->where('se_destino', '=',  $registro['se_destino'])
+                        ->select(
+                            'cie_eletronicas.id'
+                        )
+                    ->first();
+
+                    if (empty($res->id))
+                    {
+                        $cie_eletronica = new CieEletronica;
+                        $cie_eletronica->numero      = $registro['numero'];
+                        $cie_eletronica->emissao = $emissao;
+                        $cie_eletronica->se_origem  = $registro['se_origem'];
+                        $cie_eletronica->destino  = $registro['destino'];
+                        $cie_eletronica->se_destino  = $registro['se_destino'];
+                        $cie_eletronica->irregularidade  = $registro['irregularidade'];
+                        $cie_eletronica->categoria  = $registro['categoria'];
+                        $cie_eletronica->numero_objeto  = $registro['numero_objeto'];
+                        $cie_eletronica->lida  = $registro['lida'];
+                        $cie_eletronica->respondida  = $registro['respondida'];
+                        $cie_eletronica->fora_do_prazo  = $registro['fora_do_prazo'];
+                        $cie_eletronica->resposta  = $registro['resposta'];
+                        $cie_eletronica->data_de_resposta  = $data_de_resposta;
+                        $cie_eletronica->save();
+                        $row ++;
+                    }
+                }
+
+            }
+            DB::table('cie_eletronicas')
+                ->where('created_at', '<=', $dtmenos365dias)
+            ->delete();
+
+            if ($row >= 1){
+                \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+                    ,'class'=>'green white-text']);
+            }else{
+                \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
+                    ,'class'=>'green white-text']);
+            }
+            return redirect()->route('importacao');
+        }else{
+            return back()->with(['errors'=>$validator->errors()->all()]);
+        }
+    }
+
+    public function cieEletronica()
+    {
+        return view('compliance.importacoes.cieEletronica');  //
+    }
+    // ######################### FIM  cieEletronica #######################
+
+    // ######################### INICIO SGDO DISTRIBUIÇÃO  #######################
     public function exportSgdoDistribuicao(){
 
 
         return Excel::download(new ExportSgdoDistribuicao, 'sgdoDistribuicao.xlsx');
     }
-
-    public function importSgdoDistribuicao(Request $request) {
+    public function importSgdoDistribuicao(Request $request)
+    {
+        $row = 0;
         $dtmenos180dias = Carbon::now();
         $dtmenos180dias->subDays(180);
+
         $validator = Validator::make($request->all(),[
-        'file' => 'required|mimes:xlsx,xls,csv'
+        'file' => 'required|mimes:xlsx'
         ]);
 
-        if(empty($request->file('file'))){
-            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser 277-1-SgdoDistribuicao.xlsx ! Selecione Corretamente'
-            ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-
-        if($validator->passes()) {
-            $time='360';
-            //$size='1024M';
-          //  ini_set('upload_max_filesize', $size);
-          //  ini_set('post_max_size', $size);
-
+        if($validator->passes())
+        {
+            $time='350';
             ini_set('max_input_time', $time);
             ini_set('max_execution_time', $time);
-
             $sgdoDistribuicao = Excel::toArray(new ImportSgdoDistribuicao,  request()->file('file'));
-
-            $row = 1;
-            foreach($sgdoDistribuicao as $dados) {
-
-                foreach($dados as $registro) {
+            foreach($sgdoDistribuicao as $dados)
+            {
+                foreach($dados as $registro)
+                {
                     $data_incio_atividade       = "";
-                    if(!empty($registro['data_inio_atividade'])) {
-                        try {
+                    if(!empty($registro['data_inio_atividade']))
+                    {
+                        try
+                        {
                             $data_incio_atividade = $this->transformDate($registro['data_inio_atividade']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $data_incio_atividade       = null;
                         }
                     }
+dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
+
                     $data_saida       = null;
-                    if(!empty($registro['data_saa'])) {
-                        try {
+                    if(!empty($registro['data_saa']))
+                    {
+                        try
+                        {
                             $data_saida = $this->transformDate($registro['data_saa']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $data_saida       = null;
                         }
                     }
                     $data_retorno       = null;
-                    if(!empty($registro['data_retorno'])) {
-                        try {
+                    if(!empty($registro['data_retorno']))
+                    {
+                        try
+                        {
                             $data_retorno = $this->transformDate($registro['data_retorno']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $data_retorno       = null;
                         }
                     }
                     $data_tpc       = null;
-                    if(!empty($registro['data_tpc'])) {
-                        try {
+                    if(!empty($registro['data_tpc']))
+                    {
+                        try
+                        {
                             $data_tpc = $this->transformDate($registro['data_tpc']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $data_tpc       = null;
                         }
                     }
                     $data_termino_atividade       = null;
-                    if(!empty($registro['data_tmino_atividade'])) {
-                        try {
+                    if(!empty($registro['data_tmino_atividade']))
+                    {
+                        try
+                        {
                             $data_termino_atividade = $this->transformDate($registro['data_tmino_atividade']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $data_termino_atividade       = null;
                         }
                     }
                     $hora_incio_atividade       = null;
-                    if(!empty($registro['hora_inio_atividade'])) {
-                        try {
+                    if(!empty($registro['hora_inio_atividade']))
+                    {
+                        try
+                        {
                             $hora_incio_atividade = $this->transformTime($registro['hora_inio_atividade']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $hora_incio_atividade       = null;
                         }
                     }
                     $hora_saida       = null;
-                    if(!empty($registro['hora_saa'])) {
-                        try {
+                    if(!empty($registro['hora_saa']))
+                    {
+                        try
+                        {
                             $hora_saida = $this->transformTime($registro['hora_saa']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $hora_saida       = null;
                         }
                     }
                     $hora_retorno       = null;
-                    if(!empty($registro['hora_retorno'])) {
-                        try {
+                    if(!empty($registro['hora_retorno']))
+                    {
+                        try
+                        {
                             $hora_retorno = $this->transformTime($registro['hora_retorno']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $hora_retorno        = null;
                         }
                     }
                     $hora_do_tpc       = null;
-                    if(!empty($registro['hora_do_tpc'])) {
-                        try {
+                    if(!empty($registro['hora_do_tpc']))
+                    {
+                        try
+                        {
                             $hora_do_tpc = $this->transformTime($registro['hora_do_tpc']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $hora_do_tpc       = null;
                         }
                     }
                     $hora_termino_atividade        = null;
-                    if(!empty($registro['hora_tmino_atividade'])) {
-                        try {
+                    if(!empty($registro['hora_tmino_atividade']))
+                    {
+                        try
+                        {
                             $hora_termino_atividade = $this->transformTime($registro['hora_tmino_atividade']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $hora_termino_atividade     = null;
                         }
                     }
 
-                     //var_dump($registro);
-                     //dd();
-
-                    $reg = SgdoDistribuicao::firstOrCreate(['dr' => $registro['dr']
+                    $reg = SgdoDistribuicao::firstOrCreate(
+                    [
+                        'mcu' =>  $registro['mcu']
+                        , 'matricula' =>  $registro['matricula']
+                        , 'data_incio_atividade' =>  $data_incio_atividade
+                    ],[
+                        'dr' => $registro['dr']
                         , 'unidade' =>  $registro['unidade']
                         , 'mcu' =>  $registro['mcu']
                         , 'centralizadora' =>  $registro['centralizadora']
                         , 'mcu_centralizadora' => $registro['mcu_centralizadora']
                         , 'distrito' =>  $registro['distrito']
-                        , 'area' =>  $registro['rea']
-                        , 'locomocao' =>  $registro['locomoo']
-                        , 'funcionario' =>  $registro['funcionio']
-                        , 'matricula' =>  $registro['matrula']
+                        , 'area' =>  $registro['area']
+                        , 'locomocao' =>  $registro['locomocao']
+                        , 'funcionario' =>  $registro['funcionario']
+                        , 'matricula' =>  $registro['matricula']
                         , 'justificado' =>  $registro['justificado']
                         , 'peso_da_bolsa_kg' =>  $registro['peso_da_bolsa_kg']
                         , 'peso_do_da_kg' =>  $registro['peso_do_da_kg']
@@ -2121,17 +2195,20 @@ public function cieEletronica()
                         , 'quantidade_de_objetos_coletados' =>  $registro['quantidade_de_objetos_coletados']
                         , 'quantidade_de_pontos_de_entregacoleta' =>  $registro['quantidade_de_pontos_de_entregacoleta']
                         , 'quilometragem_percorrida' =>  $registro['quilometragem_percorrida']
-                        , 'residuo_simples' =>  $registro['resuo_simples']
-                        , 'residuo_qualificado' =>  $registro['resuo_qualificado']
-                        , 'almoca_na_unidade' =>  $registro['almo_na_unidade']
+                        , 'residuo_simples' =>  $registro['residuo_simples']
+                        , 'residuo_qualificado' =>  $registro['residuo_qualificado']
+                        , 'almoca_na_unidade' =>  $registro['almoco_na_unidade']
                         , 'compartilhado' =>  $registro['compartilhado']
                         , 'tipo_de_distrito' =>  $registro['tipo_de_distrito']
                     ]);
-
                     $row ++;
+                    $afected = DB::table('sgdo_distribuicao')
+                        ->where('data_incio_atividade', '<',   $dtmenos180dias)
+                        ->where('matricula', '=',   $registro['matricula'])
+                    ->delete();
                 }
-                //DB::table('sgdo_distribuicao')->where('data_incio_atividade', '<=', $dtmenos180dias)->delete();
             }
+
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
             ,'class'=>'green white-text']);
@@ -2140,56 +2217,58 @@ public function cieEletronica()
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-
     public function sgdoDistribuicao()
     {
         return view('compliance.importacoes.sgdoDistribuicao');  //
     }
     // ######################### FIM SGDO DISTRIBUICAO #######################
 
-       // ######################### INICIO Controle de Viagem  #######################
-
-       public function exportControleDeViagem(){
-
-
+    // ######################### INICIO Controle de Viagem  #######################
+    public function exportControleDeViagem()
+    {
         return Excel::download(new ExportControleDeViagem, 'ControleDeViagem.xlsx');
     }
-
-    public function importControleDeViagem(Request $request) {
+    public function importControleDeViagem(Request $request)
+    {
+        $row = 0;
+        $time='350';
+        $dtmenos180dias = Carbon::now();
+        $dtmenos180dias = $dtmenos180dias->subDays(180);
 
         $validator = Validator::make($request->all(),[
         'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
-        if(empty($request->file('file'))){
-
+        if(empty($request->file('file')))
+        {
             \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
             O Arquivo de ser 276-1-ControleDeViagem.xlsx ! Selecione Corretamente'
             ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
-
-        if( $request->file('file')->getClientOriginalName() != "276-1-ControleDeViagem.xlsx") {
-
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser 276-1-ControleDeViagem.xls! Selecione Corretamente'
-            ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+//        if( $request->file('file')->getClientOriginalName() != "276-1-ControleDeViagem.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser 276-1-ControleDeViagem.xls! Selecione Corretamente'
+//            ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
         if($validator->passes()) {
            // DB::table('controle_de_viagens')->truncate(); //excluir e zerar a tabela
             $controle_de_viagens = Excel::toArray(new ImportControleDeViagem,  request()->file('file'));
-            $row = 1;
-            foreach($controle_de_viagens as $dados) {
-
-                foreach($dados as $registro) {
-
-                    $inicio_viagem       = null;
-                    if(!empty($registro['inicio_viagem'])) {
-                        try {
+            foreach($controle_de_viagens as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                    $inicio_viagem = null;
+                    if(!empty($registro['inicio_viagem']))
+                    {
+                        try
+                        {
                             $inicio_viagem = $this->transformDate($registro['inicio_viagem']);
-                        } catch (Exception $e) {
+                        }
+                        catch (Exception $e)
+                        {
                             $inicio_viagem       = null;
                         }
                     }
@@ -2210,11 +2289,12 @@ public function cieEletronica()
                         }
                     }
 
-                 //   transformTime
-                    ///var_dump($controle_de_viagens );
-                    // dd();
-
-                    $reg = ControleDeViagem::firstOrCreate([ 'dr_detentora' => $registro['dr_detentora']
+                    ControleDeViagem::firstOrCreate(
+                        [
+                            'controle_viagem' =>  $registro['controle_viagem']
+                        ]
+                        ,[
+                            'dr_detentora' => $registro['dr_detentora']
                         , 'unidade_detentora' =>  $registro['unidade_detentora']
                         , 'origem_destino' =>  $registro['origem_destino']
                         , 'tipo_linha' =>  $registro['tipo_linha']
@@ -2242,12 +2322,93 @@ public function cieEletronica()
                         , 'horario_chegada_prevista' =>  $registro['horario_chegada_prevista']
                         , 'horario_partida_prevista' =>  $registro['horario_partida_prevista']
                     ]);
-
-                    $viagem->save();
                     $row ++;
                 }
             }
+            $afected = DB::table('controle_de_viagens')
+                ->where('inicio_viagem', '<',   $dtmenos180dias)
+                ->delete();
 
+            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+            ,'class'=>'green white-text']);
+            return redirect()->route('importacao');
+        }
+        else
+        {
+            return back()->with(['errors'=>$validator->errors()->all()]);
+        }
+    }
+    public function controleDeViagem()
+    {
+        return view('compliance.importacoes.controleDeViagem');  //
+    }
+    // ######################### FIM Controle de Viagem #######################
+
+    // ######################### INICIO plp pendente  #######################
+    public function exportPLPListaPendente()
+    {
+        return Excel::download(new ExportPLPListaPendente, 'PLPListaPendente.xlsx');
+    }
+    public function importPLPListaPendente(Request $request)
+    {
+        $row = 0;
+        $time='350';
+        $datahoje = Carbon::now();
+
+        $validator = Validator::make($request->all(),[
+        'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+        if(empty($request->file('file')))
+        {
+            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
+            O Arquivo de ser 274-1-PLP-ListasPendentes.xlsx ! Selecione Corretamente'
+            ,'class'=>'red white-text']);
+            return redirect()->route('importacao');
+        }
+//            if( $request->file('file')->getClientOriginalName() != "274-1-PLP-ListasPendentes.xlsx")
+//            {
+//                \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//                O Arquivo de ser  274-1-PLP-ListasPendentes.xls! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//                return redirect()->route('importacao');
+//            }
+
+        if($validator->passes())
+        {
+            $plpListaPendentes = Excel::toArray(new ImportPLPListaPendente,  request()->file('file'));
+          ///  DB::table('plpListaPendentes')->truncate(); //excluir e zerar a tabela
+            foreach($plpListaPendentes as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                    if(!empty($registro['dh_lista_postagem']))
+                    {
+                        try
+                        {
+                            $dh_lista_postagem = $this->transformDate($registro['dh_lista_postagem']);
+                        }
+                        catch (Exception $e)
+                        {
+                            $dh_lista_postagem       = "";
+                        }
+                    }
+                    $plpListaPendente = new PLPListaPendente;
+                    $plpListaPendente->dr      = $registro['dr'];
+                    $plpListaPendente->stomcu      = $registro['stomcu'];
+                    $plpListaPendente->nome_agencia      = $registro['nome_agencia'];
+                    $plpListaPendente->lista      = $registro['lista'];
+                    $plpListaPendente->plp      = $registro['plp'];
+                    $plpListaPendente->objeto      = $registro['objeto'];
+                    $plpListaPendente->cliente      = $registro['cliente'];
+                    $plpListaPendente->dh_lista_postagem      =  $dh_lista_postagem;
+                    $plpListaPendente->save();
+                    $row ++;
+                    $afected = DB::table('plplistapendentes')
+                        ->where('dr', '=',   $plpListaPendente->dr)
+                        ->where('created_at', '<',   $datahoje)
+                    ->delete();
+                }
+            }
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
             ,'class'=>'green white-text']);
             return redirect()->route('importacao');
@@ -2255,294 +2416,191 @@ public function cieEletronica()
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-
-    public function controleDeViagem()
+    public function plpListaPendente()
     {
-        return view('compliance.importacoes.controleDeViagem');  //
+        return view('compliance.importacoes.plpListaPendente');  //
     }
-    // ######################### FIM Controle de Viagem #######################
+    // ######################### FIM plp pendentes #######################
 
-        // ######################### INICIO plp pendente  #######################
+    // ######################### INICIO CFTV  #######################
+    public function exportCftv()
+    {
+        return Excel::download(new ExportCftv, 'cftvs.xlsx');
+    }
+    public function importCftv(Request $request)
+    {
+        $row = 0;
+        $validator = Validator::make($request->all(),[
+           'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
 
-        public function exportPLPListaPendente(){
-
-
-            return Excel::download(new ExportPLPListaPendente, 'PLPListaPendente.xlsx');
+        if(empty($request->file('file'))){
+            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
+            O Arquivo de ser 272-4-SEGURANÇA-Monitoramento-CFTV.xlsx ! Selecione Corretamente'
+            ,'class'=>'red white-text']);
+            return redirect()->route('importacao');
         }
 
-        public function importPLPListaPendente(Request $request) {
+    //    if( $request->file('file')->getClientOriginalName() != "272-4-SEGURANÇA-Monitoramento-CFTV.xlsx") {
+    //
+    //        \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+    //        O Arquivo de ser  272-4-SEGURANÇA-Monitoramento-CFTV.xls! Selecione Corretamente'
+    //        ,'class'=>'red white-text']);
+    //        return redirect()->route('importacao');
+    //    }
 
-
-            $validator = Validator::make($request->all(),[
-            'file' => 'required|mimes:xlsx,xls,csv'
-            ]);
-
-
-
-            if(empty($request->file('file'))){
-
-                \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-                O Arquivo de ser 274-1-PLP-ListasPendentes.xlsx ! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-                return redirect()->route('importacao');
-            }
-
-
-            if( $request->file('file')->getClientOriginalName() != "274-1-PLP-ListasPendentes.xlsx") {
-
-                \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-                O Arquivo de ser  274-1-PLP-ListasPendentes.xls! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-                return redirect()->route('importacao');
-            }
-
-
-
-            if($validator->passes()) {
-
-
-                $plpListaPendentes = Excel::toArray(new ImportPLPListaPendente,  request()->file('file'));
-                DB::table('plpListaPendentes')->truncate(); //excluir e zerar a tabela
-                foreach($plpListaPendentes as $dados) {
-
-                    $row = 1;
-                    foreach($dados as $registro) {
-
-                        if(!empty($registro['dh_lista_postagem'])) {
-                            try {
-                                $dh_lista_postagem = $this->transformDate($registro['dh_lista_postagem']);
-                                //$dt =  Carbon::createFromFormat('m/d/Y', $registro['data'])->format('Y-m-d');
-                            } catch (Exception $e) {
-                                $dh_lista_postagem       = "";
-                            }
-                        }
-                        $plpListaPendente = new PLPListaPendente;
-                        $plpListaPendente->dr      = $registro['dr'];
-                        $plpListaPendente->stomcu      = $registro['stomcu'];
-                        $plpListaPendente->nome_agencia      = $registro['nome_agencia'];
-                        $plpListaPendente->lista      = $registro['lista'];
-                        $plpListaPendente->plp      = $registro['plp'];
-                        $plpListaPendente->objeto      = $registro['objeto'];
-                        $plpListaPendente->cliente      = $registro['cliente'];
-                        $plpListaPendente->dh_lista_postagem      =  $dh_lista_postagem;
-
-                        //var_dump($plpListaPendentes);
-                        //dd($dh_lista_postagem);
-                        $plpListaPendente->save();
-                        $row ++;
-
-                    }
-                }
-                \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                ,'class'=>'green white-text']);
-                return redirect()->route('importacao');
-            }else{
-                return back()->with(['errors'=>$validator->errors()->all()]);
-            }
-        }
-
-        public function plpListaPendente()
+        if($validator->passes())
         {
-            return view('compliance.importacoes.plpListaPendente');  //
-        }
-        // ######################### FIM plp pendentes #######################
-
-
-// ######################### INICIO CFTV  #######################
-
-public function exportCftv(){
-
-
-    return Excel::download(new ExportCftv, 'cftvs.xlsx');
-}
-
-public function importCftv(Request $request) {
-
-    $validator = Validator::make($request->all(),[
-       'file' => 'required|mimes:xlsx,xls,csv'
-    ]);
-
-    if(empty($request->file('file'))){
-
-        \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-        O Arquivo de ser 272-4-SEGURANÇA-Monitoramento-CFTV.xlsx ! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if( $request->file('file')->getClientOriginalName() != "272-4-SEGURANÇA-Monitoramento-CFTV.xlsx") {
-
-        \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-        O Arquivo de ser  272-4-SEGURANÇA-Monitoramento-CFTV.xls! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if($validator->passes()) {
-
-        $cftvs = Excel::toArray(new ImportCftv,  request()->file('file'));
-
-        foreach($cftvs as $dados) {
-
-            $row = 1;
-            foreach($dados as $registro) {
-
-                if(!empty($registro['data_tentativa_acesso']))
-                  {
-                    try
+            $cftvs = Excel::toArray(new ImportCftv,  request()->file('file'));
+          //  DB::table('cftvs')->truncate(); //excluir e zerar a tabela
+            foreach($cftvs as $dados)
+            {
+                foreach($dados as $registro) {
+                    if(!empty($registro['data_ultima_conexao']))
                     {
-                        $data_ultima_conexao = $this->transformDate($registro['data_tentativa_acesso']);
-                        //$dt =  Carbon::createFromFormat('m/d/Y', $registro['data'])->format('Y-m-d');
+                        try
+                        {
+                            $data_ultima_conexao = $this->transformDate($registro['data_ultima_conexao']);
+                        }
+                            catch (Exception $e) {
+                             $data_ultima_conexao       = "";
+                        }
                     }
-                        catch (Exception $e) {
-                         $data_ultima_conexao       = "";
-                    }
+                    $cftv = Cftv::firstOrNew(
+                        [
+                            'mcu' => $registro['mcu']
+                            ,'end_ip' => $registro['end_ip']
+                        ],
+                        [
+                            'cameras_fixa_cf' => $registro['cameras_fixa_cf']
+                            ,'mcu' => $registro['mcu']
+                            ,'unidade' => $registro['unidade']
+                            , 'cameras_infra_vermelho_cir' => $registro['cameras_infra_vermelho_cir']
+                            , 'dome' => $registro['dome']
+                            , 'modulo_dvr' => $registro['modulo_dvr']
+                            , 'no_break' => $registro['no_break']
+                            , 'hack' => $registro['hack']
+                            , 'pc_auxiliar' => $registro['pc_auxiliar']
+                            , 'portaweb' => $registro['portaweb']
+                            , 'end_ip' => $registro['end_ip']
+                            , 'link' => $registro['link']
+                            , 'user' => $registro['user']
+                            , 'password' => $registro['password']
+                            , 'port' => $registro['port']
+                            , 'marcamodelo' => $registro['marcamodelo']
+                            , 'statusconexao' => $registro['statusconexao']
+                            , 'observacao' => $registro['observacao']
+                            , 'data_ultima_conexao' => $data_ultima_conexao
+                        ]);
+                    $cftv ->save();
+                    $row ++;
                 }
-
-
-
-                $cftv = Cftv::firstOrNew(
-                    ['unidade' => $registro['unidade']],
-                    ['cameras_fixa_cf' => $registro['cameras_fixa_cf']
-                    , 'cameras_infra_vermelho_cir' => $registro['cameras_infra_vermelho_cir']
-                    , 'dome' => $registro['dome']
-                    , 'modulo_dvr' => $registro['modulo_dvr']
-                    , 'no_break' => $registro['no_break']
-                    , 'hack' => $registro['hack']
-                    , 'pc_auxiliar' => $registro['pc_auxiliar']
-                    , 'portaweb' => $registro['portaweb']
-                    , 'novo_ip' => $registro['novo_ip']
-                    , 'novo_link' => $registro['novo_link']
-                    , 'user' => $registro['user']
-                    , 'password' => $registro['password']
-                    , 'port' => $registro['port']
-                    , 'marcamodelo' => $registro['marcamodelo']
-                    , 'statusconexao' => $registro['resultado_da_tentativa_de_conexao']
-                    , 'observacao' => $registro['observacao']
-                    , 'data_ultima_conexao' => $data_ultima_conexao
-
-                    ]);
-
-                $cftv ->save();
-                $row ++;
-
             }
+            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+            ,'class'=>'green white-text']);
+            return redirect()->route('importacao');
+        }else{
+            return back()->with(['errors'=>$validator->errors()->all()]);
         }
-        \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-        ,'class'=>'green white-text']);
-        return redirect()->route('importacao');
-    }else{
-        return back()->with(['errors'=>$validator->errors()->all()]);
     }
-}
+    public function cftv()
+    {
+        return view('compliance.importacoes.cftv');  //
+    }
+    // ######################### FIM CFTV #######################
 
-public function cftv()
-{
-    return view('compliance.importacoes.cftv');  //
-}
-// ######################### FIM CFTV #######################
+    // ######################### INICIO FERIAS POR MCU #######################
+    public function exportFerias()
+    {
+        return Excel::download(new ExportFerias, 'ferias.xlsx');
+    }
+    public function importFerias(Request $request)
+    {
+        $row = 0;
+        $time='350';
+        $datahoje = Carbon::now();
 
+        $validator = Validator::make($request->all(),[
+           'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
 
-
-
- //   return view('compliance.importacoes.eventos');  //
-
-// ######################### FIM EVENTOS POR USUARIO #######################
-
-
-// ######################### INICIO FERIAS POR MCU #######################
-
-
-public function exportFerias(){
-
-    return Excel::download(new ExportFerias, 'ferias.xlsx');
-}
-
-public function importFerias(Request $request) {
-
-    $validator = Validator::make($request->all(),[
-       'file' => 'required|mimes:xlsx,xls,csv'
-    ]);
-
-    if(empty($request->file('file'))){
-
+        if(empty($request->file('file')))
+        {
         \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-        O Arquivo de ser 272-3-WebSGQ3 - Fruicao de ferias por MCU.xlsx ! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if( $request->file('file')->getClientOriginalName() != "272-3-WebSGQ3 - Fruicao de ferias por MCU.xlsx") {
-
-        \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-        O Arquivo de ser  272-3-WebSGQ3 - Fruicao de ferias por MCU.xls! Selecione Corretamente'
-        ,'class'=>'red white-text']);
-        return redirect()->route('importacao');
-    }
-
-    if($validator->passes()) {
-
-        $ferias = Excel::toArray(new ImportFeriasPorMcu,  request()->file('file'));
-        DB::table('ferias_por_mcu')->truncate(); //excluir e zerar a tabela
-        foreach($ferias as $dados) {
-            $row = 0;
-            foreach($dados as $registro) {
-
-
-               if(!empty($registro['inicio_fruicao'])) {
-                    try {
-                        $dtini =  substr($registro['inicio_fruicao'],6,4)
-                        .'-'. substr($registro['inicio_fruicao'],3,2)
-                        .'-'. substr($registro['inicio_fruicao'],0,2);
-
-                    } catch (Exception $e) {
-                        $dtini ="";
-                    }
-                }
-
-                if(!empty($registro['termino_fruicao'])) {
-                    try {
-                        $dtfim =  substr($registro['termino_fruicao'],6,4)
-                            .'-'. substr($registro['termino_fruicao'],3,2)
-                            .'-'. substr($registro['termino_fruicao'],0,2);
-                    } catch (Exception $e) {
-                        $dtfim ="";
-                    }
-                }
-                $reg = FeriasPorMcu::Create([
-                    'matricula' => $registro['matricula']
-                    , 'nome' =>  $registro['nome']
-                    , 'lotacao' =>  $registro['lotacao']
-                    , 'funcao' =>  $registro['funcao']
-                    , 'inicio_fruicao' =>  $dtini
-                    , 'termino_fruicao' =>  $dtfim
-                    , 'dias' =>  $registro['dias']
-                ]);
-                $row ++;
-            }
+            O Arquivo de ser 272-3-WebSGQ3 - Fruicao de ferias por MCU.xlsx ! Selecione Corretamente'
+            ,'class'=>'red white-text']);
+            return redirect()->route('importacao');
         }
-        \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-        ,'class'=>'green white-text']);
-        return redirect()->route('importacao');
-    }else{
-        return back()->with(['errors'=>$validator->errors()->all()]);
+        if($validator->passes())
+        {
+        $temp = Excel::toArray(new ImportFeriasPorMcu,  request()->file('file'));
+        $ferias = Excel::toArray(new ImportFeriasPorMcu,  request()->file('file'));
+            ini_set('max_input_time', $time);
+            ini_set('max_execution_time', $time);
+            foreach($ferias as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                    if(!empty($registro['inicio_fruicao']))
+                    {
+                        try
+                        {
+                            $dtini =  substr($registro['inicio_fruicao'],6,4)
+                                .'-'. substr($registro['inicio_fruicao'],3,2)
+                                .'-'. substr($registro['inicio_fruicao'],0,2);
+                        }
+                        catch (Exception $e)
+                        {
+                            $dtini ="";
+                        }
+                    }
+                    if(!empty($registro['termino_fruicao']))
+                    {
+                        try
+                        {
+                            $dtfim =  substr($registro['termino_fruicao'],6,4)
+                                .'-'. substr($registro['termino_fruicao'],3,2)
+                                .'-'. substr($registro['termino_fruicao'],0,2);
+                        } catch (Exception $e)
+                        {
+                            $dtfim ="";
+                        }
+                    }
+                    $reg = new FeriasPorMcu;
+                        $reg->matricula      = $registro['matricula'];
+                        $reg->nome      = $registro['nome'];
+                        $reg->lotacao      = $registro['lotacao'];
+                        $reg->funcao      = $registro['funcao'];
+                        $reg->inicio_fruicao      =  $dtini;
+                        $reg->termino_fruicao      =  $dtfim;
+                        $reg->dias      = $registro['dias'];
+                    $reg->save();
+                    $row ++;
+                    $afected = DB::table('ferias_por_mcu')
+                        ->where('matricula', '=',   $reg->matricula)
+                        ->where('created_at', '<',   $datahoje)
+                    ->delete();
+                }
+            }
+            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+            ,'class'=>'green white-text']);
+            return redirect()->route('importacao');
+        }else{
+            return back()->with(['errors'=>$validator->errors()->all()]);
+        }
     }
-}
-
-public function ferias()
-{
-    return view('compliance.importacoes.ferias');  //
-}
-// ######################### FIM FERIAS POR MCU #######################
-
-
+    public function ferias()
+    {
+        return view('compliance.importacoes.ferias');  //
+    }
+    // ######################### FIM FERIAS POR MCU #######################
 
     /// ######################### BLOCO  RespDefinida  #######################
     public function exportRespDefinida() {
         return Excel::download(new ExportRespDefinida, 'RespDefinida.xlsx');
     }
-
     public function importRespDefinida(Request $request) {
+        $row = 0;
 
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx,xls,csv'
@@ -2556,84 +2614,81 @@ public function ferias()
         }
 
         // dd($request->file('file'));
+//
+//        if( $request->file('file')->getClientOriginalName() != "271-1-SEGURANÇA-POSTAL-PendênciasApuracaoRespDefinida.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser  271-1-SEGURANÇA-POSTAL-PendênciasApuracaoRespDefinida.xls! Selecione Corretamente'
+//            ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
 
-        if( $request->file('file')->getClientOriginalName() != "271-1-SEGURANÇA-POSTAL-PendênciasApuracaoRespDefinida.xlsx") {
-            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-            O Arquivo de ser  271-1-SEGURANÇA-POSTAL-PendênciasApuracaoRespDefinida.xls! Selecione Corretamente'
-            ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
+
 
         if($validator->passes()) {
-
-            DB::table('resp_definidas')->truncate(); //excluir e zerar a tabela
+         //   DB::table('resp_definidas')->truncate(); //excluir e zerar a tabela
             $RespDefinidas = Excel::toArray(new ImportRespDefinida,  request()->file('file'));
-
-            // var_dump($RespDefinidas);
-            // dd("aqui  RespDefinidas");
-            foreach($RespDefinidas as $registros) {
-                $row = 1;
-                foreach($registros as $dado) {
-                //     var_dump($registros);
-                //       dd($dado);
-                $registro = new RespDefinida;
-                $registro->unidade      = $dado['unidade'];
-                if(!empty($dado['data_pagamento'])) {
-                    try {
-                        //   $dt =$this->transformDate($dado['data_pagamento']);
-                        $dt = $this->transformDate(strtr($dado['data_pagamento'], '/', '-'));
-                        // dd($dt );
-                        $registro->data_pagamento = $dt;
-                    } catch (Exception $e) {
-                        dd("erro conversão de data");
+            foreach($RespDefinidas as $registros)
+            {
+                foreach($registros as $dado)
+                {
+                    $res = DB::table('resp_definidas')
+                        ->where('objeto', '=',  $dado['objeto'])
+                         ->select(
+                            'resp_definidas.id'
+                        )
+                    ->first();
+                    if(!empty(  $res->id ))
+                    {
+                        $registro = RespDefinida::find($res->id);
                     }
-                }
-                $registro->objeto      = $dado['objeto'];
-                if(!empty($dado['datapostagem'])) {
-                    try {
-                        $dt = $this->transformDate(strtr($dado['datapostagem'], '/', '-'));
-                        //dd($dt );
-                        $registro->datapostagem         = $dt;
-                    }  catch (Exception $e) {
-                        //dd("erro conversão de data");
-                        $registro->datapostagem         = null;
+                    else
+                    {
+                        $registro = new RespDefinida;
                     }
-                }
-
-                $registro->servico_produto      = $dado['servico_produto'];
-
-                if($dado['valor_da_indenizacao'] != 0) {
-                    $registro->valor_da_indenizacao = str_replace(",", ".", $dado['valor_da_indenizacao']);
-                }
-                $registro->sto      = $dado['sto'];
-                $registro->mcu      = $dado['mcu'];
-                $registro->subordinacao      = $dado['subordinacao'];
-                $registro->nu_pedidoinformacao      = $dado['nu_pedidoinformacao'];
-                $registro->se_pagadora      = $dado['se_pagadora'];
-
-                if(!empty($dado['data'])) {
-                    try {
-                        $dt = $this->transformDate(strtr($dado['data'], '/', '-'));
-                    //dd($dt );
-                        $registro->data         = $dt;
-                    } catch (Exception $e) {
-                      //  dd("erro conversão de data");
-                        $registro->data         = null;
+                    $registro->unidade      = $dado['unidade'];
+                    if(!empty($dado['data_pagamento'])) {
+                        try {
+                            $dt = $this->transformDate(strtr($dado['data_pagamento'], '/', '-'));
+                            $registro->data_pagamento = $dt;
+                        } catch (Exception $e) {
+                            dd("erro conversão de data");
+                        }
                     }
-                }
-                $registro->nu_sei      = $dado['nu_sei'];
-                $registro->nu_sei_abertounidade      = $dado['nu_sei_abertounidade'];
-                $registro->situacao      = $dado['situacao'];
-                $registro->empregadoresponsavel      = $dado['empregadoresponsavel'];
-                $registro->observacoes      = $dado['observacoes'];
-                $registro->conclusao      = $dado['conclusao'];
-                $registro->providenciaadotada      = $dado['providenciaadotada'];
-
-                //var_dump($registro);
-                //dd($registro);
-                $registro ->save();
-                $row ++;
-                // dd($registro);
+                    $registro->objeto      = $dado['objeto'];
+                    if(!empty($dado['datapostagem'])) {
+                        try {
+                            $dt = $this->transformDate(strtr($dado['datapostagem'], '/', '-'));
+                            $registro->datapostagem         = $dt;
+                        }  catch (Exception $e) {
+                            $registro->datapostagem         = null;
+                        }
+                    }
+                    $registro->servico_produto      = $dado['servico_produto'];
+                    if($dado['valor_da_indenizacao'] != 0) {
+                        $registro->valor_da_indenizacao = str_replace(",", ".", $dado['valor_da_indenizacao']);
+                    }
+                    $registro->sto      = $dado['sto'];
+                    $registro->mcu      = $dado['mcu'];
+                    $registro->subordinacao      = $dado['subordinacao'];
+                    $registro->nu_pedidoinformacao      = $dado['nu_pedidoinformacao'];
+                    $registro->se_pagadora      = $dado['se_pagadora'];
+                    if(!empty($dado['data'])) {
+                        try {
+                            $dt = $this->transformDate(strtr($dado['data'], '/', '-'));
+                            $registro->data         = $dt;
+                        } catch (Exception $e) {
+                            $registro->data         = null;
+                        }
+                    }
+                    $registro->nu_sei      = $dado['nu_sei'];
+                    $registro->nu_sei_abertounidade      = $dado['nu_sei_abertounidade'];
+                    $registro->situacao      = $dado['situacao'];
+                    $registro->empregadoresponsavel      = $dado['empregadoresponsavel'];
+                    $registro->observacoes      = $dado['observacoes'];
+                    $registro->conclusao      = $dado['conclusao'];
+                    $registro->providenciaadotada      = $dado['providenciaadotada'];
+                    $registro->save();
+                    $row ++;
                 }
             }
 
@@ -2641,95 +2696,90 @@ public function ferias()
             ,'class'=>'green white-text']);
             return redirect()->route('importacao');
         }else {
-            //    return back()->with(['errors'=>$validator->errors()->all()]);
             \Session::flash('mensagem',['msg'=>'Registros Responsabilidade Definida  Não pôde ser importado! Tente novamente'
             ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
 
     }
-
     public function RespDefinida()
     {
         return view('compliance.importacoes.respDefinida');  //
     }
     /// ######################### FIM RespDefinida #######################
 
-
-
-
-
-
-
-
-    public function transformDate($value, $format = 'Y-m-d') {
-        try {
+    public function transformDate($value, $format = 'Y-m-d')
+    {
+        try
+        {
             return \Carbon\Carbon::instance(
             \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-
-        } catch (\ErrorException $e)
+        }
+        catch (\ErrorException $e)
         {
              return \Carbon\Carbon::createFromFormat($format, $value);
         }
     }
-
-    public function transformTime($value, $format = 'H:i:s') {
-        try {
+    public function transformTime($value, $format = 'H:i:s')
+    {
+        try
+        {
             return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-
-        } catch (\ErrorException $e) {
+        }
+        catch (\ErrorException $e)
+        {
             return \Carbon\Carbon::createFromFormat($format, $value);
         }
     }
-
-    public function transformDateTime($value, $format = 'Y-m-d H:i:s') {
-        try {
+    public function transformDateTime($value, $format = 'Y-m-d H:i:s')
+    {
+        try
+        {
             return \Carbon\Carbon::instance(
             \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-
-        } catch (\ErrorException $e)
+        }
+        catch (\ErrorException $e)
         {
              return \Carbon\Carbon::createFromFormat($format, $value);
         }
     }
-
-    public function transformHoraMin($value, $format = 'H:i') {
-        try {
+    public function transformHoraMin($value, $format = 'H:i')
+    {
+        try
+        {
             return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-
-        } catch (\ErrorException $e) {
+        }
+        catch (\ErrorException $e)
+        {
             return \Carbon\Carbon::createFromFormat($format, $value);
         }
     }
-
-    public function transformDayOfWeek($value, $format = 'd') {
-        try {
+    public function transformDayOfWeek($value, $format = 'd')
+    {
+        try
+        {
         return \Carbon\Carbon::instance(
         \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-        } catch (\ErrorException $e)
+        }
+        catch (\ErrorException $e)
         {
         return \Carbon\Carbon::createFromFormat($format, $value);
         }
     }
-
-    public function transformDateMesDia($value, $format = 'm-d') {
-        try {
-        return \Carbon\Carbon::instance(
-        \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-        } catch (\ErrorException $e)
+    public function transformDateMesDia($value, $format = 'm-d')
+    {
+        try
         {
-        return \Carbon\Carbon::createFromFormat($format, $value);
+            return \Carbon\Carbon::instance(
+            \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        }
+        catch (\ErrorException $e)
+        {
+            return \Carbon\Carbon::createFromFormat($format, $value);
         }
     }
-
-
-    public function index() {
-       // ini_set('memory_limit', '1024M');
-     //   ini_set('upload_max_filesize', '1024M');
-      //  ini_set('post_max_size', '1024M');
-     //   ini_set('max_input_time', 270);
-     //   ini_set('max_execution_time', 270);
-
+    public function index()
+    {
         return view('compliance.importacoes.index');  //
     }
 }

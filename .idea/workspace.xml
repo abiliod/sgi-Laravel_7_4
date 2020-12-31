@@ -22,8 +22,23 @@
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Imports/ImportCftv.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/ImportCftv.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/Cftv.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/Cftv.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -790,41 +805,42 @@
       <workItem from="1608815479010" duration="1784000" />
       <workItem from="1608817293027" duration="1564000" />
       <workItem from="1608819279974" duration="1627000" />
-    </task>
-    <task id="LOCAL-00041" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591677792</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591677792</updated>
-    </task>
-    <task id="LOCAL-00042" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591699816</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591699816</updated>
-    </task>
-    <task id="LOCAL-00043" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591726201</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591726201</updated>
-    </task>
-    <task id="LOCAL-00044" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários; inclusão de campos para usuários;">
-      <created>1608591748077</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591748077</updated>
-    </task>
-    <task id="LOCAL-00045" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591765835</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591765835</updated>
+      <workItem from="1608821593224" duration="283000" />
+      <workItem from="1608933298499" duration="1138000" />
+      <workItem from="1608937065075" duration="646000" />
+      <workItem from="1608944191819" duration="1226000" />
+      <workItem from="1609105110568" duration="654000" />
+      <workItem from="1609116802544" duration="1780000" />
+      <workItem from="1609118642378" duration="926000" />
+      <workItem from="1609185476298" duration="1764000" />
+      <workItem from="1609187301499" duration="1786000" />
+      <workItem from="1609189211621" duration="3625000" />
+      <workItem from="1609196422577" duration="1784000" />
+      <workItem from="1609198333036" duration="2946000" />
+      <workItem from="1609201326771" duration="1921000" />
+      <workItem from="1609203392393" duration="599000" />
+      <workItem from="1609206937765" duration="1788000" />
+      <workItem from="1609208757389" duration="133000" />
+      <workItem from="1609211137303" duration="1785000" />
+      <workItem from="1609212962871" duration="2153000" />
+      <workItem from="1609248288573" duration="1792000" />
+      <workItem from="1609250114834" duration="1829000" />
+      <workItem from="1609252001093" duration="1701000" />
+      <workItem from="1609253828130" duration="858000" />
+      <workItem from="1609266805281" duration="1658000" />
+      <workItem from="1609268607447" duration="1783000" />
+      <workItem from="1609270532772" duration="1916000" />
+      <workItem from="1609272659782" duration="4608000" />
+      <workItem from="1609285755028" duration="1781000" />
+      <workItem from="1609287597111" duration="1786000" />
+      <workItem from="1609289436493" duration="1786000" />
+      <workItem from="1609291252737" duration="1786000" />
+      <workItem from="1609293079348" duration="415000" />
+      <workItem from="1609348799929" duration="1772000" />
+      <workItem from="1609350608556" duration="1884000" />
+      <workItem from="1609352965156" duration="1922000" />
+      <workItem from="1609354945494" duration="1775000" />
+      <workItem from="1609356778522" duration="1706000" />
     </task>
     <task id="LOCAL-00046" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
       <created>1608591780389</created>
@@ -1134,7 +1150,42 @@
       <option name="project" value="LOCAL" />
       <updated>1608803444222</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
+      <created>1608821646167</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1608821646168</updated>
+    </task>
+    <task id="LOCAL-00091" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
+      <created>1608821672075</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1608821672075</updated>
+    </task>
+    <task id="LOCAL-00092" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
+      <created>1608821692761</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1608821692761</updated>
+    </task>
+    <task id="LOCAL-00093" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
+      <created>1608821730707</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1608821730708</updated>
+    </task>
+    <task id="LOCAL-00094" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
+      <created>1608821843530</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1608821843530</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1153,7 +1204,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de inspeção;" />
     <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de relatos inspeção;" />
     <MESSAGE value=" 22/12/20 - Ajuste de importação nas funções unidades e cadastral;" />
     <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para usuários;" />
@@ -1178,7 +1228,8 @@
     <MESSAGE value=" 23/12/20 - ajuste  para importar proter;" />
     <MESSAGE value=" 23/12/20 - ajuste filtro;" />
     <MESSAGE value=" 23/12/20 - ajuste filtro relatos;" />
-    <option name="LAST_COMMIT_MESSAGE" value=" 23/12/20 - ajuste filtro relatos;" />
+    <MESSAGE value=" 23/12/20 - Ajuste filtro importações SMBBDF;" />
+    <option name="LAST_COMMIT_MESSAGE" value=" 23/12/20 - Ajuste filtro importações SMBBDF;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -1228,11 +1279,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608667517668" />
-    <state x="197" y="0" key="CommitChangelistDialog2" timestamp="1608803443126">
+    <state x="197" y="0" key="CommitChangelistDialog2" timestamp="1608821842610">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="197" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608803443126" />
+    <state x="197" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608821842610" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1299,11 +1350,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608803447326">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608821845089">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608803447326" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608821845089" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1324,11 +1375,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="475" y="221" key="scopes/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602609466631" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1607449850531">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1609186090008">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607099656152" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1607449850531" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1609186090008" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -12,6 +12,7 @@ class Cftv extends Model
     protected $fillable=
     [
           'unidade',
+          'mcu',
           'cameras_fixa_cf',
           'cameras_infra_vermelho_cir',
           'dome',
@@ -20,8 +21,8 @@ class Cftv extends Model
           'hack',
           'pc_auxiliar',
           'portaweb',
-          'novo_ip',
-          'novo_link',
+          'end_ip',
+          'link',
           'user',
           'password',
           'port',

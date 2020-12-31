@@ -20,14 +20,29 @@
                   <div class="card green darken-1">
 
                   <span class="card-title">Sistema: Distribuição Domiciliária <br>SGDO</span>
-                        <p>Grupo/Item: 277.1, Função: Lançamentos SGDO
-                        <br>Lançamentos obrigatórios
-                        <br>Arquivo: 277-1-SGDO-Distribuição</p>
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
+                      <p>Grupo de Verificação 277</p>
+                      <p>Assunto: Lançamentos Obrigatórios SGDO</p>
+                      <p>Verificação do Lançamentos</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+
+                                Sistema: http://......
+                                Pesquisar  Superintendencia, importar para uma planilha formato excel.xlsx
+                                VEJA o lay-out:
+                                [DR	Unidade	MCU	Centralizadora	MCU Centralizadora	Distrito	Area	Locomocao	Funcionario	Matricula	Data Inicio Atividade	Hora Inicio Atividade	Data Saida	Hora Saida	Data Retorno	Hora Retorno	Data TPC	Hora do TPC	Data Termino Atividade	Hora Termino Atividade	Justificado	Peso da Bolsa (Kg)	Peso do DA (Kg)	Quantidade de DA	Quantidade de GU	Quantidade de Objetos Qualificados	Quantidade de Objetos Coletados	Quantidade de Pontos de Entrega/Coleta	Quilometragem Percorrida	Residuo Simples	Residuo Qualificado	Almoco na Unidade	Compartilhado	Tipo de distrito]
+                                Caso o processo seja interrompido por timeout fraguimente o  arquivo.
+
+                                O sistema excluirá os lançamentos antigos e faráa persistêcia dos novos registros.
+                                Frequencia: diária.
+                            </textarea>
+                      </div>
                     <form action="{{ route('compliance.importacao.sgdoDistribuicao') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

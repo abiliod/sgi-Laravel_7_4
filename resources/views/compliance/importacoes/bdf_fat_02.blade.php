@@ -19,12 +19,27 @@
                 <div class="card-content white-text">
                   <div class="card #dd2c00 deep-orange accent-4">
                   <span class="card-title">Sistema: Gestão de Recursos Humanos <br>Recebimentos</span>
-                   <tr>
-                        <th> <p>Grupo/Item: 278.2, Função: Gestão de Recursos Humanos
-                             <br>Arquivo: 278-2-BDF_FAT_02.xlsx - Unidades que irão ser inspecionadas ultimos 210 dias.</p></th>
-                    </tr>
+                      <p>Grupo de Verificação 278 BDF_FAT_02</p>
+                      <p>Função: Gestão de Recursos Humanos</p>
+                      <p>Assunto: Integridade de pagamentos</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                               Pagamentos Adicionais,   BDF, Relatório FAT-02. Fazer o download do período desejado e renomear o arquivo o sistema vai incluir os registros novos.
+                               VEJA o lay-out:
+                               [DR	CD_ORGAO	ORGAO	AG_POSTAGEM	DT_POSTAGEM	ETIQUETA	SERVICO	VLR_MEDIDA	CD_GRUPO_PAIS_DESTINO	CEP_DESTINO	VLR_COBRADO_DESTINATARIO	VLR_DECLARADO	COD_ADM	PRODUTO	QTDE_PRESTADA	VLR_SERVICO	VLR_DESCONTO	ACRESCIMO	VLR_FINAL	CARTAO	DOCUMENTO	SERVIﾇO_ADICIONAL	NOME_SERVICO	CONTRATO	ATENDIMENTO	DT_MOV]
+                               Frequencia: SEMANAL.
+                            </textarea>
+                      </div>
 
-                    <form action="{{ route('compliance.importacao.bdf_fat_02') }}" method="POST" name="importform"
+
+                      <form action="{{ route('compliance.importacao.bdf_fat_02') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="file-field input-field">

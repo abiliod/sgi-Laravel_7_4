@@ -20,15 +20,29 @@
                   <div class="card  #0d47a1 blue darken-4">
 
                   <span class="card-title">Sistema: Plano de Triagem <br>Encaminhamento</span>
-                        <p>Grupo/Item: 277.7, Função: Gestão SRO
-                        <br>Mensagens.
-                        <br>Arquivo: 277-7-CieEletrônica</p>
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
-                    <form action="{{ route('compliance.importacao.cieEletronica') }}" method="POST" name="importform"
+                      <p>Grupo de Verificação 277</p>
+                      <p>Função: Gestão de Mensagens Cie Eletronica</p>
+                      <p>Assunto: Integridade de mensagens</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+
+                                Sistema: Cie Eletrônica    http://....., informe o período. Fazer o download do período importar os registros para a planilha xlsx
+                                VEJA o lay-out:
+                                [Número	Emissão	Origem	SE Origem	Destino	SE Destino	Irregularidade	Categoria	Número Objeto	Lida	Respondida	Fora do prazo	Data de resposta	Resposta]
+                                Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
+                                O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
+                                Frequencia: diária.
+                            </textarea>
+                      </div>
+
+                      <form action="{{ route('compliance.importacao.cieEletronica') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="file-field input-field">

@@ -20,12 +20,28 @@
 
                  <span class="card-title">Gestão de Numerário</span>
                     <p>Grupo de Verificação 270, Função Prevenção de Perdas.</p>
-                    <b/>
-                    <tr>
-                        <p>Assunto: Saldo que passa | 270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe.xlsx</p>
-                        <p><b>Modo Icremento</b></p>
-                    </tr>
-
+                    <p>Assunto: Saldo que passa</p>
+                    <p>Item: 270-4 - FINANCEIRO</p>
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                        Acessar o sistema BDF > Clicar em "Conectar DR", selecionar a SE e clicar em "Conectar" > Clicar no menu "Saldo" > Selecionar "BDF-SLD-002 Saldo de Numerário em relação ao Limite de Saldo" >
+                        Na tela, selecionar "Tipos de órgãos que serão inspecionados" clicando no ícone "..." > Selecione  - "9 Agência de Correio" > Em "Codigo do Orgão" selecione a unidade > Selecione o período "4 meses"> Clica em "Analítico" > "Tipo Limite" - Correios > Clica em "Importar" nomeie o arquivo a ser gerado EX: SL02-bdf.txt.
+                        Aguarde a importação em formato txt
+                        Importar os dados para uma planilha formato xlsx.
+                        VEJA o lay-out:
+                        [DR	COD_ORGAO	REOP	ORGAO	DT_MOVIMENTO	SALDO_ATUAL	 limitevlr_limite_banco_postal_e_ect]
+                        (Tipo de importação: Por incremento.
+                        O Sistema ao importar a planilha grava os registros não existentes
+                        Em seguida irá apagará os registros existentes na tabela com data de movimento maior que 120 dias.);
+                        </textarea>
+                    </div>
 
                     <form action="{{ route('compliance.importacao.SL02_bdf') }}" method="POST" name="importform"
                             enctype="multipart/form-data">

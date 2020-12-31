@@ -19,13 +19,31 @@
                 <div class="card-content white-text">
                   <div class="card  #424242 grey darken-3">
                   <span class="card-title">Sistema: Gestão da Distribuição Domiciliaria </span>
-                    <p>Grupo/Item: 277.2, Função: Gestão de Recursos SRO
-                    <br>Arquivo: 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa</p>
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
+                      <p>Grupo de Verificação 277</p>
+                      <p>Função: Gestão de Recursos SRO</p>
+                      <p>Assunto: Objetos Não Entregues Primeira Tentativa</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+
+                                Sistema: MicroEstrategy, http://......
+                                Pesquisar  Superintendencia, importar para uma planilha formato excel.xlsx
+                                Após o download da tabela  importar para o Excel e higienizar a planilha deixando apenas os objetos cujo a coluna Código do Evento seja igual a BDE.
+                                Exclua também a ultima linha, linha de totalização gerada pelo sistema.
+                                VEJA o lay-out:
+                                [DR de Destino	Nome da Unidade	Código do Objeto	Descrição do Evento	Código do Evento	Data do Evento	Qtde Objetos NÃO Entregues na Primeira Tentativa]
+                                Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
+                                O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
+                                Frequencia: diária.
+                            </textarea>
+                      </div>
+
                     <form action="{{ route('compliance.importacao.microStrategy') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

@@ -21,13 +21,25 @@
 
                   <span class="card-title">Sistema: Movimentação de Carga Postal</span>
                     <p>Grupo/Item: 276.1, Função: Controle de viagem Apontamentos
-                    <br>Arquivo: 276-1-ControleDeViagem</p>
+                      <p>Grupo de Verificação 276</p>
+                      <p>Assunto: Controle de viagem Apontamentos</p>
+                      <p>Verificação do Apontamento de Embarque/Desembarque</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                            No Sistema ERP exporte para uma planilha dados da aba embarque e desembarque da sua regional.
+                            Parâmetros datas de início e final da viagem.  status v1 até v9 . exclua da planilha todos registros que estiver com a  Data Chegada Prevista igual nulo ou vazio.
+                            O sistema irá guardar histórico de 180 dias.
+                            Frequencia: semanal.
+                            </textarea>
+                      </div>
 
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
                     <form action="{{ route('compliance.importacao.controleDeViagem') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

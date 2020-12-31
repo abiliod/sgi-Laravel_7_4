@@ -20,14 +20,26 @@
                   <div class="card #004d40 teal darken-4">
 
                   <span class="card-title">Sistema: Gestão de Recursos Humanos <br>Recebimentos</span>
-                <p>Grupo/Item: 278.2, Função: Gestão de Recursos Humanos
-                <br>Mensagens.
-                 <br>Arquivo: 278-2-WebSGQ-3-PagamentosAdicionais</p>
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
+                      <p><br>WebSGQ-3-PagamentosAdicionais</p>
+                      <p>Grupo/Item: 278.2, Função: Gestão de Recursos Humanos</p>
+                      <P><br>Arquivo: 278-2-WebSGQ-3-PagamentosAdicionais</P>
+
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                               Pagamentos Adicionais,   WebSGQ3 http://intranetmg2/WebSGQ3/principal.asp  – MENU:  Folha de Pagamento ->Adicionais ->Geral. Fazer o download do período desejado e renomear o arquivo o sistema vai incluir os registros novos.
+                               VEJA o lay-out:
+                               [SE	Sigla Lotação	Matrícula	Nome	Cargo	Espec.	Titular da Função	Dif. mer.	Rubrica	Qtd	Valor	Ref.]
+                               Frequencia: MENSAL.
+                            </textarea>
+                      </div>
+
                     <form action="{{ route('compliance.importacao.pagamentosAdicionais') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

@@ -20,16 +20,26 @@
                   <div class="card #b71c1c red darken-4">
 
                 <span class="card-title">Sistema Segurança Patrimonial</span>
-                <p>Grupo/Item: 272.4, Função: Verif. Funcionamento do equipamento CFTV
-                 <br>Arquivo: 272-4-SEGURANÇA-Monitoramento-CFTV</p>
+                      <p>Grupo de Verificação 272</p>
+                      <p>Assunto: Gestão do Funcionamento do equipamento CFTV</p>
+                      <p>Qualidade do Funcionamento</p>
 
-
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-
-                        </tr>
-                    </thead>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                            Importar os dados dos CFTVs de uma planilha formato xlsx.
+                            VEJA o lay-out:
+                            [MCU	unidade	cameras_fixa_cf	cameras_infra_vermelho_cir	dome	modulo_dvr	no_break	hack	pc_auxiliar	portaweb	end_ip	link	user	password	port	marcamodelo	statusconexao	data_ultima_conexao	observacao	data_no_equipamento	hora_no_equipamento]
+                            Tipo de importação: Por incremento.
+                            O Sistema ao importar a planilha grava novos registrow e atualia os registros existentes
+                          </textarea>
+                      </div>
                     <form action="{{ route('compliance.importacao.cftv') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

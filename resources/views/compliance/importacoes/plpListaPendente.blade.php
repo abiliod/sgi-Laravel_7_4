@@ -20,13 +20,26 @@
                   <div class="card  deep-purple">
 
                 <span class="card-title">Sistema: Atendimento Comercial</span>
-                <p>Grupo/Item: 274.1, Função: Condições de Aceitação, Classificação e Tarifação de Objetos
-                 <br>Arquivo: 274-1-PLP-ListasPendentes</p>
-                    <thead>
-                        <tr>
-                            <th>LayOut do Arquivo: Unidade | </th>
-                        </tr>
-                    </thead>
+                      <p>Grupo de Verificação 274 ListasPendentes PLPs</p>
+                      <p>Assunto: Condições de Aceitação, Classificação e Tarifação de Objetos</p>
+                      <p>
+                          <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                          <label for="exibe">
+                              <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                          </label>
+                      </p>
+                      <div class="input-field"  id ="ajuda" style="display:none;">
+                          <i class="material-icons prefix">mode_edit</i>
+                          <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                            Importar os dados PLPs pendentes.
+                            Solicitar à área de atendimento (Suporte SARA) a relação atualizada de PLP - LISTAS Pendentes, formato Excel.xlsx.
+                            ou fazer o download de em \\sac3063\INSTITUCIONAL\DIOPE\DERAT\PUBLICO\GMAT_pub\LISTA_PENDENTE
+                            VEJA o lay-out:
+                            [DR	STO/MCU	NOME_AGÊNCIA	LISTA	PLP	OBJETO	CLIENTE	DH LISTA POSTAGEM]
+                            Tipo de importação: Por substituição.
+                            O Sistema ao importar a planilha grava novos registros e exclui registros antigos.
+                          </textarea>
+                      </div>
                     <form action="{{ route('compliance.importacao.plpListaPendente') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}

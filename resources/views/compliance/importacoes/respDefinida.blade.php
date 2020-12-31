@@ -19,10 +19,25 @@
                 <div class="card-content white-text">
 
                 <span class="card-title">Segurança Postal</span>
-                    <p>Grupo de Verificação 271, Função: Processos Administrativos <br>Assunto: Responsabilidade Definida.</p>
-                    <p>Atualização Sazional</p>
-
-
+                    <p>Grupo de Verificação 271</p>
+                    <p>Função: Processos Administrativos</p>
+                    <p>Assunto: Responsabilidade Definida</p>
+                    <p>
+                        <input id ="exibe" type="checkbox" class="filled-in col s1" onclick="Mudarestado('ajuda')"/>
+                        <label for="exibe">
+                            <span class="card-content orange-text">Exibir Ajuda do Item?</span>
+                        </label>
+                    </p>
+                    <div class="input-field"  id ="ajuda" style="display:none;">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
+                        Importar os dados condensados das planilhas Responsabilidade definidas para uma planilha formato xlsx.
+                        VEJA o lay-out:
+                        [Codigo	UNIDADE	data_Pagamento	Objeto	DataPostagem	Serviço_Produto	Valor da Indenização	STO	mcu	unidade	subordinacao	nu_PedidoInformacao	se_pagadora	data	nu_sei	nu_sei_AbertoUnidade	situacao	data	empregadoResponsavel	observacoes	conclusao	providenciaAdotada]
+                        Tipo de importação: Por Atualização.
+                        O Sistema ao importar a planilha atualiza os registros existentes e inclue os registros não existentes.
+                        </textarea>
+                    </div>
                     <form action="{{ route('compliance.importacao.RespDefinida') }}" method="POST" name="importform"
                             enctype="multipart/form-data">
                         {{csrf_field()}}
