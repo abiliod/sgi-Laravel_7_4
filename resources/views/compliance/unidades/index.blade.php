@@ -8,7 +8,7 @@
                 <form action="{{route('compliance.unidades.search')}}" method="post">
 					@csrf
 					<div class="input-field">
-						<input id="search" type="search"  name="search" min(4) required autofocus>
+						<input id="search" type="search"  name="search" required autofocus>
 						<label class="label-icon" for="search">Pesquisas - Digite: Parte do Nome da Unidade, do Telefone, MCU ou Telefone<i class="material-icons">search</i></label>
 						<i class="material-icons">close</i>
 					</div>
@@ -47,6 +47,18 @@
 						<td>
                         @can('unidade_editar')
                                 <a class="waves-effect waves-light btn orange" href="{{ route('compliance.unidades.editar',$registro->id) }}">Editar</a>
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">Alarmes</a>
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">Cofres</a>
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">CFTVs</a>
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">Extravios</a>
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">Feriados</a>
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">Cadastral</a>
                         @endcan
 
                         @can('inspecao_adicionar')
@@ -70,7 +82,7 @@
 		</div>
     @can('unidade_adicionar')
 		<div class="row">
-			<a class="btn blue" href="!#">Adicionar</a>
+			<a class="btn blue" href="#">Adicionar</a>
 		</div>
     @endcan
 
