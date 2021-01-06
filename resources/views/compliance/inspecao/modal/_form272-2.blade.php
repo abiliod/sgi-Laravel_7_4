@@ -2,7 +2,9 @@
 
     <div id="aprimoramento">
         <span>
-            Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de 01/2020 a {{ date( 'd/m/Y' , strtotime($dtmax))}}, constataram que:
+            Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de
+            {{ date( 'd/m/Y' , strtotime($dtmenos12meses ))}}
+            a {{ date( 'd/m/Y' , strtotime($now))}}, constataram que:
         </span>
     </div>
     <div id="historico">{{ $naoMonitorado }}</div>
@@ -12,13 +14,20 @@
     @if( ($rowAberturaFinalSemana >= 1) ||  (isset($tempoAbertura)&&(!empty($tempoAbertura))) || (isset($tempoAberturaPosExpediente)&&(!empty($tempoAberturaPosExpediente))) || (isset($acessosEmFeriados)&&(!empty($acessosEmFeriados))) || (isset($tempoAberturaAntecipada)&&(!empty($tempoAberturaAntecipada)))  )
         <div id="aprimoramento">
             <span>
-                Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de 01/2020 a {{ date( 'd/m/Y' , strtotime($dtmax))}}, constatou-se que o sistema permaneceu desativado e fora de funcionamento nos períodos relacionados a seguir:
+                Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme em
+                {{ date( 'd/m/Y' , strtotime($now ))}}
+                referente ao período de
+                {{ date( 'd/m/Y' , strtotime($dtmenos12meses))}} a {{ date( 'd/m/Y' , strtotime($now))}},
+                constataram-se que o sistema permaneceu desativado e fora de funcionamento nos períodos relacionados a seguir:
             </span>
         </div>
     @else
         <div id="aprimoramento">
             <span>
-                Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de  01/2020 a {{ date( 'd/m/Y' , strtotime($dtmax))}}, constatou-se que o sistema de alarme permaneceu ativado quando dos horários fora de atendimento inclusive finais de semana.
+                Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do
+                período de  {{ date( 'd/m/Y' , strtotime($now ))}}
+                a {{ date( 'd/m/Y' , strtotime($dtmenos12meses))}}, constataram-se que o sistema de alarme
+                permaneceu ativado quando dos horários fora de atendimento inclusive finais de semana.
             </span>
         </div>
     @endif
