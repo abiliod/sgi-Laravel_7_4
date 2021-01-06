@@ -31,9 +31,16 @@
                                 </p>
                                 <p>
 
-                                <a class="btn waves-effect waves-teal orange disabled" href="{{ route('compliance.inspecao.export.sro',$registro->codigo) }}">Export File
+
+                                <p>
+                                <a class="btn waves-effect waves-teal orange"
+                                   href="{{ url('/compliance/inspecao/exportsro',$registro->codigo) }}">
+                                    Export File
                                     <i class="material-icons right">file_download</i></a>
+
                                 </p>
+
+
                             </th>
 
                         @endif
