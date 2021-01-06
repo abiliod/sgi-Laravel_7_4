@@ -103,6 +103,9 @@
                         <td>
                             <a class="waves-effect waves-light btn orange"
                                href="{{ route('compliance.inspecionados.xml',$registro->id) }}">XML</a>
+
+                            <a class="waves-effect waves-light btn #00897b teal darken-1"
+                               href="">NCI</a>
                         </td>
                     @endcan
                     <td>
