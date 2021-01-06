@@ -15,8 +15,6 @@ class UnidadesController extends Controller
 {
     public function salvarInspecao(salvarInspecao $request)
     {
-
-
         $dados = $request->all();
         if($dados['inspetorcoordenador']  == $dados['inspetorcolaborador'] )
         {
@@ -27,31 +25,38 @@ class UnidadesController extends Controller
 
         $id=$request->unidade_id;
         $unidade = Unidade::find($id);
+
         $sequence_inspcaos = DB::table('sequence_inspcaos')
+            ->select('sequence_inspcaos.*')
             ->Where([['se', '=', $unidade->se]])
             ->Where([['ciclo', '=', $dados['ciclo']]])
-            ->get();
-
-        if(!empty($sequence_inspcaos->sequence))
+            ->first();
+        if(!empty($sequence_inspcaos))
         {
-            $sequence = $sequence_inspcaos->max('sequence');
+
+            $sequence = $sequence_inspcaos->sequence;
             $sequence ++;
+            $sequenceInspecao = SequenceInspecao::find($sequence_inspcaos->id);
+            $sequenceInspecao->se      = $unidade->se;
+            $sequenceInspecao->ciclo =  $dados['ciclo'];
+            $sequenceInspecao->sequence      = $sequence;
+            $sequenceInspecao->update();
         }
         else
         {
-           $sequence=1;
+           // dd('nao t tem');
+            $sequence=1;
+            $sequenceInspecao = new SequenceInspecao;
+            $sequenceInspecao->se      = $unidade->se;
+            $sequenceInspecao->ciclo =  $dados['ciclo'];
+            $sequenceInspecao->sequence      = $sequence;
+            $sequenceInspecao->save();
         }
+       // dd($sequenceInspecao);
+       // dd('tem' , $sequenceInspecao );
 
-        SequenceInspecao::updateOrCreate(
-            ['se' => $unidade->se, 'ciclo' => $dados['ciclo']],
-            ['sequence' => $sequence,'se' => $unidade->se]
-        );
-
-        $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
-
+        $sequence = str_pad(  $sequenceInspecao->sequence , 4, '0', STR_PAD_LEFT);
         $codigo = $unidade->se.$sequence.$dados['ciclo'];
-
-//        $verificacao = Inspecao::create($req->all());
 
         $req=$request->all();
         $inspecao = new Inspecao;
