@@ -279,7 +279,7 @@
                     <div class="card-content white-text">
                         <span class="card-title">Sistema: Distribuição Domiciliária <br>Pré Alerta</span>
                         <p>Grupo de Verificação 277</p>
-                        <p>Função: Gestão de Recursos SRO</p>
+                        <p>Função: Gestão de Recursos SRO Painel de Extravio</p>
                         <p>Assunto: Conferência Eletrônica</p>
                     </div>
                     <div class="card-action">
