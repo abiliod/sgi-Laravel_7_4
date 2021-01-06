@@ -23,7 +23,8 @@ use App\Models\Correios\ModelsDto\CompartilhaSenha;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-//use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
+
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 
 
@@ -35,24 +36,33 @@ use mysql_xdevapi\Exception;
 class InspecaoController extends Controller
 {
 
-    public function exportLancamentosSRO  ($codigo)
+    public function exportsro($codigo)
     {
-       // dd($codigo);
-        //$exportLancamentosSRO = new ExportLancamentosSRO;
-        $exportLancamentosSRO  =  DB::table('lancamentossro')
+        $exportLancamentosSROs  =  DB::table('lancamentossro')
+            ->select('objeto')
             ->where('codigo', '=', $codigo)
             ->where('numeroGrupoVerificacao', '=', 277)
             ->where('numeroDoTeste', '=', 3)
             ->where('estado', '=',  'Pendente')
             ->get();
 
-        //$exportLancamentosSRO =  ExportLancamentosSRO::where('codigo', $codigo)->get();
-        return $exportLancamentosSRO->download('lancamentossro.xlsx');
-
-
-
+        $xml = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>';
+        $xml .= '<rootelement>';
+        foreach ($exportLancamentosSROs as $exportLancamentosSRO)
+        {
+            $xml .= "\n\t".'<Dados>';
+            $xml .= "\n\t\t".'<Objeto>'.$exportLancamentosSRO->objeto.'</Objeto>';
+            $xml .= "\n\t".'</Dados>';
+        }
+        $xml .= "\n".'</rootelement>';
+        $diretorio = "xml/compliance/inspecao/";
+        $arquivo = $codigo.'_AmostraNaoEntreguePrimeiraTentativa.xml';
+        $arquivo = preg_replace('/\\s\\s+/', ' ', $arquivo);
+        $fp = fopen($diretorio.$arquivo, 'w+');
+        fwrite($fp, $xml);
+        fclose($fp);
+        return response()->download($diretorio.$arquivo);
     }
-
 
     public function destroy($id) {
         dd("estou destruindo");
@@ -280,10 +290,6 @@ class InspecaoController extends Controller
             }
 
         }
-
-
-        var_dump(  $registro);
-                dd();
         $registro->update();
 
         \Session::flash('mensagem',['msg'=>'Registro inspecionado com sucesso!'
@@ -296,7 +302,6 @@ class InspecaoController extends Controller
 
         return redirect()-> route('compliance.inspecao',$inspecao->inspecao_id);
     }
-
 
     public function editsro(Request $request, $id)
     {
@@ -384,11 +389,8 @@ class InspecaoController extends Controller
         $dtmenos90dias->subDays(90);
         $dtmes3mesesatras = new Carbon();
         $dtmes3mesesatras->subMonth(2);
-
-
-
-      //  $now = Carbon::now();
-       // $now->format('Y-m-d');
+        //  $now = Carbon::now();
+        // $now->format('Y-m-d');
         $periodo = new CarbonPeriod();
 
         $registro = DB::table('itensdeinspecoes')
@@ -400,12 +402,13 @@ class InspecaoController extends Controller
             ->where([['itensdeinspecoes.id', '=', $id ]])
             ->first();
 
-            if(($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==1))
+            if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)) //revisado em 03/01/2021
             {
                 $competencia = DB::table('debitoempregados')
-                ->select('competencia')
-                ->where([['debitoempregados.id', '=', 1 ]])
-                ->get();
+                    ->select('competencia')
+                    ->where([['debitoempregados.competencia', '>=', 1 ]])
+                    ->orderBy('competencia' ,'desc')
+                ->first();
 
                 $debitoempregados = DB::table('debitoempregados')
                 ->select('data', 'documento', 'historico', 'matricula', 'valor' )
@@ -414,105 +417,98 @@ class InspecaoController extends Controller
                 ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
                 ->get();
                 $count = $debitoempregados->count('matricula');
-            //var_dump($debitoempregados );
                 $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
                 return view('compliance.inspecao.editar',compact(
                     'registro'
                     ,'id'
                     , 'debitoempregados'
+                    ,'competencia'
                     ,'total'
-                    , 'competencia'
-                    ,'count'
-
+                   ,'count'
                 ));
             }
 
-            if(($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==2))
+            if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 2)) //revisado em 03/01/2021
             {
                 $countproters_con =0;
                 $countproters_peso =0;
                 $countproters_cep =0;
 
                 $proters_con = DB::table('proters')
-                ->select(
-                    'tipo_de_pendencia'
-                  , 'data_da_postagem'
-                  , 'no_do_objeto'
-                  , 'qtd_duplicidades'
-                  , 'cep_entrega_sro'
-                  , 'ultima_manifestacao'
-                  , 'nome_da_unidade'
-                 )
-                 ->where([['nome_da_unidade', '=', $registro->descricao]])
-                 ->where([['tipo_de_pendencia', '=', 'CON']])
-                 ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
+                    ->select(
+                        'tipo_de_pendencia'
+                      , 'data_da_postagem'
+                      , 'no_do_objeto'
+                      , 'qtd_duplicidades'
+                      , 'cep_entrega_sro'
+                      , 'ultima_manifestacao'
+                      , 'nome_da_unidade'
+                     )
+                     ->where([['mcu', '=', $registro->mcu]])
+                     ->where([['tipo_de_pendencia', '=', 'CON']])
+                     ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
                  ->get();
-
-                if(!empty($proters_con))  $countproters_con = $proters_con->count('no_do_objeto');
-
-                 $proters_peso = DB::table('proters')
-                 ->select(
-                    'tipo_de_pendencia'
-                  , 'data_da_postagem'
-                  , 'no_do_objeto'
-                  , 'cep_destino'
-                  , 'ultima_manifestacao'
-                  , 'divergencia_peso'
-                  , 'divergencia_cep'
-                  , 'diferenca_a_recolher'
-                  , 'nome_da_unidade'
-                 )
-                 ->where([['nome_da_unidade', '=', $registro->descricao]])
-                 ->where([['tipo_de_pendencia', '=', 'DPC']])
-                 ->where([['divergencia_peso', '=', 'S']])
-                 ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
-                 ->get();
-
-
-                if(!empty($proters_peso))  $countproters_peso = $proters_peso->count('no_do_objeto');
-
-
-
-                 $proters_cep = DB::table('proters')
-                 ->select(
-                    'tipo_de_pendencia'
-                    , 'data_da_postagem'
-                    , 'no_do_objeto'
-                    , 'cep_destino'
-                    , 'ultima_manifestacao'
-                    , 'divergencia_peso'
-                    , 'divergencia_cep'
-                    , 'diferenca_a_recolher'
-                    , 'nome_da_unidade'
-                 )
-                 ->where([['nome_da_unidade', '=', $registro->descricao]])
-                 ->where([['tipo_de_pendencia', '=', 'DPC']])
-                 ->where([['divergencia_cep', '=', 'S']])
-                 ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
-                 ->get();
-
-
-
-                if(!empty($proters_cep))  $countproters_cep = $proters_cep->count('no_do_objeto');
-
-
-
-                if (empty($proters_cep)) {"vazio";}else
-                 {
+                if(! $proters_con->isEmpty())
+               // if(!empty($proters_con))
+                    $countproters_con = $proters_con->count('no_do_objeto');
+                $proters_peso = DB::table('proters')
+                     ->select(
+                        'tipo_de_pendencia'
+                      , 'data_da_postagem'
+                      , 'no_do_objeto'
+                      , 'cep_destino'
+                      , 'ultima_manifestacao'
+                      , 'divergencia_peso'
+                      , 'divergencia_cep'
+                      , 'diferenca_a_recolher'
+                      , 'nome_da_unidade'
+                     )
+                     ->where([['mcu', '=', $registro->mcu]])
+                     ->where([['tipo_de_pendencia', '=', 'DPC']])
+                     ->where([['divergencia_peso', '=', 'S']])
+                     ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
+                ->get();
+                if(! $proters_peso->isEmpty())
+               // if(!empty($proters_peso))
+                    $countproters_peso = $proters_peso->count('no_do_objeto');
+                $proters_cep = DB::table('proters')
+                     ->select(
+                        'tipo_de_pendencia'
+                        , 'data_da_postagem'
+                        , 'no_do_objeto'
+                        , 'cep_destino'
+                        , 'ultima_manifestacao'
+                        , 'divergencia_peso'
+                        , 'divergencia_cep'
+                        , 'diferenca_a_recolher'
+                        , 'nome_da_unidade'
+                     )
+                     ->where([['mcu', '=', $registro->mcu]])
+                     ->where([['tipo_de_pendencia', '=', 'DPC']])
+                     ->where([['divergencia_cep', '=', 'S']])
+                     ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
+                ->get();
+                if(! $proters_cep->isEmpty())
+              //  if(!empty($proters_cep))
+                    $countproters_cep = $proters_cep->count('no_do_objeto');
+                if( $proters_cep->isEmpty())
+              //  if (empty($proters_cep))
+                {"vazio";}else
+                {
                     $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
                     $total=$total_proters_cep;
-                 }
-                 if (empty($proters_peso)) {"vazio";}else
-                 {
+                }
+                if( $proters_peso->isEmpty())
+                //if (empty($proters_peso))
+                {"vazio";}else
+                {
                      $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
                      $total=$total_proters_peso;
-                 }
-
-                 if((isset($total_proters_cep)) && (isset($total_proters_peso)))
-                 {
+                }
+                if((isset($total_proters_cep)) && (isset($total_proters_peso)))
+                {
                     $total=$total_proters_peso + $total_proters_cep;
-                 }
-
+                }
                 return view('compliance.inspecao.editar',compact('registro','id'
                     , 'proters_con'
                     , 'proters_cep'
@@ -527,457 +523,247 @@ class InspecaoController extends Controller
                 ));
             }
 
-
-            if(($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==3)) {
+            if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste== 3))
+            {
+                $dtnow = new Carbon();
                 $dtmenos90dias = new Carbon();
                 $dtmenos90dias->subDays(90);
-
                 $smb_bdf_naoconciliados = DB::table('smb_bdf_NaoConciliados')
-
                     ->select(
                         'smb_bdf_NaoConciliados.*'
-
                     )
                     ->where([['smb_bdf_NaoConciliados.Agencia', '=', $registro->mcu]])
                     ->where([['smb_bdf_NaoConciliados.Divergencia', '!=', 0]])
                     ->where([['smb_bdf_NaoConciliados.Status', '=', 'Pendente']])
                     ->where([['smb_bdf_NaoConciliados.Data', '>=', $dtmenos90dias ]])
                     ->orderBy('Data' ,'asc')
-                    ->get();
+                ->get();
 
-                    $periodo = DB::table('smb_bdf_NaoConciliados')
+                $periodo = DB::table('smb_bdf_NaoConciliados')
                     ->select(
-                        'smb_bdf_NaoConciliados.*'
-
+                   'smb_bdf_NaoConciliados.*'
                     )
                     ->where([['smb_bdf_NaoConciliados.Data', '>=', $dtmenos90dias ]])
-                  //  ->orderBy('Data' ,'asc')
-                    ->get();
-                    $dtini = $periodo->min('Data');
-                  //  dd( $dtini );
+                ->get();
 
-                    $dtfim = $periodo->max('Data');
-
-               // var_dump($periodo);
-              //  dd();
+                $dtini = $periodo->min('Data');
+                $dtfim = $periodo->max('Data');
                 $total=0.00;
                 $total  = $smb_bdf_naoconciliados->sum('Divergencia'); // soma a coluna valor da coleção de dados
-
                 return view('compliance.inspecao.editar',compact(
-                    'registro','id','smb_bdf_naoconciliados','total','dtini','dtfim'
+                    'registro','id','smb_bdf_naoconciliados','total','dtini','dtfim','dtnow'
                     ));
             }
 
-            if(($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==4))
+            if(($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==4)) //revisadoem 03/01/2020
             {
+                $total=0.00;
+                $dtnow = new Carbon();
+                $dtmenos30dias = new Carbon();
+                $dtmenos60dias = new Carbon();
+                $dtmenos90dias = new Carbon();
+                $dtmenos120dias = new Carbon();
+                $dtmenos30dias->subDays(30);
+                $dtmenos60dias->subDays(60);
+                $dtmenos90dias->subDays(90);
+                $dtmenos120dias->subDays(120);
 
-
-                $sl02bdfs01 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 1)
+                $sl02bdfs30 = DB::table('sl02bdfs')
+                    ->select('sl02bdfs.*')
+                    ->where('cod_orgao', '=', $registro->sto)
+                    ->where('dt_movimento', '<=', $dtmenos30dias)
+                    ->where('diferenca', '>=', 1)
+                    ->orderBy('dt_movimento', 'desc')
                 ->get();
 
-                $sl02bdfs02 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 2)
+                $sl02bdfs60 = DB::table('sl02bdfs')
+                    ->select('sl02bdfs.*')
+                    ->where('cod_orgao', '=', $registro->sto)
+                    ->where('dt_movimento', '>', $dtmenos30dias)
+                    ->where('dt_movimento', '<=', $dtmenos60dias)
+                    ->where('diferenca', '>=', 1)
+                    ->orderBy('dt_movimento', 'desc')
+                    ->get();
+
+                $sl02bdfs90 = DB::table('sl02bdfs')
+                    ->select('sl02bdfs.*')
+                    ->where('cod_orgao', '=', $registro->sto)
+                    ->where('dt_movimento', '>', $dtmenos60dias)
+                    ->where('dt_movimento', '<=', $dtmenos90dias)
+                    ->where('diferenca', '>=', 1)
+                    ->orderBy('dt_movimento', 'desc')
+                    ->get();
+
+                $sl02bdfs120 = DB::table('sl02bdfs')
+                    ->select('sl02bdfs.*')
+                    ->where('cod_orgao', '=', $registro->sto)
+                    ->where('dt_movimento', '>', $dtmenos90dias)
+                    ->where('dt_movimento', '<=', $dtmenos120dias)
+                    ->where('diferenca', '>=', 1)
+                    ->orderBy('dt_movimento', 'desc')
                 ->get();
 
-                $sl02bdfs03 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 3)
-                ->get();
-
-                $sl02bdfs04 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 4)
-                ->get();
-
-                $sl02bdfs05 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 5)
-                ->get();
-//var_dump($sl02bdfs05);
-                $sl02bdfs06 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 6)
-                ->get();
-
-                $sl02bdfs07 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 7)
-                ->get();
-
-                $sl02bdfs08 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 8)
-                ->get();
-
-                $sl02bdfs09 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 9)
-                ->get();
-
-                $sl02bdfs10 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 10)
-                ->get();
-
-                $sl02bdfs11 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 11)
-                ->get();
-
-                $sl02bdfs12 = DB::table('sl02bdfs')
-                ->where('orgao', '=', $registro->descricao)
-                ->where('diferenca', '>', 0)
-                ->whereYear('dt_movimento', $registro->ciclo)
-                ->whereMonth('dt_movimento', 12)
-                ->get();
-
-
-                if(!empty($sl02bdfs01))
+                if(! $sl02bdfs30->isEmpty())
                 {
-                    $acumuladoMes1  = $sl02bdfs01->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias1  = $sl02bdfs01->count('diferenca');
-                    if($ocorrencias1==0){
-                        $media1=0;
-                      }else{
-                        $media1 =   $acumuladoMes1/$ocorrencias1;
-                      }
-                    $limite =$sl02bdfs01->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem1 = $media1 / $limite;
-                    $mes_Ano01 = '01-' . $registro->ciclo;
-
-                }
-                else
-                {
-                    $acumuladoMes1=0;
-                    $ocorrencias1=0;
-                    $media1=0;
-                    $porcentagem1=0;
-                }
-                if(!empty($sl02bdfs02))
-                {
-                    $acumuladoMes2  = $sl02bdfs02->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias2  = $sl02bdfs02->count('diferenca');
-                    if($ocorrencias2==0){
-                        $media2=0;
-                      }else{
-                        $media2 =   $acumuladoMes2/$ocorrencias2;
-                      }
-                    $limite =$sl02bdfs02->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem2 = $media2 / $limite;
-                    $mes_Ano02 = '02-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes2=0;
-                    $ocorrencias2=0;
-                    $media2=0;
-                    $porcentagem2=0;
-                }
-                if(!empty($sl02bdfs03))
-                {
-                    $acumuladoMes3  = $sl02bdfs03->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias3  = $sl02bdfs03->count('diferenca');
-                    if($ocorrencias3==0){
-                        $media3=0;
-                      }else{
-                        $media3 =   $acumuladoMes3/$ocorrencias3;
-                      }
-                    $limite =$sl02bdfs03->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem3 = $media3 / $limite;
-                    $mes_Ano03 = '03-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes3=0;
-                    $ocorrencias3=0;
-                    $media3=0;
-                    $porcentagem3=0;
-                }
-
-                if(!empty($sl02bdfs04))
-                {
-                    $acumuladoMes4  = $sl02bdfs04->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias4  = $sl02bdfs04->count('diferenca');
-                    if($ocorrencias4==0){
-                        $media4=0;
-                      }else{
-                        $media4 =   $acumuladoMes4/$ocorrencias4;
-                      }
-                    $limite =$sl02bdfs04->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem4 = $media4 / $limite;
-                    $mes_Ano04 = '04-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes4=0;
-                    $ocorrencias4=0;
-                    $media4=0;
-                    $porcentagem4=0;
-                }
-
-                if(!empty($sl02bdfs05))
-                {
-                    $acumuladoMes5  = $sl02bdfs05->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias5  = $sl02bdfs05->count('diferenca');
-                    if($ocorrencias5==0){
-                        $media5=0;
-                      }else{
-                        $media5 =   $acumuladoMes5/$ocorrencias5;
-                      }
-                    $limite =$sl02bdfs05->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem5 = $media5 / $limite;
-                    $mes_Ano05 = '05-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes5=0;
-                    $ocorrencias5=0;
-                    $media5=0;
-                    $porcentagem5=0;
-                }
-
-                if(!empty($sl02bdfs06))
-                {
-                    $acumuladoMes6  = $sl02bdfs06->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias6  = $sl02bdfs06->count('diferenca');
-                    if($ocorrencias6==0){
-                        $media6=0;
-                      }else{
-                        $media6 =   $acumuladoMes6/$ocorrencias6;
-                      }
-                    $limite =$sl02bdfs06->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem6 = $media6 / $limite;
-                    $mes_Ano06 = '06-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes6=0;
-                    $ocorrencias6=0;
-                    $media6=0;
-                    $porcentagem6=0;
-                }
-
-
-                if(!empty($sl02bdfs07))
-                {
-                    $acumuladoMes7  = $sl02bdfs07->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias7  = $sl02bdfs07->count('diferenca');
-                    if($ocorrencias7==0){
-                        $media7=0;
-                      }else{
-                        $media7 =   $acumuladoMes7/$ocorrencias7;
-                      }
-                    $limite =$sl02bdfs07->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem7 = $media7 / $limite;
-                    $mes_Ano07 = '07-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes7=0;
-                    $ocorrencias7=0;
-                    $media7=0;
-                    $porcentagem7=0;
-                }
-
-
-                if(!empty($sl02bdfs08))
-                {
-                    $acumuladoMes8  = $sl02bdfs08->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias8  = $sl02bdfs08->count('diferenca');
-                    if($ocorrencias8==0){
-                        $media8=0;
-                      }else{
-                        $media8 =   $acumuladoMes8/$ocorrencias8;
-                      }
-                    $limite =$sl02bdfs08->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem8 = $media8 / $limite;
-                    $mes_Ano08 = '08-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes8=0;
-                    $ocorrencias8=0;
-                    $media8=0;
-                    $porcentagem8=0;
-                }
-
-                if(!empty($sl02bdfs09))
-                {
-                    $acumuladoMes9  = $sl02bdfs09->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias9  = $sl02bdfs09->count('diferenca');
-                    if($ocorrencias9==0){
-                        $media9=0;
-                      }else{
-                        $media9 =   $acumuladoMes9/$ocorrencias9;
-                      }
-                    $limite =$sl02bdfs09->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem9 = $media9 / $limite;
-                    $mes_Ano09 = '09-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes9=0;
-                    $ocorrencias9=0;
-                    $media9=0;
-                    $porcentagem9=0;
-                }
-
-                if(!empty($sl02bdfs10))
-                {
-                    $acumuladoMes10  = $sl02bdfs10->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias10  = $sl02bdfs10->count('diferenca');
-                    if($ocorrencias10==0){
-                        $media10=0;
-                      }else{
-                        $media10 =   $acumuladoMes10/$ocorrencias10 ;
-                      }
-                    $limite =$sl02bdfs10->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem10 = $media10 / $limite;
-                    $mes_Ano10 = '10-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes10=0;
-                    $ocorrencias10=0;
-                    $media10=0;
-                    $porcentagem10=0;
-                }
-
-                if(!empty($sl02bdfs11))
-                {
-                    $acumuladoMes11  = $sl02bdfs11->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias11  = $sl02bdfs11->count('diferenca');
-                    if($ocorrencias11==0){
-                        $media11=0;
-                      }else{
-                        $media11 =   $acumuladoMes11/$ocorrencias11 ;
-                      }
-                    $limite =$sl02bdfs11->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem11 = $media11 / $limite;
-                    $mes_Ano11 = '11-' . $registro->ciclo;
-                }
-                else
-                {
-                    $acumuladoMes11=0;
-                    $ocorrencias11=0;
-                    $media11=0;
-                    $porcentagem11=0;
-                }
-
-                if(!empty($sl02bdfs12))
-                {
-                    $acumuladoMes12  = $sl02bdfs12->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias12  = $sl02bdfs12->count('diferenca');
-                    if($ocorrencias12==0){
-                      $media12=0;
-                    }else{
-                      $media12 =   $acumuladoMes12/$ocorrencias12 ;
+                    $acumulados30  = $sl02bdfs30->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias30  = $sl02bdfs30->count('diferenca');
+                    if($ocorrencias30==0)
+                    {
+                        $media30=0;
                     }
-                    $limite =$sl02bdfs12->max('limite');
+                    else
+                    {
+                        $media30 =   $acumulados30/$ocorrencias30 ;
+                    }
+                    $limite = $sl02bdfs30->max('limite');
                     if ($limite==0) $limite=1;
-                    $porcentagem12 = $media12 / $limite;
-                    $mes_Ano12 = '12-' . $registro->ciclo;
-
+                    $porcentagem30 = $media30 / $limite;
                 }
                 else
                 {
-                    $acumuladoMes12=0;
-                    $ocorrencias12=0;
-                    $media12=0;
-                    $porcentagem12=0;
+                    $acumulados30=0;
+                    $ocorrencias30=0;
+                    $media30=0;
+                    $porcentagem30=0;
+                }
+                if(! $sl02bdfs60->isEmpty())
+                {
+                    $acumulados60  = $sl02bdfs60->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias60  = $sl02bdfs60->count('diferenca');
+                    if($ocorrencias60==0)
+                    {
+                        $media60=0;
+                    }
+                    else
+                    {
+                        $media60 =   $acumulados60/$ocorrencias60 ;
+                    }
+                    $limite = $sl02bdfs60->max('limite');
+                    if ($limite==0) $limite=1;
+                    $porcentagem60 = $media60 / $limite;
+                }
+                else
+                {
+                    $acumulados60=0;
+                    $ocorrencias60=0;
+                    $media60=0;
+                    $porcentagem60=0;
                 }
 
+                if(! $sl02bdfs90->isEmpty())
+                {
+                    $acumulados90  = $sl02bdfs90->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias90  = $sl02bdfs90->count('diferenca');
+                    if($ocorrencias90==0)
+                    {
+                        $media90=0;
+                    }
+                    else
+                    {
+                        $media90 =   $acumulados90/$ocorrencias90 ;
+                    }
+                    $limite = $sl02bdfs90->max('limite');
+                    if ($limite==0) $limite=1;
+                    $porcentagem90 = $media90 / $limite;
+                }
+                else
+                {
+                    $acumulados90=0;
+                    $ocorrencias90=0;
+                    $media90=0;
+                    $porcentagem90=0;
+                }
 
+                if(! $sl02bdfs120->isEmpty())
+                {
+                    $acumulados120  = $sl02bdfs120->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias120  = $sl02bdfs120->count('diferenca');
+                    if($ocorrencias120==0)
+                    {
+                        $media120=0;
+                    }
+                    else
+                    {
+                        $media120 =   $acumulados120/$ocorrencias120 ;
+                    }
+                    $limite = $sl02bdfs120->max('limite');
+                    if ($limite==0) $limite=1;
+                    $porcentagem120 = $media120 / $limite;
+                }
+                else
+                {
+                    $acumulados120=0;
+                    $ocorrencias120=0;
+                    $media120=0;
+                    $porcentagem120=0;
+                }
 
-        $dt = new Carbon();
-        $mesatual = substr($dt,5,2).'/'.substr($dt,0,4);
+                $total  =    $acumulados30+$acumulados60+$acumulados90+$acumulados120;
+                $ocorrencias = $ocorrencias30+$ocorrencias60+$ocorrencias90+$ocorrencias120;
 
+                if((! $ocorrencias->isEmpty()) && ( $ocorrencias >= 1 ))
+                {
+                    $mediaocorrencias = (($ocorrencias/120)*22);
+                    $mediaocorrencias = number_format($mediaocorrencias, 2, ',', '.');
+                  //  $total = number_format($total, 2, ',', '.');
+                }
+                else
+                {
+                    $mediaocorrencias = 0;
+                }
 
+//             Considerando-se o contido no MANAFI 3/2, Em situações emergenciais,
+//             devidamente justificadas, as unidades sem Banco Postal poderão pernoitar
+//             com valores superiores ao limite estabelecido, desde que a média de dias
+//             ultrapassados não extrapolem o percentual de 20% ao mês."", considerar
+//             como NÃO CONFORME o item quando em um período de 30 dias foram identificados
+//             7 ou mais dias em que o ""Limite de Saldo"" tenha sido ultrapassado.
+//             O período a ser verificado deverá ser a partir do dia anterior da verificação (D-1),
+//             retroagindo 90 dias. Caso o sistema não apresente dados do dia anterior,
+//             avaliar os últimos 90 dias, de forma retroativa, a partir da data que estiver disponível no sistema.
 
-        $dt->subMonth(1);
-        $mesPassado = substr($dt,5,2).'/'.substr($dt,0,4);
-
-        $dt->subMonth(1);
-        $mesAtrasado = substr($dt,5,2).'/'.substr($dt,0,4);
-
-                $data = [
-                    'sl02bdfs01' => ['MesReferencia' => $mes_Ano01, 'AcumuladoMes' => $acumuladoMes1, 'Ocorrencias' => $ocorrencias1, 'Média' => $media1 , 'Percentual' => $porcentagem1],
-                    'sl02bdfs02' => ['MesReferencia' => $mes_Ano02, 'AcumuladoMes' => $acumuladoMes2, 'Ocorrencias' => $ocorrencias2, 'Média' => $media2 , 'Percentual' => $porcentagem2],
-                    'sl02bdfs03' => ['MesReferencia' => $mes_Ano03, 'AcumuladoMes' => $acumuladoMes3, 'Ocorrencias' => $ocorrencias3, 'Média' => $media3 , 'Percentual' => $porcentagem3],
-                    'sl02bdfs04' => ['MesReferencia' => $mes_Ano04, 'AcumuladoMes' => $acumuladoMes4, 'Ocorrencias' => $ocorrencias4, 'Média' => $media4 , 'Percentual' => $porcentagem4],
-                    'sl02bdfs05' => ['MesReferencia' => $mes_Ano05, 'AcumuladoMes' => $acumuladoMes5, 'Ocorrencias' => $ocorrencias5, 'Média' => $media5 , 'Percentual' => $porcentagem5],
-                    'sl02bdfs06' => ['MesReferencia' => $mes_Ano06, 'AcumuladoMes' => $acumuladoMes6, 'Ocorrencias' => $ocorrencias6, 'Média' => $media6 , 'Percentual' => $porcentagem6],
-                    'sl02bdfs07' => ['MesReferencia' => $mes_Ano07, 'AcumuladoMes' => $acumuladoMes7, 'Ocorrencias' => $ocorrencias7, 'Média' => $media7 , 'Percentual' => $porcentagem7],
-                    'sl02bdfs08' => ['MesReferencia' => $mes_Ano08, 'AcumuladoMes' => $acumuladoMes8, 'Ocorrencias' => $ocorrencias8, 'Média' => $media8 , 'Percentual' => $porcentagem8],
-                    'sl02bdfs09' => ['MesReferencia' => $mes_Ano09, 'AcumuladoMes' => $acumuladoMes9, 'Ocorrencias' => $ocorrencias9, 'Média' => $media9 , 'Percentual' => $porcentagem9],
-                    'sl02bdfs10' => ['MesReferencia' => $mes_Ano10, 'AcumuladoMes' => $acumuladoMes10, 'Ocorrencias' => $ocorrencias10, 'Média' => $media10 , 'Percentual' => $porcentagem10],
-                    'sl02bdfs11' => ['MesReferencia' => $mes_Ano11, 'AcumuladoMes' => $acumuladoMes11, 'Ocorrencias' => $ocorrencias11, 'Média' => $media11 , 'Percentual' => $porcentagem11],
-                    'sl02bdfs12' => ['MesReferencia' => $mes_Ano12, 'AcumuladoMes' => $acumuladoMes12, 'Ocorrencias' => $ocorrencias12, 'Média' => $media12 , 'Percentual' => $porcentagem12],
-                ];
-
-               $total=0.00;
-          //    $total  = $smb_bdf_naoconciliados->sum('Divergencia'); // soma a coluna valor da coleção de dados
-              return view('compliance.inspecao.editar',compact(
-                'registro'
-                ,'id'
-                ,'total'
-                ,'data'
-                ,'sl02bdfs01','sl02bdfs02','sl02bdfs03','sl02bdfs04','sl02bdfs05', 'sl02bdfs06','sl02bdfs07','sl02bdfs08','sl02bdfs09','sl02bdfs10','sl02bdfs11','sl02bdfs12'
-                ,'mesAtrasado','mesPassado','mesatual'  ));
+                return view('compliance.inspecao.editar',compact(
+                    'registro'
+                    ,'id'
+                    ,'total'
+                    ,'dtnow'
+                    ,'sl02bdfs30','acumulados30','ocorrencias30', 'media30', 'porcentagem30'
+                    ,'sl02bdfs60','acumulados60','ocorrencias60', 'media60', 'porcentagem60'
+                    ,'sl02bdfs90','acumulados90','ocorrencias90', 'media90', 'porcentagem90'
+                    ,'sl02bdfs120','acumulados120','ocorrencias120', 'media120', 'porcentagem120'
+                    ,'dtmenos30dias',  'dtmenos60dias' , 'dtmenos90dias' ,'dtmenos120dias'
+                    ,'ocorrencias','mediaocorrencias'
+                ));
             }
 
-            if(($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1)) {
+            if(($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1))
+            {
                 $dtmenos90dias = new Carbon();
                 $dtmenos90dias->subDays(90);
 
-                $resp_definidas = DB::table('resp_definidas')
-                    ->select('unidade','data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao' )
-                    ->where('unidade', '=', $registro->descricao)
-                    ->where('situacao', '!=', 'CONCLUIDO')
-                 //   ->where('data', '<=',  $dtmenos90dias)
-                   // ->orwhere('data', '=',  null)
 
+                $resp_definidas = DB::table('resp_definidas')
+                    ->select('mcu','unidade','data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao' )
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('situacao', '!=', 'CONCLUIDO')
+                    ->where('data', '<=',  $dtmenos90dias)
                 ->get();
-                $count = $resp_definidas->count('objeto');
-                $total = $resp_definidas->sum('valor_da_indenizacao');
-                $dtmax = $dtmenos90dias;
-                $dtmin = $resp_definidas->min('data');
+
+                if(! $resp_definidas->isEmpty())
+                {
+                    $count = $resp_definidas->count('objeto');
+                    $total = $resp_definidas->sum('valor_da_indenizacao');
+                    $dtmax = $dtmenos90dias;
+                    $dtmin = $resp_definidas->min('data');
+                }
+                else
+                {
+                    $total = 0.00;
+                    $dtmax = $dtmenos90dias;
+                    $dtmin = new Carbon();
+                    $count = 0;
+                }
+
 
                 return view('compliance.inspecao.editar',compact
                 (
@@ -991,138 +777,144 @@ class InspecaoController extends Controller
                 ));
             }
 
-            /////////
-        ///
-            if(( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 )) {
-              //  ini_set('memory_limit', '1024M');
-              //  ini_set('max_input_time', 350);
-              //  ini_set('max_execution_time', 350);
+            if(( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 ))
+            {
+                $dtmenos12meses = Carbon::now();
+                $dtmenos12meses = $dtmenos12meses->subMonth(12);
                 $now = Carbon::now();
-             //   $dtmenos210dias = $now->subDays(210);
-              //  $dtmenos5meses= $now->subMonth(5);
                 $now->format('Y-m-d');
-               // $dtmenos210dias = \Carbon\Carbon::parse($dtmenos210dias)->format('Y-m-d');
-                $alarmesFinalSemana = DB::table('alarmes')
-                    ->where('mcu', '=', $registro->mcu )
-                    ->where(function ($query) {
-                    $query
-
-                        ->whereYear('data','=', '2020' )
-                        ->where('diaSemana', '=', 6)
-                        ->orWhere('diaSemana', '=', 0)
-                        ->orderBy('data' ,'asc')
-                        ->orderBy('hora' ,'asc');
-                })
-                ->get();
-
-                $count_alarmesFinalSemana  = $alarmesFinalSemana->count('armedesarme');
-
-            //    var_dump($alarmesFinalSemana);
-            //    dd('aki  ' .$count_alarmesFinalSemana);
 
                 $rowAberturaFinalSemana=0;
-                $aviso ='';
-
                 $tempoDesarme='';
                 $tempoDePermanencia='';
-                if($count_alarmesFinalSemana > 0){
+                $row =0;
+                $acessosEmFeriados='';
+                $dtmax = '';
+                $dataultimoevento='';
+                $aviso='';
+                $diferencaAbertura ='';
+                $tempoAbertura ='';//armazena tempo de abertura menor que o previsto
+                $riscoAbertura ='';//armazena risco abertura fora do horário de atendimento
+                $rowtempoAbertura=0;
+                $rowriscoAbertura=0;
+                $rowtempoAberturaAntecipada=0;
+                $rowtempoAberturaPosExpediente=0;
+                $tempoAberturaPosExpediente='';
+                $tempoAberturaAntecipada='';
+                $naoMonitorado='';
+                $total = 0;
+                $acessos_final_semana ='';
 
+                $alarmesFinalSemana = DB::table('alarmes')
+                    ->select('alarmes.*')
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('data', '>', $dtmenos12meses)
+                    ->whereIn('diaSemana', [0, 6])
+                    ->orderBy('data' ,'asc')
+                    ->orderBy('hora' ,'asc')
+                ->get();
+
+                if(! $alarmesFinalSemana->isEmpty())
+                {
+                    $count_alarmesFinalSemana  = $alarmesFinalSemana->count('armedesarme');
                     DB::table('acessos_final_semana')
                         ->where('mcu', '=', $registro->mcu)
-                        ->delete();
-
-                    foreach ($alarmesFinalSemana  as $tabela){
-
-                        if($tabela->armedesarme == 'Desarme' ){
+                    ->delete();
+                    foreach ($alarmesFinalSemana  as $tabela)
+                    {
+                        if($tabela->armedesarme == 'Desarme' )
+                        {
                             $tempoDesarme = (substr($tabela->hora,0,2)*60)+substr($tabela->hora,3,2);
                             $horaDesarme = $tabela->hora;
                             $dataDesarme = $tabela->data;
                             $eventodesarme = $tabela->armedesarme;
                             $diaEvento = $tabela->diaSemana;
-                        }else{
-                            if (( isset($diaEvento) ) &&( $diaEvento == $tabela->diaSemana ) && ( $tabela->armedesarme == 'Arme' )) {
-
+                        }
+                        else
+                        {
+                            if (( isset($diaEvento) ) &&( $diaEvento == $tabela->diaSemana ) && ( $tabela->armedesarme == 'Arme' ))
+                            {
                                 $horaFechamento = $tabela->hora;
                                 $tempoArme = (substr($tabela->hora, 0, 2) * 60) + substr($tabela->hora, 3, 2);
-
                                 $tempoDePermanencia = $tempoArme - $tempoDesarme;
                                 $h = intdiv($tempoDePermanencia, 60);
                                 $m = $tempoDePermanencia % 60;
 
-                                if ($tabela->diaSemana == 6) {
+
+                                if ($tabela->diaSemana == 6)
+                                {
                                     $diasemana = 'Sábado';
-                                } else {
+                                }
+                                else
+                                {
                                     $diasemana = 'Domingo';
                                 }
-
                                 $peranencia = ($h < 10 ? '0' . $h : $h) . ':' . ($m < 10 ? '0' . $m : $m);
-
-                             //   $dattt  = $dataDesarme;
-                               // if ($dataDesarme == '31/12/1969') {
-
-                              //      var_dump($acessoFinalSemana);
-                              //      dd($dataDesarme , '   '. $dattt , ' table   '.$tabela->data);
-                             //   }
-
                                 $dataDesarme = date("d/m/Y", strtotime($dataDesarme));
-                               // $dataDesarme = date("d/m/Y", strtotime($tabela->data));
 
                                 $acessoFinalSemana = new AcessoFinalSemana();
-                                $acessoFinalSemana->mcu = $registro->mcu;
-                                $acessoFinalSemana->evAbertura = $eventodesarme;
-                                $acessoFinalSemana->evDataAbertura = $dataDesarme;
-                                $acessoFinalSemana->evHoraAbertura = $horaDesarme;
-                                $acessoFinalSemana->evFechamento = $tabela->armedesarme;
-                                $acessoFinalSemana->evHoraFechamento = $horaFechamento;
-                                $acessoFinalSemana->diaSemana = $diasemana;
-                                $acessoFinalSemana->tempoPermanencia = $peranencia;
-                                $acessoFinalSemana->save();
-                                $rowAberturaFinalSemana++;
+                                    $acessoFinalSemana->mcu = $registro->mcu;
+                                    $acessoFinalSemana->evAbertura = $eventodesarme;
+                                    $acessoFinalSemana->evDataAbertura = $dataDesarme;
+                                    $acessoFinalSemana->evHoraAbertura = $horaDesarme;
+                                    $acessoFinalSemana->evFechamento = $tabela->armedesarme;
+                                    $acessoFinalSemana->evHoraFechamento = $horaFechamento;
+                                    $acessoFinalSemana->diaSemana = $diasemana;
+                                    $acessoFinalSemana->tempoPermanencia = $peranencia;
+
+                                if ($registro->trabalha_sabado =='Não')
+                                {
+                                    $acessoFinalSemana->save();
+                                    $rowAberturaFinalSemana++;
+                                }
+                                elseif ($registro->trabalha_domingo =='Não')
+                                {
+                                    $acessoFinalSemana->save();
+                                    $rowAberturaFinalSemana++;
+                                }
                             }
                         }
                     }
-                }
-
-                if ( $rowAberturaFinalSemana >= 1 ) {
-                    $acessos_final_semana = DB::table('acessos_final_semana')
-                    ->where('mcu',  '=', $registro->mcu)
-                    ->select(
+                    if ( $rowAberturaFinalSemana >= 1 )
+                    {
+                        $acessos_final_semana = DB::table('acessos_final_semana')
+                            ->where('mcu',  '=', $registro->mcu)
+                            ->select(
                                 'acessos_final_semana.*'
-                    )
-                    ->get();
-                } else { $acessos_final_semana = '';}
-
+                            )
+                            ->get();
+                    }
+                    else { $acessos_final_semana = '';}
+                }
+                else
+                {
+                    $count_alarmesFinalSemana  = 0;
+                }
         /////////////////   Finais de semana  /////////////////////////////
 
         /////////////////   Feriados /////////////////////////////
                 $feriadoporUnidades = DB::table('unidades')
-                ->join('unidade_enderecos', 'unidades.mcu', '=', 'unidade_enderecos.mcu')
-                ->join('feriados', 'unidade_enderecos.cidade', '=', 'feriados.nome_municipio')
-                ->select(
-                          'feriados.*'
-                )
-                ->where([['unidades.mcu', '=', $registro->mcu]])
+                    ->join('unidade_enderecos', 'unidades.mcu', '=', 'unidade_enderecos.mcu')
+                    ->join('feriados', 'unidade_enderecos.cidade', '=', 'feriados.nome_municipio')
+                    ->select(
+                              'feriados.*'
+                    )
+                    ->where([['unidades.mcu', '=', $registro->mcu]])
+                    ->where('data_do_feriado', '>=', $dtmenos12meses)
                 ->get();
 
                 $eventos = DB::table('alarmes')
-                    ->where('mcu', '=', $registro->mcu )
-                    ->where(function ($query) {
-                        $query
-                            //->where('data','>=',    $dtmenos5meses )
-                            ->whereYear('data','=', '2020' )
-                            ->where('armedesarme', '=', 'Desarme')
-                            ->orderBy('data' ,'asc')
-                            ->orderBy('hora' ,'asc');
-                    })
-                    ->get();
+                    ->select('alarmes.*')
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('armedesarme', '=', 'Desarme')
+                    ->orderBy('data' ,'asc')
+                    ->orderBy('hora' ,'asc')
+                ->get();
 
-                $row =0;
-                $acessosEmFeriados='';
                 foreach ($feriadoporUnidades  as $feriadoporUnidade){
                         foreach ($eventos  as $evento){
                             if($feriadoporUnidade->data_do_feriado   ==  $evento->data){
 
-                               // $acessosEmFeriados = $acessosEmFeriados.'<br>'. $row.' Acesso '.\Carbon\Carbon::parse($evento->data)->format('d/m/Y').' hora '.$evento->hora;
                                 $acessosEmFeriados = ([
                                     $row => ['Acesso' => \Carbon\Carbon::parse($evento->data)->format('d/m/Y'), 'hora' => $evento->hora],
                                     ]);
@@ -1132,63 +924,60 @@ class InspecaoController extends Controller
 
                         }
                 }
+
    /////////////////   Feriados /////////////////////////////
 
-     /////////////////   Acessos fora do Padrão /////////////////////////////
+   /////////////////   Acessos fora do Padrão /////////////////////////////
 
                 $eventos = DB::table('alarmes')
-                    ->where('mcu', '=', $registro->mcu )
-                    ->where(function ($query) {
-                        $query
-                            //->where('data','>=',    $dtmenos5meses )
-                            ->whereYear('data','=', '2020'  )
-                            ->orderBy('data' ,'asc')
-                            ->orderBy('hora' ,'asc');
-                    })
-                    ->get();
-                $dtmax = $eventos->max('data');
-                $dataultimoevento='';
-                $aviso='';
-                $diferencaAbertura ='';
-                $tempoAbertura ='';//armazena tempo de abertura menor que o previsto
-                $riscoAbertura ='';//armazena risco abertura fora do horário de atendimento
+                    ->select('alarmes.*')
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('data', '>', $dtmenos12meses)
+                    ->orderBy('data' ,'asc')
+                    ->orderBy('hora' ,'asc')
+                ->get();
 
-                if( !empty($eventos)){
-                    try {
+                if(! $eventos->isEmpty())
+                {
+                    $dtmax = $eventos->max('data');
+                    if((isset($registro->inicio_expediente)) && (!empty($registro->inicio_expediente))
+                        ||(isset($registro->final_expediente)) && (!empty($registro->final_expediente)) )
+                    {
                         $minutosinicioExpediente = (substr($registro->inicio_expediente,0,2)*60)+substr($registro->inicio_expediente,3,2);
                         $minutosfinalExpediente = (substr($registro->final_expediente,0,2)*60)+substr($registro->final_expediente,3,2);
-                    } catch (Exception $e) {
+                    }
+                    else
+                    {
                         \Session::flash('mensagem',['msg'=> auth()->user()->name.', Base de Dados da Unidade não atualizada.
                          Atualize os horários de funcionamento.'
                             ,'class'=>'red white-text']);
                         return redirect()->route('compliance.unidades.editar',$registro->unidade_id);
                     }
-                    $rowtempoAbertura=0;
-                    $rowriscoAbertura=0;
-                    $rowtempoAberturaAntecipada=0;
-                    $rowtempoAberturaPosExpediente=0;
-                    $tempoAberturaPosExpediente='';
-                    $tempoAberturaAntecipada='';
 
-                    foreach ($eventos  as $evento){
+                    foreach ($eventos  as $evento)
+                    {
                         $eventominutos = (substr($evento->hora,0,2)*60)+substr($evento->hora,3,2);
-
-                        if ($evento->armedesarme =='Desarme' ){
-                            if (($eventominutos > ($minutosinicioExpediente-15))){
+                        if ($evento->armedesarme =='Desarme' )
+                        {
+                            if (($eventominutos < ($minutosinicioExpediente-90)))
+                            {
                                 $diferencaAbertura =  $minutosinicioExpediente - $eventominutos;
-                                if($diferencaAbertura <0){
-                                    $diferencaAbertura= $diferencaAbertura*-1;
+
+                                if($diferencaAbertura <0)
+                                {
+                                    $diferencaAbertura = $diferencaAbertura *-1;
                                 }
                                 $h = intdiv ($diferencaAbertura,60);
-                                if ($h<10){
+                                if ($h<10)
+                                {
                                     $h='0'.$h;
                                 }
                                 $m = $diferencaAbertura % 60;
-                                if ($m<10){
+                                if ($m<10)
+                                {
                                     $m='0'.$m;
                                 }
                                 $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
-                                //dd( $diferencaAbertura);
                                 $tempoAbertura = ([
                                     $rowtempoAbertura => ['dataInicioExpediente' => $evento->data,
                                     'InicioExpediente' => $registro->inicio_expediente,
@@ -1196,11 +985,10 @@ class InspecaoController extends Controller
                                     'DiferencaTempoDeAbertura' => $diferencaAbertura],
                                 ]);
                                 $rowtempoAbertura++;
-                             }
+                            }
+                            ///////////////////////   TEMPO DE ABERTURA   //////////////////////////
 
-                             ///////////////////////   TEMPO DE ABERTURA   //////////////////////////
-                                    ///////////////////////   risco  DE ABERTURA   //////////////////////////
-
+                            ///////////////////////   risco  DE ABERTURA   //////////////////////////
                             if (($eventominutos < ($minutosinicioExpediente-120))){
                                 $diferencaAbertura =  $minutosinicioExpediente - $eventominutos;
                                 $h = intdiv ($diferencaAbertura,60);
@@ -1219,16 +1007,18 @@ class InspecaoController extends Controller
                                     'DiferencaTempoDeAbertura' => $diferencaAbertura],
                                 ]);
                                 $rowtempoAberturaAntecipada++;
-
                             }
-                            if (($eventominutos > ($minutosfinalExpediente+120))){
+                            if (($eventominutos > ($minutosfinalExpediente+50)))
+                            {
                                 $diferencaAbertura =  $eventominutos - $minutosfinalExpediente;
                                 $h = intdiv ($diferencaAbertura,60);
-                                if ($h<10){
+                                if ($h<10)
+                                {
                                     $h='0'.$h;
                                 }
                                 $m = $diferencaAbertura % 60;
-                                if ($m<10){
+                                if ($m<10)
+                                {
                                     $m='0'.$m;
                                 }
                                 $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
@@ -1239,31 +1029,31 @@ class InspecaoController extends Controller
                                     'DiferencaTempoDeAbertura' => $diferencaAbertura],
                                 ]);
                                 $rowtempoAberturaPosExpediente++;
-
                             }
                         }
-
-                            $periodo = CarbonPeriod::create($dtmax ,  $now );
-                            $dataultimoevento = \Carbon\Carbon::parse($evento->data)->format('d/m/Y');
-
-                            if ($periodo->count()>=15){
-                                $aviso ='a) Não foi possível avaliar eventos recente da utilização do alarme monitorado
-                                dado que a unidade não está sendo monitorada há '. $periodo->count().' dias. Incluindo
-                                a data da Inspeção. Adicionalmente verificaram que o último evento transmitido
-                                 foi no dia ' .$dataultimoevento. '.';
-                            }
-
+                        $periodo = CarbonPeriod::create($dtmax ,  $now );
+                        $dataultimoevento = \Carbon\Carbon::parse($evento->data)->format('d/m/Y');
+                        if ($periodo->count()>=15)
+                        {
+                            $aviso ='a) Não foi possível avaliar eventos recente da utilização do alarme monitorado
+                            dado que a unidade não está sendo monitorada há '. $periodo->count().' dias. Incluindo
+                            a data da Inspeção. Adicionalmente verificaram que o último evento transmitido
+                             foi no dia ' .$dataultimoevento. '.';
+                        }
                     }
                 }
-                $naoMonitorado='';
-                if(($rowAberturaFinalSemana==0) && ($row ==0) && ($rowtempoAbertura==0) && ($rowtempoAberturaAntecipada ==0) && ($rowtempoAberturaPosExpediente ==0) ) {
+                if(($rowAberturaFinalSemana==0) && ($row ==0) && ($rowtempoAbertura==0) && ($rowtempoAberturaAntecipada ==0) && ($rowtempoAberturaPosExpediente ==0) )
+                {
                     $maxdata = DB::table('alarmes')
                         ->where('mcu', '=', $registro->mcu )
                         ->max('data');
-                   if(!empty($maxdata ))
+                    if(! $maxdata->isEmpty())
+                 //  if(!empty($maxdata ))
                    {
                        $dataultimoevento = \Carbon\Carbon::parse($maxdata)->format('d/m/Y');
-                   }else{
+                   }
+                   else
+                   {
                        $dataultimoevento = 'data não localizada nos parâmetros dessa pesquisa de inspeção';
                    }
                     $naoMonitorado ='Não foi possível avaliar eventos recente da utilização do alarme monitorado
@@ -1272,7 +1062,6 @@ class InspecaoController extends Controller
                              foi em ' .$dataultimoevento. '.';
                 }
 
-                $total = 0;
                 return view('compliance.inspecao.editar',compact
                 (
                   'registro'
@@ -1288,14 +1077,13 @@ class InspecaoController extends Controller
                 , 'aviso'
                 , 'dtmax'
                 , 'now'
+                ,'dtmenos12meses'
                 ,'naoMonitorado'
                 ));
             }
 
-            if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3)) {
-//dd($registro);
-
-
+            if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3))
+            {
                 $now = Carbon::now();
                 $now = $now->format('Y-m-d');
                 $dtmenos12meses =  Carbon::now()->subMonth(12);
@@ -1305,55 +1093,69 @@ class InspecaoController extends Controller
                 $row=0;
                 $aviso = '';
                 $periodo=array();
+                $naoMonitorado='';
+
                 $eventos = DB::table('alarmes')
-                    ->where('mcu', '=', $registro->mcu )
-                    ->where(function ($query) {
-                        $query
-                            ->whereYear('data','=', '2020' )
-                            ->orderBy('data' ,'asc')
-                            ->orderBy('hora' ,'asc');
-                    })
+                    ->select('alarmes.*')
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('data', '>', $dtmenos12meses)
+                    ->orderBy('data' ,'asc')
+                    ->orderBy('hora' ,'asc')
                 ->get();
 
-                if($eventos){
+                if( $eventos->isEmpty() )
+                {
+                    $dataultimoevento = \Carbon\Carbon::parse($dtmenos12meses)->format('d/m/Y');
+                    $aviso = 'a) A unidade inspecionada não está sendo monitorada há pelo menos 12 meses. Adicionalmente, informa que o último dia pesquisado foi ' .$dataultimoevento. '.';
+                    $dtmax = \Carbon\Carbon::parse($now)->format('d/m/Y');
+                   // $dataultimoevento = 'data não localizada nos parâmetros dessa pesquisa de inspeção';
+                    $naoMonitorado ='Não foi possível confrontar os dados obtidos com as informações de férias e afastamentos, com objetivo de identificar possíveis compartilhamentos de  senha recente da utilização do alarme monitorado. Dado que, a unidade não está sendo monitorada. Adicionalmente verificaram que o último evento transmitido foi em ' .$dataultimoevento. '.';
+                }
+                else
+                {
                     $dtmax = $eventos->max('data');
+
                     $periodo = CarbonPeriod::create($dtmax ,  $now );
                     $dataultimoevento = \Carbon\Carbon::parse($dtmax)->format('d/m/Y');
-                } else if ($periodo->count()>=15){
-                        $aviso = 'a) A unidade inspecionada não está sendo monitorada há '. $periodo->count().' dias. Adicionalmente, verificaram que o último evento transmitido foi no dia ' .$dataultimoevento. '.';
-                }
-                //  obter a lista de alterações por empregados
-                $ferias_por_mcu = DB::table('ferias_por_mcu')
-                    ->select( 'ferias_por_mcu.*' )
-                    ->where([['lotacao', '=',  $registro->descricao  ]])
-                    ->where([['inicio_fruicao', '<>', null ]])
-                    ->where([['inicio_fruicao', '<=',  $now ]])
-                    ->orderBy('ferias_por_mcu.inicio_fruicao' , 'asc')
+                    if ($periodo->count()>=15)  $aviso = 'a) A unidade inspecionada não está sendo monitorada há '. $periodo->count().' dias. Adicionalmente, verificaram que o último evento transmitido foi no dia ' .$dataultimoevento. '.';
+
+
+                    // Se tem dados de alarme obter a lista de ferias por empregados da unidade
+                    $ferias_por_mcu = DB::table('ferias_por_mcu')
+                        ->join('cadastral', 'ferias_por_mcu.matricula', '=', 'cadastral.matricula')
+                        ->select( 'ferias_por_mcu.*', 'cadastral.mcu' )
+                        ->where([['cadastral.mcu', '=',  $registro->mcu  ]])
+                        ->where([['ferias_por_mcu.inicio_fruicao', '<>', null ]])
+                        ->where([['ferias_por_mcu.inicio_fruicao', '>',  $dtmenos12meses ]])
+                        ->orderBy('ferias_por_mcu.inicio_fruicao' , 'asc')
                     ->get();
+                    if(! $ferias_por_mcu->isEmpty())
+                   // if(!empty($ferias_por_mcu ))
+                    {
+                        foreach ($ferias_por_mcu  as $ferias)
+                        {
+                            $inicio_fruicao = Carbon::parse($ferias->inicio_fruicao)->format('Y-m-d');
+                            $termino_fruicao = Carbon::parse($ferias->termino_fruicao)->format('Y-m-d');
+                            $compartilhaSenha =  DB::table('compartilhaSenhas')
+                                ->where('codigo', '=', $registro->codigo)
+                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                                ->delete();
 
-                if(!empty($ferias_por_mcu )){
-                    foreach ($ferias_por_mcu  as $ferias) {
-                        $inicio_fruicao = Carbon::parse($ferias->inicio_fruicao)->format('Y-m-d');
-                        $termino_fruicao = Carbon::parse($ferias->termino_fruicao)->format('Y-m-d');
+                            $res = DB::table('alarmes')
+                                ->select('alarmes.*')
+                                ->where([['mcu', '=', $registro->mcu]])
+                                ->where([['matricula', '=', $ferias->matricula]])
+                                ->whereBetween('data', [$inicio_fruicao , $termino_fruicao])
+                                ->orderBy('data' , 'asc')
+                                ->orderBy('hora' , 'asc')
+                                ->get();
 
-                        $compartilhaSenha =  DB::table('compartilhaSenhas')
-                            ->where('codigo', '=', $registro->codigo)
-                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                            ->delete();
-
-                        $res = DB::table('alarmes')
-                            ->select('alarmes.*')
-                            ->where([['mcu', '=', $registro->mcu]])
-                            ->where([['matricula', '=', $ferias->matricula]])
-                            ->whereBetween('data', [$inicio_fruicao , $termino_fruicao])
-                            ->orderBy('data' , 'asc')
-                            ->orderBy('hora' , 'asc')
-                            ->get();
-
-                            if ($res->count('matricula')>=1){
+                            if ($res->count('matricula')>=1)
+                            {
                                 $motivo='Férias';
-                                foreach ($res  as $dado){
+                                foreach ($res  as $dado)
+                                {
                                     $compartilhaSenha = new CompartilhaSenha();
                                     $compartilhaSenha->codigo = $registro->codigo;
                                     $compartilhaSenha->numeroGrupoVerificacao  = $registro->numeroGrupoVerificacao;
@@ -1365,91 +1167,67 @@ class InspecaoController extends Controller
                                     $compartilhaSenha->save();
                                 }
                             }
-                     }
-
-                }
-                $frequencias = DB::table('absenteismos')
-                    ->select('absenteismos.*')
-                    ->where([['lotacao', '=',  $registro->descricao  ]])
-                    ->where([['data_evento', '>=',  $dtmenos12meses  ]])
-                    ->whereBetween('data_evento', [$dtmenos12meses , $now])
-                    ->get();
-                if ($frequencias->count('matricula')>=1){
-                 //   var_dump($frequencias );
-                    foreach ($frequencias as $frequencia){
-                        $dt = new Carbon($frequencia->data_evento);
-
-                        if ($frequencia->dias>1){
-                            $dt =  $dt->addDays($frequencia->dias);
-                            $dt = $dt->format('Y-m-d');
                         }
-                       // dd($frequencia->data_evento. ' ----------- '. $dt);
-                        $res = DB::table('alarmes')
-                            ->select('alarmes.*')
-                            ->where([['mcu', '=', $registro->mcu]])
-                            ->where([['matricula', '=', $frequencia->matricula]])
-                            ->whereBetween('data', [$frequencia->data_evento , $dt])
-                            ->orderBy('data' , 'asc')
-                            ->orderBy('hora' , 'asc')
+                    }
+
+                    // Se tem dados de alarme obter a lista de absenteísmo por empregados da unidade
+                    $frequencias = DB::table('absenteismos')
+                        ->join('cadastral', 'absenteismos.matricula', '=', 'cadastral.matricula')
+                        ->select('absenteismos.*', 'cadastral.mcu')
+                        ->where([['cadastral.mcu', '=',  $registro->mcu  ]])
+                        ->where([['data_evento', '>',  $dtmenos12meses  ]])
+                        ->whereBetween('data_evento', [$dtmenos12meses , $now])
+                    ->get();
+
+                  //  if ($frequencias->count('matricula')>=1)
+                    if(! $frequencias->isEmpty())
+                   // if(!empty($frequencias ))
+                    {
+                        foreach ($frequencias as $frequencia)
+                        {
+                            $dt = new Carbon($frequencia->data_evento);
+                            if ($frequencia->dias>1)
+                            {
+                                $dt =  $dt->addDays($frequencia->dias);
+                                $dt = $dt->format('Y-m-d');
+                            }
+                            $res = DB::table('alarmes')
+                                ->select('alarmes.*')
+                                ->where([['mcu', '=', $registro->mcu]])
+                                ->where([['matricula', '=', $frequencia->matricula]])
+                                ->whereBetween('data', [$frequencia->data_evento , $dt])
+                                ->orderBy('data' , 'asc')
+                                ->orderBy('hora' , 'asc')
                             ->get();
-                    }
-
-                    if ($res->count('matricula')>=1){
-                        foreach ($res  as $dado){
-                            $compartilhaSenha = new CompartilhaSenha();
-                            $compartilhaSenha->codigo = $registro->codigo;
-                            $compartilhaSenha->numeroGrupoVerificacao  = $registro->numeroGrupoVerificacao;
-                            $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
-                            $compartilhaSenha->matricula = $dados->matricula;
-                            $compartilhaSenha->evento = $dados->armedesarme;
-                            $compartilhaSenha->data = $dados->data;
-                            $compartilhaSenha->tipoafastamento = $frequencia->motivo;
-                            $compartilhaSenha->save();
+                            if(! $res->isEmpty())
+                           // if(!empty($res ))
+                            {
+                                foreach ($res  as $dado)
+                                {
+                                    $compartilhaSenha = new CompartilhaSenha();
+                                    $compartilhaSenha->codigo = $registro->codigo;
+                                    $compartilhaSenha->numeroGrupoVerificacao  = $registro->numeroGrupoVerificacao;
+                                    $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
+                                    $compartilhaSenha->matricula = $dados->matricula;
+                                    $compartilhaSenha->evento = $dados->armedesarme;
+                                    $compartilhaSenha->data = $dados->data;
+                                    $compartilhaSenha->tipoafastamento = $frequencia->motivo;
+                                    $compartilhaSenha->save();
+                                }
+                            }
                         }
                     }
-                }
-                $compartilhaSenhas  =  DB::table('compartilhaSenhas')
-                    ->where('codigo', '=', $registro->codigo)
-                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                    ->orderBy('data' ,'asc')
-                    ->get();
-                $row= $compartilhaSenhas->count('codigo');
+                    $compartilhaSenhas  =  DB::table('compartilhaSenhas')
+                        ->where('codigo', '=', $registro->codigo)
+                        ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                        ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                        ->orderBy('data' ,'asc')
+                        ->get();
+                    $row= $compartilhaSenhas->count('codigo');
 
-                $maiordata = DB::table('alarmes')
-                    ->where('mcu', '=', $registro->mcu )
-                    ->where(function ($query) {
-                        $query
-                            //->where('data','>=',    $dtmenos5meses )
-                            ->whereYear('data','=', '2020'  )
-                            ->orderBy('data' ,'asc')
-                            ->orderBy('hora' ,'asc');
-                    })
-                    ->get();
+                    $dtmax = \Carbon\Carbon::parse($eventos->max('data'))->format('d/m/Y');
 
-
-                if(!empty($maiordata ))
-                {
-                    $dtmax = \Carbon\Carbon::parse($maiordata->max('data'))->format('d/m/Y');
-                }else{
-                    $dtmax =Carbon::now();
-                    $dtmax = \Carbon\Carbon::parse($dtmax)->format('d/m/Y');
-                }
-
-               // dd( $dtmax );
-
-                $naoMonitorado='';
-                $maxdata = DB::table('alarmes')
-                    ->where('mcu', '=', $registro->mcu )
-                    ->max('data');
-                if(!empty($maxdata ))
-                {
-                    $dataultimoevento = \Carbon\Carbon::parse($maxdata)->format('d/m/Y');
-                }else{
-                    $dataultimoevento = 'data não localizada nos parâmetros dessa pesquisa de inspeção';
-                }
-                $naoMonitorado ='Não foi possível confrontar os dados obtidos com as informações de férias e afastamentos, com objetivo de identificar possíveis compartilhamentos de  senha recente da utilização do alarme monitorado. Dado que, a unidade não está sendo monitorada. Adicionalmente verificaram que o último evento transmitido foi em ' .$dataultimoevento. '.';
-
+                } //tem dados de alarme
 
                 $total=0.00;
                 return view('compliance.inspecao.editar',compact
@@ -1467,14 +1245,12 @@ class InspecaoController extends Controller
                                 ));
             }
 
-            if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==4)) {
-
+            if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==4))
+            {
                 $cftvs = DB::table('cftvs')
                    ->select( 'cftvs.*' )
-                   ->where([['cftvs.unidade', '=',  $registro->descricao  ]])
+                   ->where([['mcu', '=',  $registro->mcu  ]])
                    ->get();
-               // var_dump(  $cftvs );
-              //  dd(   );
                $total=0.00;
                return view('compliance.inspecao.editar',compact
                                (
@@ -1486,19 +1262,25 @@ class InspecaoController extends Controller
                                ));
             }
 
-            if (($registro->numeroGrupoVerificacao==274) && ($registro->numeroDoTeste==1)) {
+            if (($registro->numeroGrupoVerificacao==274) && ($registro->numeroDoTeste==1))
+            {
+                $total=0.00;
+                $count = 0;
+
                 $plplistapendentes = DB::table('plpListaPendentes')
                    ->select( 'plpListaPendentes.*' )
                    ->where([['stomcu', '=',  $registro->mcu  ]])
-                   ->get();
-                $count = $plplistapendentes->count('lista');
+                ->get();
 
-                $datas = DB::table('plpListaPendentes')
-                   ->select( 'plpListaPendentes.*' )
-                   ->get();
-                $dtfim = $datas->max('dh_lista_postagem');
-
-                $total=0.00;
+                if( !empty($plplistapendentes->dh_lista_postagem ))
+                {
+                    $count = $plplistapendentes->count('lista');
+                    $dtfim = $plplistapendentes->max('dh_lista_postagem');
+                }
+                else
+                {
+                    $dtfim = Carbon::now();
+                }
                 return view('compliance.inspecao.editar',compact
                                (
                                    'registro'
@@ -1510,77 +1292,89 @@ class InspecaoController extends Controller
                                ));
             }
 
-            if (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1)) {
+            if (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1))
+            {
+                $count = 0;
+                $total=0.00;
+                $dtmenos3meses = Carbon::now();
+                $dtmenos3meses = $dtmenos3meses->subMonth(3);
+
                 $controle_de_viagens = DB::table('controle_de_viagens')
                    ->select( 'controle_de_viagens.*' )
-                   ->where([['controle_de_viagens.ponto_parada', '=',  $registro->an8  ]])
-                   ->get();
-                $count = $controle_de_viagens->count('ponto_parada');
+                   ->where('ponto_parada', '=', $registro->an8)
+                    ->where('inicio_viagem', '=', $dtmenos3meses)
+                ->get();
 
-                $controle = DB::table('controle_de_viagens')
-                   ->select( 'controle_de_viagens.inicio_viagem' )
-                   ->get();
-                $dtini = $controle->min('inicio_viagem');
-                $dtfim = $controle->max('inicio_viagem');
+
+                if( !empty($controle_de_viagens->ponto_parada ))
+                {
+                    $count = $controle_de_viagens->count('ponto_parada');
+                }
+                $dtini = $dtmenos3meses;
+                $dtfim =  Carbon::now();
                 $periodo = new CarbonPeriod();
                 $periodo = CarbonPeriod::create($dtini ,  $dtfim );
                 $dias =$periodo->count()-1;
-
                 if ($dias >=7 ){
                     $dias = intdiv($dias, 7)*5;
                 } elseif($dias == 6){
                     $dias=5;
                 }
-
                 $viagens = $dias*2;
                 $viagemNaorealizada =   $viagens-$count;
-
-                $total=0.00;
+//                dd(      $controle_de_viagens);
                 return view('compliance.inspecao.editar',compact
-                               (
-                                   'registro'
-                                   , 'id'
-                                   , 'total'
-                                   , 'controle_de_viagens'
-                                   ,'dtini'
-                                   ,'dtfim'
-                                   ,'count'
-                                   ,'viagens'
-                                   ,'viagemNaorealizada'
+                   (
+                       'registro'
+                       , 'id'
+                       , 'total'
+                       , 'controle_de_viagens'
+                       ,'dtini'
+                       ,'dtfim'
+                       ,'count'
+                       ,'viagens'
+                       ,'viagemNaorealizada'
 
-                               ));
+                   ));
             }
 
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==1)) {
+            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==1))
+            {
 
                 $dtmenos110dias = new Carbon();
                 $dtmenos110dias->subDays(110);
                 $dtmenos110dias = \Carbon\Carbon::parse($dtmenos110dias)->format('Y-m-d');
-
-                $sgdo_distribuicao = DB::table('sgdo_distribuicao')
-                    ->select( 'sgdo_distribuicao.*' )
-                    ->where([['mcu', '=',  $registro->mcu  ]])
-                    ->where([['data_incio_atividade', '>=',  $dtmenos110dias  ]])
-                    //->where([['data_saida', '=',  ''  ]])
-                    //->where([['data_retorno', '=',  ''  ]])
-                    //->where([['data_tpc', '=',   ''  ]])
-                   // ->where([['data_termino_atividade', '=',   ''  ]])
-
-
-                  ->get();
-
-
-                $count = $sgdo_distribuicao->count('mcu');
-                $dtini = $dtmenos110dias;
-                $dtfim = $sgdo_distribuicao->max('data_incio_atividade');
+                $count = 0;
                 $total=0.00;
 
+                if($registro->tem_distribuicao == 'Não tem distribuição')
+                {
+                    $dtfim = new Carbon();
+                    $dtini = $dtmenos110dias;
+                    $sgdo_distribuicao='';
+                }
+                else
+                {
+                    $sgdo_distribuicao = DB::table('sgdo_distribuicao')
+                        ->select( 'sgdo_distribuicao.*' )
+                        ->where([['mcu', '=',  $registro->mcu  ]])
+                        ->where([['data_incio_atividade', '>=',  $dtmenos110dias  ]])
+                    ->get();
 
-             //   var_dump( $sgdo_distribuicao );
-             //   dd();
-              //  dd($dtmenos110dias);
 
-
+                    if(! $sgdo_distribuicao->isEmpty())
+                   // if( !empty( $sgdo_distribuicao ))
+                    {
+                        $count = $sgdo_distribuicao->count('mcu');
+                        $dtfim = $sgdo_distribuicao->max('data_incio_atividade');
+                        $dtini = $sgdo_distribuicao->min('data_incio_atividade');
+                    }
+                    else
+                    {
+                        $dtfim = new Carbon();
+                        $dtini = $dtmenos110dias;
+                    }
+                }
                 return view('compliance.inspecao.editar',compact
                                 (
                                     'registro'
@@ -1599,7 +1393,7 @@ class InspecaoController extends Controller
                 $dtmenos120dias = $dtmenos120dias->subDays(120);
                 $count = 0;
                 $total=0.00;
-                $item=1;
+              //  $item=1;
                 $dtini=null;
                 $dtfim=null;
                 $media=null;
@@ -1608,133 +1402,43 @@ class InspecaoController extends Controller
                 $qtd_falhas=null;
                 $percentagem_falhas=null;
 
+
                 $lancamentossros =  DB::table('lancamentossro')
                     ->where('codigo', '=', $registro->codigo)
                     ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                     ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                    ->get();
-                $res = $lancamentossros->count('codigo');
+                ->get();
 
-                if ($res > 0)
+                if( $lancamentossros->count('codigo') >= 1)      // játem lançamentos para avaliar...
                 {
-                    //existe registros
+
                     $pend = 0;
                     $aval = 0;
-                    foreach ($lancamentossros as $register) {
-                        if ($register->estado == 'Pendente') {
+                    foreach ($lancamentossros as $register)
+                    {
+                        if ($register->estado == 'Pendente')
+                        {
                             $pend++;
-                        } else {
+                        }
+                        else
+                        {
                             $aval++;
                         }
                     }
                     $mostra = $pend + $aval;
-                    if ($mostra == 0)
-                    {   // não existe registros
-                        //dd(   ' Não existe lançamentos sro' );
-                        $micro_strategys = DB::table('micro_strategys')
-                            ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
-                            ->where([['data_do_evento', '>=', $dtmenos120dias]])
-                            ->where(function ($query) {
-                                $query
-                                    ->where('codigo_do_objeto', 'not like', 'B%')
-                                    ->where('codigo_do_objeto', 'not like', 'E%')
-                                    ->where('codigo_do_objeto', 'not like', 'F%')
-                                    ->where('codigo_do_objeto', 'not like', 'I%')
-                                    ->where('codigo_do_objeto', 'not like', 'J%')
-                                    ->where('codigo_do_objeto', 'not like', 'L%')
-                                    ->where('codigo_do_objeto', 'not like', 'M%')
-                                    ->where('codigo_do_objeto', 'not like', 'N%')
-                                    ->where('codigo_do_objeto', 'not like', 'R%')
-                                    ->where('codigo_do_objeto', 'not like', 'T%')
-                                    ->where('codigo_do_objeto', 'not like', 'U%')
-//                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE' )
-                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
-                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
-                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
-                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
-                                    ->orderBy('data_do_evento', 'asc')
-                                    ->groupBy('codigo_do_objeto');
-                            })
-                        ->get();
-                        if ($micro_strategys->count('codigo_do_objeto') >= 1)
-                        {
-                            $count = $micro_strategys->count('codigo_do_objeto');
-                            $dtini = $micro_strategys->min('data_do_evento');
-                            $dtfim = $micro_strategys->max('data_do_evento');
-                            $periodo = CarbonPeriod::create($dtini, $dtfim);
-                            $dias = $periodo->count() - 1;
-                            // $media = intval($count / $dias);
-                            $amostra = 0;  //- tamanho da amostra
-                            $N = intval($count / $dias) * 30;   //N =  tamanho universo da população;
-                            $z = 1.9;   //Z = nível de confiança desejado 90%
-                            $e = 900;   // e = a margem de erro máximo que é admitida;
-                            $d = 4000;  //d Desvio padrão 4000 da população determinado
-                            //  formula       (z^2*desvio^2*N)/(z^2*desvio^2+e^2*(N-1))
-                            $dividendo = (pow($z, 2) * pow($d, 2) * $N);
-                            $divisor = (pow($z, 2) * pow($d, 2) + pow($e, 2) * ($N - 1));
-                            $amostra = intval($dividendo / $divisor);
-                            if ($amostra >= 1)
-                            {
-                                $random = $micro_strategys->random($amostra);
-                            }
-                            if ($amostra == 0)
-                            {
-                                if ($count <= 60)
-                                    $random = $micro_strategys->random($count);
-                                else
-                                    $random = $micro_strategys->random(25);
-                            }
-                            $random->all();
-                            $sro = DB::table('lancamentossro')
-                                ->where('codigo', '=', $registro->codigo)
-                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                            ->get();
-                            $row = 0;
-                            $row = $sro->count('codigo');
-                            if ($row == 0)
-                            {
-                                foreach ($random as $dado)
-                                {
-                                    $lancamentossro = new LancamentosSRO();
-                                    $lancamentossro->codigo = $registro->codigo;
-                                    $lancamentossro->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
-                                    $lancamentossro->numeroDoTeste = $registro->numeroDoTeste;
-                                    $lancamentossro->objeto = $dado->codigo_do_objeto;
-                                    $lancamentossro->data = $dado->data_do_evento;
-                                    $lancamentossro->localBaixa1tentativa = $dado->descricao_do_evento;
-                                    $lancamentossro->estado = 'Pendente';
-                                    $lancamentossro->save();
-                                }
-                                $res = DB::table('lancamentossro')
-                                    ->where('codigo', '=', $registro->codigo)
-                                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                                    ->where('estado', '=', 'Pendente')
-                                ->get();
-                                return view('compliance.inspecao.index_sro', compact
-                                (
-                                    'registro'
-                                    , 'id'
-                                    , 'res'
-                                ));
-                            }
-                        }
-                    }
-                    if ($aval == $mostra)
+                    if ($aval == $mostra) // não existem objetos pendentes de avaliação
                     {
-                        //   dd(' Nao existe pendencias ' . $row);
                         $avaliados = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                             ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                             ->where('estado', '=', 'Avaliado')
-                        ->get();
+                            ->get();
                         $lancamentossro = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                             ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                        ->get();
+                            ->get();
                         $qtd_falhas = 0;
                         $amostra = 0;
                         foreach ($lancamentossro as $lancamento)
@@ -1748,11 +1452,9 @@ class InspecaoController extends Controller
                                 $amostra++;
                             }
                         }
-                        //   dd($registro->codigo);
-                        //dd($qtd_falhas, $amostra);
-                        // if($amostra==0) $amostra=1;
                         $percentagem_falhas = (($qtd_falhas / $amostra) * 100);
                         $percentagem_falhas = number_format($percentagem_falhas, 2, ',', '.');
+
                         $res = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -1760,6 +1462,18 @@ class InspecaoController extends Controller
                             ->where('falhaDetectada', '<>', 'Ok')
                             ->where('estado', '=', 'Avaliado')
                         ->get();
+//
+//                        if( !empty( $res ))
+//                        {
+//                            echo 'tem res';
+//                            var_dump($res );
+//                        }
+//                        else
+//                        {
+//                            echo 'nao tem res';
+//                        }
+//                        dd();
+
                         $micro_strategys = DB::table('micro_strategys')
                             ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
                             ->where([['data_do_evento', '>=', $dtmenos120dias]])
@@ -1785,11 +1499,13 @@ class InspecaoController extends Controller
                                     ->groupBy('codigo_do_objeto');
                             })
                         ->get();
+
                         $count = $micro_strategys->count('codigo_do_objeto');
                         $dtini = $micro_strategys->min('data_do_evento');
                         $dtfim = $micro_strategys->max('data_do_evento');
                         $periodo = CarbonPeriod::create($dtini, $dtfim);
                         $dias = $periodo->count() - 1;
+                       // dd(' 1470  mostra-> '.     $mostra , 'val '.$aval);
                         return view('compliance.inspecao.editar', compact
                         (
                             'registro'
@@ -1801,20 +1517,20 @@ class InspecaoController extends Controller
                             , 'media'
                             , 'random'
                             , 'amostra'
-                            , 'item'
+                      //      , 'item'
                             , 'res'
                             , 'qtd_falhas'
                             , 'percentagem_falhas'
                         ));
                     }
-                    if ($pend <= $mostra) {
+                    if ($pend <= $mostra) // existem objetos pendentes de avaliação
+                    {
                         $res = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                             ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                             ->where('estado', '=', 'Pendente')
-                        ->get();
-                        // dd(  $res , $registro, $id);
+                            ->get();
                         return view('compliance.inspecao.index_sro', compact
                         (
                             'registro'
@@ -1823,25 +1539,119 @@ class InspecaoController extends Controller
                         ));
                     }
                 }
-                else
+                else  // ainda não tem lançamentos para avaliar...
                 {
-                    return view('compliance.inspecao.editar', compact
-                    (
-                        'registro'
-                        , 'id'
-                        , 'total'
-                        , 'count'
-                        , 'dtini'
-                        , 'dtfim'
-                        , 'media'
-                        , 'random'
-                        , 'amostra'
-                        , 'item'
-                        , 'res'
-                        , 'qtd_falhas'
-                        , 'percentagem_falhas'
-                    ));
+                    $micro_strategys = DB::table('micro_strategys')
+                        ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
+                        ->where([['data_do_evento', '>=', $dtmenos120dias]])
+                       // ->where([['dr_de_destino', '>=', $registro->se]])
+                        ->where(function ($query) {
+                              $query
+                                  ->where('codigo_do_objeto', 'not like', 'B%')
+                                  ->where('codigo_do_objeto', 'not like', 'E%')
+                                  ->where('codigo_do_objeto', 'not like', 'F%')
+                                  ->where('codigo_do_objeto', 'not like', 'I%')
+                                  ->where('codigo_do_objeto', 'not like', 'J%')
+                                  ->where('codigo_do_objeto', 'not like', 'L%')
+                                  ->where('codigo_do_objeto', 'not like', 'M%')
+                                  ->where('codigo_do_objeto', 'not like', 'N%')
+                                  ->where('codigo_do_objeto', 'not like', 'R%')
+                                  ->where('codigo_do_objeto', 'not like', 'T%')
+                                  ->where('codigo_do_objeto', 'not like', 'U%')
+                            //    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE')
+                                  ->where('descricao_do_evento', '=', 'ENTREGUE')
+                                  ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
+                                  ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
+                                  ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
+                                  ->orderBy('data_do_evento', 'asc')
+                                  ->groupBy('codigo_do_objeto');
+                        })
+                    ->get();
+                    if(! $micro_strategys->isEmpty())
+                   // if( !empty( $micro_strategys ))// tem objetos na consulta para inserir no banco
+                    {
+                        $count = $micro_strategys->count('codigo_do_objeto');
+                        $dtini = $micro_strategys->min('data_do_evento');
+                        $dtfim = $micro_strategys->max('data_do_evento');
+                        $periodo = CarbonPeriod::create($dtini, $dtfim);
+                        $dias = $periodo->count() - 1;
+                        // $media = intval($count / $dias);
+                        $amostra = 0;  //- tamanho da amostra
+                        $N = intval($count / $dias) * 30;   //N =  tamanho universo da população;
+                        $z = 1.9;   //Z = nível de confiança desejado 90%
+                        $e = 900;   // e = a margem de erro máximo que é admitida;
+                        $d = 4000;  //d Desvio padrão 4000 da população determinado
+                        //  formula       (z^2*desvio^2*N)/(z^2*desvio^2+e^2*(N-1))
+                        $dividendo = (pow($z, 2) * pow($d, 2) * $N);
+                        $divisor = (pow($z, 2) * pow($d, 2) + pow($e, 2) * ($N - 1));
+                        $amostra = intval($dividendo / $divisor);
+
+                        // InvalidArgumentException
+                        //Você solicitou 53 itens, mas há apenas 43 itens disponíveis.
+                        if( $amostra  > $count  ) $amostra = $count ;
+                        //dd($amostra, $count);
+
+                        if ($amostra >= 1)
+                        {
+                            $random = $micro_strategys->random($amostra);
+                        }
+                        if ($amostra == 0)
+                        {
+                            if ($count <= 60)
+                                $random = $micro_strategys->random($count);
+                            else
+                                $random = $micro_strategys->random(25);
+                        }
+                        $random->all();
+
+                        foreach ($random as $dado)
+                        {
+                            $lancamentossro = new LancamentosSRO();
+                            $lancamentossro->codigo = $registro->codigo;
+                            $lancamentossro->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                            $lancamentossro->numeroDoTeste = $registro->numeroDoTeste;
+                            $lancamentossro->objeto = $dado->codigo_do_objeto;
+                            $lancamentossro->data = $dado->data_do_evento;
+                            $lancamentossro->localBaixa1tentativa = $dado->descricao_do_evento;
+                            $lancamentossro->estado = 'Pendente';
+                            $lancamentossro->save();
+                        }
+                        $res = DB::table('lancamentossro')
+                            ->where('codigo', '=', $registro->codigo)
+                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                            ->where('estado', '=', 'Pendente')
+                        ->get();
+
+                        return view('compliance.inspecao.index_sro', compact
+                        (
+                            'registro'
+                            , 'id'
+                            , 'res'
+                        ));
+                    }
+                    else // Nãp tem objetos na consulta
+                    {
+                     //   dd('Não tem objetos para avaliar');
+                        return view('compliance.inspecao.editar', compact
+                        (
+                            'registro'
+                            , 'id'
+                            , 'total' //xx
+                            , 'count' //xx
+                            , 'dtini'
+                            , 'dtfim'
+                            , 'media'
+                            , 'random'
+                            , 'amostra'
+                          //  , 'item' //xx
+                            , 'res'
+                            , 'qtd_falhas'
+                            , 'percentagem_falhas'
+                        ));
+                    }
                 }
+
             }
 
             if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==3))
@@ -1850,7 +1660,7 @@ class InspecaoController extends Controller
                 $dtmenos120dias = $dtmenos120dias->subDays(120);
                 $count = 0;
                 $total=0.00;
-                $item=1;
+                //  $item=1;
                 $dtini=null;
                 $dtfim=null;
                 $media=null;
@@ -1864,124 +1674,30 @@ class InspecaoController extends Controller
                     ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                     ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                     ->get();
-                $res = $lancamentossros->count('codigo');
-
-                if ($res > 0)
-
-                { //existe registros
+                if( $lancamentossros->count('codigo') >= 1)       // játem lançamentos para avaliar...
+                {
                     $pend = 0;
                     $aval = 0;
-                    foreach ($lancamentossros as $register) {
-                        if ($register->estado == 'Pendente') {
+                    foreach ($lancamentossros as $register)
+                    {
+                        if ($register->estado == 'Pendente')
+                        {
                             $pend++;
-                        } else {
+                        }
+                        else
+                        {
                             $aval++;
                         }
                     }
                     $mostra = $pend + $aval;
-
-
-                    if ($mostra == 0) { // não existe registros
-                        //dd(   ' Não existe lançamentos sro' );
-                        $micro_strategys = DB::table('micro_strategys')
-                            ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
-                            ->where([['data_do_evento', '>=', $dtmenos120dias]])
-                            ->where(function ($query) {
-                                $query
-                                    ->where('codigo_do_objeto', 'not like', 'B%')
-                                    ->where('codigo_do_objeto', 'not like', 'E%')
-                                    ->where('codigo_do_objeto', 'not like', 'F%')
-                                    ->where('codigo_do_objeto', 'not like', 'I%')
-                                    ->where('codigo_do_objeto', 'not like', 'J%')
-                                    ->where('codigo_do_objeto', 'not like', 'L%')
-                                    ->where('codigo_do_objeto', 'not like', 'M%')
-                                    ->where('codigo_do_objeto', 'not like', 'N%')
-                                    ->where('codigo_do_objeto', 'not like', 'R%')
-                                    ->where('codigo_do_objeto', 'not like', 'T%')
-                                    ->where('codigo_do_objeto', 'not like', 'U%')
-                                    ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE' )
-//                                    ->where('descricao_do_evento', '=', 'ENTREGUE')
-//                                    ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
-//                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
-//                                    ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
-                                    ->orderBy('data_do_evento', 'asc')
-                                    ->groupBy('codigo_do_objeto');
-                            })
-                            ->get();
-
-                        if ($micro_strategys->count('codigo_do_objeto') >= 1) {
-
-                            $count = $micro_strategys->count('codigo_do_objeto');
-                            $dtini = $micro_strategys->min('data_do_evento');
-                            $dtfim = $micro_strategys->max('data_do_evento');
-                            $periodo = CarbonPeriod::create($dtini, $dtfim);
-                            $dias = $periodo->count() - 1;
-
-                            // $media = intval($count / $dias);
-                            $amostra = 0;  //- tamanho da amostra
-                            $N = intval($count / $dias) * 30;   //N =  tamanho universo da população;
-                            $z = 1.9;   //Z = nível de confiança desejado 90%
-                            $e = 900;   // e = a margem de erro máximo que é admitida;
-                            $d = 4000;  //d Desvio padrão 4000 da população determinado
-                            //  formula       (z^2*desvio^2*N)/(z^2*desvio^2+e^2*(N-1))
-                            $dividendo = (pow($z, 2) * pow($d, 2) * $N);
-                            $divisor = (pow($z, 2) * pow($d, 2) + pow($e, 2) * ($N - 1));
-                            $amostra = intval($dividendo / $divisor);
-
-                            if ($amostra >= 1) {
-                                $random = $micro_strategys->random($amostra);
-                            }
-                            if ($amostra == 0) {
-                                if ($count <= 60)
-                                    $random = $micro_strategys->random($count);
-                                else
-                                    $random = $micro_strategys->random(25);
-                            }
-                            $random->all();
-                            $sro = DB::table('lancamentossro')
-                                ->where('codigo', '=', $registro->codigo)
-                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                                ->get();
-                            $row = 0;
-                            $row = $sro->count('codigo');
-                            if ($row == 0) {
-                                foreach ($random as $dado) {
-                                    $lancamentossro = new LancamentosSRO();
-                                    $lancamentossro->codigo = $registro->codigo;
-                                    $lancamentossro->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
-                                    $lancamentossro->numeroDoTeste = $registro->numeroDoTeste;
-                                    $lancamentossro->objeto = $dado->codigo_do_objeto;
-                                    $lancamentossro->data = $dado->data_do_evento;
-                                    $lancamentossro->localBaixa1tentativa = $dado->descricao_do_evento;
-                                    $lancamentossro->estado = 'Pendente';
-                                    $lancamentossro->save();
-                                }
-                                $res = DB::table('lancamentossro')
-                                    ->where('codigo', '=', $registro->codigo)
-                                    ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
-                                    ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                                    ->where('estado', '=', 'Pendente')
-                                    ->get();
-                                return view('compliance.inspecao.index_sro', compact
-                                (
-                                    'registro'
-                                    , 'id'
-                                    , 'res'
-                                ));
-                            }
-                        }
-                    }
-
-                    if ($aval == $mostra) {
-                        //   dd(' Nao existe pendencias ' . $row);
+                    if ($aval == $mostra) // não existem objetos pendentes de avaliação
+                    {
                         $avaliados = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                             ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                             ->where('estado', '=', 'Avaliado')
                             ->get();
-
                         $lancamentossro = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -1989,17 +1705,17 @@ class InspecaoController extends Controller
                             ->get();
                         $qtd_falhas = 0;
                         $amostra = 0;
-
-                        foreach ($lancamentossro as $lancamento) {
-                            if (($lancamento->falhaDetectada <> 'Ok') && ($lancamento->estado == 'Avaliado')) {
+                        foreach ($lancamentossro as $lancamento)
+                        {
+                            if (($lancamento->falhaDetectada <> 'Ok') && ($lancamento->estado == 'Avaliado'))
+                            {
                                 $qtd_falhas++;
                             }
-                            if ($lancamento->estado == 'Avaliado') {
+                            if ($lancamento->estado == 'Avaliado')
+                            {
                                 $amostra++;
                             }
                         }
-                        //   dd($registro->codigo);
-
                         $percentagem_falhas = (($qtd_falhas / $amostra) * 100);
                         $percentagem_falhas = number_format($percentagem_falhas, 2, ',', '.');
 
@@ -2036,40 +1752,38 @@ class InspecaoController extends Controller
                                     ->groupBy('codigo_do_objeto');
                             })
                             ->get();
+
                         $count = $micro_strategys->count('codigo_do_objeto');
                         $dtini = $micro_strategys->min('data_do_evento');
                         $dtfim = $micro_strategys->max('data_do_evento');
                         $periodo = CarbonPeriod::create($dtini, $dtfim);
                         $dias = $periodo->count() - 1;
-// dd('parou');
+                        // dd(' 1470  mostra-> '.     $mostra , 'val '.$aval);
                         return view('compliance.inspecao.editar', compact
                         (
                             'registro'
                             , 'id'
                             , 'total'
-                            , 'count'
-                            , 'dtini'
-                            , 'dtfim'
+                            , 'count' // x
+                            , 'dtini' // x
+                            , 'dtfim' //
                             , 'media'
                             , 'random'
                             , 'amostra'
-                            , 'item'
+                            //      , 'item'
                             , 'res'
                             , 'qtd_falhas'
                             , 'percentagem_falhas'
                         ));
-
-
                     }
-
-                    if ($pend <= $mostra) {
+                    if ($pend <= $mostra) // existem objetos pendentes de avaliação
+                    {
                         $res = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                             ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                             ->where('estado', '=', 'Pendente')
                             ->get();
-                        // dd(  $res , $registro, $id);
                         return view('compliance.inspecao.index_sro', compact
                         (
                             'registro'
@@ -2077,68 +1791,187 @@ class InspecaoController extends Controller
                             , 'res'
                         ));
                     }
-
                 }
-                else
+                else  // ainda não tem lançamentos para avaliar...
                 {
-                    return view('compliance.inspecao.editar', compact
-                    (
-                        'registro'
-                        , 'id'
-                        , 'total'
-                        , 'count'
-                        , 'dtini'
-                        , 'dtfim'
-                        , 'media'
-                        , 'random'
-                        , 'amostra'
-                        , 'item'
-                        , 'res'
-                        , 'qtd_falhas'
-                        , 'percentagem_falhas'
-                    ));
-                }
+                    $micro_strategys = DB::table('micro_strategys')
+                        ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
+                        ->where([['data_do_evento', '>=', $dtmenos120dias]])
+                        // ->where([['dr_de_destino', '>=', $registro->se]])
+                        ->where(function ($query) {
+                            $query
+                                ->where('codigo_do_objeto', 'not like', 'B%')
+                                ->where('codigo_do_objeto', 'not like', 'E%')
+                                ->where('codigo_do_objeto', 'not like', 'F%')
+                                ->where('codigo_do_objeto', 'not like', 'I%')
+                                ->where('codigo_do_objeto', 'not like', 'J%')
+                                ->where('codigo_do_objeto', 'not like', 'L%')
+                                ->where('codigo_do_objeto', 'not like', 'M%')
+                                ->where('codigo_do_objeto', 'not like', 'N%')
+                                ->where('codigo_do_objeto', 'not like', 'R%')
+                                ->where('codigo_do_objeto', 'not like', 'T%')
+                                ->where('codigo_do_objeto', 'not like', 'U%')
+                                ->where('descricao_do_evento', '=', 'DESTINATARIO AUSENTE')
+//                                ->where('descricao_do_evento', '=', 'ENTREGUE')
+//                                ->orWhere('descricao_do_evento', '=', 'DISTRIBUÍDO AO REMETENTE')
+//                                ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO MUDOU-SE')
+//                                ->orWhere('descricao_do_evento', '=', 'DESTINATÁRIO DESCONHECIDO NO ENDEREÇO')
+                                ->orderBy('data_do_evento', 'asc')
+                                ->groupBy('codigo_do_objeto');
+                        })
+                        ->get();
+                    if(! $micro_strategys->isEmpty())
+                   // if( !empty( $micro_strategys ))// tem objetos na consulta para inserir no banco
+                    {
+                        $count = $micro_strategys->count('codigo_do_objeto');
+                        $dtini = $micro_strategys->min('data_do_evento');
+                        $dtfim = $micro_strategys->max('data_do_evento');
+                        $periodo = CarbonPeriod::create($dtini, $dtfim);
+                        $dias = $periodo->count() - 1;
+                        // $media = intval($count / $dias);
+                        $amostra = 0;  //- tamanho da amostra
+                        $N = intval($count / $dias) * 30;   //N =  tamanho universo da população;
+                        $z = 1.9;   //Z = nível de confiança desejado 90%
+                        $e = 900;   // e = a margem de erro máximo que é admitida;
+                        $d = 4000;  //d Desvio padrão 4000 da população determinado
+                        //  formula       (z^2*desvio^2*N)/(z^2*desvio^2+e^2*(N-1))
+                        $dividendo = (pow($z, 2) * pow($d, 2) * $N);
+                        $divisor = (pow($z, 2) * pow($d, 2) + pow($e, 2) * ($N - 1));
+                        $amostra = intval($dividendo / $divisor);
 
+                        // InvalidArgumentException
+                        //Você solicitou 53 itens, mas há apenas 43 itens disponíveis.
+                        if( $amostra  > $count  ) $amostra = $count ;
+                        //dd($amostra, $count);
+
+                        if ($amostra >= 1)
+                        {
+                            $random = $micro_strategys->random($amostra);
+                        }
+                        if ($amostra == 0)
+                        {
+                            if ($count <= 60)
+                                $random = $micro_strategys->random($count);
+                            else
+                                $random = $micro_strategys->random(25);
+                        }
+                        $random->all();
+
+                        foreach ($random as $dado)
+                        {
+                            $lancamentossro = new LancamentosSRO();
+                            $lancamentossro->codigo = $registro->codigo;
+                            $lancamentossro->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                            $lancamentossro->numeroDoTeste = $registro->numeroDoTeste;
+                            $lancamentossro->objeto = $dado->codigo_do_objeto;
+                            $lancamentossro->data = $dado->data_do_evento;
+                            $lancamentossro->localBaixa1tentativa = $dado->descricao_do_evento;
+                            $lancamentossro->estado = 'Pendente';
+                            $lancamentossro->save();
+                        }
+                        $res = DB::table('lancamentossro')
+                            ->where('codigo', '=', $registro->codigo)
+                            ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                            ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                            ->where('estado', '=', 'Pendente')
+                            ->get();
+
+                        return view('compliance.inspecao.index_sro', compact
+                        (
+                            'registro'
+                            , 'id'
+                            , 'res'
+                        ));
+                    }
+                    else // Nãp tem objetos na consulta
+                    {
+                        //   dd('Não tem objetos para avaliar');
+                        return view('compliance.inspecao.editar', compact
+                        (
+                            'registro'
+                            , 'id'
+                            , 'total' //xx
+                            , 'count' //xx
+                            , 'dtini'
+                            , 'dtfim'
+                            , 'media'
+                            , 'random'
+                            , 'amostra'
+                            //  , 'item' //xx
+                            , 'res'
+                            , 'qtd_falhas'
+                            , 'percentagem_falhas'
+                        ));
+                    }
+                }
 
             }
 
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==5)) {
+            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==5))
+            {
                 $dtmenos150dias = new Carbon();
                 $dtmenos150dias->subDays(150);
+                $dtini = $dtmenos150dias;
 
+                switch ($registro->se)
+                {
+                    case 1 :{ $superintendência = 'CS'; } break;
+                    case 4 :{ $superintendência = 'AL'; } break;
+                    case 6 :{ $superintendência = 'AM'; } break;
+                    case 8 :{ $superintendência = 'BA'; } break;
+                    case 10 :{ $superintendência = 'BSB'; } break;
+                    case 12 :{ $superintendência = 'CE'; } break;
+                    case 14 :{ $superintendência = 'ES'; } break;
+                    case 16 :{ $superintendência = 'GO'; } break;
+                    case 18 :{ $superintendência = 'MA'; } break;
+                    case 20 :{ $superintendência = 'MG'; } break;
+                    case 22 :{ $superintendência = 'MS'; } break;
+                    case 24 :{ $superintendência = 'MT'; } break;
+                    case 26 :{ $superintendência = 'RO'; } break;
+                    case 28 :{ $superintendência = 'PA'; } break;
+                    case 30 :{ $superintendência = 'PB'; } break;
+                    case 32 :{ $superintendência = 'PE'; } break;
+                    case 34 :{ $superintendência = 'PI'; } break;
+                    case 36 :{ $superintendência = 'PR'; } break;
+                    case 50 :{ $superintendência = 'RJ'; } break;
+                    case 60 :{ $superintendência = 'RN'; } break;
+                    case 64 :{ $superintendência = 'RS'; } break;
+                    case 68 :{ $superintendência = 'SC'; } break;
+                    case 72 :{ $superintendência = 'SPM'; } break;
+                    case 74 :{ $superintendência = 'SPI'; } break;
+                    case 75 :{ $superintendência = 'TO'; } break;
+                }
+                // dd( ' 2012 ', $registro->se,  $superintendência);
                 $painel_extravios = DB::table('painel_extravios')
                    ->select( 'painel_extravios.*' )
                    ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
+                   ->where([['painel_extravios.dr_destino', '=',  $superintendência  ]])//o relatório não tem mcu
                    ->where([['painel_extravios.unid_destino_apelido', '=',  $registro->descricao  ]])
                    ->where([['painel_extravios.gestao_prealerta', '=',  'Gestão Automática' ]])
-                   ->get();
-                $count = $painel_extravios->count('mcu');
+                ->get();
+
+                $count = $painel_extravios->count('unid_destino_apelido');
+                $dtfim = $painel_extravios->max('data_evento');
 
                 //var_dump($painel_extravios);
                //dd( $count);
 
-                $datas = DB::table('painel_extravios')
-                   ->select( 'painel_extravios.data_evento' )
-                  // ->where([['sgdo_distribuicao.mcu', '=',  $registro->descricao  ]])
-                   ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
-
-                   ->get();
-                $dtini = $dtmenos150dias;
-                $dtfim = $datas->max('data_evento');
+//                $datas = DB::table('painel_extravios')
+//                   ->select( 'painel_extravios.data_evento' )
+//                   ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
+//
+//                   ->get();
+//
+//                $dtfim = $datas->max('data_evento');
 
                 $countSupervisor=0;
                 $cadastral = DB::table('cadastral')
                 ->select( 'cadastral.*' )
-                //->where([['cadastral.lotacao', '>=',     ]])
-                ->where([['cadastral.lotacao',  'like', '%' . $registro->descricao . '%']])
+                ->where([['cadastral.mcu', '=',   $registro->mcu  ]])
                 ->where('cadastral.funcao',  'like', '%' . 'SUPERVISOR' . '%')
                 ->get();
 
                 $countSupervisor = $cadastral->count('funcao');
-//dd($countSupervisor);
-
-             //   var_dump($sgdo_distribuicao);
-             //   dd('<br> Total: '. $count.'<br> Data Inicial: '. $dtini.'<br> Data Final: '. $dtfim);
 
 
                 $total=0.00;
@@ -2156,43 +1989,61 @@ class InspecaoController extends Controller
                                ));
             }
 
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==6)) {
+            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==6))
+            {
                 $dtmenos150dias = new Carbon();
                 $dtmenos150dias->subDays(150);
+                $dtini = $dtmenos150dias;
 
+                switch ($registro->se)
+                {
+                    case 1 :{ $superintendência = 'CS'; } break;
+                    case 4 :{ $superintendência = 'AL'; } break;
+                    case 6 :{ $superintendência = 'AM'; } break;
+                    case 8 :{ $superintendência = 'BA'; } break;
+                    case 10 :{ $superintendência = 'BSB'; } break;
+                    case 12 :{ $superintendência = 'CE'; } break;
+                    case 14 :{ $superintendência = 'ES'; } break;
+                    case 16 :{ $superintendência = 'GO'; } break;
+                    case 18 :{ $superintendência = 'MA'; } break;
+                    case 20 :{ $superintendência = 'MG'; } break;
+                    case 22 :{ $superintendência = 'MS'; } break;
+                    case 24 :{ $superintendência = 'MT'; } break;
+                    case 26 :{ $superintendência = 'RO'; } break;
+                    case 28 :{ $superintendência = 'PA'; } break;
+                    case 30 :{ $superintendência = 'PB'; } break;
+                    case 32 :{ $superintendência = 'PE'; } break;
+                    case 34 :{ $superintendência = 'PI'; } break;
+                    case 36 :{ $superintendência = 'PR'; } break;
+                    case 50 :{ $superintendência = 'RJ'; } break;
+                    case 60 :{ $superintendência = 'RN'; } break;
+                    case 64 :{ $superintendência = 'RS'; } break;
+                    case 68 :{ $superintendência = 'SC'; } break;
+                    case 72 :{ $superintendência = 'SPM'; } break;
+                    case 74 :{ $superintendência = 'SPI'; } break;
+                    case 75 :{ $superintendência = 'TO'; } break;
+                }
+                // dd( ' 2012 ', $registro->se,  $superintendência);
                 $painel_extravios = DB::table('painel_extravios')
-                   ->select( 'painel_extravios.*' )
-                   ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
-                   ->where([['painel_extravios.unid_destino_apelido', '=',  $registro->descricao  ]])
-                   ->where([['painel_extravios.gestao_prealerta', '=',  'Gestão Automática' ]])
+                    ->select( 'painel_extravios.*' )
+                    ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
+                    ->where([['painel_extravios.dr_destino', '=',  $superintendência  ]])//o relatório não tem mcu
+                    ->where([['painel_extravios.unid_destino_apelido', '=',  $registro->descricao  ]])
+                    ->where([['painel_extravios.gestao_prealerta', '=',  'Gestão Automática' ]])
+                ->get();
+
+                $count = $painel_extravios->count('unid_destino_apelido');
+                $dtfim = $painel_extravios->max('data_evento');
 
 
-                   ->get();
-                $count = $painel_extravios->count('mcu');
+                $countSupervisor=0;
+                $cadastral = DB::table('cadastral')
+                    ->select( 'cadastral.*' )
+                    ->where([['cadastral.mcu', '=',   $registro->mcu  ]])
+                    ->where('cadastral.funcao',  'like', '%' . 'SUPERVISOR' . '%')
+                ->get();
 
-                //var_dump($painel_extravios);
-               //dd( $count);
-
-                $datas = DB::table('painel_extravios')
-                   ->select( 'painel_extravios.data_evento' )
-                  // ->where([['sgdo_distribuicao.mcu', '=',  $registro->descricao  ]])
-                   ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
-
-                   ->get();
-                $dtini = $datas->min('data_evento');
-                $dtfim = $datas->max('data_evento');
-
-             //   var_dump($sgdo_distribuicao);
-             //   dd('<br> Total: '. $count.'<br> Data Inicial: '. $dtini.'<br> Data Final: '. $dtfim);
-             $countSupervisor=0;
-             $cadastral = DB::table('cadastral')
-             ->select( 'cadastral.*' )
-             //->where([['cadastral.lotacao', '>=',     ]])
-             ->where([['cadastral.lotacao',  'like', '%' . $registro->descricao . '%']])
-             ->where('cadastral.funcao',  'like', '%' . 'SUPERVISOR' . '%')
-             ->get();
-
-             $countSupervisor = $cadastral->count('funcao');
+                $countSupervisor = $cadastral->count('funcao');
 
                 $total=0.00;
                 return view('compliance.inspecao.editar',compact
@@ -2209,36 +2060,56 @@ class InspecaoController extends Controller
                                ));
             }
 
-
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==7)) {
+            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==7))
+            {
                 $dtmenos365dias = new Carbon();
                 $dtmenos365dias->subDays(365);
+                $dtini = $dtmenos365dias;
 
+                switch ($registro->se)
+                {
+                    case 1 :{ $superintendência = 'CS'; } break;
+                    case 4 :{ $superintendência = 'AL'; } break;
+                    case 6 :{ $superintendência = 'AM'; } break;
+                    case 8 :{ $superintendência = 'BA'; } break;
+                    case 10 :{ $superintendência = 'BSB'; } break;
+                    case 12 :{ $superintendência = 'CE'; } break;
+                    case 14 :{ $superintendência = 'ES'; } break;
+                    case 16 :{ $superintendência = 'GO'; } break;
+                    case 18 :{ $superintendência = 'MA'; } break;
+                    case 20 :{ $superintendência = 'MG'; } break;
+                    case 22 :{ $superintendência = 'MS'; } break;
+                    case 24 :{ $superintendência = 'MT'; } break;
+                    case 26 :{ $superintendência = 'RO'; } break;
+                    case 28 :{ $superintendência = 'PA'; } break;
+                    case 30 :{ $superintendência = 'PB'; } break;
+                    case 32 :{ $superintendência = 'PE'; } break;
+                    case 34 :{ $superintendência = 'PI'; } break;
+                    case 36 :{ $superintendência = 'PR'; } break;
+                    case 50 :{ $superintendência = 'RJ'; } break;
+                    case 60 :{ $superintendência = 'RN'; } break;
+                    case 64 :{ $superintendência = 'RS'; } break;
+                    case 68 :{ $superintendência = 'SC'; } break;
+                    case 72 :{ $superintendência = 'SPM'; } break;
+                    case 74 :{ $superintendência = 'SPI'; } break;
+                    case 75 :{ $superintendência = 'TO'; } break;
+                }
+
+//            dd( ' 2012 ', $registro->se,  $superintendência);
+
+//            a) Documentos respondidos acima do prazo de 03 dias úteis;
+//            b) Se há CIEs sem registro das providências adotadas ou com ações genéricas, que não demonstrem assertividade ou não comprovem efetividade, como por exemplo: ""Empregado orientado"", ""Estamos apurando o ocorrido"";
+//            c) A ocorrência de reincidência. Considerar a existência de 03 CIEs recebidas pelos mesmos Motivos dentro do período de 01 mês;
+//            d) Comunicados de Irregularidades com status ""Pendente"" e/ou ""Não Lido"".
                 $cie_eletronicas = DB::table('cie_eletronicas')
                    ->select( 'cie_eletronicas.*' )
                    ->where([['cie_eletronicas.emissao', '>=',  $dtmenos365dias  ]])
+                   ->where([['cie_eletronicas.se_destino', '=',   $superintendência   ]])
                    ->where([['cie_eletronicas.destino',  'like', '%' . $registro->descricao . '%']])
                    ->where([['cie_eletronicas.respondida', '=',  'N' ]])
                    ->get();
                 $count = $cie_eletronicas->count('respondida');
-
-              //  var_dump($cie_eletronicas);
-              // dd( $count);
-
-                $datas = DB::table('cie_eletronicas')
-                   ->select( 'cie_eletronicas.emissao' )
-                   ->where([['cie_eletronicas.emissao', '>=',  $dtmenos365dias  ]])
-
-                   ->get();
-                $dtini = $datas->min('emissao');
-                $dtfim = $datas->max('emissao');
-
-
-//dd($countSupervisor);
-
-             //   var_dump($sgdo_distribuicao);
-             //   dd('<br> Total: '. $count.'<br> Data Inicial: '. $dtini.'<br> Data Final: '. $dtfim);
-
+                $dtfim = $cie_eletronicas->max('emissao');
 
                 $total=0.00;
                 return view('compliance.inspecao.editar',compact
@@ -2255,7 +2126,8 @@ class InspecaoController extends Controller
                                ));
             }
 
-            if (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==1)) {
+            if (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==1))
+            {
                 $dtmenos6meses = new Carbon();
                 $dtmenos6meses->subMonth(6);
                 $ref = substr($dtmenos6meses,0,4). substr($dtmenos6meses,5,2);
@@ -2274,18 +2146,25 @@ class InspecaoController extends Controller
                     )
                 ->get();
 
-                $reffinal = $pgtadd->max('ref');
+                if(! $pgtadd->isEmpty())
+                {
+                    $reffinal = $pgtadd->max('ref');
 
-                if(substr($reffinal,5,2)<10){
-                    $dt='0'.substr($reffinal,5,2);
-                }else{
-                    $dt= substr($reffinal,5,2);
+                    if(substr($reffinal,5,2)<10){
+                        $dt='0'.substr($reffinal,5,2);
+                    }else{
+                        $dt= substr($reffinal,5,2);
+                    }
+                    $reffinal =  substr($reffinal,0,4).'-'.$dt;
+                    $reffinal = new Carbon($reffinal);
+                    $reffinal=$reffinal->lastOfMonth();
+                    $reffinal = \Carbon\Carbon::parse($reffinal)->format('d/m/Y');
                 }
-                $reffinal =  substr($reffinal,0,4).'-'.$dt;
-                $reffinal = new Carbon($reffinal);
-                $reffinal=$reffinal->lastOfMonth();
-                $reffinal = \Carbon\Carbon::parse($reffinal)->format('d/m/Y');
-               // dd( $reffinal);
+                else
+                {
+                    $reffinal=null;
+                }
+
                 $pagamentos_adicionais = DB::table('pagamentos_adicionais')
                     ->where('sigla_lotacao',  'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
                     ->where('ref', '>=', $ref) //
@@ -2301,10 +2180,16 @@ class InspecaoController extends Controller
                     ->orderBy('ref' ,'asc');
                 })
                 ->get();
-                $count = $pagamentos_adicionais->count('sigla_lotacao');
 
-//var_dump( $pagamentos_adicionais) ;
-//dd();
+
+                if(! $pagamentos_adicionais->isEmpty())
+                {
+                    $count = $pagamentos_adicionais->count('sigla_lotacao');
+                }
+                else
+                {
+                    $count = 0;
+                }
 
                 if  ( $count >= 1 ){
 
@@ -2312,18 +2197,15 @@ class InspecaoController extends Controller
                         ->where('codigo', '=', $registro->codigo)
                         ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                         ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
-                        ->delete();
-
+                    ->delete();
                     foreach ($pagamentos_adicionais  as $adicional){
-
                         $situacao = null;
                         $periodo = new Carbon(substr($adicional->ref,0,4).'-'. substr($adicional->ref,5,2));
                         $periodo->subMonth(1);
-                        //dd($periodo);
                         $month = $periodo->month;
                         $year = $periodo->year;
-
                         if($adicional-> rubrica == 'Trab. Fins Semana - Proporcional' ){
+
                             $eventos = DB::table('alarmes')
                                 ->where('mcu', '=', $registro->mcu)
                                 ->whereYear('data', $year)
@@ -2334,11 +2216,15 @@ class InspecaoController extends Controller
                                 )
                                 ->orderBy('data' ,'asc')
                             ->get();
-                           // var_dump($eventos );
-                         //   dd($month , $year , $ref, $registro->descricao);
-                            $counteventostfs = $eventos->count('data');
 
-                           // dd($counteventostfs);
+                            if(! $eventos->isEmpty())
+                            {
+                                $counteventostfs = $eventos->count('data');
+                            }
+                            else
+                            {
+                                $counteventostfs = 0;
+                            }
 
                             if( $counteventostfs == 0){
                                 $situacao = 'Provento registrado em período que não houve registro de Desarme do Sistema de Alarme.';
@@ -2347,14 +2233,15 @@ class InspecaoController extends Controller
                                 foreach ($eventos  as $evento){
                                     $rowtfs++;
                                 }
-                               // dd( $rowtfs.' ss');
                                 $situacao=null;
                             }
 
-                        }elseif
+                        }
+                        elseif
                                (($adicional-> rubrica    == 'Hora Extra   70% - Norm')
                             || ($adicional-> rubrica == 'Hora Extra 100% - Norm')
-                            || ($adicional-> rubrica == 'Hora Extra Not.70% - Norm') ) {
+                            || ($adicional-> rubrica == 'Hora Extra Not.70% - Norm') )
+                        {
 
                                 //   dd($registro);
                                 //+ " inicio_expediente ": " 09:00:00 "
@@ -2387,7 +2274,15 @@ class InspecaoController extends Controller
                                     ->orderBy('hora' ,'asc')
                                 ->get();
 
-                                $counteventoshe = $eventos->count('data');
+                                if(! $eventos->isEmpty())
+                                {
+                                    $counteventoshe = $eventos->count('data');
+                                }
+                                else
+                                {
+                                    $counteventoshe = 0;
+                                }
+
                                 if( $counteventoshe == 0){
                                     $situacao = 'Provento registrado em período e horários que não houve registro de Arme/Desarme do Sistema de Alarme.';
                                 }else{
@@ -2407,7 +2302,8 @@ class InspecaoController extends Controller
 
                         //dd($situacao);
 
-                        if (!$situacao==null) {
+                        if (!$situacao==null)
+                        {
                             $pgtoAdicionaisTemp = new PgtoAdicionaisTemp();
                             $pgtoAdicionaisTemp->sto = $registro->sto;
                             $pgtoAdicionaisTemp->mcu = $registro->mcu;
@@ -2440,11 +2336,16 @@ class InspecaoController extends Controller
 
                     $total == 0.00;
                     $count == 0;
-                    if($pgtoAdicionais){
-                        $total=$pgtoAdicionais->sum('valor');
+
+                    if(! $pgtoAdicionais->isEmpty()) {
+                        $total = $pgtoAdicionais->sum('valor');
                         $count = $pgtoAdicionais->count('matricula');
                     }
-
+                    else
+                    {
+                        $total=0.00;
+                        $count = 0;
+                    }
 
                 }
                //dd($pgtoAdicionais);
@@ -2461,8 +2362,8 @@ class InspecaoController extends Controller
                 ));
             }
 
-
-            if (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==2)) {
+            if (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==2))
+            {
                 $dtmenos4meses = new Carbon();
                 $dtmenos4meses->subMonth(4);
                 $ref = substr($dtmenos4meses,0,4). substr($dtmenos4meses,5,2);
@@ -2472,18 +2373,57 @@ class InspecaoController extends Controller
                 $refini = DB::table('pagamentos_adicionais')
                     ->select( 'pagamentos_adicionais.ref' )
                     ->where('ref', '>=', $ref)
-                    ->get();
+                ->get();
+
                 $dtini = $refini->min('ref');
                 $dtfim = $refini->max('ref');
+
+                switch ($registro->se)
+                {
+                    case 1 :{ $superintendência = 'CS'; } break;
+                    case 4 :{ $superintendência = 'AL'; } break;
+                    case 6 :{ $superintendência = 'AM'; } break;
+                    case 8 :{ $superintendência = 'BA'; } break;
+                    case 10 :{ $superintendência = 'BSB'; } break;
+                    case 12 :{ $superintendência = 'CE'; } break;
+                    case 14 :{ $superintendência = 'ES'; } break;
+                    case 16 :{ $superintendência = 'GO'; } break;
+                    case 18 :{ $superintendência = 'MA'; } break;
+                    case 20 :{ $superintendência = 'MG'; } break;
+                    case 22 :{ $superintendência = 'MS'; } break;
+                    case 24 :{ $superintendência = 'MT'; } break;
+                    case 26 :{ $superintendência = 'RO'; } break;
+                    case 28 :{ $superintendência = 'PA'; } break;
+                    case 30 :{ $superintendência = 'PB'; } break;
+                    case 32 :{ $superintendência = 'PE'; } break;
+                    case 34 :{ $superintendência = 'PI'; } break;
+                    case 36 :{ $superintendência = 'PR'; } break;
+                    case 50 :{ $superintendência = 'RJ'; } break;
+                    case 60 :{ $superintendência = 'RN'; } break;
+                    case 64 :{ $superintendência = 'RS'; } break;
+                    case 68 :{ $superintendência = 'SC'; } break;
+                    case 72 :{ $superintendência = 'SPM'; } break;
+                    case 74 :{ $superintendência = 'SPI'; } break;
+                    case 75 :{ $superintendência = 'TO'; } break;
+                }
+
                 $pagamentos_adicionais_dist = DB::table('pagamentos_adicionais')
                    ->select( 'pagamentos_adicionais.*' )
+                   ->where([['pagamentos_adicionais.se', '>=', 'SE/'.$superintendência ]])
                    ->where([['pagamentos_adicionais.sigla_lotacao', 'like', '%' . trim($registro->descricao) . '%' ]])
                    ->where([['pagamentos_adicionais.ref', '>=', $ref ]])
                    ->where([['pagamentos_adicionais.rubrica', '=',  'AADC-Adic.Ativ. Distrib/Coleta Ext.' ]])
                    ->get();
-                $count_dist = $pagamentos_adicionais_dist->count('sigla_lotacao');
-
-                if( $count_dist >= 1){
+                if(! $pagamentos_adicionais_dist->isEmpty())
+                {
+                    $count_dist = $pagamentos_adicionais_dist->count('sigla_lotacao');
+                }
+                else
+                {
+                    $count_dist = 0;
+                }
+                if( $count_dist >= 1)
+                {
                     DB::table('pgtoAdicionaisTemp')
                     ->where('codigo', '=', $registro->codigo)
                     ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -2491,7 +2431,8 @@ class InspecaoController extends Controller
                     ->delete(); // limpa dados anteriores existentes do empregado da tabela temporária
                 }
 
-                foreach ($pagamentos_adicionais_dist  as $adicionais){
+                foreach ($pagamentos_adicionais_dist  as $adicionais)
+                {
                     $situacao="Sem eventos de Distribuição Domiciliária.";
                     $mes = intval(substr($adicionais->ref,4,2));
 
@@ -2500,12 +2441,19 @@ class InspecaoController extends Controller
                         ->where([[ 'mcu', '>=', $registro->mcu ]])
                         ->where([[ 'matricula', '=', $adicionais->matricula ]])
                         ->whereMonth('data_termino_atividade', $mes)
-                        ->get();
-                    $count_sgdo = $sgdo_distribuicao->count('matricula');
+                    ->get();
 
-                    if(!empty($sgdo_distribuicao)){
+                    if(! $sgdo_distribuicao->isEmpty())
+                    {
+                        $count_sgdo = $sgdo_distribuicao->count('matricula');
+                    }
+                    else
+                    {
+                        $count_sgdo = 0;
+                    }
 
-
+                    if(! $sgdo_distribuicao->isEmpty())
+                    {
                         $pgtoAdicionaisTemp = new PgtoAdicionaisTemp();
                         $pgtoAdicionaisTemp->sto = $registro->sto;
                         $pgtoAdicionaisTemp->mcu = $registro->mcu;
@@ -2525,7 +2473,6 @@ class InspecaoController extends Controller
                         ->whereMonth('inicio_fruicao', $mes-1)
                         ->whereYaer('inicio_fruicao', $registro->ciclo)
                         ->count();
-
                         if ($ferias_por_mcu == 0){
                             $pgtoAdicionaisTemp->save();
                         }else{
@@ -2537,13 +2484,23 @@ class InspecaoController extends Controller
 
                 $pagamentos_adicionais_atend = DB::table('pagamentos_adicionais')
                    ->select( 'pagamentos_adicionais.*' )
+                   ->where([['pagamentos_adicionais.se', '>=', 'SE/'.$superintendência ]])
                    ->where([['pagamentos_adicionais.sigla_lotacao', 'like', '%' . trim($registro->descricao) . '%' ]])
                    ->where([['pagamentos_adicionais.ref', '>=', $ref ]])
                    ->where([['pagamentos_adicionais.rubrica', '=',  'AAG - Adic. de Atend. em Guichê' ]])
                    ->get();
-                $count_atend = $pagamentos_adicionais_atend->count('matricula');
 
-                foreach ($pagamentos_adicionais_atend  as $adicionais){
+                if(! $pagamentos_adicionais_atend->isEmpty())
+                {
+                    $count_atend = $pagamentos_adicionais_atend->count('matricula');
+                }
+                else
+                {
+                    $count_atend = 0;
+                }
+
+                foreach ($pagamentos_adicionais_atend  as $adicionais)
+                {
 
                     $situacao="Sem eventos de atendimento a clientes.";
                     $mes = intval(substr($adicionais->ref,4,2));
@@ -2554,7 +2511,7 @@ class InspecaoController extends Controller
                         ->where([[ 'atendimento', '=', $adicionais->matricula ]])
                         ->whereMonth('dt_mov', $mes)
                         ->get();
-                    if(! $bdf_fat_02){
+                    if( ! $bdf_fat_02->isEmpty() ){
                         $pgtoAdicionaisTemp = new PgtoAdicionaisTemp();
                         $pgtoAdicionaisTemp->sto = $registro->sto;
                         $pgtoAdicionaisTemp->mcu = $registro->mcu;
@@ -2568,44 +2525,42 @@ class InspecaoController extends Controller
                         $pgtoAdicionaisTemp->valor = $adicionais->valor;
                         $pgtoAdicionaisTemp->situacao = $situacao;
 
-                      //  DB::enableQueryLog();
-
                         $ferias_por_mcu = DB::table('ferias_por_mcu')
                         ->select('ferias_por_mcu.*')
                         ->where([[ 'matricula', '=', $adicionais->matricula ]])
                         ->whereMonth('inicio_fruicao', $mes-1)
                         ->whereYear('inicio_fruicao', $registro->ciclo)
                         ->first();
-                        if (! $ferias_por_mcu){
-                          //  var_dump(   $pgtoAdicionaisTemp );
-                           // dd("parou");
+
+                        if ($ferias_por_mcu->isEmpty())
+                        {
                             $pgtoAdicionaisTemp->save();
                         }else{
                             unset($pgtoAdicionaisTemp);
                         }
-
                     }
-
                 }
                 $total=0.00;
-                if (( $count_atend >= 1 ) || ( $count_dist >= 1 )){
+                if (( $count_atend >= 1 ) || ( $count_dist >= 1 ))
+                {
                     $pgtoAdicionais = DB::table('pgto_adicionais_temp')
                     ->where('sto',  '=', $registro->sto)
                     ->where('mcu',  '=', $registro->mcu)
                     ->where('codigo',  '=', $registro->codigo)
                     ->where('numeroGrupoVerificacao',  '=', $registro->numeroGrupoVerificacao)
                     ->where('numeroDoTeste',  '=', $registro->numeroDoTeste)
-
                     ->select(
                                 'pgto_adicionais_temp.*'
                     )
                     ->get();
                     $total=$pgtoAdicionais->sum('valor');
                     $count = $pgtoAdicionais->count('matricula');
-
-                } else { $pgtoAdicionais = '';}
-
-            return view('compliance.inspecao.editar',compact
+                }
+                else
+                {
+                    $pgtoAdicionais = '';
+                }
+                return view('compliance.inspecao.editar',compact
                 (
                     'registro'
                     , 'id'
@@ -2618,10 +2573,11 @@ class InspecaoController extends Controller
                     , 'count'
                 ));
             }
-
-        return view('compliance.inspecao.editar',compact('registro','id'));
-
+        $total=0.00;
+        return view('compliance.inspecao.editar',compact('registro','id','total'));
     }
+
+
 
     public function search (Request $request )
     {
@@ -2769,6 +2725,7 @@ class InspecaoController extends Controller
     public function index($id)  {
 
         $inspecao = Inspecao::find($id);
+
         $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
@@ -2783,66 +2740,62 @@ class InspecaoController extends Controller
             ->where([['inspecao_id', '=', $id]])
             ->where([['situacao', '=', 'Em Inspeção' ]])
             ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
-            ->paginate(10);
-            $count = $registros->count('situacao');
+        ->paginate(10);
 
+        $count = $registros->count('situacao');
 
-        if($count == 0){
-             $registros = DB::table('itensdeinspecoes')
-                 ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-                 ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-                 ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-                 ->select('inspecoes.*'
-                     , 'itensdeinspecoes.*'
-                     ,'gruposdeverificacao.numeroGrupoVerificacao'
-                     ,'gruposdeverificacao.nomegrupo'
-                     ,'testesdeverificacao.numeroDoTeste'
-                     ,'testesdeverificacao.teste'
-                 )
-            ->where([['inspecao_id', '=', $id]])
-            ->Where([['situacao', '=', 'Inspecionado' ]])
-            ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+        if($count == 0)
+        {
+            $registros = DB::table('itensdeinspecoes')
+                ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                ->select('inspecoes.*'
+                    , 'itensdeinspecoes.*'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
+                )
+                ->where([['inspecao_id', '=', $id]])
+                ->Where([['situacao', '=', 'Inspecionado' ]])
+                ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
             ->paginate(10);
             $count = $registros->count('situacao');
         }
 
-        if($count == 0){
-                $registros = DB::table('itensdeinspecoes')
-                    ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-                    ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-                    ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-                    ->select('inspecoes.*'
-                        , 'itensdeinspecoes.*'
-                        ,'gruposdeverificacao.numeroGrupoVerificacao'
-                        ,'gruposdeverificacao.nomegrupo'
-                        ,'testesdeverificacao.numeroDoTeste'
-                        ,'testesdeverificacao.teste'
-                    )
-            ->where([['inspecao_id', '=', $id]])
-            ->Where([['situacao', '!=', 'Corroborado' ]])
-            ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+        if($count == 0)
+        {
+            $registros = DB::table('itensdeinspecoes')
+                ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                ->select('inspecoes.*'
+                    , 'itensdeinspecoes.*'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
+                )
+                ->where([['inspecao_id', '=', $id]])
+                ->Where([['situacao', '!=', 'Corroborado' ]])
+                ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
             ->get();
             $count = $registros->count('situacao');
         }
-        if($count == 0){
+        if($count == 0)
+        {
 
             $inspecoes = Inspecao::find( $id );
             $inspecoes->status = 'Inspecionado';
-            //dd('aki '.  $count);
             $inspecoes->save();
             return redirect()-> route('compliance.verificacoes');
-            //, 'Em Manifestação', 'Concluida')
         }
 
-
-        //No contacts
-
-
-
         $gruposdeverificacao = DB::table('gruposdeverificacao')
-        ->select('gruposdeverificacao.*')
-        ->where([['tipoUnidade_id', '=', $inspecao['tipoUnidade_id']]])
-        ->where([['tipoVerificacao', '=', $inspecao['tipoVerificacao']]])
+            ->select('gruposdeverificacao.*')
+            ->where([['tipoUnidade_id', '=', $inspecao['tipoUnidade_id']]])
+            ->where([['tipoVerificacao', '=', $inspecao['tipoVerificacao']]])
         ->get();
 
         $dado = DB::table('itensdeinspecoes')
@@ -2856,7 +2809,6 @@ class InspecaoController extends Controller
 
         return view('compliance.inspecao.index',compact('inspecao','registros','gruposdeverificacao','dado'));
     }
-
 
     public function transformDate($value, $format = 'Y-m-d') {
         try {
@@ -2878,22 +2830,22 @@ class InspecaoController extends Controller
         }
     }
 
-
-
-    public function corroborar($id)  {
+    public function corroborar($id)
+    {
         $now = Carbon::now();
         $now->format('d-m-Y H:i:s');
-
         $inspecao = Inspecao::find($id);
+
         $registros = DB::table('itensdeinspecoes')
             ->select('itensdeinspecoes.*'
 
             )
             ->where([['inspecao_id', '=', $id]])
             ->where([['situacao', '=', 'Inspecionado' ]])
+        ->get();
 
-            ->get();
         $count = $registros->count('situacao'=='Inspecionado');
+
         if($count >= 1){
             foreach ($registros as $registro){
                 $dado = Itensdeinspecao::find($registro->id);
@@ -2902,7 +2854,6 @@ class InspecaoController extends Controller
                     ."\n"
                     .$registro->eventosSistema;
                  $dado->situacao = 'Corroborado' ;
-
                 $dado->save();
             }
 
@@ -2914,5 +2865,4 @@ class InspecaoController extends Controller
             ,'class'=>'blue white-text']);
         return redirect()-> route('compliance.verificacoes');
     }
-
 }
