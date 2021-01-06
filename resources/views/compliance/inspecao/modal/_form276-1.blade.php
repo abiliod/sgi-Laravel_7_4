@@ -2,7 +2,9 @@
     @if( (isset($controle_de_viagens)) && (!empty($controle_de_viagens)) )
     <div id="aprimoramento">
         <span>
-            Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constataram o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir:
+            Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE,
+            constataram o descumprimento dos procedimentos de embarque e desembarque da carga,
+            conforme relatado a seguir:
          <br>{{$viagens}} - viagens prevista(s).
        </span>
     </div>
@@ -18,7 +20,6 @@
                     <th>Tipo Unitizador</th>
                     <th>Tipo Serviço</th>
                     <th>Destino</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -36,8 +37,10 @@
             @endforeach
             </tbody>
         </table>
-        </span>
-            <br>a) Foram verificada(s) todas programações de viagens no período do dia {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}} verificaram que houve {{$count}} viagen(s) com operações de Embarque/Desembarque realizadas.
+        <span>
+            <br>a) Foram verificada(s) todas programações de viagens no período do dia
+            {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}}
+            verificaram que houve {{$count}} viagen(s) realizadas e com possíveis operações de Embarque/Desembarque a serem realizadas.
             <br>b) Verificaram a necessidade de aprimoramento na qualidade do apontamento colunas com falhas ou informações genéricas/incompletas.
             <br>c) Verificaram que no período havia {{ $viagens}} viagen(s) prevista(s) sendo que não houve apontamento de EMBARQUE/DESEMBARQUE para {{$viagemNaorealizada}} viagens.
         </span>
@@ -46,22 +49,22 @@
     @endif
 @else
     <div id="aprimoramento">
-        <span class="lever" text-align="rigth">
-            Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constataram o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir:
+        <span class="lever">
+            Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constataram o descumprimento
+            dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir:
         </span>
     </div>
     <div id="historico">
-        <span class="lever" text-align="rigth">
-            - Verificaram que a unidade não executa o lançamento das informações de embarque e desembarque da carga no Sistema ERP.
-            <br>- Não há histórico de registro de embarque/desembarque de troca de expedições de carga pela unidade.
-            <br>- Verificaram todas programações de viagens no período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}}, sendo que em 100% das viagens não havia apontamentos.
+        <span class="lever">
+            - Verificaram que a unidade não está executando os lançamentos das informações de embarque e desembarque
+            da carga no Sistema ERP, pois não há histórico de registro de embarque/desembarque para troca de expedições.
+            <br>- Foram verificadas as programações de viagens no período de
+            {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}},
+            sendo que em 100% das viagens não houve apontamentos.
         </span>
     </div>
     <div id="historico1"></div>
-
 @endif
 <input type="hidden"  id="totalfalta" value="{{ isset($total) ? $total : '' }}">
 <input type="hidden"  id="totalrisco" value="0.00">
 <input type="hidden"  id="totalsobra" value="0.00">
-
-
