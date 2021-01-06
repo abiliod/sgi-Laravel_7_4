@@ -17,7 +17,7 @@
                         <label for="ciclo">Ciclo de Inspeção</label>
                     </div>
                     <div class="input-field col s4">
-                        <select name="tipoUnidade_id">
+                        <select name="tipoUnidade_id" id="tipoUnidade_id">
                            <option value="" selected>Tipo de Unidade</option>
                             @foreach($tiposDeUnidade as $tipoDeUnidade)
                                <option value="{{$tipoDeUnidade->id}}">{{$tipoDeUnidade->sigla }} - {{ $tipoDeUnidade->tipodescricao }}</option>
@@ -56,8 +56,8 @@
 						<i class="material-icons">close</i>
                     </div>
                     <div class="input-field col s4">
-	                      <input type="text" name="codigo" value="">
-	                      <label>Código Inspeção</label>
+	                      <input type="text" name="codigo" id="codigo"  value="">
+	                      <label for="codigo" >Código Inspeção</label>
                     </div>
                     <div class="input-field col s2">
                          <button class="btn blue">Filtrar</button>
@@ -108,6 +108,9 @@
                             @can('inspecao_editar')
                                 <a class="waves-effect waves-light btn orange"
                                    href="{{ route('compliance.inspecao', $registro->id) }}">Inspecionar</a>
+
+                                <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                   href="">NCI</a>
 
                                 <a class="waves-effect waves-light btn blue"
                                    href="{{ route('compliance.inspecionados.papelTrabalho',$registro->id) }}">Previa_Rel</a>
