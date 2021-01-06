@@ -26,7 +26,7 @@
     </div>
     <div id="historico">  </div>
     <div id="historico1"></div>
-@elseif ($res >  0)
+@elseif( !empty( $res ) )
     <div id="aprimoramento">
         <span class="lever rigth">
             Em análise, por amostragem, às anotações registradas nas Imagens dos comprovantes
