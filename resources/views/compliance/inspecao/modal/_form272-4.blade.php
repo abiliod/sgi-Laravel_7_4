@@ -21,7 +21,7 @@
                                 <tr>
 
                                     <td>
-                                        <a href="{{$cftv->novo_link}}"    target="_blank"> DVR {{$cftv->unidade}} </a>
+                                        <a href="{{$cftv->link}}"    target="_blank"> DVR {{$cftv->unidade}} </a>
                                     </td>
                                     <td>{{ $cftv->cameras_fixa_cf }}</td>
                                     <td>{{ $cftv->cameras_infra_vermelho_cir }}</td>
@@ -43,16 +43,14 @@
 
                             @if($cftv->data_ultima_conexao > 0)
                              <tr>
-                                <span class="lever" text-align="rigth">
-                                    Com base nas informações disponibilizadas, acesse o  Sistema CFTV e anote no Formulário principal a sua avaliação e as evidências. {{\Carbon\Carbon::parse($cftv->data_no_equipamento)->format('d/m/Y')}}. Click no botão FECHAR.
-                                </span>
+                               Com base nas informações disponibilizadas, acesse o  Sistema CFTV e anote no Formulário principal a sua avaliação e as evidências. {{\Carbon\Carbon::parse($cftv->data_no_equipamento)->format('d/m/Y')}}. Click no botão FECHAR.
+
                              </tr>
                              <div id="aprimoramento">
                                     <span>
-                                       Em inspeção online realizada na unidade, constatou-se que o sistema de imagens (CFTV) funcionava corretamente não havia obstrução das câmeras, tendo sido constatado acurácia das imagens e histórico de gravação de todas câmeras.
+                                       Se CONFORME:<br/> Em inspeção online realizada na unidade, constatou-se que o sistema de imagens (CFTV) funcionava corretamente não havia obstrução das câmeras, tendo sido constatado acurácia das imagens e histórico de gravação de todas câmeras.
 
-                                OU
-
+                                <br/> Outras dicas - Se NÃO CONFORME: <br/>
                                 Não foi possível avaliar as imagens em 26/08/2020 dado que o sistema não conectou. por alta de instalação de um novo plugin. Não sendo possível instalar dado que este inspetor não é administrador do sistema.
 
                                 OU
