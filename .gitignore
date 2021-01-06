@@ -3,6 +3,7 @@
 /public/storage
 /public/img/*.*
 /public/xml/*.*
+/public/xml/compliance/inspecao/*.xml
 /public/images/*.*
 /migrations_TEMP/*.*
 /storage/*.key
@@ -12,11 +13,12 @@
 .env.backup
 .env.example
 .phpunit.result.cache
+.gitignore
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
 Comandos.MD
-/.idea
+.idea/workspace.xml
 /.vscode
 
