@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,6 +115,9 @@ Route::put('/compliance/inspecao/atualizar/{id}','Correios\InspecaoController@up
 //    atualizarsro
 Route::get('/compliance/inspecao/editar/{id}', 'Correios\InspecaoController@edit')->name('compliance.inspecao.editar');
 Route::put('/compliance/inspecao/editsro/{id}', 'Correios\InspecaoController@editsro')->name('compliance.inspecao.editar.sro');
+
+
+Route::get('/compliance/inspecao/exportsro/{id}', 'Correios\InspecaoController@exportsro')->name('compliance.inspecao.exportsro');
 
 //**
 // Rota nomeada com mais de um parâmetro
