@@ -1,10 +1,7 @@
 @if ($countSupervisor >= 1)
-<span class="lever" text-align="rigth">
-    <span class="lever" text-align="rigth">Marque NÃO VERIFICADO.</span>
+    <span class="lever">Marque NÃO VERIFICADO.</span>
     <div id="aprimoramento">
-        <span class="lever" text-align="rigth">
             Avaliado no Item 277.5 a Unidade está provida de {{$countSupervisor}} - Supervisor.
-        </span>
     </div>
     <div id="historico"></div>
     <div id="historico1"></div>
@@ -12,10 +9,15 @@
     @if ($count >= 1)
         @if( (isset($painel_extravios)) && (!empty($painel_extravios)) )
             <div id="aprimoramento">
-                <span class="lever" text-align="rigth">
-                    Em análise aos relatórios disponíveis no Sistema Painel de Extravios referente ao período de período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}}, identificaram por meio dos dados contidos na coluna "gesto pré-alerta" a ocorrência de "Gestão Automática" para {{$count}} objetos, indicando que não era realizada a "gestão diária" do Pré-Alerta na unidade, conforme relatado a seguir:
+                    Em análise aos relatórios disponíveis no Sistema Painel de Extravios referente
+                    ao período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}}
+                    até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}},
+                    identificaram por meio dos dados contidos na coluna "gesto pré-alerta"
+                    a ocorrência de "Gestão Automática" para {{$count}} objeto(s),
+                    indicando que não era realizada a "gestão diária" do Pré-Alerta na unidade,
+                    conforme relatado a seguir:
                     <br>
-                </span>
+
             </div>
             <div id="historico">
                 <table class="highlight">
@@ -39,15 +41,17 @@
         @endif
     @else
         <div id="aprimoramento">
-            <span class="lever" text-align="rigth">
-               Em análise aos relatórios disponíveis no Sistema Painel de Extravios referente ao período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}}, identificaram por meio dos dados contidos na coluna Gestão Pré-alerta que não havia ocorrência alusiva à Gestão Automática que sugerisse falha na Gestão do diária da Conferência Eletrônica da unidade inspecionada.
-            </span>
+               Em análise aos relatórios disponíveis no Sistema Painel de Extravios referente
+                ao período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}}
+                até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}}, identificaram por
+                meio dos dados contidos na coluna Gestão Pré-alerta que não havia ocorrência
+                alusiva à Gestão Automática que sugerisse falha na Gestão do diária da
+                Conferência Eletrônica da unidade inspecionada.
         </div>
-        <div id="historico">  </div>
+        <div id="historico"> </div>
         <div id="historico1"></div>
     @endif
 @endif
 <input type="hidden"  id="totalfalta" value="{{ isset($total) ? $total : '' }}">
 <input type="hidden"  id="totalrisco" value="0.00">
 <input type="hidden"  id="totalsobra" value="0.00">
-
