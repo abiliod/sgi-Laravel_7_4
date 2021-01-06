@@ -19,26 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
+    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="06/01/2021 - Ajuste projeto VerificacoesController:">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Imports/ImportCftv.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/ImportCftv.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/Cftv.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/Cftv.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -841,202 +825,72 @@
       <workItem from="1609352965156" duration="1922000" />
       <workItem from="1609354945494" duration="1775000" />
       <workItem from="1609356778522" duration="1706000" />
-    </task>
-    <task id="LOCAL-00046" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591780389</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591780389</updated>
-    </task>
-    <task id="LOCAL-00047" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591801031</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591801031</updated>
-    </task>
-    <task id="LOCAL-00048" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591822669</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591822669</updated>
-    </task>
-    <task id="LOCAL-00049" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591849413</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591849413</updated>
-    </task>
-    <task id="LOCAL-00050" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591878435</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591878436</updated>
-    </task>
-    <task id="LOCAL-00051" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591900699</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591900700</updated>
-    </task>
-    <task id="LOCAL-00052" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591929695</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591929695</updated>
-    </task>
-    <task id="LOCAL-00053" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591949910</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591949910</updated>
-    </task>
-    <task id="LOCAL-00054" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591968953</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591968954</updated>
-    </task>
-    <task id="LOCAL-00055" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608591991263</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1608591991263</updated>
-    </task>
-    <task id="LOCAL-00056" summary="21/12/20 - Ajuste de inclusão de campos para permissões e papeis de usuários;">
-      <created>1608592011183</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1608592011183</updated>
-    </task>
-    <task id="LOCAL-00057" summary="21/12/20 - Ajuste de inclusão de workspace;">
-      <created>1608592049738</created>
-      <option name="number" value="00057" />
-      <option name="presentableId" value="LOCAL-00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1608592049738</updated>
-    </task>
-    <task id="LOCAL-00058" summary="21/12/20 - Ajuste de inclusão de workspace;">
-      <created>1608592104169</created>
-      <option name="number" value="00058" />
-      <option name="presentableId" value="LOCAL-00058" />
-      <option name="project" value="LOCAL" />
-      <updated>1608592104169</updated>
-    </task>
-    <task id="LOCAL-00059" summary="22/12/20 - Ajuste de supressão de campo;">
-      <created>1608688013715</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688013716</updated>
-    </task>
-    <task id="LOCAL-00060" summary="22/12/20 - Ajuste de navegação;">
-      <created>1608688052430</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688052430</updated>
-    </task>
-    <task id="LOCAL-00061" summary="22/12/20 - Ajuste inclusão de funcionalidade add tipo de unidade;">
-      <created>1608688102673</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688102673</updated>
-    </task>
-    <task id="LOCAL-00062" summary="22/12/20 - Ajuste adequação de funcionalidade para importação da cadastral;">
-      <created>1608688158152</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688158152</updated>
-    </task>
-    <task id="LOCAL-00063" summary="22/12/20 - Ajuste adequação de funcionalidade ;">
-      <created>1608688213202</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688213202</updated>
-    </task>
-    <task id="LOCAL-00064" summary=" 22/12/20 - Ajuste de apontamento de itens de inspeção;">
-      <created>1608688282583</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688282583</updated>
-    </task>
-    <task id="LOCAL-00065" summary=" 22/12/20 - Ajuste de apontamento de itens de relatos inspeção;">
-      <created>1608688323312</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688323312</updated>
-    </task>
-    <task id="LOCAL-00066" summary=" 22/12/20 - Ajuste de importação nas funções unidades e cadastral;">
-      <created>1608688364827</created>
-      <option name="number" value="00066" />
-      <option name="presentableId" value="LOCAL-00066" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688364827</updated>
-    </task>
-    <task id="LOCAL-00067" summary=" 22/12/20 - Ajuste de funcionalidade para usuários;">
-      <created>1608688409458</created>
-      <option name="number" value="00067" />
-      <option name="presentableId" value="LOCAL-00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688409459</updated>
-    </task>
-    <task id="LOCAL-00068" summary=" 22/12/20 - Ajuste de funcionalidade para importações de usuários e unidades no formulario blade;">
-      <created>1608688449519</created>
-      <option name="number" value="00068" />
-      <option name="presentableId" value="LOCAL-00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688449519</updated>
-    </task>
-    <task id="LOCAL-00069" summary=" 22/12/20 - Ajuste de funcionalidade para relatos formulario blade;">
-      <created>1608688502362</created>
-      <option name="number" value="00069" />
-      <option name="presentableId" value="LOCAL-00069" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688502363</updated>
-    </task>
-    <task id="LOCAL-00070" summary=" 22/12/20 - Ajuste de funcionalidade para tipo de unidades formulario blade;">
-      <created>1608688532010</created>
-      <option name="number" value="00070" />
-      <option name="presentableId" value="LOCAL-00070" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688532010</updated>
-    </task>
-    <task id="LOCAL-00071" summary=" 22/12/20 - Ajuste de funcionalidade para relato controller;">
-      <created>1608688587295</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688587295</updated>
-    </task>
-    <task id="LOCAL-00072" summary=" 22/12/20 - Ajuste de funcionalidade para tipo de unidade controller;">
-      <created>1608688617856</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688617856</updated>
-    </task>
-    <task id="LOCAL-00073" summary=" 22/12/20 - Ajuste de funcionalidade para importações no index blade funções unidades e cadastral;">
-      <created>1608688682338</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1608688682338</updated>
+      <workItem from="1609406664148" duration="1335000" />
+      <workItem from="1609681802343" duration="1740000" />
+      <workItem from="1609683622021" duration="1522000" />
+      <workItem from="1609698124322" duration="1772000" />
+      <workItem from="1609699943890" duration="1890000" />
+      <workItem from="1609701890733" duration="1827000" />
+      <workItem from="1609703743907" duration="2115000" />
+      <workItem from="1609705887328" duration="1787000" />
+      <workItem from="1609707700389" duration="4620000" />
+      <workItem from="1609712354415" duration="1784000" />
+      <workItem from="1609714234035" duration="1492000" />
+      <workItem from="1609716044606" duration="1784000" />
+      <workItem from="1609717951186" duration="1784000" />
+      <workItem from="1609719777749" duration="1781000" />
+      <workItem from="1609721587986" duration="1637000" />
+      <workItem from="1609762637316" duration="1821000" />
+      <workItem from="1609764489904" duration="1783000" />
+      <workItem from="1609766359176" duration="1948000" />
+      <workItem from="1609768568914" duration="1988000" />
+      <workItem from="1609770609011" duration="1816000" />
+      <workItem from="1609772451476" duration="1491000" />
+      <workItem from="1609780507544" duration="2180000" />
+      <workItem from="1609782925851" duration="1783000" />
+      <workItem from="1609784744255" duration="1786000" />
+      <workItem from="1609786557751" duration="1786000" />
+      <workItem from="1609788368786" duration="1846000" />
+      <workItem from="1609790313995" duration="526000" />
+      <workItem from="1609800959294" duration="1784000" />
+      <workItem from="1609802775688" duration="1651000" />
+      <workItem from="1609804692688" duration="1970000" />
+      <workItem from="1609806694800" duration="1783000" />
+      <workItem from="1609808505482" duration="1787000" />
+      <workItem from="1609810328813" duration="1786000" />
+      <workItem from="1609812141758" duration="1115000" />
+      <workItem from="1609813317530" duration="898000" />
+      <workItem from="1609846835876" duration="1089000" />
+      <workItem from="1609849129287" duration="1780000" />
+      <workItem from="1609850987241" duration="1784000" />
+      <workItem from="1609852802028" duration="1781000" />
+      <workItem from="1609854634131" duration="1784000" />
+      <workItem from="1609856445389" duration="1787000" />
+      <workItem from="1609858269921" duration="1783000" />
+      <workItem from="1609860078545" duration="971000" />
+      <workItem from="1609867308922" duration="1782000" />
+      <workItem from="1609869118106" duration="1560000" />
+      <workItem from="1609870931472" duration="1888000" />
+      <workItem from="1609873678748" duration="1833000" />
+      <workItem from="1609876295047" duration="730000" />
+      <workItem from="1609886407768" duration="932000" />
+      <workItem from="1609888706837" duration="1633000" />
+      <workItem from="1609895014047" duration="1864000" />
+      <workItem from="1609896909597" duration="1783000" />
+      <workItem from="1609898840513" duration="1409000" />
+      <workItem from="1609932982908" duration="1015000" />
+      <workItem from="1609934795101" duration="1783000" />
+      <workItem from="1609936606289" duration="972000" />
+      <workItem from="1609938450289" duration="1453000" />
+      <workItem from="1609940694762" duration="1776000" />
+      <workItem from="1609942501199" duration="1786000" />
+      <workItem from="1609944394930" duration="242000" />
+      <workItem from="1609952447555" duration="37000" />
+      <workItem from="1609960952794" duration="1764000" />
+      <workItem from="1609962772516" duration="1169000" />
+      <workItem from="1609971552318" duration="1782000" />
+      <workItem from="1609973370392" duration="2190000" />
+      <workItem from="1609975589770" duration="298000" />
     </task>
     <task id="LOCAL-00074" summary=" 22/12/20 - Ajuste de funcionalidade para usuário controller perfil de acesso;">
       <created>1608688724014</created>
@@ -1185,7 +1039,203 @@
       <option name="project" value="LOCAL" />
       <updated>1608821843530</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary=" 23/12/20 - Ajuste projeto:">
+      <created>1609971884949</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1609971884950</updated>
+    </task>
+    <task id="LOCAL-00096" summary="06/01/2021 - Ajuste projeto form270-1:">
+      <created>1609972086168</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972086168</updated>
+    </task>
+    <task id="LOCAL-00097" summary="06/01/2021 - Ajuste projeto form270-1:">
+      <created>1609972213382</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972213382</updated>
+    </task>
+    <task id="LOCAL-00098" summary="06/01/2021 - Ajuste projeto form270-3:">
+      <created>1609972319427</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972319427</updated>
+    </task>
+    <task id="LOCAL-00099" summary="06/01/2021 - Ajuste projeto form270-4:">
+      <created>1609972440486</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972440486</updated>
+    </task>
+    <task id="LOCAL-00100" summary="06/01/2021 - Ajuste projeto form271-1:">
+      <created>1609972498657</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972498657</updated>
+    </task>
+    <task id="LOCAL-00101" summary="06/01/2021 - Ajuste projeto form272-1:">
+      <created>1609972584996</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972584996</updated>
+    </task>
+    <task id="LOCAL-00102" summary="06/01/2021 - Ajuste projeto form272-2:">
+      <created>1609972611720</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972611720</updated>
+    </task>
+    <task id="LOCAL-00103" summary="06/01/2021 - Ajuste projeto form272-4:">
+      <created>1609972795345</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972795345</updated>
+    </task>
+    <task id="LOCAL-00104" summary="06/01/2021 - Ajuste projeto form274-1:">
+      <created>1609972851283</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1609972851283</updated>
+    </task>
+    <task id="LOCAL-00105" summary="06/01/2021 - Ajuste projeto form276-1:">
+      <created>1609973013274</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1609973013274</updated>
+    </task>
+    <task id="LOCAL-00106" summary="06/01/2021 - Ajuste projeto form277-2:">
+      <created>1609973037010</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1609973037010</updated>
+    </task>
+    <task id="LOCAL-00107" summary="06/01/2021 - Ajuste projeto form277-3:">
+      <created>1609973073922</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1609973073922</updated>
+    </task>
+    <task id="LOCAL-00108" summary="06/01/2021 - Ajuste projeto form277-6:">
+      <created>1609973607665</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1609973607667</updated>
+    </task>
+    <task id="LOCAL-00109" summary="06/01/2021 - Ajuste projeto form277-7:">
+      <created>1609973664990</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1609973664990</updated>
+    </task>
+    <task id="LOCAL-00110" summary="06/01/2021 - Ajuste projeto formEditInspecao:">
+      <created>1609974430993</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974430993</updated>
+    </task>
+    <task id="LOCAL-00111" summary="06/01/2021 - Ajuste projeto ExportLancamentosSRO:">
+      <created>1609974491566</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974491566</updated>
+    </task>
+    <task id="LOCAL-00112" summary="06/01/2021 - Ajuste projeto ImportacaoController:">
+      <created>1609974542722</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974542722</updated>
+    </task>
+    <task id="LOCAL-00113" summary="06/01/2021 - Ajuste projeto formIndexImportacao:">
+      <created>1609974590453</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974590453</updated>
+    </task>
+    <task id="LOCAL-00114" summary="06/01/2021 - Ajuste projeto formEditInspecao:">
+      <created>1609974620076</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974620076</updated>
+    </task>
+    <task id="LOCAL-00115" summary="06/01/2021 - Ajuste projeto formIndexInspecionados:">
+      <created>1609974700731</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974700731</updated>
+    </task>
+    <task id="LOCAL-00116" summary="06/01/2021 - Ajuste projeto formIndexUnidades:">
+      <created>1609974792306</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1609974792306</updated>
+    </task>
+    <task id="LOCAL-00117" summary="06/01/2021 - Ajuste projeto formIndexVerificações:">
+      <created>1609975013051</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1609975013051</updated>
+    </task>
+    <task id="LOCAL-00118" summary="06/01/2021 - Ajuste projeto formIndexSro:">
+      <created>1609975642528</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1609975642532</updated>
+    </task>
+    <task id="LOCAL-00119" summary="06/01/2021 - Ajuste projeto InspecaoController:">
+      <created>1609975679248</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1609975679248</updated>
+    </task>
+    <task id="LOCAL-00120" summary="06/01/2021 - Ajuste projeto formPainelextravio:">
+      <created>1609975741241</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1609975741241</updated>
+    </task>
+    <task id="LOCAL-00121" summary="06/01/2021 - Ajuste projeto formsgdodistribuicao:">
+      <created>1609975767535</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1609975767535</updated>
+    </task>
+    <task id="LOCAL-00122" summary="06/01/2021 - Ajuste projeto UnidadesController:">
+      <created>1609975844771</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1609975844771</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1204,32 +1254,32 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=" 22/12/20 - Ajuste de apontamento de itens de relatos inspeção;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de importação nas funções unidades e cadastral;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para usuários;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para importações de usuários e unidades no formulario blade;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para relatos formulario blade;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para tipo de unidades formulario blade;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para relato controller;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para tipo de unidade controller;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para importações no index blade funções unidades e cadastral;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade para usuário controller perfil de acesso;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade inclusão de rota para tipo de unidades;" />
-    <MESSAGE value=" 22/12/20 - Ajuste de funcionalidade;" />
-    <MESSAGE value=" 22/12/20 - inclusão de campos na migrate para cadastral;" />
-    <MESSAGE value=" 22/12/20 - ajuste;" />
-    <MESSAGE value=" 23/12/20 - ajuste final para importar a função cadastral;" />
-    <MESSAGE value=" 23/12/20 - ajuste final para importar a função debito de empregados;" />
-    <MESSAGE value=" 23/12/20 - ajuste final para importar a função feriados;" />
-    <MESSAGE value=" 23/12/20 - ajuste final para importar a função Cadastral, Debito Empregados, Cadastral e Feriados;" />
-    <MESSAGE value=" 23/12/20 - ajuste final para importar a função Proter;" />
-    <MESSAGE value=" 23/12/20 - ajuste final para importar a função unidades;" />
-    <MESSAGE value=" 23/12/20 - ajuste  para importar;" />
-    <MESSAGE value=" 23/12/20 - ajuste  para importar proter;" />
-    <MESSAGE value=" 23/12/20 - ajuste filtro;" />
-    <MESSAGE value=" 23/12/20 - ajuste filtro relatos;" />
-    <MESSAGE value=" 23/12/20 - Ajuste filtro importações SMBBDF;" />
-    <option name="LAST_COMMIT_MESSAGE" value=" 23/12/20 - Ajuste filtro importações SMBBDF;" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form270-3:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form270-4:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form271-1:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form272-1:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form272-2:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form272-4:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form274-1:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form276-1:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form277-2:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form277-3:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form277-6:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto form277-7:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto ExportLancamentosSRO:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto ImportacaoController:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexImportacao:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formEditInspecao:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexInspecionados:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexUnidades:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexVerificações:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexSro:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto InspecaoController:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formPainelextravio:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto formsgdodistribuicao:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto UnidadesController:" />
+    <MESSAGE value="06/01/2021 - Ajuste projeto VerificacoesController:" />
+    <option name="LAST_COMMIT_MESSAGE" value="06/01/2021 - Ajuste projeto VerificacoesController:" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -1257,10 +1307,10 @@
     </state>
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603107998421" />
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1607690236617" />
-    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1608648586571">
+    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1609685116698">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1608648586571" />
+    <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1609685116698" />
     <state x="413" y="153" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1604673092524">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1274,16 +1324,16 @@
     </state>
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607101487361" />
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1603632333326" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1608667517668">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1609971662098">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1608667517668" />
-    <state x="197" y="0" key="CommitChangelistDialog2" timestamp="1608821842610">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1609971662098" />
+    <state x="221" y="0" key="CommitChangelistDialog2" timestamp="1609975895561">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="197" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1608821842610" />
+    <state x="221" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1609975895561" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1350,11 +1400,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1608821845089">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1609975898149">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1608821845089" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1609975898149" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1375,11 +1425,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="475" y="221" key="scopes/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602609466631" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1609186090008">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1609784359265">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607099656152" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1609186090008" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1609784359265" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1388,11 +1438,6 @@
           <url>file://$PROJECT_DIR$/public/js/script.js</url>
           <line>112</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-3.blade.php</url>
-          <line>1</line>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form277-3.blade.php</url>
@@ -1408,6 +1453,11 @@
           <url>file://$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/FeriasPorMcu.php</url>
           <line>21</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php</url>
+          <line>1764</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
