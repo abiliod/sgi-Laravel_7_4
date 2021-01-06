@@ -1,7 +1,7 @@
 @if ($count >= 1)
     @if( (isset($cie_eletronicas)) && (!empty($cie_eletronicas)) )
     <div id="aprimoramento">
-        <span class="lever" text-align="rigth">
+        <span class="lever">
             Em consulta realizada ao sistema de CIE Eletrônica do período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} até {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}} constatou-se as seguintes situações:
         </span>
    </div>
@@ -16,8 +16,6 @@
                     <th>Origem</th>
                     <th>Irregularidade</th>
                     <th>Categoria</th>
-
-
                 </tr>
             </thead>
             <tbody>
@@ -37,8 +35,10 @@
     @endif
     @else
     <div id="aprimoramento">
-        <span class="lever" text-align="rigth">
-            Em consulta realizada no Sistema de CIE Eletrônica do período de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}} a {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}} não encontraram inconformidades.
+        <span class="lever">
+            Em consulta realizada no Sistema de CIE Eletrônica do período
+            de {{\Carbon\Carbon::parse($dtini)->format('d/m/Y')}}
+            a {{\Carbon\Carbon::parse($dtfim)->format('d/m/Y')}} não foram constatadas inconformidades.
         </span>
     </div>
     <div id="historico">  </div>
