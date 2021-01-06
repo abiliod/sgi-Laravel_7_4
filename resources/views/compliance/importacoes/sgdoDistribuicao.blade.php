@@ -33,13 +33,13 @@
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
 
-                                Sistema: http://......
-                                Pesquisar  Superintendencia, importar para uma planilha formato excel.xlsx
+                                Sistema: http://app.correionet.int/sgdo/faces/login.jsp  Menu: Exportação de Dados -> CDD/AC -> Distribuição, informe o período e gere o arquivo TXT.
+                                Pesquisar  Superintendencia, importar o arquivo gerado em formato txt para uma planilha formato excel.xlsx
                                 VEJA o lay-out:
-                                [DR	Unidade	MCU	Centralizadora	MCU Centralizadora	Distrito	Area	Locomocao	Funcionario	Matricula	Data Inicio Atividade	Hora Inicio Atividade	Data Saida	Hora Saida	Data Retorno	Hora Retorno	Data TPC	Hora do TPC	Data Termino Atividade	Hora Termino Atividade	Justificado	Peso da Bolsa (Kg)	Peso do DA (Kg)	Quantidade de DA	Quantidade de GU	Quantidade de Objetos Qualificados	Quantidade de Objetos Coletados	Quantidade de Pontos de Entrega/Coleta	Quilometragem Percorrida	Residuo Simples	Residuo Qualificado	Almoco na Unidade	Compartilhado	Tipo de distrito]
+                                [DR	Unidade	MCU	Centralizadora	MCU Centralizadora	Distrito	ﾁrea	Locomo鈬o	Funcion疵io	Matr兤ula	Data In兤io Atividade	Hora In兤io Atividade	Data Sa冝a	Hora Sa冝a	Data Retorno	Hora Retorno	Data TPC	Hora do TPC	Data T駻mino Atividade	Hora T駻mino Atividade	Justificado	Peso da Bolsa (Kg)	Peso do DA (Kg)	Quantidade de DA	Quantidade de GU	Quantidade de Objetos Qualificados	Quantidade de Objetos Coletados	Quantidade de Pontos de Entrega/Coleta	Quilometragem Percorrida	Res冝uo Simples	Res冝uo Qualificado	Almo軋 na Unidade	Compartilhado	Tipo de distrito]
+                                Assim como foi importado do arquivo txt.
                                 Caso o processo seja interrompido por timeout fraguimente o  arquivo.
-
-                                O sistema excluirá os lançamentos antigos e faráa persistêcia dos novos registros.
+                                SgdoDistribuicao, carga contínua (Importação por Incremento, O sistema importa a planilha contendo os dados do arquivo que foi gerado em formato txt. Obs: após a planilha montada divida-a em partes para não dar excesso de Memória no momento da importação. Cada planilha deve ter aproximadamente 1500 linhas ou 200 kb.
                                 Frequencia: diária.
                             </textarea>
                       </div>
