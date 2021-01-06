@@ -162,8 +162,6 @@
                              <td>{{ $dado->inspetorcolaborador }}</td>
                           </tr>
                           <tr>
-
-
                               <td>Previsão de tempo para realizar a pré inspeção  em horas::</td>
                               <td>{{ $dado->NumHrsPreInsp }}</td>
                           </tr>
@@ -184,18 +182,9 @@
                           <tr>
                             <td>Data Última Atualização: </td>
                             <td>{{ isset($dado->updated_at) ? date( 'd/m/Y' , strtotime($dado->updated_at)) : date( 'd/m/Y' , strtotime($dado->datainiPreInspeção)) }}</td>
-
-
-
-
-
-
                           </tr>
-
  				      </tbody>
 			        </table>
-
-
                 </div>
 			</li>
 		</ul>
