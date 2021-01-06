@@ -291,6 +291,7 @@ class ImportacaoController extends Controller {
                             'bdf_fat_02.id'
                         )
                     ->first();
+
                     if (empty($res->id)){
                         $bdf_fat_02 = new BDF_FAT_02;
                         $bdf_fat_02->cd_orgao      = $registro['cd_orgao'];
@@ -1738,13 +1739,15 @@ class ImportacaoController extends Controller {
 
         public function importPainelExtravio(Request $request)
         {
+            $time='350';
+            ini_set('max_input_time', $time);
+            ini_set('max_execution_time', $time);
             $dtmenos365dias = Carbon::now();
             $dtmenos365dias->subDays(365);
             $row = 0;
             $validator = Validator::make($request->all(),[
                   'file' => 'required|mimes:xlsx,xls,csv'
             ]);
-
             if(empty($request->file('file')))
             {
                 \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
@@ -1759,10 +1762,10 @@ class ImportacaoController extends Controller {
 //                ,'class'=>'red white-text']);
 //                return redirect()->route('importacao');
 //            }
-
             if($validator->passes())
             {
                 $painel_extravios = Excel::toArray(new ImportPainelExtravio,  request()->file('file'));
+
                 foreach($painel_extravios as $dados)
                 {
                     foreach($dados as $registro)
@@ -1776,7 +1779,7 @@ class ImportacaoController extends Controller {
                                 $data_evento       = "";
                             }
                         }
-                        $ultimo_evento_data       = null;
+                        $ultimo_evento_data  = null;
                         if(!empty($registro['ultimo_evento_data']))
                         {
                             try
@@ -1808,7 +1811,7 @@ class ImportacaoController extends Controller {
                                 'painel_extravios.objeto'
                             )
                         ->first();
-                        if(!empty($res->objeto))
+                        if(empty($res))
                         {
                             $painelExtravio = new PainelExtravio;
                             $painelExtravio->objeto      = $registro['objeto'];
@@ -1844,21 +1847,26 @@ class ImportacaoController extends Controller {
                             $painelExtravio->save();
                             $row ++;
                         }
+                     //   dd( ' 1812 ', $res);
                     }
                 }
                 DB::table('painel_extravios')
                     ->where('data_evento', '<=', $dtmenos365dias)
                 ->delete();
-
-                if ($row >= 1){
+                if ($row >= 1)
+                {
                     \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                         ,'class'=>'green white-text']);
-                }else{
+                }
+                else
+                {
                     \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
                         ,'class'=>'green white-text']);
                 }
                 return redirect()->route('importacao');
-            }else{
+            }
+            else
+            {
                 return back()->with(['errors'=>$validator->errors()->all()]);
             }
         }
@@ -1868,14 +1876,14 @@ class ImportacaoController extends Controller {
             return view('compliance.importacoes.painelExtravio');  //
         }
         // ######################### FIM  painel de extravio #######################
-    // ######################### INICIO    cie eletronica  #######################
+        // ######################### INICIO    cie eletronica  #######################
 
-    public function exportcieEletronica()
-    {
-        return Excel::download(new ExportCieEletronica, 'cieEletronica.xlsx');
-    }
+        public function exportcieEletronica()
+        {
+            return Excel::download(new ExportCieEletronica, 'cieEletronica.xlsx');
+        }
 
-    public function importCieEletronica(Request $request)
+        public function importCieEletronica(Request $request)
     {
         $row = 0;
         $dtmenos365dias = Carbon::now();
@@ -1982,9 +1990,23 @@ class ImportacaoController extends Controller {
                         $cie_eletronica->fora_do_prazo  = $registro['fora_do_prazo'];
                         $cie_eletronica->resposta  = $registro['resposta'];
                         $cie_eletronica->data_de_resposta  = $data_de_resposta;
-                        $cie_eletronica->save();
-                        $row ++;
+
                     }
+                    else{
+                        // atualizar
+                        $cie_eletronica = CieEletronica::find($res->id);
+                        $cie_eletronica->irregularidade  = $registro['irregularidade'];
+                        $cie_eletronica->categoria  = $registro['categoria'];
+                        $cie_eletronica->numero_objeto  = $registro['numero_objeto'];
+                        $cie_eletronica->lida  = $registro['lida'];
+                        $cie_eletronica->respondida  = $registro['respondida'];
+                        $cie_eletronica->fora_do_prazo  = $registro['fora_do_prazo'];
+                        $cie_eletronica->resposta  = $registro['resposta'];
+                        $cie_eletronica->data_de_resposta  = $data_de_resposta;
+
+                    }
+                    $cie_eletronica->save();
+                    $row ++;
                 }
 
             }
@@ -2005,18 +2027,18 @@ class ImportacaoController extends Controller {
         }
     }
 
-    public function cieEletronica()
+        public function cieEletronica()
     {
         return view('compliance.importacoes.cieEletronica');  //
     }
-    // ######################### FIM  cieEletronica #######################
+        // ######################### FIM  cieEletronica #######################
 
-    // ######################### INICIO SGDO DISTRIBUIÇÃO  #######################
-    public function exportSgdoDistribuicao(){
-
-
+        // ######################### INICIO SGDO DISTRIBUIÇÃO  #######################
+    public function exportSgdoDistribuicao()
+    {
         return Excel::download(new ExportSgdoDistribuicao, 'sgdoDistribuicao.xlsx');
     }
+
     public function importSgdoDistribuicao(Request $request)
     {
         $row = 0;
@@ -2037,8 +2059,7 @@ class ImportacaoController extends Controller {
             {
                 foreach($dados as $registro)
                 {
-                    $data_incio_atividade       = "";
-                    if(!empty($registro['data_inio_atividade']))
+                    if(! $registro['data_inio_atividade']=='')
                     {
                         try
                         {
@@ -2046,13 +2067,12 @@ class ImportacaoController extends Controller {
                         }
                         catch (Exception $e)
                         {
-                            $data_incio_atividade       = null;
+                            $data_incio_atividade       =  null;
                         }
-                    }
-dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
+                    } else $data_incio_atividade       = null;
 
-                    $data_saida       = null;
-                    if(!empty($registro['data_saa']))
+
+                    if(! $registro['data_saa']=='')
                     {
                         try
                         {
@@ -2062,9 +2082,9 @@ dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
                         {
                             $data_saida       = null;
                         }
-                    }
-                    $data_retorno       = null;
-                    if(!empty($registro['data_retorno']))
+                    }   else $data_saida       = null;
+
+                    if(! $registro['data_retorno']=='')
                     {
                         try
                         {
@@ -2074,9 +2094,9 @@ dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
                         {
                             $data_retorno       = null;
                         }
-                    }
-                    $data_tpc       = null;
-                    if(!empty($registro['data_tpc']))
+                    }     else $data_retorno       = null;
+
+                    if(! $registro['data_tpc']=='')
                     {
                         try
                         {
@@ -2084,11 +2104,13 @@ dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
                         }
                         catch (Exception $e)
                         {
+                            // dd( $registro, $registro['data_tpc'],  $data_tpc);
                             $data_tpc       = null;
                         }
                     }
-                    $data_termino_atividade       = null;
-                    if(!empty($registro['data_tmino_atividade']))
+                    else $data_tpc       = null;
+
+                    if(! $registro['data_tmino_atividade']=='')
                     {
                         try
                         {
@@ -2098,117 +2120,60 @@ dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
                         {
                             $data_termino_atividade       = null;
                         }
-                    }
-                    $hora_incio_atividade       = null;
-                    if(!empty($registro['hora_inio_atividade']))
-                    {
-                        try
-                        {
-                            $hora_incio_atividade = $this->transformTime($registro['hora_inio_atividade']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $hora_incio_atividade       = null;
-                        }
-                    }
-                    $hora_saida       = null;
-                    if(!empty($registro['hora_saa']))
-                    {
-                        try
-                        {
-                            $hora_saida = $this->transformTime($registro['hora_saa']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $hora_saida       = null;
-                        }
-                    }
-                    $hora_retorno       = null;
-                    if(!empty($registro['hora_retorno']))
-                    {
-                        try
-                        {
-                            $hora_retorno = $this->transformTime($registro['hora_retorno']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $hora_retorno        = null;
-                        }
-                    }
-                    $hora_do_tpc       = null;
-                    if(!empty($registro['hora_do_tpc']))
-                    {
-                        try
-                        {
-                            $hora_do_tpc = $this->transformTime($registro['hora_do_tpc']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $hora_do_tpc       = null;
-                        }
-                    }
-                    $hora_termino_atividade        = null;
-                    if(!empty($registro['hora_tmino_atividade']))
-                    {
-                        try
-                        {
-                            $hora_termino_atividade = $this->transformTime($registro['hora_tmino_atividade']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $hora_termino_atividade     = null;
-                        }
-                    }
+                    }  else $data_termino_atividade       = null;
 
-                    $reg = SgdoDistribuicao::firstOrCreate(
-                    [
-                        'mcu' =>  $registro['mcu']
-                        , 'matricula' =>  $registro['matricula']
-                        , 'data_incio_atividade' =>  $data_incio_atividade
-                    ],[
-                        'dr' => $registro['dr']
-                        , 'unidade' =>  $registro['unidade']
-                        , 'mcu' =>  $registro['mcu']
-                        , 'centralizadora' =>  $registro['centralizadora']
-                        , 'mcu_centralizadora' => $registro['mcu_centralizadora']
-                        , 'distrito' =>  $registro['distrito']
-                        , 'area' =>  $registro['area']
-                        , 'locomocao' =>  $registro['locomocao']
-                        , 'funcionario' =>  $registro['funcionario']
-                        , 'matricula' =>  $registro['matricula']
-                        , 'justificado' =>  $registro['justificado']
-                        , 'peso_da_bolsa_kg' =>  $registro['peso_da_bolsa_kg']
-                        , 'peso_do_da_kg' =>  $registro['peso_do_da_kg']
-                        , 'quantidade_de_da' =>  $registro['quantidade_de_da']
-                        , 'quantidade_de_gu' =>  $registro['quantidade_de_gu']
-                        , 'data_incio_atividade' =>  $data_incio_atividade
-                        , 'hora_incio_atividade' =>  $hora_incio_atividade
-                        , 'data_saida' =>  $data_saida
-                        , 'hora_saida' =>  $hora_saida
-                        , 'data_retorno' =>  $data_retorno
-                        , 'hora_retorno' =>  $hora_retorno
-                        , 'data_tpc' =>  $data_tpc
-                        , 'hora_do_tpc' =>  $hora_do_tpc
-                        , 'data_termino_atividade' =>  $data_termino_atividade
-                        , 'hora_termino_atividade' =>  $hora_termino_atividade
-                        , 'quantidade_de_objetos_qualificados' =>  $registro['quantidade_de_objetos_qualificados']
-                        , 'quantidade_de_objetos_coletados' =>  $registro['quantidade_de_objetos_coletados']
-                        , 'quantidade_de_pontos_de_entregacoleta' =>  $registro['quantidade_de_pontos_de_entregacoleta']
-                        , 'quilometragem_percorrida' =>  $registro['quilometragem_percorrida']
-                        , 'residuo_simples' =>  $registro['residuo_simples']
-                        , 'residuo_qualificado' =>  $registro['residuo_qualificado']
-                        , 'almoca_na_unidade' =>  $registro['almoco_na_unidade']
-                        , 'compartilhado' =>  $registro['compartilhado']
-                        , 'tipo_de_distrito' =>  $registro['tipo_de_distrito']
-                    ]);
-                    $row ++;
-                    $afected = DB::table('sgdo_distribuicao')
-                        ->where('data_incio_atividade', '<',   $dtmenos180dias)
-                        ->where('matricula', '=',   $registro['matricula'])
-                    ->delete();
+                    if(! $data_incio_atividade == Null)
+                    {
+                        $reg = SgdoDistribuicao::firstOrCreate(
+                            [
+                                'mcu' =>  $registro['mcu']
+                                , 'matricula' =>  $registro['matrula']
+                                , 'data_incio_atividade' =>  $data_incio_atividade
+                            ],[
+                            'dr' => $registro['dr']
+                            , 'unidade' =>  $registro['unidade']
+                            , 'mcu' =>  $registro['mcu']
+                            , 'centralizadora' =>  $registro['centralizadora']
+                            , 'mcu_centralizadora' => $registro['mcu_centralizadora']
+                            , 'distrito' =>  $registro['distrito']
+                            , 'area' =>  $registro['rea']
+                            , 'locomocao' =>  $registro['locomoo']
+                            , 'funcionario' =>  $registro['funcionio']
+                            , 'matricula' =>  $registro['matrula']
+                            , 'data_incio_atividade' =>  $data_incio_atividade
+                            , 'hora_incio_atividade' => $registro['hora_inio_atividade']
+                            , 'data_saida' =>  $data_saida
+                            , 'hora_saida' =>  $registro['hora_saa']
+                            , 'data_retorno' =>  $data_retorno
+                            , 'hora_retorno' =>   $registro['hora_retorno']
+                            , 'data_tpc' =>  $data_tpc
+                            , 'hora_do_tpc' =>  $registro['hora_do_tpc']
+                            , 'data_termino_atividade' =>  $data_termino_atividade
+                            , 'hora_termino_atividade' =>   $registro['hora_tmino_atividade']
+                            , 'justificado' =>  $registro['justificado']
+                            , 'peso_da_bolsa_kg' =>  $registro['peso_da_bolsa_kg']
+                            , 'peso_do_da_kg' =>  $registro['peso_do_da_kg']
+                            , 'quantidade_de_da' =>  $registro['quantidade_de_da']
+                            , 'quantidade_de_gu' =>  $registro['quantidade_de_gu']
+                            , 'quantidade_de_objetos_qualificados' =>  $registro['quantidade_de_objetos_qualificados']
+                            , 'quantidade_de_objetos_coletados' =>  $registro['quantidade_de_objetos_coletados']
+                            , 'quantidade_de_pontos_de_entregacoleta' =>  $registro['quantidade_de_pontos_de_entregacoleta']
+                            , 'quilometragem_percorrida' =>  $registro['quilometragem_percorrida']
+                            , 'residuo_simples' =>  $registro['resuo_simples']
+                            , 'residuo_qualificado' =>  $registro['resuo_qualificado']
+                            , 'almoca_na_unidade' =>  $registro['almo_na_unidade']
+                            , 'compartilhado' =>  $registro['compartilhado']
+                            , 'tipo_de_distrito' =>  $registro['tipo_de_distrito']
+                        ]);
+//dd(   $reg );
+                        $row ++;
+                    }
                 }
             }
-
+            $afected = DB::table('sgdo_distribuicao')
+                ->where('data_incio_atividade', '<',   $dtmenos180dias)
+                ->where('matricula', '=',   $registro['matrula'])
+            ->delete();
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
             ,'class'=>'green white-text']);
@@ -2232,8 +2197,8 @@ dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
     {
         $row = 0;
         $time='350';
-        $dtmenos180dias = Carbon::now();
-        $dtmenos180dias = $dtmenos180dias->subDays(180);
+        $dtmenos90dias = Carbon::now();
+        $dtmenos90dias = $dtmenos90dias->subDays(90);
 
         $validator = Validator::make($request->all(),[
         'file' => 'required|mimes:xlsx,xls,csv'
@@ -2326,7 +2291,7 @@ dd(    $registro['data_inio_atividade'],   $data_incio_atividade);
                 }
             }
             $afected = DB::table('controle_de_viagens')
-                ->where('inicio_viagem', '<',   $dtmenos180dias)
+                ->where('inicio_viagem', '<',   $dtmenos90dias)
                 ->delete();
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
