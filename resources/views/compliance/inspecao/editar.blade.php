@@ -34,16 +34,18 @@
 				    	     <td>Inspeção é Obrigatória:</td>
                              <td>{{ $registro->inspecaoObrigatoria }}</td>
                           </tr>
+                          <tr>
                              <td>Grau de Risco -Total de Pontos do Item:</td>
                              <td>{{ $registro->totalPontos }}</td>
                           </tr>
+                          <tr>
                              <td>Descrição do Teste:</td>
                              <td>{{ $registro->teste }}</td>
                           </tr>
 
  				      </tbody>
 			        </table>
-                  </p>
+
                 </div>
 			</li>
 			<li>
@@ -74,8 +76,7 @@
 
  				      </tbody>
 			        </table>
-
-              .</p></div>
+              </div>
 			</li>
 		</ul>
 	</div>
@@ -200,7 +201,7 @@
                     <div class="row">
 
                     </div>
-                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat " id="fecharModal">Fechar</a>
+                    <a href="#" class="modal-action modal-close waves-effect waves-green btn-flat " id="fecharModal">Fechar</a>
                     </div>
                 </div>
             </div>
@@ -209,15 +210,15 @@
 			</div>
 			<div class="row">
             @if(($registro->situacao=='Em Inspeção'))
-                <button class="btn orange" id="salvar"name="situacao" value="cancel">Avaliar Depois</button>
-                <button class="btn blue" id="salvar"name="situacao" value="Em Inspeção">Atualizar</button>
+                <button class="btn orange" id="salvar" name="situacao" value="cancel">Avaliar Depois</button>
+                <button class="btn blue" id="salvar" name="situacao" value="Em Inspeção">Atualizar</button>
                 <button class="btn blue" id="salvar" name="situacao"  value="Inspecionado">Salvar e Concluir</button>
-                <button disabled class="btn blue" id="salvar"name="situacao" value="Corroborado">Corroborar</button>
+                <button disabled class="btn blue" id="salvar" name="situacao" value="Corroborado">Corroborar</button>
                 @elseif(($registro->situacao=='Inspecionado'))
-                    <button class="btn orange" id="salvar"name="situacao" value="cancel">Corroborar Depois</button>
-                    <button disabled class="btn blue" id="salvar"name="situacao" value="Em Inspeção">Atualizar</button>
+                    <button class="btn orange" id="salvar" name="situacao" value="cancel">Corroborar Depois</button>
+                    <button disabled class="btn blue" id="salvar" name="situacao" value="Em Inspeção">Atualizar</button>
                     <button disabled class="btn blue" id="salvar" name="situacao"  value="Inspecionado">Salvar e Concluir</button>
-                    <button class="btn blue" id="salvar"name="situacao" value="Corroborado">Corroborar</button>
+                    <button class="btn blue" id="salvar" name="situacao" value="Corroborado">Corroborar</button>
             @endif
            </div>
 		</form>
