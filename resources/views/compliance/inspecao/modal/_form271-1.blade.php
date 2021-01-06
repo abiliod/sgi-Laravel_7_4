@@ -1,6 +1,6 @@
 @if($total >= 1)
     <div id="aprimoramento">
-        <span class="lever" text-align="rigth">
+        <span class="lever rigth">
             Em análise à Planilha de Controle de Processos de Apuração de
             Extravios de Objetos Indenizados com Responsabilidade Definida,
             disponibilizada pela área de Segurança da Regional (CSEP/GO), do
@@ -44,7 +44,7 @@
     <div id="historico1"></div>
 @else
     <div id="aprimoramento">
-        <span class="lever" text-align="rigth">
+        <span class="lever rigth">
             Em análise à Planilha de Controle de Processos de Apuração de
             Extravios de Objetos Indenizados com Responsabilidade Definida,
             disponibilizada pela área de Segurança da Regional (CSEP/GO),
@@ -54,12 +54,9 @@
         </span>
     </div>
 @endif
-
-
-
-    <input type="hidden"  id="totalfalta" value="{{ isset($total) ?  str_replace(',', '', $total) : '' }}" readonly>
-    <input type="hidden"  id="totalrisco" value="0.00">
-    <input type="hidden"  id="totalsobra" value="0.00">
+<input type="hidden"  id="totalfalta" value="{{ isset($total) ?  str_replace(',', '', $total) : '' }}" readonly>
+<input type="hidden"  id="totalrisco" value="0.00">
+<input type="hidden"  id="totalsobra" value="0.00">
 
 
 
