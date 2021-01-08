@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 /**
    * Abilio 29-02-2020 Inclusão de Funcionalidade
    * App\Papel
@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
    **/
   use App\Papel;
   use App\Papel_user;
-  use App\User;
+
 //  use App\Models\Pessoas\Pessoa;
   use Auth;
 
@@ -34,76 +34,8 @@ class HomeController extends Controller {
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-     public function index() {
-
-
-       /**
-        *  Abilio 29-02-2020 Inclusão de Funcionalidade
-        * Captura id do usuário logado;
-        * Captura o código do Papel a ser assumido pelo novo cliente
-        * Papel_user::create, esta função cria o papel do novo cliente e
-        * atribui papel inicial "Cliente/Fornecedor" para o novo usuário
-        * em seguida devolve o controle para a view Home.
-        **/
-
-
-        $usuario = User::where('email','=','admin@sgiweb.com')->first();
-
-        if ($usuario) {
-            /**
-            *Abilio 20-02-2020  atribuir/manter papel admin ao usuario do sistema cujo o email é 'admin@gynpromo.com
-            * @return void
-            */
-            if(!Papel_user::where('user_id', '=', $usuario->id )
-                ->where('papel_id', '=', '1')->count()
-            ) //consulta com 2 parametros
-
-            Papel_user::UpdateOrCreate([
-                'user_id'=>$usuario->id ,
-                'papel_id'=>'1'
-            ]);
-        }
-        else
-        {
-            if(User::where('email','=','admin@sgiweb.com')->count()){
-                $usuario = User::where('email','=','admin@sgiweb.com')->first();
-                $usuario->se	 = '16';
-                $usuario->name	 = 'ABILIO DIAS FERREIRA';
-                $usuario->document	 = '83288082';
-                $usuario->businessUnit	 = '434446';
-                $usuario->coordenacao	 = 'BSB';
-                $usuario->funcao	 = 'INSPETOR REGIONAL - G4';
-                $usuario->localizacao	 = 'GOIÂNIA';
-                $usuario->telefone_ect	 = '';
-                $usuario->telefone_pessoal	 = '';
-                $usuario->email	 = 'admin@sgiweb.com';
-                $usuario->password = bcrypt('83288082');
-                $usuario->save();
-            }else{
-                $usuario = new User();
-                $usuario->id	 = '1';
-                $usuario->se	 = '16';
-                $usuario->name	 = 'ABILIO DIAS FERREIRA';
-                $usuario->document	 = '83288082';
-                $usuario->businessUnit	 = '434448';
-                $usuario->coordenacao	 = 'BSB';
-                $usuario->funcao	 = 'INSPETOR REGIONAL - G4';
-                $usuario->localizacao	 = 'GOIÂNIA';
-                $usuario->telefone_ect	 = '';
-                $usuario->telefone_pessoal	 = '';
-                $usuario->email	 = 'admin@sgiweb.com';
-                $usuario->password = bcrypt('83288082');
-                $usuario->save();
-            }
-            Papel_user::UpdateOrCreate([
-                'user_id'=>$usuario->id ,
-                'papel_id'=>'1'
-            ]);
-        }
-
-         /*Estabelece relacionamento com papel pelo campo user_id */
-        //verifica se o usuário tem papel
-
+     public function index()
+     {
          $activeUser = Auth::user()->activeUser;
          if($activeUser==true)
          {
