@@ -21,6 +21,7 @@
         </span>
     </div>
     <div id="historico">
+
         <p></p>
         @if(! $sl02bdfs30->isEmpty())
             <span class="lever rigth">
