@@ -30,15 +30,15 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                                Endereço:  http://snu0074/webcont/menu_conciliacoes/
-                                As informações são obtidas por meio: Menu Consultas > Conciliações.
-                                Selecionar a competência mais recente: Selecionar a CIA (Superintendência).
-                                Informar a conta 11202.994000. Se não hover dados informe outra competéncia anterior até obter registros.
-                                Gerar o arquivo no formato CSV, em seguida e importar para Excel.xlsx
-                                lay-out: [Cia	Conta	Competência	Data	Lote	Tp	MCU (Doc1)	Nome Agência (Doc2)	Histórico	Valor	Observações	Documento (Ref1)	Matrícula (Ref2)	Nome Empregado (Ref3)	Ação	Justificativa (Ad1)	Ad2	Ad3	Ad4	Ad5	Ad6	Ad7	Regularização	Anexo]
-                                Sugestão de nome do Arquivo: 270-1-WebCont_DebitoEmpregado.xlsx .
-                                Frequencia: Mensal, sempre que for disponibilizado nova prévia pelo departamento.
-                                Se o sistema der erro TIME-OUT, divida a planilha para que a mesma tenha uma quantidade menor de registros.
+                            WebCont
+                            Pesquisar se há pendências de valores contabilizados para a Unidade de Atendimento na conta conta 11202.994000 no sistema WEBCONT (http://snu0074/webcont/menu_conciliacoes/).
+                            As informações são obtidas por meio: Menu Consultas > Conciliações. Selecionar a competência mais recente; Selecionar a CIA (Superintendência).
+                            Informar a conta 11202.994000. fazer o download do arquivo onde a prévia mais recente estiver disponível CSV.
+
+                            lay-out: [Cia	Conta	competencia	Data	Lote	Tp	MCU (Doc1)	nome_agencia_doc2	historico	Valor	observacoes	Documento (Ref1)	matricula_ref2	Nome Empregado (Ref3)	acao	Justificativa (Ad1)	Ad2	Ad3	Ad4	Ad5	Ad6	Ad7	regularizacao	Anexo]
+                            Sugestão de nome do Arquivo modelo : 270-1-WebCont_DebitoEmpregado.xlsx .
+                            Frequencia: Mensal. ultima prévia.
+                            Se o sistema der erro TIME-OUT, divida a planilha para que a mesma tenha uma quantidade menor de registros ou guias de planilha.
                         </textarea>
                     </div>
 

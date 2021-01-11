@@ -404,7 +404,7 @@ class InspecaoController extends Controller
 
             if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)) //revisado em 03/01/2021
             {
-                $competencia = DB::table('debitoempregados')
+                $mescompetencia = DB::table('debitoempregados')
                     ->select('competencia')
                     ->where([['debitoempregados.competencia', '>=', 1 ]])
                     ->orderBy('competencia' ,'desc')
@@ -416,8 +416,20 @@ class InspecaoController extends Controller
                 ->where([['debitoempregados.sto', '=', $registro->mcu ]])
                 ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
                 ->get();
-                $count = $debitoempregados->count('matricula');
-                $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
+                if(! $debitoempregados->isEmpty())
+                {
+                    $count = $debitoempregados->count('matricula');
+                    $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
+
+                }
+                else
+                {
+                    $count = 0;
+                    $total = 0.00;
+
+                }
+
+               $competencia= substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
                 return view('compliance.inspecao.editar',compact(
                     'registro'
                     ,'id'
@@ -448,8 +460,8 @@ class InspecaoController extends Controller
                      ->where([['tipo_de_pendencia', '=', 'CON']])
                      ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
                  ->get();
+
                 if(! $proters_con->isEmpty())
-               // if(!empty($proters_con))
                     $countproters_con = $proters_con->count('no_do_objeto');
                 $proters_peso = DB::table('proters')
                      ->select(
@@ -468,9 +480,10 @@ class InspecaoController extends Controller
                      ->where([['divergencia_peso', '=', 'S']])
                      ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
                 ->get();
+
                 if(! $proters_peso->isEmpty())
-               // if(!empty($proters_peso))
                     $countproters_peso = $proters_peso->count('no_do_objeto');
+
                 $proters_cep = DB::table('proters')
                      ->select(
                         'tipo_de_pendencia'
@@ -488,19 +501,25 @@ class InspecaoController extends Controller
                      ->where([['divergencia_cep', '=', 'S']])
                      ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
                 ->get();
+
                 if(! $proters_cep->isEmpty())
-              //  if(!empty($proters_cep))
-                    $countproters_cep = $proters_cep->count('no_do_objeto');
+                      $countproters_cep = $proters_cep->count('no_do_objeto');
                 if( $proters_cep->isEmpty())
-              //  if (empty($proters_cep))
-                {"vazio";}else
+                {
+                    $countproters_cep  = 0;
+                }
+                else
                 {
                     $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
                     $total=$total_proters_cep;
                 }
                 if( $proters_peso->isEmpty())
-                //if (empty($proters_peso))
-                {"vazio";}else
+
+                {
+                    $total_proters_peso  = 0;
+                    $total=$total_proters_peso;
+                }
+                else
                 {
                      $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
                      $total=$total_proters_peso;
@@ -528,22 +547,22 @@ class InspecaoController extends Controller
                 $dtnow = new Carbon();
                 $dtmenos90dias = new Carbon();
                 $dtmenos90dias->subDays(90);
-                $smb_bdf_naoconciliados = DB::table('smb_bdf_NaoConciliados')
+                $smb_bdf_naoconciliados = DB::table('smb_bdf_naoconciliados')
                     ->select(
-                        'smb_bdf_NaoConciliados.*'
+                        'smb_bdf_naoconciliados.*'
                     )
-                    ->where([['smb_bdf_NaoConciliados.Agencia', '=', $registro->mcu]])
-                    ->where([['smb_bdf_NaoConciliados.Divergencia', '!=', 0]])
-                    ->where([['smb_bdf_NaoConciliados.Status', '=', 'Pendente']])
-                    ->where([['smb_bdf_NaoConciliados.Data', '>=', $dtmenos90dias ]])
+                    ->where([['smb_bdf_naoconciliados.Agencia', '=', $registro->mcu]])
+                    ->where([['smb_bdf_naoconciliados.Divergencia', '!=', 0]])
+                    ->where([['smb_bdf_naoconciliados.Status', '=', 'Pendente']])
+                    ->where([['smb_bdf_naoconciliados.Data', '>=', $dtmenos90dias ]])
                     ->orderBy('Data' ,'asc')
                 ->get();
 
-                $periodo = DB::table('smb_bdf_NaoConciliados')
+                $periodo = DB::table('smb_bdf_naoconciliados')
                     ->select(
-                   'smb_bdf_NaoConciliados.*'
+                   'smb_bdf_naoconciliados.*'
                     )
-                    ->where([['smb_bdf_NaoConciliados.Data', '>=', $dtmenos90dias ]])
+                    ->where([['smb_bdf_naoconciliados.Data', '>=', $dtmenos90dias ]])
                 ->get();
 
                 $dtini = $periodo->min('Data');
@@ -567,6 +586,7 @@ class InspecaoController extends Controller
                 $dtmenos60dias->subDays(60);
                 $dtmenos90dias->subDays(90);
                 $dtmenos120dias->subDays(120);
+                $ocorrencias=0;
 
                 $sl02bdfs30 = DB::table('sl02bdfs')
                     ->select('sl02bdfs.*')
@@ -701,11 +721,10 @@ class InspecaoController extends Controller
                 $total  =    $acumulados30+$acumulados60+$acumulados90+$acumulados120;
                 $ocorrencias = $ocorrencias30+$ocorrencias60+$ocorrencias90+$ocorrencias120;
 
-                if((! $ocorrencias->isEmpty()) && ( $ocorrencias >= 1 ))
+                if( $ocorrencias >= 1 )
                 {
                     $mediaocorrencias = (($ocorrencias/120)*22);
                     $mediaocorrencias = number_format($mediaocorrencias, 2, ',', '.');
-                  //  $total = number_format($total, 2, ',', '.');
                 }
                 else
                 {

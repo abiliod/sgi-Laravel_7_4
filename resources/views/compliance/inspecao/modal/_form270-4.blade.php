@@ -1,7 +1,8 @@
 @if($total == 0.00)
     <div id="aprimoramento">
         <span class="lever rigth">
-            Em análise ao Relatório "Saldo de Numerário em relação ao Limite de Saldo", do sistema BDF,
+            Em análise ao Relatório "Saldo de Numerário em relação ao Limite de Saldo",
+            do sistema BDF,
             referente ao período de {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}
             a  {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}}, constataram que não houve
             descumprimento do limite de saldo estabelecido para a unidade.
@@ -9,7 +10,6 @@
     </div>
     <div id="historico"></div>
     <div id="historico1"></div>
-
 @else
     <div id="aprimoramento">
         <span class="lever rigth">

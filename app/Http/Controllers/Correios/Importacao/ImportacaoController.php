@@ -107,7 +107,97 @@ use App\Exports\ExportMicroStrategy;
 use App\Models\Correios\Unidade;
 use App\Imports\ImportUnidades;
 
-class ImportacaoController extends Controller {
+//        if( $request->file('file')->getClientOriginalName() != "270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx") {
+//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
+//            O Arquivo de ser270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
+//                ,'class'=>'red white-text']);
+//            return redirect()->route('importacao');
+//        }
+//  DB::table('debitoempregados')->truncate();
+
+class ImportacaoController extends Controller
+{
+    /// ######################### BLOCO  DEBITO EMPREGADO #######################
+    public function exportDebitoEmpregados()
+    {
+        return Excel::download(new ExportDebitoEmpregados, 'debitoEmpregados.xlsx');
+    }
+    public function importDebitoEmpregados(Request $request)
+    {
+        $row=0;
+        $validator = Validator::make($request->all(),[
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+        if($request->file('file') == "")
+        {
+            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
+            O Arquivo de ser  270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
+                ,'class'=>'red white-text']);
+            return redirect()->route('importacao');
+        }
+        if($validator->passes())
+        {
+            $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
+            foreach($debitoEmpregados as $dados)
+            {
+                foreach($dados as $registro)
+                {
+                  //  dd($registro);
+                    //  nome_agencia_doc2
+                    // historico
+                    // observacoes
+                    // matricula_ref2
+                 //   regularizacao
+                    // acao
+//
+
+                    $debitoEmpregado = new DebitoEmpregado;
+                    $debitoEmpregado->cia      = $registro['cia'];
+                    $debitoEmpregado->conta  = $registro['conta'];
+                    $debitoEmpregado->competencia  = $registro['competencia'];
+                    $dt         = $this->transformDate($registro['data']);
+                    $debitoEmpregado->data         = $dt;
+                    $debitoEmpregado->lote  = $registro['lote'];
+                    $debitoEmpregado->tp  = $registro['tp'];
+                    $debitoEmpregado->sto  = $registro['mcu_doc1'];
+                    $debitoEmpregado->nome_unidade  = $registro['nome_agencia_doc2'];
+                    $debitoEmpregado->historico  = $registro['historico'];
+                    $debitoEmpregado->valor  = $registro['valor'];
+                    $debitoEmpregado->observacoes  = $registro['observacoes'];
+                    $debitoEmpregado->documento  = $registro['documento_ref1'];
+                    $debitoEmpregado->matricula  = $registro['matricula_ref2'];
+                    $debitoEmpregado->nomeEmpregado  = $registro['nome_empregado_ref3'];
+                    $debitoEmpregado->justificativa  = $registro['justificativa_ad1'];
+                    $debitoEmpregado->regularizacao  = $registro['regularizacao'];
+                    $debitoEmpregado->acao  = $registro['acao'];
+                    $debitoEmpregado->regularizacao  = $registro['regularizacao'];
+                    $debitoEmpregado->anexo  = $registro['anexo'];
+                    $debitoEmpregado ->save();
+                    $row++;
+                }
+            }
+            $affected = DB::table('debitoempregados')
+                ->where('cia', '=', $registro['cia'])
+                ->where('conta', '=', $registro['conta'])
+                ->where('competencia', '<', $registro['competencia'])
+                ->delete();
+//          dd($affected);
+
+            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+                ,'class'=>'green white-text']);
+            return redirect()->route('importacao');
+        }else{
+            \Session::flash('mensagem',['msg'=>'Registros WebCont Não pôde ser importado! Tente novamente'
+                ,'class'=>'red white-text']);
+            return redirect()->route('importacao');
+        }
+    }
+    public function debitoEmpregados()
+    {
+        return view('compliance.importacoes.debitoEmpregado');  //
+    }
+    /// ######################### FIM DEBITO EMPREGADO #######################
+
 
     public function handle()
     {
@@ -1157,86 +1247,6 @@ class ImportacaoController extends Controller {
     }
     /// ######################### FIM PROTER #######################
 
-    /// ######################### BLOCO  DEBITO EMPREGADO #######################
-    public function exportDebitoEmpregados()
-    {
-        return Excel::download(new ExportDebitoEmpregados, 'debitoEmpregados.xlsx');
-    }
-    public function importDebitoEmpregados(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
-            'file' => 'required|mimes:xlsx,xls,csv'
-        ]);
-        if($request->file('file') == "")
-        {
-            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser  270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-
-//        if( $request->file('file')->getClientOriginalName() != "270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx") {
-//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-//            O Arquivo de ser270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
-//                ,'class'=>'red white-text']);
-//            return redirect()->route('importacao');
-//        }
-
-        if($validator->passes())
-        {
-            //  DB::table('debitoempregados')->truncate();
-            $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
-            foreach($debitoEmpregados as $dados)
-            {
-                $row=0;
-                foreach($dados as $registro)
-                {
-                    $debitoEmpregado = new DebitoEmpregado;
-                    $debitoEmpregado->cia      = $registro['cia'];
-                    $debitoEmpregado->conta  = $registro['conta'];
-                    $debitoEmpregado->competencia  = $registro['competencia'];
-                    $dt         = $this->transformDate($registro['data']);
-                    $debitoEmpregado->data         = $dt;
-                    $debitoEmpregado->lote  = $registro['lote'];
-                    $debitoEmpregado->tp  = $registro['tp'];
-                    $debitoEmpregado->sto  = $registro['mcu_doc1'];
-                    $debitoEmpregado->nome_unidade  = $registro['nome_agencia_doc2'];
-                    $debitoEmpregado->historico  = $registro['historico'];
-                    $debitoEmpregado->valor  = $registro['valor'];
-                    $debitoEmpregado->observacoes  = $registro['observacoes'];
-                    $debitoEmpregado->documento  = $registro['documento_ref1'];
-                    $debitoEmpregado->matricula  = $registro['matricula_ref2'];
-                    $debitoEmpregado->nomeEmpregado  = $registro['nome_empregado_ref3'];
-                    $debitoEmpregado->justificativa  = $registro['justificativa_ad1'];
-                    $debitoEmpregado->regularizacao  = $registro['regularizacao'];
-                    $debitoEmpregado->acao  = $registro['acao'];
-                    $debitoEmpregado->regularizacao  = $registro['regularizacao'];
-                    $debitoEmpregado->anexo  = $registro['anexo'];
-                    $debitoEmpregado ->save();
-                    $row++;
-                }
-            }
-            $affected = DB::table('debitoempregados')
-                ->where('cia', '=', $registro['cia'])
-                ->where('conta', '=', $registro['conta'])
-                ->where('competencia', '<', $registro['competencia'])
-            ->delete();
-//          dd($affected);
-
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                ,'class'=>'green white-text']);
-            return redirect()->route('importacao');
-        }else{
-            \Session::flash('mensagem',['msg'=>'Registros WebCont Não pôde ser importado! Tente novamente'
-                ,'class'=>'red white-text']);
-            return redirect()->route('importacao');
-        }
-    }
-    public function debitoEmpregados()
-    {
-        return view('compliance.importacoes.debitoEmpregado');  //
-    }
-    /// ######################### FIM DEBITO EMPREGADO #######################
 
     // ######################### INICIO FERIADOS #######################
 

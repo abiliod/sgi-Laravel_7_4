@@ -52,7 +52,7 @@
                 <div class="card blue darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Feriados</span>
-                        <p><br>Relatório Feriado ERP | Feriado.xlsx</p> <br>
+                        <p><br>Relatório Feriado ERP | Feriado.xlsx</p>
                          <p>Manter cadastro de feriados.</p>
 
                     </div>
