@@ -30,16 +30,16 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                                Endereço:  http://app.correiosnet.int/SPNWEB/pages/inicio.jsf
-                                As informações são obtidas por meio: Sistema SPN->Itens Monitorados->Objeto Postal->Relatório Pendências Geral.
-                                As pendências apresentadas no PROTER referem-se ao período de Janeiro/2017 em diante.
-                                Efetuar as pesquisas a partir desta data. Ao gerar o arquivo (SELECIONE TODAS SEs).
-                                Fazer o download no formato (CSV). Importar os dados para uma Planilha formato xlsx.  Abrir o Arquivo excluir a primeira linha.
-                                Manteha sempre esse lay-out observe as palavras quando da importação: [TIPO DE PENDÊNCIA	STATUS DA PENDÊNCIA	DATA DA PENDÊNCIA	DIVERGÊNCIA PESO	DIVERGÊNCIA CEP	ORIGEM PENDÊNCIA	SE	TIPO DE UNIDADE	STO/MCU	NOME DA UNIDADE	STATUS DA UNIDADE	TIPO DE ATENDIMENTO	MATRÍCULA ATENDENTE	Nº DO OBJETO	DATA DA POSTAGEM	DATA DA ENTREGA	CÓDIGO DO SERVIÇO	CEP CONTABILIZADO (SARA)	CEP ENTREGA SRO	PESO TARIFADO FINANCEIRO	COMPRIMENTO FINANCEIRO	LARGURA FINANCEIRO	ALTURA FINANCEIRO	PESO CÚBICO FINANCEIRO	PESO REAL MECTRI	COMPRIMENTO MECTRI	LARGURA MECTRI	ALTURA MECTRI	PESO CÚBICO MECTRI	PESO TARIFADO MECTRI	VALOR TARIFADO FINANCEIRO	VALOR TARIFADO MECTRI	DIFERENÇA A RECOLHER	CNPJ DO CLIENTE	CONTRATO	CARTÃO POSTAGEM	NOME DO CLIENTE	QTD DUPLICIDADES	ÚLTIMA MANIFESTAÇÃO	[MCU Triagem	Centro	Peso	Volume	Altura	Largura	Comprimento	Data de leitura	Tipo do objeto	Cep destino	Tipo de indução	Número da máquina	Código da estação]
-                                Exclua os registros que na coluna TIPO DE PENDÊNICIA for igual ORD e SRO, salve a planilha e execute a importação.
-                                Sugestão de nome do Arquivo: 270-2-FINANCEIRO-Proter_ProtecaoReceita.xlsx.
-                                Frequencia: Semanal. (obs: Há possibilidade de uma pendência em anos anteriores ter sido regularizada recentemente.)
-                                Se o sistema der erro TIME-OUT, Informe esse erro ao Administrador do sistema.
+As informações são obtidas por meio: Sistema SPN->Itens Monitorados->Objeto Postal->Relatório Pendências Geral. Efetuar a pesquisa a partir de Janeiro/2017.
+Fazer o download no formato(CSV).
+Importar os dados para uma Planilha formato xlsx.  Abrir o Arquivo excluir a primeira linha.
+Na planilha aplicar Filtro na coluna [TIPO DE PENDÊNCIA], desmarque as opções CON e DPC Click em OK. Em seguida exclua todas linhas cujo o tipo de pendência não seja CON e DPC, em seguida desative o filtro e salve o arquivo.
+
+Manteha sempre esse lay-out observe as palavras quando da importação faça o (ajuste ou utilize o cabeçalho do arquivo modelo): [tipo_de_pendencia status_da_pendencia    data_da_pendencia  divergencia_peso   divergencia_cep    origem_pendencia   SE TIPO DE UNIDADE    STO/MCU    NOME DA UNIDADE    STATUS DA UNIDADE  TIPO DE ATENDIMENTO    matricula_atendente    no_do_objeto   DATA DA POSTAGEM   DATA DA ENTREGA    codigo_do_servico  CEP CONTABILIZADO (SARA)   CEP ENTREGA SRO    PESO TARIFADO FINANCEIRO   COMPRIMENTO FINANCEIRO LARGURA FINANCEIRO ALTURA FINANCEIRO  peso_cubico_financeiro PESO REAL MECTRI   COMPRIMENTO MECTRI LARGURA MECTRI ALTURA MECTRI  peso_cubico_mectri PESO TARIFADO MECTRI   VALOR TARIFADO FINANCEIRO  VALOR TARIFADO MECTRI  diferenca_a_recolher   CNPJ DO CLIENTE    CONTRATO   cartao_postagem    NOME DO CLIENTE    QTD DUPLICIDADES   ÚLTIMA MANIFESTAÇÃO    MCU Triagem   Centro Peso   Volume Altura Largura    Comprimento    Data de leitura    Tipo do objeto Cep destino    Tipo de indução    Número da máquina  Código da estação]
+
+Sugestão de nome do Arquivo modelo lay-out: 270-2-FINANCEIRO-Proter_ProtecaoReceita.xlsx .
+
+Frequencia: Mensal/Quinzenal.(obs: Há possibilidade de uma pendência em anos anteriores ter sido regularizada recentemente.)Se o sistema der erro TIME-OUT, diminua a quantidade de registros na planilha. Ou coloque a planilha com menos guias de planilhas.
 
                         </textarea>
                     </div>
