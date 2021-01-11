@@ -445,6 +445,9 @@ class InspecaoController extends Controller
                 $countproters_con =0;
                 $countproters_peso =0;
                 $countproters_cep =0;
+                $total_proters_cep  = 0.00;
+                $total_proters_peso  = 0.00;
+
 
                 $proters_con = DB::table('proters')
                     ->select(
@@ -503,30 +506,33 @@ class InspecaoController extends Controller
                 ->get();
 
                 if(! $proters_cep->isEmpty())
-                      $countproters_cep = $proters_cep->count('no_do_objeto');
-                if( $proters_cep->isEmpty())
                 {
-                    $countproters_cep  = 0;
-                }
-                else
-                {
+                  //  dd('tem registro');
                     $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
                     $total=$total_proters_cep;
                 }
-                if( $proters_peso->isEmpty())
-
+                else
                 {
-                    $total_proters_peso  = 0;
+                 //   dd('não há registro');
+                    $total_proters_cep  = 0.00;
+                    $total=$total_proters_cep;
+                }
+
+                if(! $proters_peso->isEmpty())
+                {
+                    $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
                     $total=$total_proters_peso;
                 }
                 else
                 {
-                     $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
-                     $total=$total_proters_peso;
+
+                    $total_proters_peso  = 0.00;
+                    $total=$total_proters_peso;
                 }
-                if((isset($total_proters_cep)) && (isset($total_proters_peso)))
+
+                if(( $total_proters_cep  ) && ( $total_proters_peso >= 1 ))
                 {
-                    $total=$total_proters_peso + $total_proters_cep;
+                    $total = $total_proters_peso + $total_proters_cep;
                 }
                 return view('compliance.inspecao.editar',compact('registro','id'
                     , 'proters_con'
