@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SMBxBDF_NaoConciliado extends Model
 {
-    protected $table = 'smb_bdf_NaoConciliados';
+    protected $table = 'smb_bdf_naoconciliados';
 
     protected $fillable=
     [
