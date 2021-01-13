@@ -31,11 +31,13 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                        Importar os dados condensados das planilhas Responsabilidade definidas para uma planilha formato xlsx.
-                        VEJA o lay-out:
-                        [Codigo	UNIDADE	data_Pagamento	Objeto	DataPostagem	Serviço_Produto	Valor da Indenização	STO	mcu	unidade	subordinacao	nu_PedidoInformacao	se_pagadora	data	nu_sei	nu_sei_AbertoUnidade	situacao	data	empregadoResponsavel	observacoes	conclusao	providenciaAdotada]
-                        Tipo de importação: Por Atualização.
-                        O Sistema ao importar a planilha atualiza os registros existentes e inclue os registros não existentes.
+Importar os dados condensados das planilhas Responsabilidade definidas para uma planilha formato xlsx.
+As planilhas tem lay-outs diferentes unifique para ficar conforme o modelo a seguir.
+VEJA o lay-out:
+[Codigo	UNIDADE	data_Pagamento	Objeto	DataPostagem	Serviço_Produto	Valor da Indenização	STO	mcu	unidade	subordinacao	nu_PedidoInformacao	se_pagadora	data	nu_sei	nu_sei_AbertoUnidade	situacao	data	empregadoResponsavel	observacoes	conclusao	providenciaAdotada]
+Tipo de importação: Por Atualização.
+O Sistema ao importar a planilha atualiza os registros existentes e inclui os registros não existentes.
+
                         </textarea>
                     </div>
                     <form action="{{ route('compliance.importacao.RespDefinida') }}" method="POST" name="importform"

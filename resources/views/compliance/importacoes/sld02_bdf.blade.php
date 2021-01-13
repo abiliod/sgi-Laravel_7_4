@@ -31,15 +31,16 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                        Acessar o sistema BDF > Clicar em "Conectar DR", selecionar a SE e clicar em "Conectar" > Clicar no menu "Saldo" > Selecionar "BDF-SLD-002 Saldo de Numerário em relação ao Limite de Saldo" >
-                        Na tela, selecionar "Tipos de órgãos que serão inspecionados" clicando no ícone "..." > Selecione  - "9 Agência de Correio" > Em "Codigo do Orgão" selecione a unidade > Selecione o período "4 meses"> Clica em "Analítico" > "Tipo Limite" - Correios > Clica em "Importar" nomeie o arquivo a ser gerado EX: SL02-bdf.txt.
-                        Aguarde a importação em formato txt
-                        Importar os dados para uma planilha formato xlsx.
-                        VEJA o lay-out:
-                        [DR	COD_ORGAO	REOP	ORGAO	DT_MOVIMENTO	SALDO_ATUAL	 limitevlr_limite_banco_postal_e_ect]
-                        (Tipo de importação: Por incremento.
-                        O Sistema ao importar a planilha grava os registros não existentes
-                        Em seguida irá apagará os registros existentes na tabela com data de movimento maior que 120 dias.);
+Acessar o sistema BDF > Clicar em "Conectar DR", selecionar a SE e clicar em "Conectar" > Clicar no menu "Saldo" > Selecionar "BDF-SLD-002 Saldo de Numerário em relação ao Limite de Saldo" >
+Na tela, selecionar "Tipos de órgãos que serão inspecionados" clicando no ícone "..." > Selecione  - "9 Agência de Correio" > Informe o período "4 meses"> Clica em "Analítico" > "Tipo Limite" - Correios > AMBOS Clica em "Importar" nomeie o arquivo a ser gerado EX: SL02-bdf.txt.
+Aguarde a importação em formato txt
+Importar os dados para uma planilha formato xlsx.
+VEJA o lay-out:
+[DR	COD_ORGAO	REOP	ORGAO	DT_MOVIMENTO	SALDO_ATUAL	 limitevlr_limite_banco_postal_e_ect]
+Tipo de importação: Por incremento.
+O Sistema ao importar a planilha grava os registros não existentes
+Em seguida irá apagará os registros existentes na tabela com data de movimento maior que 120 dias.
+
                         </textarea>
                     </div>
 

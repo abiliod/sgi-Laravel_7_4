@@ -31,12 +31,13 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                        Importar os dados do relatório de alarme monitorado ARME/DESARME para uma planilha formato xlsx.
-                        VEJA o lay-out:
-                        [CLIENTE	MCU	USUÁRIO	MATRÍCULA	ARME/DESARME	DATA	HORA]
-                        (Tipo de importação: Por incremento.
-                        O Sistema ao importar a planilha grava os registros não existentes
-                        Em seguida irá apagará os registros existentes na tabela com data  maior que 12 meses.);
+r o Sistema http://10.120.9.38/rel, informe a SE o período, marque todas unidades e selecione a opção ambos.
+Importar os dados do relatório de alarme monitorado ARME/DESARME para uma planilha formato xlsx.
+marque a partir do cabeçalho da pagina até a ultima linha copie e cole na planilha (utilize a opção colar valores do excel)
+VEJA o lay-out:
+[CLIENTE	        MCU	USUÁRIO	MATRÍCULA	ARME/DESARME	DATA	      HORA]
+[AC MATRINCHÃ - GO	6866	1	8332425- 9	Desarme 	26/10/2020   08:19:05] -> mantenha essa formatação de data e hora na planilha
+Tipo de importação: Por incremento.O Sistema ao importar a planilha grava os registros não existentes Em seguida irá apagará os registros existentes na tabela com data  maior que 12 meses.
                         </textarea>
                     </div>
 

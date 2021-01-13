@@ -30,14 +30,13 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                                Imprima o Relatório WebSGQ3 - Frequencia por SE
-                               VEJA o lay-out:
-                                [Matrícula	Nome	Cargo	Lotação	Data evento	Dias	Motivo]
-                                Sistema: http://intranetmg2/WebSGQ3/principal.asp MENU consulta->xxxxx->xxxx.
-                                Pesquisar  Superintendencia, selecionar a SE interessada marcar incluir orgãos subordinados, em seguida importar para o excel.
-                                Ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ3 - Frequencia por SE-GO.xlsx).
-                                Frequencia: MENSAL.
-
+Imprima o Relatório WebSGQ3 - Frequencia por SE
+Menu; Frequencia e Jornada -> Dias Não Trabalhados PGP -> Por SE
+Selecione a SE e o mês da referência, opção Listar em Data Table
+VEJA o lay-out:
+[Matrícula	Nome	Cargo	Lotação	Data evento	Dias	Motivo]
+Frequencia: MENSAL. É necessário que os ultimos 12 meses sejam importados para o sistema.
+Fazer o download utilize o excel do download.
                         </textarea>
                     </div>
 

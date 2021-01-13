@@ -3,7 +3,6 @@
 @section('content')
 <div class="container">
 <h2 class="center">Importações Disponíveis</h2>
-
 <div class="row">
      <nav>
         <div class="nav-wrapper green">
@@ -14,7 +13,6 @@
         </div>
       </nav>
 </div>
-
 <div class="row">
         @can('importar_unidades')
             <div class="col s12 m6">
@@ -23,7 +21,6 @@
                         <span class="card-title">Unidades</span>
                         <p>Unidades<br>Assunto: Cadastro de Unidades.</p>
                         <p>Relatório ERP | R55001A.xlsx</p>
-                        <p>Manter Cadastro de Unidades</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.unidades')}}">Importar Planilha</a>
@@ -38,7 +35,7 @@
                     <div class="card-content white-text">
                         <span class="card-title">Cadastral</span>
                         <p>Cadastro do Efetivo<br>Assunto: Auxiliar do Sistema.</p>
-                        <p>WebSGQ 3 - Efetivo analitico por MCU | WebSGQ 3 - Efetivo analitico por MCU-SE.xlsx</p>
+                        <p>WebSGQ 3 - Efetivo analitico por MCU</p>
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.cadastral')}}">Importar Planilha</a>
@@ -52,7 +49,7 @@
                 <div class="card blue darken-1">
                     <div class="card-content white-text">
                         <span class="card-title">Feriados</span>
-                        <p><br>Relatório Feriado ERP | Feriado.xlsx</p>
+                         <p>Cadastro de Feriados<br>Assunto: Auxiliar do Sistema.</p>
                          <p>Manter cadastro de feriados.</p>
 
                     </div>
@@ -185,7 +182,6 @@
                         <p>Grupo de Verificação 272</p>
                         <p>Assunto: Gestão do Funcionamento do equipamento CFTV</p>
                         <p>Qualidade do Funcionamento</p>
-
                     </div>
                     <div class="card-action">
                         <a class="white-text" href="{{route('importacao.cftv')}}">Importar Planilha</a>
@@ -231,7 +227,7 @@
             <div class="col s12 m6">
                 <div class="card #424242 grey darken-3">
                     <div class="card-content white-text">
-                        <span class="card-title">Sistema: Movimentação de Carga Postal</span>
+                        <span class="card-title">Sistema: Movimentação de Carga</span>
                         <p>Grupo de Verificação 276</p>
                         <p>Assunto: Controle de viagem Apontamentos</p>
                         <p>Verificação do Apontamento de Embarque/Desembarque</p>
@@ -337,12 +333,5 @@
                 </div>
             </div>
         @endcan
-
-
-
-
-
-
-
 </div>
 @endsection

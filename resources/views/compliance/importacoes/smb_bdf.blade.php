@@ -33,21 +33,18 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                        Acessar o sistema SDE ( http://intranetsistemas/SDE/default.cfm ) Opção
-                        Contabilização->Conciliação->Conciliação SMB x BDF.
-                        Execute a consulta passando os parâmetros de data, período no mínimo 90 dias para sua Superintendência.
-                        Após a exibição da tela selecione a aba NÃO CONCILIADOS.
-                        Estabeleca filtro para as unidades com Situação = "TODOS".
-                        Marque a partir do cabeçãlho da tabela até o final do relatório exceto a linha total. Copie e cole especial em uma Planílha  excel.xlsx
-                        Frequencia: Diaria. (obs: pelo menos uma vez por semana deve-se fazer uma importação com período de 90 dias.)
+                        Acessar o sistema SDE http://intranetsistemas/SDE/default.cfm
+Opção Contabilização->Conciliação->Conciliação SMB x BDF.
+Execute a consulta passando os parâmetros de data, período no mínimo 90 dias para sua Superintendência, ou grupo de superintendência de sua CVCO. Após a exibição da tela selecione a aba NÃO CONCILIADOS.
+Na tela do SDE Estabeleça filtro para as unidades com Situação = "TODOS". Agrupamento por “MCU”.  Marque a partir do cabeçalho da tabela exibida até o final do relatório exceto a linha TOTAL DR: . Copiar e colar ESPECIAL em uma Planílha  excel.xlsx.
+Frequencia: Diaria. (obs: fazer uma vez por semana deve-se fazer uma importação com período de 90 dias.)
+Obs: COLAR ESPECIAL e fazer o tratamento dos dados para adequar ao Lay-out da planilha conforme disponibilizado.
+Além da exclusão do cabeçalho quando da mudança de unidade é necessário fazer a exclusão de2 linhas geradas pelo sistema exportador a cada mudança de unidade para ficar apenas as informações relevantes para a importação.
+Após o tratamento da planilha exclua a coluna (A) observe o lay-out.
+VEJA o lay-out:
+[MCU	Agencia	CNPJ	Data	SMBDinheiro	SMBCheque	SMBBoleto SMBEstorno	BDFDinheiro	BDFCheque	BDFBoleto	Divergencia	Status]
+Tipo de importação: Por incremento. O Sistema ao importar a planilha grava apenas os registros não existentes que estão com status Pendente e atualizará os registros existentes com status atual encontrado na importação que por ventura estejam diferentes de Pendente. Em seguida irá apagará os registros com data de movimento maior que 120 dias.
 
-                        Obs: COLAR ESPECIAL fazer o tratamento dos dados para adequar ao Lay-out da planilha.
-                        É necessário fazer a exclusão de 4 linhas geradas pelo sistema exportador a cada mudança de unidade para ficar apenas as informações relevantes para a importação.
-                        Após o tratamento da planilha exclua a coluna (A) observe o lay-out.
-                        VEJA o lay-out:
-                        [MCU	Agencia	CNPJ	Data	SMBDinheiro	SMBCheque	SMBBoleto	SMBEstorno	BDFDinheiro	BDFCheque	BDFBoleto	Divergencia	Status]
-                        (Tipo de importação: Por incremento.
-                        O Sistema ao importar a planilha grava apenas os registros não existentes que estão com status Pendente e atualizará os registros existentes com status atual encontrado na importação que por ventura estejam  diferente de Pendente. Em seguida irá apagará os registros com data de movimento maior que 90 dias.);
                         </textarea>
                     </div>
 
