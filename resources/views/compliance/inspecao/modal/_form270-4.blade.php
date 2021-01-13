@@ -14,8 +14,10 @@
     <div id="aprimoramento">
         <span class="lever rigth">
             Em análise ao Relatório “Saldo de Numerário em relação ao Limite de Saldo", do sistema BDF,
-            referente ao período de {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}
-            a  {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}}, constataram que o limite do
+            referente ao período de
+            {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}}, a
+            {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}
+            constataram que o limite do
             saldo estabelecido para a unidade foi descumprido em {{$ocorrencias}} dias,
             o que corresponde a uma média de {{ $mediaocorrencias }} ocorrências por mês, considerando o período, conforme detalhado a seguir:
         </span>
@@ -25,8 +27,8 @@
         <p></p>
         @if(! $sl02bdfs30->isEmpty())
             <span class="lever rigth">
-               No período de {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}
-               a  {{\Carbon\Carbon::parse($dtmenos30dias)->format('d/m/Y')}}, constataram que o limite do
+               No período de {{\Carbon\Carbon::parse($dtmenos30dias)->format('d/m/Y')}} a
+                {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}, constataram que o limite do
                saldo estabelecido para a unidade foi descumprido em {{$ocorrencias30}} dias.  Média de {{ (number_format(($ocorrencias30/22)*100, 2, ',', '.')) }} por cento dos dias no período de 30 dias, e saldo médio ultrapassado de
                {{ 'R$'.number_format($acumulados30/$ocorrencias30, 2, ',', '.') }}.
             </span>
@@ -58,8 +60,7 @@
         <p></p>
         @if(! $sl02bdfs60->isEmpty())
                 <span class="lever rigth">
-               No período de {{\Carbon\Carbon::parse($dtmenos30dias)->format('d/m/Y')}}
-               a  {{\Carbon\Carbon::parse($dtmenos60dias)->format('d/m/Y')}}, constataram que o limite do
+               No período de {{\Carbon\Carbon::parse($dtmenos60dias)->format('d/m/Y')}} a {{\Carbon\Carbon::parse($dtmenos30dias)->format('d/m/Y')}}, constataram que o limite do
                saldo estabelecido para a unidade foi descumprido em {{$ocorrencias60}} dias.  Média de {{ (number_format(($ocorrencias60/22)*100, 2, ',', '.')) }} por cento dos dias no período de 30 dias, e saldo médio ultrapassado de
                {{ 'R$'.number_format($acumulados60/$ocorrencias60, 2, ',', '.') }}.
             </span>
@@ -91,8 +92,7 @@
         <p></p>
         @if(! $sl02bdfs90->isEmpty())
             <span class="lever rigth">
-               No período de {{\Carbon\Carbon::parse($dtmenos60dias)->format('d/m/Y')}}
-               a  {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}}, constataram que o limite do
+               No período de {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}} a {{\Carbon\Carbon::parse($dtmenos60dias)->format('d/m/Y')}}, constataram que o limite do
                saldo estabelecido para a unidade foi descumprido em {{$ocorrencias90}} dias.  Média de {{ (number_format(($ocorrencias90/22)*100, 2, ',', '.')) }} por cento dos dias no período de 30 dias, e saldo médio ultrapassado de
                {{ 'R$'.number_format($acumulados90/$ocorrencias90, 2, ',', '.') }}.
             </span>
@@ -124,8 +124,7 @@
         <p></p>
         @if(! $sl02bdfs120->isEmpty())
             <span class="lever rigth">
-               No período de {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}}
-               a  {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}}, constataram que o limite do
+               No período de  {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}} a {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}}, constataram que o limite do
                saldo estabelecido para a unidade foi descumprido em {{$ocorrencias120}} dias.  Média de {{ (number_format(($ocorrencias120/22)*100, 2, ',', '.')) }} por cento dos dias no período de 30 dias, e saldo médio ultrapassado de
                {{ 'R$'.number_format($acumulados120/$ocorrencias120, 2, ',', '.') }}.
             </span>
