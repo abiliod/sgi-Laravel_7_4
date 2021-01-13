@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Correios;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Correios\Inspecao;
+
 
 class VerificacoesController extends Controller
 {
@@ -480,8 +482,6 @@ class VerificacoesController extends Controller
                             ,'class'=>'orange white-text']);
                     }
 
-                  //  dd($request->all());
-
                     if(!empty($request->all()['search'])){
                         $registros = DB::table('unidades')
                             ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
@@ -530,10 +530,23 @@ class VerificacoesController extends Controller
 
     public function index()
     {
-        $businessUnitUser = DB::table('unidades')
-            ->Where([['mcu', '=', auth()->user()->businessUnit]])
-            ->select('unidades.*')
-            ->first();
+        try
+        {
+           $businessUnitUser = DB::table('unidades')
+                ->Where([['mcu', '=', auth()->user()->businessUnit]])
+                ->select('unidades.*')
+                ->first();
+        } catch (Exception $e)  {
+
+//            \Session::flash('mensagem',['msg'=>'Seção expirada '.$e
+//                ,'class'=>'red white-text']);
+            return redirect()->route('login');
+        }
+
+//        $businessUnitUser = DB::table('unidades')
+//            ->Where([['mcu', '=', auth()->user()->businessUnit]])
+//            ->select('unidades.*')
+//            ->first();
         if(!empty( $businessUnitUser ))
         {
              $tiposDeUnidade = DB::table('tiposdeunidade')
