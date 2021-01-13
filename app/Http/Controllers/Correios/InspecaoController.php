@@ -553,6 +553,7 @@ class InspecaoController extends Controller
                 $dtnow = new Carbon();
                 $dtmenos90dias = new Carbon();
                 $dtmenos90dias->subDays(90);
+                $total=0.00;
                 $smb_bdf_naoconciliados = DB::table('smb_bdf_naoconciliados')
                     ->select(
                         'smb_bdf_naoconciliados.*'
@@ -573,10 +574,16 @@ class InspecaoController extends Controller
 
                 $dtini = $periodo->min('Data');
                 $dtfim = $periodo->max('Data');
-                $total=0.00;
+
                 $total  = $smb_bdf_naoconciliados->sum('Divergencia'); // soma a coluna valor da coleção de dados
                 return view('compliance.inspecao.editar',compact(
-                    'registro','id','smb_bdf_naoconciliados','total','dtini','dtfim','dtnow'
+                    'registro'
+                    ,'id'
+                    ,'smb_bdf_naoconciliados'
+                    ,'total'
+                    ,'dtini'
+                    ,'dtfim'
+                    ,'dtnow'
                     ));
             }
 
