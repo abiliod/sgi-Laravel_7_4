@@ -65,7 +65,7 @@
                                     type="submit" name="action">Import File
                                     <i class="material-icons right">file_upload</i>
                                 </button>
-                                <a class="btn waves-effect waves-teal blue disabled" href="{{ url('/compliance/importacoes/debitoEmpregado/export') }}">Export File
+                                <a class="btn waves-effect waves-teal blue disabled" href="{{ url('/compliance/importacoes/debitoEmpregado/export') }}"disabled>Export File
                                 <i class="material-icons right">file_download</i></a>
                             </div>
                         </div>

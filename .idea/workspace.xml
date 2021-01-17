@@ -26,10 +26,33 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="07/01/2021 - Ajuste de controller:">
+    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SMBxBDF_NaoConciliado.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SMBxBDF_NaoConciliado.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SlideController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SlideController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/debitoEmpregado.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/debitoEmpregado.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/feriado.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/feriado.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/proter.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/proter.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-4.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-4.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_Admin/_footer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_Admin/_footer.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -946,28 +969,34 @@
       <workItem from="1610565139721" duration="1784000" />
       <workItem from="1610566955335" duration="2171000" />
       <workItem from="1610569160309" duration="495000" />
-      <workItem from="1610577504869" duration="297000" />
-    </task>
-    <task id="LOCAL-00086" summary=" 23/12/20 - ajuste final para importar a função unidades;">
-      <created>1608772298684</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1608772298684</updated>
-    </task>
-    <task id="LOCAL-00087" summary=" 23/12/20 - ajuste  para importar;">
-      <created>1608772438708</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1608772438709</updated>
-    </task>
-    <task id="LOCAL-00088" summary=" 23/12/20 - ajuste  para importar proter;">
-      <created>1608772545415</created>
-      <option name="number" value="00088" />
-      <option name="presentableId" value="LOCAL-00088" />
-      <option name="project" value="LOCAL" />
-      <updated>1608772545415</updated>
+      <workItem from="1610577504869" duration="1074000" />
+      <workItem from="1610584317450" duration="10000" />
+      <workItem from="1610632592703" duration="1950000" />
+      <workItem from="1610634691782" duration="1291000" />
+      <workItem from="1610637069190" duration="1384000" />
+      <workItem from="1610644871091" duration="415000" />
+      <workItem from="1610717187285" duration="1151000" />
+      <workItem from="1610718373870" duration="4406000" />
+      <workItem from="1610722997715" duration="1423000" />
+      <workItem from="1610731185146" duration="1605000" />
+      <workItem from="1610734025782" duration="1782000" />
+      <workItem from="1610735849950" duration="650000" />
+      <workItem from="1610738220195" duration="1604000" />
+      <workItem from="1610803730517" duration="1395000" />
+      <workItem from="1610805550037" duration="1783000" />
+      <workItem from="1610807375900" duration="1474000" />
+      <workItem from="1610809181662" duration="1237000" />
+      <workItem from="1610811536810" duration="1771000" />
+      <workItem from="1610816917869" duration="1782000" />
+      <workItem from="1610818961791" duration="2160000" />
+      <workItem from="1610821153667" duration="1783000" />
+      <workItem from="1610822966237" duration="1782000" />
+      <workItem from="1610824784425" duration="1781000" />
+      <workItem from="1610826596520" duration="1398000" />
+      <workItem from="1610830449903" duration="634000" />
+      <workItem from="1610844658600" duration="1014000" />
+      <workItem from="1610875050547" duration="1279000" />
+      <workItem from="1610882049812" duration="9000" />
     </task>
     <task id="LOCAL-00089" summary=" 23/12/20 - ajuste filtro relatos;">
       <created>1608803444219</created>
@@ -1291,7 +1320,28 @@
       <option name="project" value="LOCAL" />
       <updated>1610577787418</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="07/01/2021 - Ajuste de model correção de bug:">
+      <created>1610577818926</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1610577818926</updated>
+    </task>
+    <task id="LOCAL-00136" summary="07/01/2021 - Ajuste de controller melhoria de funcionalidade na inspeção:">
+      <created>1610577917052</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1610577917052</updated>
+    </task>
+    <task id="LOCAL-00137" summary="13/01/2021 - Ajustes">
+      <created>1610577956174</created>
+      <option name="number" value="00137" />
+      <option name="presentableId" value="LOCAL-00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1610577956174</updated>
+    </task>
+    <option name="localTasksCounter" value="138" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1322,9 +1372,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="06/01/2021 - Ajuste projeto form277-7:" />
-    <MESSAGE value="06/01/2021 - Ajuste projeto ExportLancamentosSRO:" />
-    <MESSAGE value="06/01/2021 - Ajuste projeto ImportacaoController:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formIndexImportacao:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formEditInspecao:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formIndexInspecionados:" />
@@ -1347,7 +1394,10 @@
     <MESSAGE value="13/01/2021 - Ajuste de blade importacoes:" />
     <MESSAGE value="13/01/2021 - Ajuste de controller refatoração de codigo:" />
     <MESSAGE value="013/01/2021 - Ajuste de controller refatoração de codigo:" />
-    <option name="LAST_COMMIT_MESSAGE" value="013/01/2021 - Ajuste de controller refatoração de codigo:" />
+    <MESSAGE value="07/01/2021 - Ajuste de model correção de bug:" />
+    <MESSAGE value="07/01/2021 - Ajuste de controller melhoria de funcionalidade na inspeção:" />
+    <MESSAGE value="13/01/2021 - Ajustes" />
+    <option name="LAST_COMMIT_MESSAGE" value="13/01/2021 - Ajustes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
@@ -1397,11 +1447,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1609971662098" />
-    <state x="345" y="0" key="CommitChangelistDialog2" timestamp="1610577872929">
+    <state x="345" y="0" key="CommitChangelistDialog2" timestamp="1610577954806">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="345" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1610577872929" />
+    <state x="345" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1610577954806" />
     <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1468,11 +1518,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1610577823300">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1610577957894">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1610577823300" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1610577957894" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1521,11 +1571,6 @@
           <url>file://$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/FeriasPorMcu.php</url>
           <line>21</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php</url>
-          <line>2014</line>
-          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

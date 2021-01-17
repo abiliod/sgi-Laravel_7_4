@@ -60,7 +60,7 @@ Tipo de importação: Por incremento.O Sistema ao importar a planilha grava os r
                                 <i class="material-icons right">file_upload</i>
                             </button>
 
-                            <a class="btn waves-effect waves-teal orange disabled" href="{{ url('/compliance/importacoes/alarme/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange disabled" href="{{ url('/compliance/importacoes/alarme/export') }}" disabled>Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

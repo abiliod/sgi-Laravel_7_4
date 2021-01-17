@@ -24,9 +24,12 @@
             &copy;
             <script>
                 document.write(new Date().getFullYear())
-            </script>, Copyright By Abilio.adm.br <i class="material-icons">favorite</i> by
+            </script>, Copyright By Abilio.adm.br      |   Laravel v{{ Illuminate\Foundation\Application::VERSION }}  |  (PHP v{{ PHP_VERSION }}) <i class="material-icons">favorite</i> by
             <a href="https://www.abilio.adm.br" target="_blank">Developer</a>.
         </div>
     </div>
 
   </footer>
+<div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+
+</div>

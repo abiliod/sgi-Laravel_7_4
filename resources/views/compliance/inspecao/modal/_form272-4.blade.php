@@ -19,20 +19,14 @@
                             <tbody>
                             @foreach($cftvs as $cftv)
                                 <tr>
-
                                     <td>
                                         <a href="{{$cftv->link}}"    target="_blank"> DVR {{$cftv->unidade}} </a>
                                     </td>
                                     <td>{{ $cftv->cameras_fixa_cf }}</td>
                                     <td>{{ $cftv->cameras_infra_vermelho_cir }}</td>
                                     <td>{{ $cftv->dome }}</td>
-
-
                                     <td>{{ $cftv->user }}</td>
                                     <td>{{ $cftv->password }}</td>
-
-
-
                                     <td>{{ $cftv->marcamodelo }}</td>
                                     <td>{{ $cftv->statusconexao }}</td>
                                     <td>{{(isset($cftv->data_ultima_conexao) && $cftv->data_ultima_conexao == ''  ? '   ----------  ' : \Carbon\Carbon::parse($cftv->data_ultima_conexao)->format('d/m/Y'))}}</td>
@@ -40,11 +34,9 @@
                                     <td>{{ $cftv->hora_no_equipamento }}</td>
                                 </tr>
                             @endforeach
-
                             @if($cftv->data_ultima_conexao > 0)
                              <tr>
                                Com base nas informações disponibilizadas, acesse o  Sistema CFTV e anote no Formulário principal a sua avaliação e as evidências. {{\Carbon\Carbon::parse($cftv->data_no_equipamento)->format('d/m/Y')}}. Click no botão FECHAR.
-
                              </tr>
                              <div id="aprimoramento">
                                     <span>
@@ -80,9 +72,7 @@
                             @endif
                             </tbody>
                         </table>
-
                     @endif
                     <input type="hidden"  id="totalfalta" value="{{ isset($total) ? $total : '' }}">
                     <input type="hidden"  id="totalrisco" value="0.00">
                     <input type="hidden"  id="totalsobra" value="0.00">
-

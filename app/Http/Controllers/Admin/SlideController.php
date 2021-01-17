@@ -62,7 +62,7 @@ class SlideController extends Controller {
         $registro->link = $dados['link'];
         $registro->ordem = $dados['ordem'];
         $registro->publicado = $dados['publicado'];
-        $imovel = $registro->imovel;
+       // $imovel = $registro->imovel;
         $file = $request->file('imagem');
 
         if($file){

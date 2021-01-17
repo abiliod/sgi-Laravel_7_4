@@ -32,13 +32,12 @@
                       <div class="input-field"  id ="ajuda" style="display:none;">
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-
-                                Painel de extravios,    http://paineldeextravios.correiosnet.int – MENU:  Folha de Selecione a Regional, na aba Relatórios Operacionais  ->Trechos Totais, informe o período. Fazer o download do período
-                                VEJA o lay-out:
-                                [objeto	data_evento	evento	cliente	trecho	evento_trecho	unid_origem	unid_destino	dr_origem	dr_destino	gestao_prealerta	automatico	manual	total	macroprocesso	postado	ultimo_evento_extraviado	ultimo_evento_em_transito	ultimo_evento	ultimo_evento_data	evento_finalizador	tipo	analise_sro	unid_origem_apelido	unid_destino_apelido	trecho_real	se_postagem	unidade_postagem	data_postagem	familia	ultimo_evento_sinistro]
-                                Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
-                                O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
-                                Frequencia: diária.
+Painel de extravios,    http://paineldeextravios.correiosnet.int – MENU:Folha de Selecione a Regional, na aba Relatórios Operacionais  ->Trechos Totais, informe o período. Fazer o download do período
+VEJA o lay-out:
+[objeto	data_evento	evento	cliente	trecho	evento_trecho	unid_origem	unid_destino	dr_origem	dr_destino	gestao_prealerta	automatico	manual	total	macroprocesso	postado	ultimo_evento_extraviado	ultimo_evento_em_transito	ultimo_evento	ultimo_evento_data	evento_finalizador	tipo	analise_sro	unid_origem_apelido	unid_destino_apelido	trecho_real	se_postagem	unidade_postagem	data_postagem	familia	ultimo_evento_sinistro]
+Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho aproximado de 350 kb.
+O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
+Frequencia: Semanal.
                             </textarea>
                       </div>
 

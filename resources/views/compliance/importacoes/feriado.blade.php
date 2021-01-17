@@ -57,7 +57,7 @@
                                 <i class="material-icons right">file_upload</i>
                             </button>
 
-                            <a class="btn waves-effect waves-teal orange disabled" href="{{ url('/compliance/importacoes/feriado/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange disabled" href="{{ url('/compliance/importacoes/feriado/export') }}" disabled >Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

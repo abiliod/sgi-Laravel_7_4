@@ -57,7 +57,7 @@
                                  type="submit" name="action">Import File
                                 <i class="material-icons right">file_upload</i>
                             </button>
-                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/cftv/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/cftv/export') }}"disabled>Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

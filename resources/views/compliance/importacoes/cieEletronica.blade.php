@@ -32,13 +32,13 @@
                       <div class="input-field"  id ="ajuda" style="display:none;">
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-
-                                Sistema: Cie Eletrônica    http://....., informe o período. Fazer o download do período importar os registros para a planilha xlsx
-                                VEJA o lay-out:
-                                [Número	Emissão	Origem	SE Origem	Destino	SE Destino	Irregularidade	Categoria	Número Objeto	Lida	Respondida	Fora do prazo	Data de resposta	Resposta]
-                                Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
-                                O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
-                                Frequencia: diária.
+Sistema: Cie Eletrônica   http://apps2/sqm/app/index.php busque todas regionais e informe um período.
+Fazer o download do período em planilha.xlsx
+VEJA o lay-out:
+[Número	Emissão	Origem	SE Origem	Destino	SE Destino	Irregularidade	Categoria	Número Objeto	Lida	Respondida	Fora do prazo	Data de resposta	Resposta]
+Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
+O sistema excluirá os lançamentos cujo a data do evento seja maior do que 1 ano e fará a persistêcia dos novos registros.
+Frequencia: semanal.
                             </textarea>
                       </div>
 
@@ -59,7 +59,7 @@
                                  type="submit" name="action">Import File
                                 <i class="material-icons right">file_upload</i>
                             </button>
-                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/cieEletronica/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/cieEletronica/export') }}" disabled >Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

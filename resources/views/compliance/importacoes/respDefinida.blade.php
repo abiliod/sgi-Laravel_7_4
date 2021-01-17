@@ -63,7 +63,7 @@ O Sistema ao importar a planilha atualiza os registros existentes e inclui os re
                                     type="submit" name="action">Import File
                                     <i class="material-icons right">file_upload</i>
                                 </button>
-                                <a class="btn waves-effect waves-teal blue" href="{{ url('/compliance/importacoes/RespDefinida/export') }}">Export File
+                                <a class="btn waves-effect waves-teal blue" href="{{ url('/compliance/importacoes/RespDefinida/export') }}" disabled>Export File
                                 <i class="material-icons right">file_download</i></a>
                             </div>
                         </div>

@@ -31,16 +31,15 @@
                       <div class="input-field"  id ="ajuda" style="display:none;">
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-
-                                Sistema: MicroEstrategy, http://......
-                                Pesquisar  Superintendencia, importar para uma planilha formato excel.xlsx
-                                Após o download da tabela  importar para o Excel e higienizar a planilha deixando apenas os objetos cujo a coluna Código do Evento seja igual a BDE.
-                                Exclua também a ultima linha, linha de totalização gerada pelo sistema.
-                                VEJA o lay-out:
-                                [DR de Destino	Nome da Unidade	Código do Objeto	Descrição do Evento	Código do Evento	Data do Evento	Qtde Objetos NÃO Entregues na Primeira Tentativa]
-                                Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
-                                O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
-                                Frequencia: diária.
+Sistema: MicroEstrategy, http://dwcorreios/microstrategy/servlet/mstrWeb
+Pesquisar  Superintendencia, importar para uma planilha formato excel.xlsx
+Após o download da tabela  importar para o Excel e higienizar a planilha deixando apenas os objetos cujo a coluna Código do Evento seja igual a BDE.
+Exclua também a ultima linha, linha de totalização gerada pelo sistema.
+VEJA o lay-out:
+[DR de Destino	Nome da Unidade	Código do Objeto	Descrição do Evento	Código do Evento	Data do Evento	Qtde Objetos NÃO Entregues na Primeira Tentativa]
+Caso o processo seja interrompido por timeout fraguimente o  arquivo para um tamanho de 45 kb.
+O sistema excluirá os lançamentos cujo a data do evento seja maior do que 210 dias e fará a persistêcia dos novos registros.
+Frequencia: diária.
                             </textarea>
                       </div>
 
@@ -61,7 +60,7 @@
                                  type="submit" name="action">Import File
                                 <i class="material-icons right">file_upload</i>
                             </button>
-                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/microStrategy/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/microStrategy/export') }}" readonly>Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

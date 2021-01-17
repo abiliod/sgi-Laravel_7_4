@@ -70,7 +70,7 @@ Frequencia: MENSAL. É necessário que os ultimos 12 meses sejam importados para
                                  type="submit" name="action">Import File
                                 <i class="material-icons right">file_upload</i>
                             </button>
-                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/ferias/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/ferias/export') }}"disabled>Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

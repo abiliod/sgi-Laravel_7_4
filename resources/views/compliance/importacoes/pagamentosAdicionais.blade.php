@@ -33,10 +33,12 @@
                       <div class="input-field"  id ="ajuda" style="display:none;">
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                               Pagamentos Adicionais,   WebSGQ3 http://intranetmg2/WebSGQ3/principal.asp  – MENU:  Folha de Pagamento ->Adicionais ->Geral. Fazer o download do período desejado e renomear o arquivo o sistema vai incluir os registros novos.
-                               VEJA o lay-out:
-                               [SE	Sigla Lotação	Matrícula	Nome	Cargo	Espec.	Titular da Função	Dif. mer.	Rubrica	Qtd	Valor	Ref.]
-                               Frequencia: MENSAL.
+Pagamentos Adicionais,   WebSGQ3 http://intranetmg2/WebSGQ3/principal.asp  – MENU: Folha de Pagamento ->Adicionais ->Geral.
+Fazer o download do período desejado importar para uma planilha excel, o arquivo o sistema vai incluir os registros novos.
+No assistente de importação do excel etapa 1 de 3 selecione a opção 65001 : unicode UTF-8
+VEJA o lay-out:
+[SE	Sigla Lotação	Matrícula	Nome	Cargo	Espec.	Titular da Função	Dif. mer.	Rubrica	Qtd	Valor	Ref.]
+Frequencia: MENSAL.
                             </textarea>
                       </div>
 
@@ -57,7 +59,7 @@
                                  type="submit" name="action">Import File
                                 <i class="material-icons right">file_upload</i>
                             </button>
-                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/pagamentosAdicionais/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/pagamentosAdicionais/export') }}" disabled>Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

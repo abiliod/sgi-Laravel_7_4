@@ -31,10 +31,13 @@
                       <div class="input-field"  id ="ajuda" style="display:none;">
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                               Pagamentos Adicionais,   BDF, Relatório FAT-02. Fazer o download do período desejado e renomear o arquivo o sistema vai incluir os registros novos.
-                               VEJA o lay-out:
-                               [DR	CD_ORGAO	ORGAO	AG_POSTAGEM	DT_POSTAGEM	ETIQUETA	SERVICO	VLR_MEDIDA	CD_GRUPO_PAIS_DESTINO	CEP_DESTINO	VLR_COBRADO_DESTINATARIO	VLR_DECLARADO	COD_ADM	PRODUTO	QTDE_PRESTADA	VLR_SERVICO	VLR_DESCONTO	ACRESCIMO	VLR_FINAL	CARTAO	DOCUMENTO	SERVIﾇO_ADICIONAL	NOME_SERVICO	CONTRATO	ATENDIMENTO	DT_MOV]
-                               Frequencia: SEMANAL.
+Pagamentos Adicionais,   BDF, Relatório FAT-02. Fazer o download do período de 210 dias das unidades desejadas a inspecionar
+importar para uma planilha excel .xlsx.
+VEJA o lay-out:
+[DR	CD_ORGAO	ORGAO	AG_POSTAGEM	DT_POSTAGEM	ETIQUETA	SERVICO	VLR_MEDIDA	CD_GRUPO_PAIS_DESTINO	CEP_DESTINO	VLR_COBRADO_DESTINATARIO	VLR_DECLARADO	COD_ADM	PRODUTO	QTDE_PRESTADA	VLR_SERVICO	VLR_DESCONTO	ACRESCIMO	VLR_FINAL	CARTAO	DOCUMENTO	servio_adicional NOME_SERVICO	CONTRATO	ATENDIMENTO	DT_MOV]
+Frequencia: POR DEMANDA DA INSPEÇÃO.
+O arquivo deve ter aproximadamente 1000 linhas 130kb.
+
                             </textarea>
                       </div>
 
@@ -56,7 +59,7 @@
                                  type="submit" name="action">Import File
                                 <i class="material-icons right">file_upload</i>
                             </button>
-                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/bdf_fat_02/export') }}">Export File
+                            <a class="btn waves-effect waves-teal orange" href="{{ url('/compliance/importacoes/bdf_fat_02/export') }}" disabled>Export File
                             <i class="material-icons right">file_download</i></a>
                         </div>
                     </form>

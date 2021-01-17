@@ -1168,7 +1168,7 @@ class InspecaoController extends Controller
                         {
                             $inicio_fruicao = Carbon::parse($ferias->inicio_fruicao)->format('Y-m-d');
                             $termino_fruicao = Carbon::parse($ferias->termino_fruicao)->format('Y-m-d');
-                            $compartilhaSenha =  DB::table('compartilhaSenhas')
+                            $compartilhaSenha =  DB::table('compartilhasenhas')
                                 ->where('codigo', '=', $registro->codigo)
                                 ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                                 ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
@@ -1249,7 +1249,7 @@ class InspecaoController extends Controller
                             }
                         }
                     }
-                    $compartilhaSenhas  =  DB::table('compartilhaSenhas')
+                    $compartilhaSenhas  =  DB::table('compartilhasenhas')
                         ->where('codigo', '=', $registro->codigo)
                         ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                         ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
@@ -1299,8 +1299,8 @@ class InspecaoController extends Controller
                 $total=0.00;
                 $count = 0;
 
-                $plplistapendentes = DB::table('plpListaPendentes')
-                   ->select( 'plpListaPendentes.*' )
+                $plplistapendentes = DB::table('plplistapendentes')
+                   ->select( 'plplistapendentes.*' )
                    ->where([['stomcu', '=',  $registro->mcu  ]])
                 ->get();
 
