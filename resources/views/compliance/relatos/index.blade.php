@@ -12,7 +12,7 @@
                         <option value="0">Tipo de Unidade</option>
 
                             @foreach($tiposDeUnidade as $tipoDeUnidade)
-                            <option value="{{ $tipoDeUnidade->id }}">{{ $tipoDeUnidade->tipodescricao }}</option>
+                            <option value="{{ $tipoDeUnidade->tipoUnidade_id }}">{{ $tipoDeUnidade->tipodescricao }}</option>
                             @endforeach
                         </select>
 

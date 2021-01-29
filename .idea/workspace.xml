@@ -29,15 +29,14 @@
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/GruposDeVerificacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/GruposDeVerificacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecionados/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecionados/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/verificacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/verificacoes/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -996,6 +995,11 @@
       <workItem from="1611928510528" duration="1782000" />
       <workItem from="1611930355958" duration="1785000" />
       <workItem from="1611932174212" duration="1375000" />
+      <workItem from="1611938624933" duration="672000" />
+      <workItem from="1611944390220" duration="615000" />
+      <workItem from="1611954876273" duration="1940000" />
+      <workItem from="1611956847376" duration="1569000" />
+      <workItem from="1611962631629" duration="1729000" />
     </task>
     <task id="LOCAL-00089" summary=" 23/12/20 - ajuste filtro relatos;">
       <created>1608803444219</created>
@@ -1399,30 +1403,13 @@
     <option name="LAST_COMMIT_MESSAGE" value="13/01/2021 - Ajustes" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="400" y="18" key="#CLI_Interpreters" timestamp="1602897444368">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="400" y="18" key="#CLI_Interpreters/0.0.1366.728@0.0.1366.728" timestamp="1602897444368" />
     <state x="309" y="41" key="#Inspections" timestamp="1608215905776">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="309" y="41" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1608215905776" />
-    <state x="527" y="6" key="#PHP" timestamp="1602897446498">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="527" y="6" key="#PHP/0.0.1366.728@0.0.1366.728" timestamp="1602897446498" />
-    <state x="470" y="156" key="#TODO" timestamp="1602609478864">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="470" y="156" key="#TODO/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602609478864" />
-    <state x="480" y="152" key="#Web_Browsers" timestamp="1602897518760">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="480" y="152" key="#Web_Browsers/0.0.1366.728@0.0.1366.728" timestamp="1602897518760" />
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607690236617">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1603107998421" />
     <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1607690236617" />
     <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1609685116698">
       <screen x="0" y="0" width="1366" height="728" />
@@ -1451,18 +1438,9 @@
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
     <state x="345" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1610577954806" />
-    <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1602451463750">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state width="254" height="195" key="DatabaseViewActions_Filter/0.0.1366.728@0.0.1366.728" timestamp="1602451463750" />
-    <state x="550" y="113" width="736" height="501" key="EnvironmentVariablesDialog" timestamp="1602898039563">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="550" y="113" width="736" height="501" key="EnvironmentVariablesDialog/0.0.1366.728@0.0.1366.728" timestamp="1602898039563" />
     <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1607694046871">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602867117130" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1607694046871" />
     <state width="1344" height="174" key="GridCell.Tab.0.bottom" timestamp="1608645949150">
       <screen x="0" y="0" width="1366" height="728" />
@@ -1500,10 +1478,6 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1344" height="217" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1608645778875" />
-    <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1602451474422">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1366.728@0.0.1366.728" timestamp="1602451474422" />
     <state x="669" y="83" key="NewPhpClassDialog" timestamp="1610407793728">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1534,14 +1508,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1607990268145" />
-    <state x="339" y="157" width="672" height="677" key="run.anything.popup" timestamp="1608744251280">
+    <state x="339" y="157" width="672" height="677" key="run.anything.popup" timestamp="1611955482853">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="157" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1608744251280" />
-    <state x="475" y="221" key="scopes" timestamp="1602609466631">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="475" y="221" key="scopes/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1602609466631" />
+    <state x="339" y="157" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1611955482853" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1609784359265">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

@@ -19,7 +19,7 @@
                         <select name="tipoUnidade_id" id="tipoUnidade_id" onchange="ativaBtnFiltro();">
                         <option value="0" selected>Tipo de Unidade</option>
                             @foreach( $tiposDeUnidade as $tipoDeUnidade)
-                            <option value="{{ $tipoDeUnidade->id }}">{{ $tipoDeUnidade->sigla }} - {{ $tipoDeUnidade->tipodescricao }}</option>
+                            <option value="{{ $tipoDeUnidade->tipoUnidade_id }}">{{ $tipoDeUnidade->sigla }} - {{ $tipoDeUnidade->tipodescricao }}</option>
                             @endforeach
                         </select>
                     </div>

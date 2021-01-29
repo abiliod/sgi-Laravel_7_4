@@ -157,10 +157,14 @@ class RelatoController extends Controller
             ->get();
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
-            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-            ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupBy('tipoUnidade_id')
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
             ->get();
+
         $dados = TipoDeUnidade::find($request['tipoUnidade_id']);
             //$dados->nomegrupo=$request['nomegrupo'];
         return view('compliance.relatos.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
@@ -186,10 +190,12 @@ class RelatoController extends Controller
 
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
-
-            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-            ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupBy('tipoUnidade_id')
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
             ->get();
 
         return view('compliance.relatos.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));

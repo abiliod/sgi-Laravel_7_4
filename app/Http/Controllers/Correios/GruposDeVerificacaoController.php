@@ -52,15 +52,15 @@ class GruposDeVerificacaoController extends Controller
     public function adicionar()
     {
 
-        //if(!auth()->user()->can('usuario_adicionar')){
-        //   return redirect()->route('home');
-       // }
-       $tiposDeUnidade = DB::table('tiposdeunidade')
-       ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-       ->select('tipoUnidade_id as id','sigla','descricao')
-       ->groupBy('tipoUnidade_id')
-       ->get();
-      //      dd($tiposdeunidade );
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
+            ->get();
+
         return view('compliance.grupoVerificacao.adicionar', compact( 'tiposDeUnidade'));
     }
 
@@ -82,14 +82,8 @@ class GruposDeVerificacaoController extends Controller
 
     public function edit($id)
     {
-
-   //     dd("pare");
         $registro = GrupoDeVerificacao::find($id);
-//        dd($registro );
         $tiposDeUnidade = TipoDeUnidade::all();
-       // var_dump($tiposDeUnidade );
-       // dd($tiposDeUnidade);
-
         return view('compliance.grupoVerificacao.editar',compact('registro', 'tiposDeUnidade'));
     }
 
@@ -142,9 +136,13 @@ class GruposDeVerificacaoController extends Controller
         ->get();
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
-        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-        ->select('tipoUnidade_id as id','sigla','tipodescricao')
-        ->groupBy('tipoUnidade_id')
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
+            ->get();oupBy('tipoUnidade_id')
         ->get();
 
         return view('compliance.grupoVerificacao.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
@@ -169,12 +167,13 @@ class GruposDeVerificacaoController extends Controller
         $dados->descricao='Tipo de Unidade';
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
-        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-        ->select('tipoUnidade_id as id','sigla','tipodescricao')
-        ->groupBy('tipoUnidade_id')
-        ->get();
-
-
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
+            ->get();
         return view('compliance.grupoVerificacao.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
     }
 }

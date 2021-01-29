@@ -284,11 +284,15 @@ class InspecionadosController extends Controller {
         }
 
         $dados = $request->all();
+
         $tiposDeUnidade = DB::table('tiposdeunidade')
-            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-            ->select('tipoUnidade_id as id','sigla','tipodescricao')
-          //  ->groupByRaw('tipoUnidade_id')
-        ->get();
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
+            ->get();
 
         if ($request->all()['codigo'] >1)
         {
@@ -392,10 +396,16 @@ class InspecionadosController extends Controller {
         if(!empty( $businessUnitUser ))
         {
             $tiposDeUnidade = DB::table('tiposdeunidade')
-                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-                ->select('tipoUnidade_id as id','sigla','tipodescricao')
-              //  ->groupByRaw('tipoUnidade_id')
+                ->join('gruposdeverificacao',
+                    'tiposdeunidade.id',
+                    '=',
+                    'gruposdeverificacao.tipoUnidade_id')
+                ->select('tipoUnidade_id','sigla','tipodescricao')
+                ->groupBy('tipodescricao')
                 ->get();
+
+
+
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])
                 ->Where([['papel_id', '>=', 1]])
@@ -504,23 +514,5 @@ class InspecionadosController extends Controller {
                 ,'class'=>'red white-text']);
             return redirect()->route('home');
         }
-
-
-//
-//        $registros = DB::table('inspecoes')
-//        ->select('inspecoes.*')
-//        ->where([['status', '=', 'Inspecionado']])
-//        ->orderBy('codigo' , 'asc')
-//        ->paginate(10);
-//
-//        $tiposDeUnidade = DB::table('tiposdeunidade')
-//        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-//        ->select('tipoUnidade_id as id','sigla','tipodescricao')
-//        ->groupByRaw('tipoUnidade_id')
-//        ->get();
-
-
-
-
     }
 }

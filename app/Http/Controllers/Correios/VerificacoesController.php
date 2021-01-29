@@ -35,10 +35,12 @@ class VerificacoesController extends Controller
         if(!empty( $businessUnitUser ))
         {
             $tiposDeUnidade = DB::table('tiposdeunidade')
-                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-                ->Where([['inspecionar', '=','Sim']])
-                ->select('tipoUnidade_id as id','sigla','tipodescricao')
-                ->groupBy('tipoUnidade_id')
+                ->join('gruposdeverificacao',
+                    'tiposdeunidade.id',
+                    '=',
+                    'gruposdeverificacao.tipoUnidade_id')
+                ->select('tipoUnidade_id','sigla','tipodescricao')
+                ->groupBy('tipodescricao')
                 ->get();
 
             $papel_user = DB::table('papel_user')
@@ -165,10 +167,12 @@ class VerificacoesController extends Controller
     {
         $dados = $request->all();
         $tiposDeUnidade = DB::table('tiposdeunidade')
-            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-            ->Where([['inspecionar', '=','Sim']])
-            ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupBy('tipoUnidade_id')
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
             ->get();
         $papel_user = DB::table('papel_user')
             ->Where([['user_id', '=', auth()->user()->id]])
@@ -549,11 +553,13 @@ class VerificacoesController extends Controller
         if(!empty( $businessUnitUser ))
         {
             $tiposDeUnidade = DB::table('tiposdeunidade')
-                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'gruposdeverificacao.tipoUnidade_id')
-                ->select('gruposdeverificacao.tipoUnidade_id as id','tiposdeunidade.sigla','tiposdeunidade.tipodescricao','tiposdeunidade.inspecionar')
-                ->Where([['inspecionar', '=','Sim']])
-                ->groupBy('gruposdeverificacao.tipoUnidade_id')
-            ->get();
+                ->join('gruposdeverificacao',
+                    'tiposdeunidade.id',
+                    '=',
+                    'gruposdeverificacao.tipoUnidade_id')
+                ->select('tipoUnidade_id','sigla','tipodescricao')
+                ->groupBy('tipodescricao')
+                ->get();
 
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])
