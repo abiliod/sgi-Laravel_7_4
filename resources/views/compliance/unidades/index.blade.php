@@ -104,11 +104,9 @@
                 @endforeach
 				</tbody>
 			</table>
-
-            <div class="row">
-			     {!! $registros->links() !!}
-            </div>
-
+        <div class="row">
+            {!! $registros->links() !!}
+        </div>
 		</div>
     @can('unidade_adicionar')
 		<div class="row">

@@ -58,7 +58,7 @@ class GruposDeVerificacaoController extends Controller
        $tiposDeUnidade = DB::table('tiposdeunidade')
        ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
        ->select('tipoUnidade_id as id','sigla','descricao')
-       ->groupByRaw('tipoUnidade_id')
+       ->groupBy('tipoUnidade_id')
        ->get();
       //      dd($tiposdeunidade );
         return view('compliance.grupoVerificacao.adicionar', compact( 'tiposDeUnidade'));
@@ -138,13 +138,13 @@ class GruposDeVerificacaoController extends Controller
 
         $gruposdeverificacao = DB::table('gruposdeverificacao')
         ->select('nomegrupo')
-        ->groupByRaw('nomegrupo')
+        ->groupBy('nomegrupo')
         ->get();
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
         ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->select('tipoUnidade_id as id','sigla','tipodescricao')
-        ->groupByRaw('tipoUnidade_id')
+        ->groupBy('tipoUnidade_id')
         ->get();
 
         return view('compliance.grupoVerificacao.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
@@ -159,7 +159,7 @@ class GruposDeVerificacaoController extends Controller
 
         $gruposdeverificacao   = DB::table('gruposdeverificacao')
         ->select('nomegrupo')
-        ->groupByRaw('nomegrupo')
+        ->groupBy('nomegrupo')
         ->get();
 
         //injetando indice zero para alimentar o select com a primeira opção
@@ -171,7 +171,7 @@ class GruposDeVerificacaoController extends Controller
         $tiposDeUnidade = DB::table('tiposdeunidade')
         ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
         ->select('tipoUnidade_id as id','sigla','tipodescricao')
-        ->groupByRaw('tipoUnidade_id')
+        ->groupBy('tipoUnidade_id')
         ->get();
 
 

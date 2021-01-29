@@ -416,6 +416,7 @@ class InspecaoController extends Controller
                 ->where([['debitoempregados.sto', '=', $registro->mcu ]])
                 ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
                 ->get();
+             
                 if(! $debitoempregados->isEmpty())
                 {
                     $count = $debitoempregados->count('matricula');
@@ -426,17 +427,19 @@ class InspecaoController extends Controller
                 {
                     $count = 0;
                     $total = 0.00;
+      
 
                 }
-
-               $competencia= substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
+              
+               $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
+               //dd( $competencia, $mescompetencia , $debitoempregados);
                 return view('compliance.inspecao.editar',compact(
-                    'registro'
-                    ,'id'
+                      'registro'
+                    , 'id'
                     , 'debitoempregados'
-                    ,'competencia'
-                    ,'total'
-                   ,'count'
+                    , 'competencia'
+                    , 'total'
+                   , 'count'
                 ));
             }
 
@@ -772,14 +775,26 @@ class InspecaoController extends Controller
             {
                 $dtmenos90dias = new Carbon();
                 $dtmenos90dias->subDays(90);
-
-
                 $resp_definidas = DB::table('resp_definidas')
                     ->select('mcu','unidade','data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao' )
                     ->where('mcu', '=', $registro->mcu)
-                    ->where('situacao', '!=', 'CONCLUIDO')
                     ->where('data', '<=',  $dtmenos90dias)
+                    ->where('nu_sei', '=', '')
                 ->get();
+
+                /*
+                 * Para fins de complementação do apontamento, quando da verificação física na unidade, solicitar esclarecimentos ao Gerente quanto ao andamento dos processos relacionados às indenizações.
+                 *
+                 *  $resp_definidasApFisica = DB::table('resp_definidas')
+                    ->select('mcu','unidade','data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao' )
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('data', '<=',  $dtmenos90dias)
+                    ->where('nu_sei', '<>', '')
+                   ->where('situacao', '<>', 'CONCLUIDO')
+
+                ->get();
+                gerar informações para verificação do tipo física.
+                 */
 
                 if(! $resp_definidas->isEmpty())
                 {
@@ -1431,6 +1446,7 @@ class InspecaoController extends Controller
                 $media=null;
                 $random=null;
                 $amostra=null;
+                $res=null;
                 $qtd_falhas=null;
                 $percentagem_falhas=null;
 
@@ -1692,7 +1708,7 @@ class InspecaoController extends Controller
                 $dtmenos120dias = $dtmenos120dias->subDays(120);
                 $count = 0;
                 $total=0.00;
-                //  $item=1;
+                $res=null;
                 $dtini=null;
                 $dtfim=null;
                 $media=null;
@@ -2725,7 +2741,7 @@ class InspecaoController extends Controller
             ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
             ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
             ->Where([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
-            ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+           // ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
             //->orderBy('gruposdeverificacao.numeroGrupoVerificacao', 'asc','itensdeinspecoes.id' , 'asc')
            ->paginate(10);
 

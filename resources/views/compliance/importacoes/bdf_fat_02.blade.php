@@ -31,13 +31,14 @@
                       <div class="input-field"  id ="ajuda" style="display:none;">
                           <i class="material-icons prefix">mode_edit</i>
                           <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-Pagamentos Adicionais,   BDF, Relatório FAT-02. Fazer o download do período de 210 dias das unidades desejadas a inspecionar
-importar para uma planilha excel .xlsx.
+BDF-FAT-02, a importação deve ser por demanda de inspeção.
+Isto é, apenas as unidades a serem inspecionadas. Acessar o sistema BDF importar o relatório das unidades a ser inspecionadas para um arquivo txt e posteriormente para uma planilha formato xlsx. Uma boa margem de segurança importe 4 meses.
+1 - Para utilizar importação via sistema, Importe para uma guia de planilha do arquivo template e apague a guia anterior de modo ficar apenas os dados recém importados. Cole o cabeçalho da planilha anterior  na planilha dos dados recém importados. Salve a planilha e execute a importação. (Importação por Incremento, O sistema importa a planilha e apaga as informações com mais de 210 dias corridos.); Obs: após a planilha montada verifique, a planilha deve ter no máximo 1.500 kb.  Ou monte SQL conforme modelo.
 VEJA o lay-out:
-[DR	CD_ORGAO	ORGAO	AG_POSTAGEM	DT_POSTAGEM	ETIQUETA	SERVICO	VLR_MEDIDA	CD_GRUPO_PAIS_DESTINO	CEP_DESTINO	VLR_COBRADO_DESTINATARIO	VLR_DECLARADO	COD_ADM	PRODUTO	QTDE_PRESTADA	VLR_SERVICO	VLR_DESCONTO	ACRESCIMO	VLR_FINAL	CARTAO	DOCUMENTO	servio_adicional NOME_SERVICO	CONTRATO	ATENDIMENTO	DT_MOV]
+DR    CD_ORGAO   ORGAO  AG_POSTAGEM    DT_POSTAGEM    ETIQUETA   SERVICO    VLR_MEDIDA CD_GRUPO_PAIS_DESTINO  CEP_DESTINO    VLR_COBRADO_DESTINATARIO   VLR_DECLARADO  COD_ADM    PRODUTO    QTDE_PRESTADA  VLR_SERVICO    VLR_DESCONTO   ACRESCIMO  VLR_FINAL  CARTAO DOCUMENTO  servio_adicional NOME_SERVICO  CONTRATO   ATENDIMENTO    DT_MOV]
 Frequencia: POR DEMANDA DA INSPEÇÃO.
 O arquivo deve ter aproximadamente 1000 linhas 130kb.
-
+2 - Para utilizar o modo SQL, deve fazer conversão de datas para que as mesmas fiquem no padrão Mysql e valores para ponto flutuante ainda na planilha outra opção é colocar valor zero para estes campos vez que não é utilizado na inspeção, bem como ajustar os espaços que as células do excel deixa quando da transformação do arquivo para (arquivo.sql). Nesse caso o arquivo pode ter até 1gb.
                             </textarea>
                       </div>
 

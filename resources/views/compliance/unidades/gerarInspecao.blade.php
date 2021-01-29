@@ -28,8 +28,8 @@
 
             <div class="input-field col s6">
                 <select name="ciclo" id="ciclo">
-                    <option value="2020" selected>2020</option>
-                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2021" selected>2021</option>
                 </select>
                 <label for="ciclo" >Ciclo de Verificação</label>
             </div>

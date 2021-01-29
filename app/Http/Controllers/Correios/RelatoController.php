@@ -153,13 +153,13 @@ class RelatoController extends Controller
         }
         $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('nomegrupo')
-            ->groupByRaw('nomegrupo')
+            ->groupBy('nomegrupo')
             ->get();
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
             ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupByRaw('tipoUnidade_id')
+            ->groupBy('tipoUnidade_id')
             ->get();
         $dados = TipoDeUnidade::find($request['tipoUnidade_id']);
             //$dados->nomegrupo=$request['nomegrupo'];
@@ -175,7 +175,7 @@ class RelatoController extends Controller
 
         $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('nomegrupo')
-            ->groupByRaw('nomegrupo')
+            ->groupBy('nomegrupo')
             ->get();
 
         $dados = TipoDeUnidade::find(1);
@@ -189,9 +189,8 @@ class RelatoController extends Controller
 
             ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupByRaw('tipoUnidade_id')
+            ->groupBy('tipoUnidade_id')
             ->get();
-        //dd($tiposDeUnidade );
 
         return view('compliance.relatos.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
     }

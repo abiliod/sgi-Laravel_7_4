@@ -287,7 +287,7 @@ class InspecionadosController extends Controller {
         $tiposDeUnidade = DB::table('tiposdeunidade')
             ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupByRaw('tipoUnidade_id')
+          //  ->groupByRaw('tipoUnidade_id')
         ->get();
 
         if ($request->all()['codigo'] >1)
@@ -394,7 +394,7 @@ class InspecionadosController extends Controller {
             $tiposDeUnidade = DB::table('tiposdeunidade')
                 ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
                 ->select('tipoUnidade_id as id','sigla','tipodescricao')
-                ->groupByRaw('tipoUnidade_id')
+              //  ->groupByRaw('tipoUnidade_id')
                 ->get();
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])

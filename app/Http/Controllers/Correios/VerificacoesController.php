@@ -38,8 +38,7 @@ class VerificacoesController extends Controller
                 ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
                 ->Where([['inspecionar', '=','Sim']])
                 ->select('tipoUnidade_id as id','sigla','tipodescricao')
-
-                ->groupByRaw('tipoUnidade_id')
+                ->groupBy('tipoUnidade_id')
                 ->get();
 
             $papel_user = DB::table('papel_user')
@@ -169,7 +168,7 @@ class VerificacoesController extends Controller
             ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
             ->Where([['inspecionar', '=','Sim']])
             ->select('tipoUnidade_id as id','sigla','tipodescricao')
-            ->groupByRaw('tipoUnidade_id')
+            ->groupBy('tipoUnidade_id')
             ->get();
         $papel_user = DB::table('papel_user')
             ->Where([['user_id', '=', auth()->user()->id]])
@@ -549,13 +548,12 @@ class VerificacoesController extends Controller
 //            ->first();
         if(!empty( $businessUnitUser ))
         {
-             $tiposDeUnidade = DB::table('tiposdeunidade')
-                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-                 ->Where([['inspecionar', '=','Sim']])
-                 ->select('tipoUnidade_id as id','sigla','tipodescricao')
-
-                ->groupByRaw('tipoUnidade_id')
-                ->get();
+            $tiposDeUnidade = DB::table('tiposdeunidade')
+                ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'gruposdeverificacao.tipoUnidade_id')
+                ->select('gruposdeverificacao.tipoUnidade_id as id','tiposdeunidade.sigla','tiposdeunidade.tipodescricao','tiposdeunidade.inspecionar')
+                ->Where([['inspecionar', '=','Sim']])
+                ->groupBy('gruposdeverificacao.tipoUnidade_id')
+            ->get();
 
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])

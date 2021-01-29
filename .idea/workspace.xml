@@ -28,31 +28,16 @@
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SlideController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SlideController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/GruposDeVerificacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/GruposDeVerificacaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/absenteismo.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/alarme.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecionadosController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/bdf_fat_02.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cftv.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cieEletronica.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/controleDeViagem.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/debitoEmpregado.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/debitoEmpregado.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/feriado.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/feriado.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/ferias.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/microStrategy.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/pagamentosAdicionais.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/painelExtravio.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/plpListaPendente.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/proter.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/proter.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/respDefinida.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sgdoDistribuicao.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/smb_bdf.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-4.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-4.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_Admin/_footer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_Admin/_footer.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/gerarInspecao.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -997,6 +982,20 @@
       <workItem from="1610844658600" duration="1014000" />
       <workItem from="1610875050547" duration="1279000" />
       <workItem from="1610882049812" duration="9000" />
+      <workItem from="1610973059727" duration="1716000" />
+      <workItem from="1610975326641" duration="1439000" />
+      <workItem from="1610988081043" duration="599000" />
+      <workItem from="1611056080343" duration="1823000" />
+      <workItem from="1611061843883" duration="881000" />
+      <workItem from="1611063780698" duration="766000" />
+      <workItem from="1611067000995" duration="605000" />
+      <workItem from="1611079186195" duration="22000" />
+      <workItem from="1611922774235" duration="1194000" />
+      <workItem from="1611924520990" duration="2114000" />
+      <workItem from="1611926694019" duration="1780000" />
+      <workItem from="1611928510528" duration="1782000" />
+      <workItem from="1611930355958" duration="1785000" />
+      <workItem from="1611932174212" duration="1375000" />
     </task>
     <task id="LOCAL-00089" summary=" 23/12/20 - ajuste filtro relatos;">
       <created>1608803444219</created>

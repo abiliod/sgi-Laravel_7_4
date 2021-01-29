@@ -13,105 +13,126 @@ use App\Models\Correios\SequenceInspecao;
 
 class UnidadesController extends Controller
 {
+
     public function salvarInspecao(salvarInspecao $request)
     {
         $dados = $request->all();
-        if($dados['inspetorcoordenador']  == $dados['inspetorcolaborador'] )
-        {
-            \Session::flash('mensagem',['msg'=>'Inspetores estão iguais !'
-                ,'class'=>'red white-text']);
-            return redirect()->back();
-        }
-
-        $id=$request->unidade_id;
-        $unidade = Unidade::find($id);
-
-        $sequence_inspcaos = DB::table('sequence_inspcaos')
-            ->select('sequence_inspcaos.*')
-            ->Where([['se', '=', $unidade->se]])
+        $verifica = DB::table('inspecoes')
+            ->select('inspecoes.*')
+            ->Where([['unidade_id', '=',  $dados['unidade_id']]])
+            ->Where([['tipoVerificacao', '=',  $dados['tipoVerificacao']]])
             ->Where([['ciclo', '=', $dados['ciclo']]])
-            ->first();
-        if(!empty($sequence_inspcaos))
-        {
+        ->first();
+        if ($verifica === null) {
 
-            $sequence = $sequence_inspcaos->sequence;
-            $sequence ++;
-            $sequenceInspecao = SequenceInspecao::find($sequence_inspcaos->id);
-            $sequenceInspecao->se      = $unidade->se;
-            $sequenceInspecao->ciclo =  $dados['ciclo'];
-            $sequenceInspecao->sequence      = $sequence;
-            $sequenceInspecao->update();
+            if($dados['inspetorcoordenador']  == $dados['inspetorcolaborador'] )
+            {
+                \Session::flash('mensagem',['msg'=>'Inspetores devem ser diferentes !'
+                    ,'class'=>'red white-text']);
+                return redirect()->back();
+            }
+
+            $unidade = Unidade::find($dados['unidade_id']); // unidade inspecionada
+
+            //gerar numeração
+            $sequence_inspcaos = DB::table('sequence_inspcaos')
+                ->select('sequence_inspcaos.*')
+                ->Where([['se', '=', $unidade->se]])
+                ->Where([['ciclo', '=', $dados['ciclo']]])
+                ->first();
+
+            if(!empty($sequence_inspcaos))
+            {
+                $sequence = $sequence_inspcaos->sequence;
+                $sequence ++;
+                $sequenceInspecao = SequenceInspecao::find($sequence_inspcaos->id);
+                $sequenceInspecao->se      = $unidade->se;
+                $sequenceInspecao->ciclo =  $dados['ciclo'];
+                $sequenceInspecao->sequence      = $sequence;
+                $sequenceInspecao->update();
+            }
+            else
+            {
+                // dd('nao t tem');
+                $sequence=1;
+                $sequenceInspecao = new SequenceInspecao;
+                $sequenceInspecao->se      = $unidade->se;
+                $sequenceInspecao->ciclo =  $dados['ciclo'];
+                $sequenceInspecao->sequence      = $sequence;
+                $sequenceInspecao->save();
+            }
+
+            $sequence = str_pad(  $sequenceInspecao->sequence , 4, '0', STR_PAD_LEFT);
+            $codigo = $unidade->se.$sequence.$dados['ciclo'];
+
+
+//dd($dados ['tipoVerificacao']);
+            if( $dados ['tipoVerificacao'] != 'previa')
+            {
+                $inspecao = new Inspecao;
+                $inspecao->ciclo      = $dados ['ciclo'];
+                $inspecao->descricao =  $unidade->descricao;
+                $inspecao->datainiPreInspeção      = $dados ['datainiPreInspeção'];
+                $inspecao->codigo      = $codigo;
+                $inspecao->unidade_id      = $dados ['unidade_id'];
+                $inspecao->tipoUnidade_id      = $dados ['tipoUnidade_id'];
+                $inspecao->tipoVerificacao      = $dados ['tipoVerificacao'];
+                $inspecao->status      = $dados ['status'];
+                $inspecao->inspetorcoordenador      = $dados ['inspetorcoordenador'];
+                $inspecao->inspetorcolaborador      = $dados ['inspetorcolaborador'];
+                $inspecao->numHrsPreInsp      = $dados ['numHrsPreInsp'];
+                $inspecao->numHrsDesloc      = $dados ['numHrsDesloc'];
+                $inspecao->numHrsInsp      = $dados ['numHrsInsp'];
+                $inspecao->unidade_id      = $dados['unidade_id'];
+                $inspecao->save();
+
+                $parametros = DB::table('tiposdeunidade')
+                    ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
+                    ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                    ->where([
+                        ['gruposdeverificacao.tipoUnidade_id', '=',  $inspecao->tipoUnidade_id  ] //" tipoUnidade_id " => " 1 "
+                    ])
+                    ->where([
+                        ['gruposdeverificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao  ] //" tipoVerificacao " => " Remoto "
+                    ])
+                    ->where([
+                        ['gruposdeverificacao.ciclo', '=', $inspecao->ciclo  ] // REGRA o Caderno é por ciclo
+                    ])
+                ->get();
+                foreach($parametros as $parametro)
+                {
+                    $registro = new Itensdeinspecao;
+                    $registro->inspecao_id =  $inspecao->id ; //veriricação relacionada
+
+                    //$parametro é um objeto, não uma matriz, então deve acessá-lo da seguinte forma:
+                    $registro->unidade_id =  $dados['unidade_id']; //unidade verificada
+                    $registro->tipoUnidade_id =  $dados['tipoUnidade_id']; //Tipo de unidade
+                    $registro->grupoVerificacao_id =  $parametro->grupoVerificacao_id;//grupo de verificação
+                    $registro->testeVerificacao_id =  $parametro->id;// $registro->id teste de verificação
+                    $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
+                    $registro->consequencias =   $parametro->consequencias;
+                    $registro->norma  =   $parametro->norma;
+                    $registro->save();
+                }
+
+                \Session::flash('mensagem',['msg'=>'Inspeção Gerada com sucesso !'
+                    ,'class'=>'green white-text']);
+                return redirect()->route('compliance.unidades');
+            }
+            else
+            {
+                \Session::flash('mensagem',['msg'=>'Tipo de Inspeção não executada por essa rotina !'
+                    ,'class'=>'red white-text']);
+                return redirect()->back();
+            }
         }
         else
         {
-           // dd('nao t tem');
-            $sequence=1;
-            $sequenceInspecao = new SequenceInspecao;
-            $sequenceInspecao->se      = $unidade->se;
-            $sequenceInspecao->ciclo =  $dados['ciclo'];
-            $sequenceInspecao->sequence      = $sequence;
-            $sequenceInspecao->save();
-        }
-       // dd($sequenceInspecao);
-       // dd('tem' , $sequenceInspecao );
-
-        $sequence = str_pad(  $sequenceInspecao->sequence , 4, '0', STR_PAD_LEFT);
-        $codigo = $unidade->se.$sequence.$dados['ciclo'];
-
-        $req=$request->all();
-        $inspecao = new Inspecao;
-        $inspecao->ciclo      = $req['ciclo'];
-        $inspecao->descricao =  $unidade->descricao;
-        $inspecao->datainiPreInspeção      = $req['datainiPreInspeção'];
-        $inspecao->codigo      = $codigo;
-        $inspecao->tipoUnidade_id      = $req['tipoUnidade_id'];
-        $inspecao->tipoVerificacao      = $req['tipoVerificacao'];
-        $inspecao->status      = $req['status'];
-        $inspecao->inspetorcoordenador      = $req['inspetorcoordenador'];
-        $inspecao->inspetorcolaborador      = $req['inspetorcolaborador'];
-        $inspecao->numHrsPreInsp      = $req['numHrsPreInsp'];
-        $inspecao->numHrsDesloc      = $req['numHrsDesloc'];
-        $inspecao->numHrsInsp      = $req['numHrsInsp'];
-        $inspecao->unidade_id      = $id;
-        $inspecao->save();
-
-        $insertedId = $inspecao->id;
-        //  echo $insertedId ;
-        //dd();
-
-        $parametros = DB::table('tiposdeunidade')
-            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
-            ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-            ->where([
-                    ['gruposdeverificacao.tipoUnidade_id', '=',  $inspecao->tipoUnidade_id  ] //" tipoUnidade_id " => " 1 "
-            ])
-            ->where([
-                    ['gruposdeverificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao  ] //" tipoVerificacao " => " Remoto "
-            ])
-            ->where([
-                    ['gruposdeverificacao.ciclo', '=', $inspecao->ciclo  ]
-            ])
-        ->get();
-
-        foreach($parametros as $parametro)
-        {
-            $registro = new Itensdeinspecao;
-            $registro->inspecao_id =  $insertedId ; //veriricação relacionada
-
-            //$parametro é um objeto, não uma matriz, então deve acessá-lo da seguinte forma:
-            $registro->unidade_id =  $dados['unidade_id']; //unidade verificada
-            $registro->tipoUnidade_id =  $dados['tipoUnidade_id']; //Tipo de unidade
-            $registro->grupoVerificacao_id =  $parametro->grupoVerificacao_id;//grupo de verificação
-            $registro->testeVerificacao_id =  $parametro->id;// $registro->id teste de verificação
-            $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
-            $registro->consequencias =   $parametro->consequencias;
-            $registro->save();
+            \Session::flash('mensagem',['msg'=>'Já existe uma inspeção nessa modalidade para essa unidade neste ciclo !'
+                ,'class'=>'green white-text']);
+            return redirect()->route('compliance.unidades');
         }
 
-
-        \Session::flash('mensagem',['msg'=>'Inspeção Gerada com sucesso !'
-        ,'class'=>'green white-text']);
-        return redirect()->route('compliance.unidades');
     }
 
     public function gerarInspecao($id)
@@ -190,7 +211,6 @@ class UnidadesController extends Controller
                                 ->select('users.*','papel_user.*')
                                 ->Where([['se', '=', $businessUnitUser->se]])
                                 ->Where([['papel_id', '=', 6]])
-
                                 ->orderBy('users.name', 'asc')
                              //   ->orderBy('users.se', 'asc')
                                 ->get();
@@ -287,7 +307,7 @@ class UnidadesController extends Controller
     {
         $status_unidadeDesc = DB::table('unidades')
         ->select('status_unidadeDesc')
-        ->groupByRaw('status_unidadeDesc')
+        ->groupBy('status_unidadeDesc')
         ->get();
         $tiposDeUnidade = TipoDeUnidade::all();
         $registro = Unidade::find($id);
@@ -524,6 +544,8 @@ class UnidadesController extends Controller
                              ->orderBy('descricao', 'asc')
                              ->paginate(10);
 
+
+
                     }
                 break;
                 case 3:
@@ -596,6 +618,7 @@ class UnidadesController extends Controller
                                 ->orderBy('tipoOrgaoDesc', 'asc')
                                 ->orderBy('descricao', 'asc')
                                 ->paginate(10);
+
 
                         }
                 break;
