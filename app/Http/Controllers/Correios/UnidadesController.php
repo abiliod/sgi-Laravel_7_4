@@ -329,6 +329,7 @@ class UnidadesController extends Controller
                 ->Where([['papel_id', '>=', 1]])
                 ->select('papel_id')
                 ->first();
+               
             switch ($papel_user->papel_id)
             {
                 case 1:
@@ -378,7 +379,7 @@ class UnidadesController extends Controller
                             )
                             ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
                             ->where([['unidades.status_unidadeDesc', '=',  $status]])
-                            ->Where([['se', '=', $businessUnitUser->se]])
+                            ->Where([['se', '=', $mcu_subordinacaoAdm->se]])
                             ->where([
                                 ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
@@ -409,40 +410,44 @@ class UnidadesController extends Controller
                     break;
                 case 4:
                     {
-                        $registros = DB::table('unidades')
-                            ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
-                            ->select(
-                                'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
-                            )
-                            ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
-                            ->where([['unidades.status_unidadeDesc', '=',  $status]])
-                            ->Where([['se', '=', $businessUnitUser->mcu_subordinacaoAdm]])
-                            ->where([
-                                ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
-                                ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
-                            ])
-                            ->orWhere([
-                                ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
-                                ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                      //  dd('gestor scoi', $papel_user->papel_id);
+                     // dd($request->all()['search']);
+                   //  dd( $businessUnitUser);
+                   $registros = DB::table('unidades')
+                   ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                   ->select(
+                       'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                   )
+                   ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
+                   ->where([['unidades.status_unidadeDesc', '=',  $status]])
+                   ->Where([['se', '=', $businessUnitUser->se]])
+                   ->where([
+                       ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                       ['status_unidadeDesc', '=', $status],
+                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                   ])
+                   ->orWhere([
+                       ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                       ['status_unidadeDesc', '=', $status],
+                       ['tiposdeunidade.inspecionar', '=',  'Sim']
 
-                            ])
-                            ->orWhere([
-                                ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
-                                ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
-                            ])
-                            ->orWhere([
-                                ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
-                                ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
-                            ])
-                            ->orderBy('seDescricao', 'desc')
-                            ->orderBy('tipoOrgaoDesc', 'asc')
-                            ->orderBy('descricao', 'asc')
-                            ->paginate(10);
+                   ])
+                   ->orWhere([
+                       ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                       ['status_unidadeDesc', '=', $status],
+                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                   ])
+                   ->orWhere([
+                       ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
+                       ['status_unidadeDesc', '=', $status],
+                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                   ])
+                   ->orderBy('seDescricao', 'desc')
+                   ->orderBy('tipoOrgaoDesc', 'asc')
+                   ->orderBy('descricao', 'asc')
+                   ->paginate(10);
 
+                      //  dd($request->all()['search'] ,   $businessUnitUser->mcu_subordinacaoAdm, $registros);
                     }
                     break;
                 case 5:

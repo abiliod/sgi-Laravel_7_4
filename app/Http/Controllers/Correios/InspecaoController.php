@@ -1094,8 +1094,8 @@ class InspecaoController extends Controller
                     $maxdata = DB::table('alarmes')
                         ->where('mcu', '=', $registro->mcu )
                         ->max('data');
-                    if(! $maxdata->isEmpty())
-                 //  if(!empty($maxdata ))
+                 //   if(! $maxdata->isEmpty())
+                   if(!empty($maxdata ))
                    {
                        $dataultimoevento = \Carbon\Carbon::parse($maxdata)->format('d/m/Y');
                    }
@@ -1141,6 +1141,7 @@ class InspecaoController extends Controller
                 $aviso = '';
                 $periodo=array();
                 $naoMonitorado='';
+               
 
                 $eventos = DB::table('alarmes')
                     ->select('alarmes.*')
@@ -1264,17 +1265,20 @@ class InspecaoController extends Controller
                             }
                         }
                     }
+                   
                     $compartilhaSenhas  =  DB::table('compartilhasenhas')
                         ->where('codigo', '=', $registro->codigo)
                         ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                         ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                         ->orderBy('data' ,'asc')
                         ->get();
-                    $row= $compartilhaSenhas->count('codigo');
+                    $row = $compartilhaSenhas->count('codigo');
 
                     $dtmax = \Carbon\Carbon::parse($eventos->max('data'))->format('d/m/Y');
 
                 } //tem dados de alarme
+                if($row==false) $compartilhaSenhas=null;
+
 
                 $total=0.00;
                 return view('compliance.inspecao.editar',compact
