@@ -10,9 +10,7 @@
                     <div class="input-field col s2">
                         <select name="ciclo" id="ciclo">
                             <option value="0" selected>Ciclo de Verificação</option>
-                            <option value="2019">2019</option>
-                            <option value="2020" selected>2020</option>
-                            <option value="2021">2021</option>
+                              <option value="2021" selected>2021</option>
                         </select>
                     </div>
                     <div class="input-field col s3">
@@ -26,8 +24,10 @@
                     <div class="input-field col s2">
                         <select name="tipoVerificacao" id="tipoVerificacao" onchange="ativaBtnFiltro();">
                             <option value="0" selected>Tipo de Verificação</option>
+                            <option value="Monitorada">Monitorada</option>
                             <option value="Presencial">Presencial</option>
                             <option value="Remoto">Remoto</option>
+                            Monitorada
                         </select>
                     </div>
 

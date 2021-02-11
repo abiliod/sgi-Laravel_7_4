@@ -1,4 +1,4 @@
-<div class="input-field col s8">
+<div class="input-field col s6">
     <select name="grupoVerificacao_id" id="grupoVerificacao_id" onChange="mostrarDiv()" >
        <option value="" {{(!empty($registro->grupoVerificacao_id) ? 'selected' : '')}}>Selecione um Grupo de Verificação</option>
         @foreach($gruposdeverificacao as $grupodeverificacao)
@@ -10,7 +10,7 @@
         </option>
         @endforeach
     </select>
-	<label>Ciclo/Tipo de Inspeção/Tipo de Unidade/Grupo de Inspeção</label>
+	<label>Ciclo/Tipo de Inspeção/Tipo de Unidade/Grupo de Inspeção </label>
 </div>
 <div class="input-field col s2">
 	<input type="text" name="numeroDoTeste" class="validate" value="{{ isset($registro->numeroDoTeste) ? $registro->numeroDoTeste : '' }}">
@@ -20,11 +20,22 @@
 
 
 <div class="input-field col s2">
-    <select name="inspecaoObrigatoria" id="inspecaoObrigatoria" onchange="AtualizarTotalPontos();">
-        <option value="79" {{(isset($registro->inspecaoObrigatoria) && $registro->inspecaoObrigatoria == 'Sim'  ? 'selected' : '')}}>Sim</option>
+    <select name="inspecaoObrigatoria" id="inspecaoObrigatoria">
+        <option value="1" {{(isset($registro->inspecaoObrigatoria) && $registro->inspecaoObrigatoria == 'Sim'  ? 'selected' : '')}}>Sim</option>
         <option value="0" {{(isset($registro->inspecaoObrigatoria) && $registro->inspecaoObrigatoria == 'Não'  ? 'selected' : '')}}>Não</option>
     </select>
     <label>Inspeção Obrigatória</label>
+</div>
+
+<div class="input-field col s2">
+    <select name="preVerificar" id="preVerificar">
+        <option value="Não" {{(isset($registro->preVerificar) && $registro->preVerificar == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="Sim" {{(isset($registro->preVerificar) && $registro->preVerificar == 'Sim'  ? 'selected' : '')}}>Sim</option>
+        <option value="Gerar_Conteúdo" {{(isset($registro->preVerificar) && $registro->preVerificar == 'Gerar_Conteúdo'  ? 'selected' : '')}}>Gerar Conteúdo</option>
+
+        Gerar_Conteúdo
+    </select>
+    <label>Inspecionar Automático?</label>
 </div>
 
 <div class="input-field col s12" id="teste">
@@ -68,49 +79,56 @@
     </div>
 </div>
 
+
 <div class="input-field col s4">
     <select name="impactoFinanceiro" id="impactoFinanceiro" onchange="AtualizarTotalPontos();">
-        <option value="9" {{(isset($registro->impactoFinanceiro) && $registro->impactoFinanceiro == 'Sim'  ? 'selected' : '')}}>Sim</option>
-        <option value="0" {{(isset($registro->impactoFinanceiro) && $registro->impactoFinanceiro == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="9" {{(isset($registro->impactoFinanceiro) && $registro->impactoFinanceiro == '9'  ? 'selected' : '')}}>Sim</option>
+        <option value="0" {{(isset($registro->impactoFinanceiro) && $registro->impactoFinanceiro == '0'  ? 'selected' : '')}}>Não</option>
     </select>
     <label>Inpacto Financeiro Mensurável Imediato:</label>
 </div>
+
+
+
+
+
+
 <div class="input-field col s4">
     <select name="riscoFinanceiro"  id="riscoFinanceiro" onchange="AtualizarTotalPontos();">
-        <option value="4" {{(isset($registro->riscoFinanceiro) && $registro->riscoFinanceiro == 'Sim'  ? 'selected' : '')}}>Sim</option>
-        <option value="0" {{(isset($registro->riscoFinanceiro) && $registro->riscoFinanceiro == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="4" {{(isset($registro->riscoFinanceiro) && $registro->riscoFinanceiro == '4'  ? 'selected' : '')}}>Sim</option>
+        <option value="0" {{(isset($registro->riscoFinanceiro) && $registro->riscoFinanceiro == '0'  ? 'selected' : '')}}>Não</option>
     </select>
 	<label>Risco Financeiro Penalização & Multas Contratuais: </label>
 
 </div>
 <div class="input-field col s4">
     <select name="descumprimentoLeisContratos"  id="descumprimentoLeisContratos" onchange="AtualizarTotalPontos();">
-        <option value="2" {{(isset($registro->descumprimentoLeisContratos) && $registro->descumprimentoLeisContratos == 'Sim'  ? 'selected' : '')}}>Sim</option>
-        <option value="0" {{(isset($registro->descumprimentoLeisContratos) && $registro->descumprimentoLeisContratos == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="2" {{(isset($registro->descumprimentoLeisContratos) && $registro->descumprimentoLeisContratos == '2'  ? 'selected' : '')}}>Sim</option>
+        <option value="0" {{(isset($registro->descumprimentoLeisContratos) && $registro->descumprimentoLeisContratos == '0'  ? 'selected' : '')}}>Não</option>
     </select>
 	<label>Descumprimento de Lei ou Norma externa:</label>
 </div>
 <div class="input-field col s3">
 
     <select name="descumprimentoNormaInterna" id="descumprimentoNormaInterna"  onchange="AtualizarTotalPontos();">
-        <option value="1" {{(isset($registro->descumprimentoNormaInterna) && $registro->descumprimentoNormaInterna == 'Sim'  ? 'selected' : '')}}>Sim</option>
-        <option value="0" {{(isset($registro->descumprimentoNormaInterna) && $registro->descumprimentoNormaInterna == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="1" {{(isset($registro->descumprimentoNormaInterna) && $registro->descumprimentoNormaInterna == '1'  ? 'selected' : '')}}>Sim</option>
+        <option value="0" {{(isset($registro->descumprimentoNormaInterna) && $registro->descumprimentoNormaInterna == '0'  ? 'selected' : '')}}>Não</option>
     </select>
 	<label>Descumprimento de Norma Interna:</label>
 </div>
 
 <div class="input-field col s4">
     <select name="riscoSegurancaIntegridade" id="riscoSegurancaIntegridade" onchange="AtualizarTotalPontos();">
-        <option value="3" {{(isset($registro->riscoSegurancaIntegridade) && $registro->riscoSegurancaIntegridade == 'Sim'  ? 'selected' : '')}}>Sim</option>
-        <option value="0" {{(isset($registro->riscoSegurancaIntegridade) && $registro->riscoSegurancaIntegridade == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="3" {{(isset($registro->riscoSegurancaIntegridade) && $registro->riscoSegurancaIntegridade == '3'  ? 'selected' : '')}}>Sim</option>
+        <option value="0" {{(isset($registro->riscoSegurancaIntegridade) && $registro->riscoSegurancaIntegridade == '0'  ? 'selected' : '')}}>Não</option>
     </select>
 	<label>Risco de Seg. e Integ. do Patrimônio, Bens e Pessoas:</label>
 </div>
 
 <div class="input-field col s3">
     <select name="riscoImgInstitucional" id="riscoImgInstitucional" onchange="AtualizarTotalPontos();">
-        <option value="2" {{(isset($registro->riscoImgInstitucional) && $registro->riscoImgInstitucional == 'Sim'  ? 'selected' : '')}}>Sim</option>
-        <option value="0" {{(isset($registro->riscoImgInstitucional) && $registro->riscoImgInstitucional == 'Não'  ? 'selected' : '')}}>Não</option>
+        <option value="2" {{(isset($registro->riscoImgInstitucional) && $registro->riscoImgInstitucional == '2'  ? 'selected' : '')}}>Sim</option>
+        <option value="0" {{(isset($registro->riscoImgInstitucional) && $registro->riscoImgInstitucional == '0'  ? 'selected' : '')}}>Não</option>
     </select>
 	<label>Risco Direto à Imagen Institucional:</label>
 </div>
@@ -120,7 +138,7 @@
 	<label class="active">Total de Pontos:</label>
 </div>
 
-<div class="input-field col s12" id="roteiroConforme">
+<div class="input-field col s12" name="roteiroConforme" id="roteiroConforme">
     <i class="material-icons prefix">mode_edit</i>
     <textarea  id="roteiroConforme" name="roteiroConforme" class="materialize-textarea">
     {{ isset($registro->roteiroConforme) ? $registro->roteiroConforme : '' }}
@@ -128,7 +146,7 @@
     <label for="roteiroConforme">Roteiro Relato Conforme:</label>
 </div>
 
-<div class="input-field col s12" id="roteiroNaoConforme">
+<div class="input-field col s12" id="roteiroNaoConforme" name="roteiroNaoConforme">
     <i class="material-icons prefix">mode_edit</i>
     <textarea  id="roteiroNaoConforme" name="roteiroNaoConforme" class="materialize-textarea">
     {{ isset($registro->roteiroNaoConforme) ? $registro->roteiroNaoConforme : '' }}
@@ -136,7 +154,7 @@
     <label for="roteiroNaoConforme">Roteiro Relato Não Conforme:</label>
 </div>
 
-<div class="input-field col s12" id="roteiroNaoVerificado">
+<div class="input-field col s12" id="roteiroNaoVerificado" name="roteiroNaoVerificado">
     <i class="material-icons prefix">mode_edit</i>
     <textarea  id="roteiroNaoVerificado" name="roteiroNaoVerificado" class="materialize-textarea">
     {{ isset($registro->roteiroNaoVerificado) ? $registro->roteiroNaoVerificado : '' }}
@@ -157,7 +175,7 @@
 	<label>Possíveis Consequências da Situação Encontrada:</label>
 </div>
 
-<div class="input-field col s12" id="orientacao">
+<div class="input-field col s12" id="orientacao" name="orientacao">
     <i class="material-icons prefix">mode_edit</i>
             <textarea  id="orientacao" name="orientacao" class="materialize-textarea">
             {{ isset($registro->orientacao) ? $registro->orientacao : '' }}

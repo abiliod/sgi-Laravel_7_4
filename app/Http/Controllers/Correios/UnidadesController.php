@@ -249,6 +249,8 @@ class UnidadesController extends Controller
         $registro->sto =  $dados['sto'];
         $registro->status_unidadeDesc =  $dados['status_unidadeDesc'];
         $registro->inicio_expediente =  $dados['inicio_expediente'];
+        $registro->inicio_atendimento =  $dados['inicio_atendimento'];
+        $registro->final_atendimento =  $dados['final_atendimento'];
         $registro->final_expediente =  $dados['final_expediente'];
         $registro->inicio_intervalo_refeicao =  $dados['inicio_intervalo_refeicao'];
         $registro->final_intervalo_refeicao =  $dados['final_intervalo_refeicao'];
@@ -324,17 +326,21 @@ class UnidadesController extends Controller
             ->first();
         if(!empty( $businessUnitUser ))
         {
+
+
             $papel_user = DB::table('papel_user')
                 ->Where([['user_id', '=', auth()->user()->id]])
                 ->Where([['papel_id', '>=', 1]])
                 ->select('papel_id')
                 ->first();
-               
+
             switch ($papel_user->papel_id)
             {
                 case 1:
                 case 2:
                     {
+                      //  dd('1    ->',$businessUnitUser , $papel_user);
+
                         $registros = DB::table('unidades')
                             ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
                             ->select(
@@ -383,23 +389,27 @@ class UnidadesController extends Controller
                             ->where([
                                 ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                             ])
                             ->orWhere([
                                 ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
 
                             ])
                             ->orWhere([
                                 ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                             ])
                             ->orWhere([
                                 ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                             ])
                             ->orderBy('seDescricao', 'desc')
                             ->orderBy('tipoOrgaoDesc', 'asc')
@@ -410,9 +420,6 @@ class UnidadesController extends Controller
                     break;
                 case 4:
                     {
-                      //  dd('gestor scoi', $papel_user->papel_id);
-                     // dd($request->all()['search']);
-                   //  dd( $businessUnitUser);
                    $registros = DB::table('unidades')
                    ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
                    ->select(
@@ -424,23 +431,27 @@ class UnidadesController extends Controller
                    ->where([
                        ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
                        ['status_unidadeDesc', '=', $status],
-                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                       ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                       ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                    ])
                    ->orWhere([
                        ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
                        ['status_unidadeDesc', '=', $status],
-                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                       ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                       ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
 
                    ])
                    ->orWhere([
                        ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
                        ['status_unidadeDesc', '=', $status],
-                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                       ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                       ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                    ])
                    ->orWhere([
                        ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
                        ['status_unidadeDesc', '=', $status],
-                       ['tiposdeunidade.inspecionar', '=',  'Sim']
+                       ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                       ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                    ])
                    ->orderBy('seDescricao', 'desc')
                    ->orderBy('tipoOrgaoDesc', 'asc')
@@ -460,6 +471,7 @@ class UnidadesController extends Controller
                             ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
                             ->where([['unidades.status_unidadeDesc', '=',  $status]])
                             ->Where([['se', '=', $businessUnitUser->mcu]])
+                            ->Where([['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']])
 
                             ->orderBy('seDescricao', 'desc')
                             ->orderBy('tipoOrgaoDesc', 'asc')
@@ -482,23 +494,28 @@ class UnidadesController extends Controller
                             ->where([
                                 ['descricao', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
+
                             ])
                             ->orWhere([
                                 ['mcu', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
 
                             ])
                             ->orWhere([
                                 ['sto', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                             ])
                             ->orWhere([
                                 ['telefone', 'LIKE', '%' . $request->all()['search'] .'%' ],
                                 ['status_unidadeDesc', '=', $status],
-                                ['tiposdeunidade.inspecionar', '=',  'Sim']
+                                ['tiposdeunidade.inspecionar', '=',  'Sim'],
+                                ['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']
                             ])
                             ->orderBy('seDescricao', 'desc')
                             ->orderBy('tipoOrgaoDesc', 'asc')
@@ -548,9 +565,6 @@ class UnidadesController extends Controller
                              ->orderBy('tipoOrgaoDesc', 'asc')
                              ->orderBy('descricao', 'asc')
                              ->paginate(10);
-
-
-
                     }
                 break;
                 case 3:
@@ -561,6 +575,7 @@ class UnidadesController extends Controller
                                 'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
                             )
                             ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
+                            ->where([['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']])
                             ->where([['unidades.status_unidadeDesc', '=',  $status]])
                             ->Where([['se', '=', $businessUnitUser->se]])
                             ->orderBy('seDescricao', 'desc')
@@ -579,6 +594,7 @@ class UnidadesController extends Controller
                                 'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
                             )
                             ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
+                            ->where([['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']])
                             ->where([['unidades.status_unidadeDesc', '=',  $status]])
                             ->Where([['se', '=', $businessUnitUser->se]])
                             ->orderBy('seDescricao', 'desc')
@@ -599,6 +615,7 @@ class UnidadesController extends Controller
                               'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
                           )
                           ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
+                          ->where([['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']])
                           ->where([['unidades.status_unidadeDesc', '=',  $status]])
                           ->Where([['se', '=', $businessUnitUser->mcu]])
                           ->orderBy('seDescricao', 'desc')
@@ -610,13 +627,14 @@ class UnidadesController extends Controller
                 break;
                 case 6:
                     {
-                            //dd('caso 2');
+                      //      dd('caso 6');
                             $registros = DB::table('unidades')
                                 ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
                                 ->select(
                                     'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
                                 )
                                 ->where([['tiposdeunidade.inspecionar', '=',  'Sim']])
+                                ->where([['tiposdeunidade.tipoInspecao', '!=',  'Monitorada']])
                                 ->where([['unidades.status_unidadeDesc', '=',  $status]])
                                 ->Where([['se', '=', $businessUnitUser->se]])
                                 ->orderBy('seDescricao', 'desc')
@@ -629,7 +647,7 @@ class UnidadesController extends Controller
                 break;
             }
 
-
+           // dd($registros);
             return view('compliance.unidades.index',compact('registros'));
         }
 

@@ -7,13 +7,12 @@ function AtualizarTotalPontos()
       -> o número 10 significa em qual base será convertido o número,no caso Decimal.
     */
     document.getElementById("totalPontos").value
-       = (parseInt(document.getElementById("inspecaoObrigatoria").value,10)
-       + parseInt(document.getElementById("impactoFinanceiro").value,10)
+       = parseInt(document.getElementById("impactoFinanceiro").value,10)
        + parseInt(document.getElementById("riscoFinanceiro").value,10)
        + parseInt(document.getElementById("descumprimentoLeisContratos").value,10)
        + parseInt(document.getElementById("descumprimentoNormaInterna").value,10)
        + parseInt(document.getElementById("riscoSegurancaIntegridade").value,10)
-       + parseInt(document.getElementById("riscoImgInstitucional").value,10));
+       + parseInt(document.getElementById("riscoImgInstitucional").value,10);
 }
 
 function ativaBtnFiltro()
@@ -43,12 +42,10 @@ function ativaBtnFiltro()
 }
 
 function mostrarDiv() {
-
     if(document.body.contains(document.getElementById('grupoVerificacao_id'))){
-
         let x = document.getElementById("grupoVerificacao_id").value;
 
-        if ((x >= "15") && (x <= "32")) {
+        if (((x >= "15") && (x <= "32")) ||( (x >= "46") && (x <= "58")) || ((x >= "105") && (x <= "121"))) {
             document.getElementById("CampoOculto").style.display = "block";
         } else {
             document.getElementById("CampoOculto").style.display = "none";

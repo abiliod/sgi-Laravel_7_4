@@ -10,27 +10,19 @@
                     <div class="input-field col s3">
                         <select name="tipoUnidade_id">
                         <option value="0">Tipo de Unidade</option>
-
                             @foreach($tiposDeUnidade as $tipoDeUnidade)
                             <option value="{{ $tipoDeUnidade->tipoUnidade_id }}">{{ $tipoDeUnidade->tipodescricao }}</option>
                             @endforeach
                         </select>
-
                     </div>
-
-
                     <div class="input-field col s3">
                         <select name="tipoVerificacao" id="tipoVerificacao">
                             <option value="">Tipo de Inspeção</option>
+                            <option value="Monitorada">Monitorada</option>
                             <option value="Presencial">Presencial</option>
                             <option value="Remoto">Remoto</option>
                         </select>
                     </div>
-
-
-
-
-
                     <div class="input-field col s4">
                     <select name="nomegrupo">
                     <option value="">Grupo de Inspeção</option>
@@ -59,7 +51,6 @@
 		<table>
 				<thead>
 					<tr>
-
                         <th>Ciclo</th>
 						<th>Tipo de Inspeção</th>
                         <th>Tipo de Unidade</th>
@@ -72,7 +63,6 @@
 				<tbody>
 				@foreach($registros as $registro)
 					<tr>
-
 				    	<td>{{ $registro->ciclo }}</td>
                         <td>{{ $registro->tipoVerificacao }}</td>
                         <td>{{ $registro->sigla }}</td>

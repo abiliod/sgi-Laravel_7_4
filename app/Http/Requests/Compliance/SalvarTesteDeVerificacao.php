@@ -49,6 +49,7 @@ class SalvarTesteDeVerificacao extends FormRequest
             'roteiroNaoVerificado'=> 'nullable|string|min:20',
             'itemanosanteriores'=> 'nullable|string|min:5',
             'orientacao'=> 'nullable|string|min:20',
+
         ];
     }
 

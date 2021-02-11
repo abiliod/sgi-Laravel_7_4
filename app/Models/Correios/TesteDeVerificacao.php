@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TesteDeVerificacao extends Model
 {
-    protected $table = "testesDeVerificacao";
+    protected $table = "testesdeverificacao";
 
     protected $fillable=
     [

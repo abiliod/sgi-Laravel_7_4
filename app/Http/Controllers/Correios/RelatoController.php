@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Correios;
 
 use App\Http\Controllers\Controller;
+use App\Models\Correios\GrupoDeVerificacao;
 use Illuminate\Http\Request;
 
 //use Illuminate\Database\Query\Builder;
@@ -64,7 +65,7 @@ class RelatoController extends Controller
 
     public function atualizar (Request $request, $id)
     {
-        $registro = TesteDeVerificacao::find($id);
+        $registro =  TesteDeVerificacao::find($id);
         $dados = $request->all();
         $registro->grupoVerificacao_id =  $dados['grupoVerificacao_id'];
         $registro->numeroDoTeste =  $dados['numeroDoTeste'];
@@ -88,12 +89,34 @@ class RelatoController extends Controller
         $registro->roteiroNaoVerificado = $dados['roteiroNaoVerificado'];
         $registro->itemanosanteriores = $dados['itemanosanteriores'];
         $registro->orientacao = $dados['orientacao'];
-
+        $registro->preVerificar = $dados['preVerificar'];
         $registro->update();
+
         \Session::flash('mensagem',['msg'=>'Teste de Verificação atualizado com sucesso !'
         ,'class'=>'green white-text']);
-        return redirect()->route('compliance.relatos');
 
+        $grupoVerificacao = GrupoDeVerificacao::find($registro->grupoVerificacao_id);
+        $registros = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao', 'tiposdeunidade.id',  '=',   'tipoUnidade_id')
+            ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->where([
+                ['gruposdeverificacao.id', '=', $grupoVerificacao->id ]
+            ])
+            ->paginate(100);
+        $gruposdeverificacao = DB::table('gruposdeverificacao')
+            ->select('nomegrupo')
+            ->groupBy('nomegrupo')
+            ->get();
+        $tiposDeUnidade = DB::table('tiposdeunidade')
+            ->join('gruposdeverificacao',
+                'tiposdeunidade.id',
+                '=',
+                'gruposdeverificacao.tipoUnidade_id')
+            ->select('tipoUnidade_id','sigla','tipodescricao')
+            ->groupBy('tipodescricao')
+            ->get();
+        $dados = TipoDeUnidade::find($grupoVerificacao->tipoUnidade_id);
+        return view('compliance.relatos.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
     }
 
     public function edit($id)
@@ -106,11 +129,15 @@ class RelatoController extends Controller
         -> orderBy ('tipoUnidade_id', 'ASC')
         -> orderBy ('numeroGrupoVerificacao', 'ASC')
         ->get();
-        return view('compliance.relatos.editar',compact('registro', 'gruposdeverificacao'));
+
+        $grupoVerificacao = GrupoDeVerificacao::find($registro->grupoVerificacao_id);
+        $tipodeUnidade = $grupoVerificacao->tipoUnidade_id;
+        return view('compliance.relatos.editar',compact('registro','tipodeUnidade','gruposdeverificacao'));
     }
 
     public function search (Request $request) {
         $dados = $request->all();
+
         if ($dados['nomegrupo'] == null) $dados['nomegrupo'] ="";
 
         if (($dados['tipoUnidade_id'] >= "1")&&($dados['tipoVerificacao'] == null)){
@@ -154,6 +181,7 @@ class RelatoController extends Controller
         $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('nomegrupo')
             ->groupBy('nomegrupo')
+            ->orderBy('nomegrupo')
             ->get();
 
         $tiposDeUnidade = DB::table('tiposdeunidade')
@@ -166,7 +194,9 @@ class RelatoController extends Controller
             ->get();
 
         $dados = TipoDeUnidade::find($request['tipoUnidade_id']);
-            //$dados->nomegrupo=$request['nomegrupo'];
+
+
+
         return view('compliance.relatos.index',compact('registros', 'tiposDeUnidade','gruposdeverificacao','dados'));
     }
 
@@ -179,6 +209,7 @@ class RelatoController extends Controller
 
         $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('nomegrupo')
+            ->orderBy('nomegrupo')
             ->groupBy('nomegrupo')
             ->get();
 

@@ -31,6 +31,7 @@
                         <option value="Ambos" >Ambos</option>
                         <option value="Presencial">Presencial</option>
                         <option value="Remoto" selected>Remoto</option>
+                        <option value="Monitorada">Monitorada</option>
                         <option value="Suspenso">Suspenso</option>
                     </select>
                     <label for="tipoInspecao" >Tipo de Inspeção</label>

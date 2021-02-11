@@ -34,19 +34,30 @@
 	<input type="text" name="email" class="validate" value="{{ isset($registro->email) ? $registro->email : '' }}">
 	<label>E-MAIL</label>
 </div>
-<div class="input-field col s3">
+<div class="input-field col s2">
 	<input type="time"  name="inicio_expediente" class="validate" value="{{ isset($registro->inicio_expediente) ? $registro->inicio_expediente : '' }}">
 	<label class="active">INICIO EXPEDIENTE</label>
 </div>
-<div class="input-field col s3">
-	<input type="time"   name="final_expediente" class="validate" value="{{ isset($registro->final_expediente) ? $registro->final_expediente : '' }}">
-	<label class="active">FINAL EXPEDIENTE</label>
+<div class="input-field col s2">
+    <input type="time"  name="inicio_atendimento" class="validate" value="{{ isset($registro->inicio_atendimento) ? $registro->inicio_atendimento : '' }}">
+    <label class="active">INICIO ATENDIMENTO</label>
 </div>
-<div class="input-field col s3">
+
+<div class="input-field col s2">
+    <input type="time"   name="final_atendimento" class="validate" value="{{ isset($registro->final_atendimento) ? $registro->final_atendimento : '' }}">
+    <label class="active">FINAL ATENDIMENTO</label>
+</div>
+
+<div class="input-field col s2">
+    <input type="time"   name="final_expediente" class="validate" value="{{ isset($registro->final_expediente) ? $registro->final_expediente : '' }}">
+    <label class="active">FINAL EXPEDIENTE</label>
+</div>
+
+<div class="input-field col s2">
 	<input type="time"  name="inicio_intervalo_refeicao" class="validate" value="{{ isset($registro->inicio_intervalo_refeicao) ? $registro->inicio_intervalo_refeicao : '' }}">
 	<label class="active">INICIO INTERVALO REFEIÇÃO</label>
 </div>
-<div class="input-field col s3">
+<div class="input-field col s2">
 	<input type="time"  name="final_intervalo_refeicao" class="validate" value="{{ isset($registro->final_intervalo_refeicao) ? $registro->final_intervalo_refeicao : '' }}">
 	<label class="active">FINAL INTERVALO REFEIÇÃO</label>
 </div>

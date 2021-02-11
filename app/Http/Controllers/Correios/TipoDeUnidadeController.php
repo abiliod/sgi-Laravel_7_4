@@ -35,6 +35,8 @@ class TipoDeUnidadeController extends Controller
         $registro->tipodescricao = $dados['descricao'];
         $registro->inspecionar = $dados['inspecionar'];
         $registro->tipoInspecao = $dados['tipoInspecao'];
+
+    //    dd($registro);
         $registro->update();
 
         \Session::flash('mensagem',['msg'=>'O Tipo de Unidade:  '.$registro->descricao.' foi atualizado com sucesso !'

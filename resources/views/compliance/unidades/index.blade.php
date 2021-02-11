@@ -37,71 +37,79 @@
 					</tr>
 				</thead>
 				<tbody>
-				@foreach($registros as $registro)
+                    @forelse($registros as $registro)
+                    @can('unidade_editar')
 
+                        <tr>
 
-                        @can('unidade_editar')
+                            <td>{{ $registro->seDescricao }}</td>
+                            <td>{{ $registro->descricao }}</td>
+                            <td>{{ $registro->telefone }}</td>
+                            <td>{{ $registro->email }}</td>
+                            <td>{{ $registro->inicio_expediente }}     </td>
 
-                            <tr>
+                            <td>
 
-                                <td>{{ $registro->seDescricao }}</td>
-                                <td>{{ $registro->descricao }}</td>
-                                <td>{{ $registro->telefone }}</td>
-                                <td>{{ $registro->email }}</td>
-                                <td>{{ $registro->inicio_expediente }}     </td>
-
-                                <td>
-
-                                <!---------
-                                    <ul id="slide-out" class="side-nav">
-                                        <li><div class="user-view">
-                                                <div class="background">
-                                                    <img src="images/office.jpg">
-                                                </div>
-                                                <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-                                                <a href="#!name"><span class="white-text name">John Doe</span></a>
-                                                <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-                                            </div></li>
-                                        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-                                        <li><a href="#!">Second Link</a></li>
-                                        <li><div class="divider"></div></li>
-                                        <li><a class="subheader">Subheader</a></li>
-                                        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-                                    </ul>
-                                    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+                            <!---------
+                                <ul id="slide-out" class="side-nav">
+                                    <li><div class="user-view">
+                                            <div class="background">
+                                                <img src="images/office.jpg">
+                                            </div>
+                                            <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+                                            <a href="#!name"><span class="white-text name">John Doe</span></a>
+                                            <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+                                        </div></li>
+                                    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+                                    <li><a href="#!">Second Link</a></li>
+                                    <li><div class="divider"></div></li>
+                                    <li><a class="subheader">Subheader</a></li>
+                                    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+                                </ul>
+                                <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
 ----->
 
-                                <td>
+                            <td>
 
 
-                                <a class="waves-effect waves-light btn orange" href="{{ route('compliance.unidades.editar',$registro->id) }}">Editar</a>
-                                    <!---------
-                                      <a class="waves-effect waves-light btn #00897b teal darken-1"
-                                        href="">Alarmes</a>
-                                     <a class="waves-effect waves-light btn #00897b teal darken-1"
-                                        href="">Cofres</a>
-                                     <a class="waves-effect waves-light btn #00897b teal darken-1"
-                                        href="">CFTVs</a>
-                                     <a class="waves-effect waves-light btn #00897b teal darken-1"
-                                        href="">Extravios</a>
-                                     <a class="waves-effect waves-light btn #00897b teal darken-1"
-                                        href="">Feriados</a>
-                                     <a class="waves-effect waves-light btn #00897b teal darken-1"
-                                        href="">Cadastral</a>
-                                         ------>
-                        @endcan
+                            <a class="waves-effect waves-light btn orange" href="{{ route('compliance.unidades.editar',$registro->id) }}">Editar</a>
+                                <!---------
+                                  <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                    href="">Alarmes</a>
+                                 <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                    href="">Cofres</a>
+                                 <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                    href="">CFTVs</a>
+                                 <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                    href="">Extravios</a>
+                                 <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                    href="">Feriados</a>
+                                 <a class="waves-effect waves-light btn #00897b teal darken-1"
+                                    href="">Cadastral</a>
+                                     ------>
+                    @endcan
 
-                        @can('inspecao_adicionar')
-                                <a class="waves-effect waves-light btn blue" href="{{ route('compliance.unidades.gerarInspecao',$registro->id) }}">Gerar Inspeção</a>
-                        @endcan
+                    @can('inspecao_adicionar')
+                        <a class="waves-effect waves-light btn blue
+                            {{(isset($registro->tipoInspecao) && $registro->tipoInspecao == 'Monitorada'  ? ' disabled' : '')}}"
+                            href="{{ route('compliance.unidades.gerarInspecao',$registro->id) }}">Gerar Inspeção</a>
+                    @endcan
 
-                        @can('unidade_deletar')
-                                <a class="waves-effect waves-light btn red " href="" >Deletar</a>
-                        @endcan
+                    @can('unidade_deletar')
+                        <a class="waves-effect waves-light btn red " href="" >Deletar</a>
+                    @endcan
 
                         </td>
-					</tr>
-                @endforeach
+                    </tr>
+                    @empty
+                        <tr>
+                            <td>
+                                <span class="row red" >
+                                    Unidade não disponível para inspeção ou não cadastrada
+                                </span>
+                            </td>
+                        </tr>
+                    @endforelse
 				</tbody>
 			</table>
         <div class="row">
