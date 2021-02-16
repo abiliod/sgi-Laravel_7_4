@@ -55,20 +55,7 @@ function mostrarDiv() {
 }
 
 
-function Reincidencia(el)
-{
-    let valor = document.getElementById(el).value;
-    let elemento = document.getElementById(el).name;
 
-    if ((elemento=='reincidencia')&& (valor=='Sim'))
-    {
-        document.getElementById("reincidencias").style.display= 'block';
-    }else
-    {
-       document.getElementById("reincidencias").style.display= 'none';
-    }
-
-}
 
 
 function Mudarestado(el)
@@ -85,21 +72,34 @@ function Mudarestado(el)
 
 }
 
-function ItemQuantificado(el) {  // exibe inibe dive para entrada de valores
+function ItemQuantificado(el)
+{
+    let valor = document.getElementById(el).value;
+    let elemento = document.getElementById(el).name;
 
-    let valor;
-    let rads = document.getElementsByName(el);
-        for(let i = 0; i < rads.length; i++) {
-            if(rads[i].checked){
-                valor = rads[i].value;
-            }
-         }
+    if ((elemento=='itemQuantificado')&& (valor=='Sim'))
+    {
+        document.getElementById("quantificacao").style.display= 'block';
+    }else
+    {
+        document.getElementById("quantificacao").style.display= 'none';
+    }
 
-        if (valor=='Sim') {
-            document.getElementById("quantificacao").style.display= 'block';
-        }else {
-            document.getElementById("quantificacao").style.display= 'none';
-        }
+}
+
+function Reincidencia(el)
+{
+    let valor = document.getElementById(el).value;
+    let elemento = document.getElementById(el).name;
+
+    if ((elemento=='reincidencia')&& (valor=='Sim'))
+    {
+        document.getElementById("reincidencias").style.display= 'block';
+    }else
+    {
+        document.getElementById("reincidencias").style.display= 'none';
+    }
+
 }
 
 //////////////////////
@@ -236,7 +236,7 @@ function mudarApontamento(el) { // muda o estado do apontamento pelo click do us
                 valor = rads[i].value;
             }
          }
-
+     //alert(valor );
         if (valor=='Conforme') {
           //  alert(valor );
 
@@ -264,17 +264,22 @@ function mudarApontamento(el) { // muda o estado do apontamento pelo click do us
             });
 
         }else if (valor=="Não Conforme") {
+          //    alert(valor );
                 document.getElementById("norma").style.display = 'block';
                 document.getElementById("consequencias").style.display = 'block';
                 document.getElementById("orientacao").style.display = 'block';
                 document.getElementById("evidencias").style.display = 'block';
                 document.getElementById("itemsQuantificados").style.display = 'block';
                 document.getElementById("ereincidencia").style.display = 'block';
-                document.getElementById("imagens").style.display = 'block';
+               // document.getElementById("quantificacao").style.display = 'block';
+
+             //   document.getElementsByName("itemQuantificado").enabled = 'false';
+          //  quantificacao
                 $(function(){
                     var texto = $("#roteiroNaoConforme").val(); // + $("#norma").val();
                     $("#oportunidadeAprimoramento").val(texto);
                 });
+
             }else if (valor=="Não Verificado") {
 
                 document.getElementById("norma").style.display = 'block';
@@ -285,6 +290,7 @@ function mudarApontamento(el) { // muda o estado do apontamento pelo click do us
                 document.getElementById("imagens").style.display = 'none';
                 document.getElementById("quantificacao").style.display = 'none';
                 document.getElementById("itemsQuantificados").style.display = 'none';
+
 
                 $(function(){
                     var texto = $("#roteiroNaoVerificado").val(); // + $("#norma").val();

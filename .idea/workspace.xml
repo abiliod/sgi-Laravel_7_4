@@ -27,24 +27,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/09275eb9-6c8d-4a8c-87aa-9a53d9a2b0b6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/09275eb9-6c8d-4a8c-87aa-9a53d9a2b0b6/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/RelatoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/TipoDeUnidadeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/TipoDeUnidadeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Compliance/SalvarTesteDeVerificacao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Compliance/SalvarTesteDeVerificacao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/GrupoDeVerificacao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/GrupoDeVerificacao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/TesteDeVerificacao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/TesteDeVerificacao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/GruposDeVerificacaoTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/GruposDeVerificacaoTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/TestesDeVerificacaoTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TestesDeVerificacaoTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.styleci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.styleci.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/_form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/tipounidades/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/tipounidades/_form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/tipounidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/tipounidades/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/_form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/unidades/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/_form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/_form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form271-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form271-1.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form273-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form273-1.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/adicionar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/adicionar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/relatos/editar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/relatos/editar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_Admin/_nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_Admin/_nav.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +211,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="mysql.8" />
+    <property name="DatabaseDriversLRU" value="mysql.8&#10;mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="TODO_SCOPE" value="MySQL - promo@localhost" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -1039,20 +1042,73 @@
       <workItem from="1613043442853" duration="1775000" />
       <workItem from="1613045253398" duration="1963000" />
       <workItem from="1613050395770" duration="775000" />
-    </task>
-    <task id="LOCAL-00089" summary=" 23/12/20 - ajuste filtro relatos;">
-      <created>1608803444219</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1608803444222</updated>
-    </task>
-    <task id="LOCAL-00090" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
-      <created>1608821646167</created>
-      <option name="number" value="00090" />
-      <option name="presentableId" value="LOCAL-00090" />
-      <option name="project" value="LOCAL" />
-      <updated>1608821646168</updated>
+      <workItem from="1613063349933" duration="829000" />
+      <workItem from="1613071079414" duration="1337000" />
+      <workItem from="1613072896972" duration="1246000" />
+      <workItem from="1613138893233" duration="1390000" />
+      <workItem from="1613141208101" duration="1782000" />
+      <workItem from="1613143026922" duration="1180000" />
+      <workItem from="1613147513279" duration="1625000" />
+      <workItem from="1613149357047" duration="1910000" />
+      <workItem from="1613151305152" duration="1499000" />
+      <workItem from="1613153383421" duration="1785000" />
+      <workItem from="1613155199072" duration="1787000" />
+      <workItem from="1613157030190" duration="1789000" />
+      <workItem from="1613158853582" duration="1780000" />
+      <workItem from="1613160662284" duration="1235000" />
+      <workItem from="1613173234505" duration="1282000" />
+      <workItem from="1613175043403" duration="1784000" />
+      <workItem from="1613176865784" duration="1783000" />
+      <workItem from="1613178676222" duration="1804000" />
+      <workItem from="1613180538044" duration="838000" />
+      <workItem from="1613213174913" duration="3278000" />
+      <workItem from="1613218360269" duration="1328000" />
+      <workItem from="1613220926205" duration="1012000" />
+      <workItem from="1613223975801" duration="1784000" />
+      <workItem from="1613225823561" duration="1795000" />
+      <workItem from="1613227741327" duration="1493000" />
+      <workItem from="1613231215067" duration="1822000" />
+      <workItem from="1613233069461" duration="951000" />
+      <workItem from="1613241860051" duration="1740000" />
+      <workItem from="1613243841300" duration="835000" />
+      <workItem from="1613250280032" duration="1939000" />
+      <workItem from="1613252265775" duration="1893000" />
+      <workItem from="1613254204064" duration="350000" />
+      <workItem from="1613256017200" duration="1782000" />
+      <workItem from="1613257831427" duration="1781000" />
+      <workItem from="1613259643369" duration="1782000" />
+      <workItem from="1613261459017" duration="1740000" />
+      <workItem from="1613263274969" duration="1792000" />
+      <workItem from="1613265100881" duration="1781000" />
+      <workItem from="1613266910723" duration="1747000" />
+      <workItem from="1613298274863" duration="1766000" />
+      <workItem from="1613300093333" duration="1777000" />
+      <workItem from="1613301922882" duration="1156000" />
+      <workItem from="1613303761399" duration="619000" />
+      <workItem from="1613334837256" duration="1779000" />
+      <workItem from="1613336666085" duration="2983000" />
+      <workItem from="1613339755171" duration="1743000" />
+      <workItem from="1613341576842" duration="1802000" />
+      <workItem from="1613343988289" duration="1206000" />
+      <workItem from="1613345835621" duration="1793000" />
+      <workItem from="1613347685810" duration="1389000" />
+      <workItem from="1613381119691" duration="1785000" />
+      <workItem from="1613382964287" duration="1301000" />
+      <workItem from="1613385238621" duration="1970000" />
+      <workItem from="1613387271844" duration="1815000" />
+      <workItem from="1613389385477" duration="1767000" />
+      <workItem from="1613391220280" duration="1891000" />
+      <workItem from="1613393161793" duration="1778000" />
+      <workItem from="1613394979917" duration="781000" />
+      <workItem from="1613398858784" duration="2510000" />
+      <workItem from="1613410174164" duration="1272000" />
+      <workItem from="1613412926041" duration="1353000" />
+      <workItem from="1613414929431" duration="3436000" />
+      <workItem from="1613420656454" duration="876000" />
+      <workItem from="1613422713936" duration="540000" />
+      <workItem from="1613475376596" duration="1789000" />
+      <workItem from="1613477206526" duration="1780000" />
+      <workItem from="1613479805129" duration="601000" />
     </task>
     <task id="LOCAL-00091" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
       <created>1608821672075</created>
@@ -1383,7 +1439,21 @@
       <option name="project" value="LOCAL" />
       <updated>1610577956174</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="11/02/2021 - Ajustes basicos para inicio da implementação da rotinas eletrônicas.">
+      <created>1613063452467</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1613063452468</updated>
+    </task>
+    <task id="LOCAL-00139" summary="11/02/2021 - novos campos em ajustes basicos para inicio da implementação da rotinas eletrônicas.">
+      <created>1613063518001</created>
+      <option name="number" value="00139" />
+      <option name="presentableId" value="LOCAL-00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1613063518001</updated>
+    </task>
+    <option name="localTasksCounter" value="140" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1414,8 +1484,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexImportacao:" />
-    <MESSAGE value="06/01/2021 - Ajuste projeto formEditInspecao:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formIndexInspecionados:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formIndexUnidades:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formIndexVerificações:" />
@@ -1439,17 +1507,19 @@
     <MESSAGE value="07/01/2021 - Ajuste de model correção de bug:" />
     <MESSAGE value="07/01/2021 - Ajuste de controller melhoria de funcionalidade na inspeção:" />
     <MESSAGE value="13/01/2021 - Ajustes" />
-    <option name="LAST_COMMIT_MESSAGE" value="13/01/2021 - Ajustes" />
+    <MESSAGE value="11/02/2021 - Ajustes basicos para inicio da implementação da rotinas eletrônicas." />
+    <MESSAGE value="11/02/2021 - novos campos em ajustes basicos para inicio da implementação da rotinas eletrônicas." />
+    <option name="LAST_COMMIT_MESSAGE" value="11/02/2021 - novos campos em ajustes basicos para inicio da implementação da rotinas eletrônicas." />
   </component>
   <component name="WindowStateProjectService">
     <state x="309" y="41" key="#Inspections" timestamp="1608215905776">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="309" y="41" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1608215905776" />
-    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607690236617">
+    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613072756993">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1607690236617" />
+    <state x="274" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1613072756993" />
     <state x="686" y="103" key="#com.intellij.ide.util.MemberChooser" timestamp="1609685116698">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1466,37 +1536,41 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607101487361" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1609971662098">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1613257635832">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607342874975" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1609971662098" />
-    <state x="345" y="0" key="CommitChangelistDialog2" timestamp="1610577954806">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1613257635832" />
+    <state x="341" y="0" key="CommitChangelistDialog2" timestamp="1613063516615">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="345" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1610577954806" />
+    <state x="341" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1613063516615" />
+    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog" timestamp="1613262708162">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="92" y="92" width="1182" height="544" key="DiffContextDialog/0.0.1366.728@0.0.1366.728" timestamp="1613262708162" />
     <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1613043703685">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1612966295677" />
     <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1613043703685" />
-    <state width="1344" height="174" key="GridCell.Tab.0.bottom" timestamp="1608645949150">
+    <state width="1071" height="252" key="GridCell.Tab.0.bottom" timestamp="1613073147302">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1344" height="174" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1608645949150" />
-    <state width="1344" height="174" key="GridCell.Tab.0.center" timestamp="1608645949149">
+    <state width="1071" height="252" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1613073147302" />
+    <state width="1071" height="252" key="GridCell.Tab.0.center" timestamp="1613073147302">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1344" height="174" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1608645949149" />
-    <state width="1344" height="174" key="GridCell.Tab.0.left" timestamp="1608645949148">
+    <state width="1071" height="252" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1613073147302" />
+    <state width="1071" height="252" key="GridCell.Tab.0.left" timestamp="1613073147301">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1344" height="174" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1608645949148" />
-    <state width="1344" height="174" key="GridCell.Tab.0.right" timestamp="1608645949149">
+    <state width="1071" height="252" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1613073147301" />
+    <state width="1071" height="252" key="GridCell.Tab.0.right" timestamp="1613073147302">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1344" height="174" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1608645949149" />
+    <state width="1071" height="252" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1613073147302" />
     <state width="1344" height="217" key="GridCell.Tab.1.bottom" timestamp="1608645778875">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1513,10 +1587,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1344" height="217" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1608645778875" />
+    <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1613072516471">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1366.728@0.0.1366.728" timestamp="1613072516471" />
     <state x="669" y="83" key="NewPhpClassDialog" timestamp="1610407793728">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="669" y="83" key="NewPhpClassDialog/0.0.1366.728@0.0.1366.728" timestamp="1610407793728" />
+    <state x="518" y="286" key="NewPhpFileDialog" timestamp="1613250906046">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="518" y="286" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1613250906046" />
     <state x="519" y="65" key="RollbackChangesDialog" timestamp="1607969719925">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1526,15 +1608,19 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1610577957894">
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2" timestamp="1613063457036">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1610577957894" />
+    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1613063457036" />
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1606133477571">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="565" y="155" width="316" height="343" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1606133477571" />
+    <state x="454" y="240" key="com.intellij.database.actions.DdlActions$ModifyObject$1" timestamp="1613072409356">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="454" y="240" key="com.intellij.database.actions.DdlActions$ModifyObject$1/0.0.1366.728@0.0.1366.728" timestamp="1613072409356" />
     <state x="263" y="18" key="com.intellij.database.dbimport.ImportDialog" timestamp="1606133572522">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1570,6 +1656,11 @@
           <url>file://$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/FeriasPorMcu.php</url>
           <line>21</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/resources/views/compliance/grupoVerificacao/_form.blade.php</url>
+          <line>40</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

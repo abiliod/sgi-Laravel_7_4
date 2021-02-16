@@ -385,13 +385,33 @@ class InspecaoController extends Controller
 
     public function edit($id)
     {
+        $dtnow = new Carbon();
+        $dtmenos30dias = new Carbon();
+        $dtmenos60dias = new Carbon();
         $dtmenos90dias = new Carbon();
+        $dtmenos3meses = new Carbon();
+        $dtmenos110dias = new Carbon();
+        $dtmenos120dias = new Carbon();
+        $dtmenos150dias = new Carbon();
+        $dtmenos4meses = new Carbon();
+        $dtmenos6meses = new Carbon();
+        $dtmenos12meses = new Carbon();
+        $dtmenos30dias->subDays(30);
+        $dtmenos60dias->subDays(60);
         $dtmenos90dias->subDays(90);
-        $dtmes3mesesatras = new Carbon();
-        $dtmes3mesesatras->subMonth(2);
-        //  $now = Carbon::now();
-        // $now->format('Y-m-d');
+        $dtmenos3meses->subMonth(3);
+        $dtmenos110dias->subDays(110);
+        $dtmenos120dias->subDays(120);
+        $dtmenos150dias->subDays(150);
+        $dtmenos4meses->subMonth(4);
+        $dtmenos6meses->subMonth(6);
+        $dtmenos12meses->subMonth(12);
         $periodo = new CarbonPeriod();
+        $total=0.00;
+        $ocorrencias=0;
+        $row =0;
+        $dtmax = '';
+        $count =0;
 
         $registro = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
@@ -402,38 +422,33 @@ class InspecaoController extends Controller
             ->where([['itensdeinspecoes.id', '=', $id ]])
             ->first();
 
-            if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)) //revisado em 03/01/2021
+            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
+                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
             {
+
                 $mescompetencia = DB::table('debitoempregados')
                     ->select('competencia')
                     ->where([['debitoempregados.competencia', '>=', 1 ]])
                     ->orderBy('competencia' ,'desc')
                 ->first();
-
                 $debitoempregados = DB::table('debitoempregados')
                 ->select('data', 'documento', 'historico', 'matricula', 'valor' )
                 ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
                 ->where([['debitoempregados.sto', '=', $registro->mcu ]])
                 ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
                 ->get();
-             
                 if(! $debitoempregados->isEmpty())
                 {
                     $count = $debitoempregados->count('matricula');
                     $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
-
                 }
                 else
                 {
                     $count = 0;
                     $total = 0.00;
-      
-
                 }
-              
                $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
-               //dd( $competencia, $mescompetencia , $debitoempregados);
-                return view('compliance.inspecao.editar',compact(
+               return view('compliance.inspecao.editar',compact(
                       'registro'
                     , 'id'
                     , 'debitoempregados'
@@ -442,16 +457,17 @@ class InspecaoController extends Controller
                    , 'count'
                 ));
             }
-
-            if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 2)) //revisado em 03/01/2021
+            if((($registro->numeroGrupoVerificacao == 202)&&($registro->numeroDoTeste == 1))
+                || (($registro->numeroGrupoVerificacao == 332)&&($registro->numeroDoTeste ==1))
+                || (($registro->numeroGrupoVerificacao == 213)&&($registro->numeroDoTeste ==1))
+                || (($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 5))
+                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 2)))
             {
                 $countproters_con =0;
                 $countproters_peso =0;
                 $countproters_cep =0;
                 $total_proters_cep  = 0.00;
                 $total_proters_peso  = 0.00;
-
-
                 $proters_con = DB::table('proters')
                     ->select(
                         'tipo_de_pendencia'
@@ -466,7 +482,6 @@ class InspecaoController extends Controller
                      ->where([['tipo_de_pendencia', '=', 'CON']])
                      ->where([['data_da_postagem', '<=', $dtmenos90dias ]])
                  ->get();
-
                 if(! $proters_con->isEmpty())
                     $countproters_con = $proters_con->count('no_do_objeto');
                 $proters_peso = DB::table('proters')
@@ -510,13 +525,11 @@ class InspecaoController extends Controller
 
                 if(! $proters_cep->isEmpty())
                 {
-                  //  dd('tem registro');
                     $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
                     $total=$total_proters_cep;
                 }
                 else
                 {
-                 //   dd('não há registro');
                     $total_proters_cep  = 0.00;
                     $total=$total_proters_cep;
                 }
@@ -528,7 +541,6 @@ class InspecaoController extends Controller
                 }
                 else
                 {
-
                     $total_proters_peso  = 0.00;
                     $total=$total_proters_peso;
                 }
@@ -551,12 +563,9 @@ class InspecaoController extends Controller
                 ));
             }
 
-            if(($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste== 3))
+            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 6))
+                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste== 3)))
             {
-                $dtnow = new Carbon();
-                $dtmenos90dias = new Carbon();
-                $dtmenos90dias->subDays(90);
-                $total=0.00;
                 $smb_bdf_naoconciliados = DB::table('smb_bdf_naoconciliados')
                     ->select(
                         'smb_bdf_naoconciliados.*'
@@ -568,17 +577,25 @@ class InspecaoController extends Controller
                     ->orderBy('Data' ,'asc')
                 ->get();
 
-                $periodo = DB::table('smb_bdf_naoconciliados')
-                    ->select(
-                   'smb_bdf_naoconciliados.*'
-                    )
-                    ->where([['smb_bdf_naoconciliados.Data', '>=', $dtmenos90dias ]])
-                ->get();
+                if(! $smb_bdf_naoconciliados->isEmpty())
+                {
+                    $periodo = DB::table('smb_bdf_naoconciliados')
+                        ->select(
+                            'smb_bdf_naoconciliados.*'
+                        )
+                        ->where([['smb_bdf_naoconciliados.Data', '>=', $dtmenos90dias ]])
+                        ->get();
+                    $dtini = $periodo->min('Data');
+                    $dtfim = $periodo->max('Data');
+                    $total  = $smb_bdf_naoconciliados->sum('Divergencia'); // soma a coluna valor da coleção de dados
 
-                $dtini = $periodo->min('Data');
-                $dtfim = $periodo->max('Data');
-
-                $total  = $smb_bdf_naoconciliados->sum('Divergencia'); // soma a coluna valor da coleção de dados
+                }
+                else
+                {
+                    $dtini = $dtmenos90dias;
+                    $dtfim = $dtnow;
+                    $total  = '0.00';
+                }
                 return view('compliance.inspecao.editar',compact(
                     'registro'
                     ,'id'
@@ -590,20 +607,9 @@ class InspecaoController extends Controller
                     ));
             }
 
-            if(($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==4)) //revisadoem 03/01/2020
+            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 7))
+                || (($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==4)))
             {
-                $total=0.00;
-                $dtnow = new Carbon();
-                $dtmenos30dias = new Carbon();
-                $dtmenos60dias = new Carbon();
-                $dtmenos90dias = new Carbon();
-                $dtmenos120dias = new Carbon();
-                $dtmenos30dias->subDays(30);
-                $dtmenos60dias->subDays(60);
-                $dtmenos90dias->subDays(90);
-                $dtmenos120dias->subDays(120);
-                $ocorrencias=0;
-
                 $sl02bdfs30 = DB::table('sl02bdfs')
                     ->select('sl02bdfs.*')
                     ->where('cod_orgao', '=', $registro->sto)
@@ -733,10 +739,8 @@ class InspecaoController extends Controller
                     $media120=0;
                     $porcentagem120=0;
                 }
-
                 $total  =    $acumulados30+$acumulados60+$acumulados90+$acumulados120;
                 $ocorrencias = $ocorrencias30+$ocorrencias60+$ocorrencias90+$ocorrencias120;
-
                 if( $ocorrencias >= 1 )
                 {
                     $mediaocorrencias = (($ocorrencias/120)*22);
@@ -771,10 +775,16 @@ class InspecaoController extends Controller
                 ));
             }
 
-            if(($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1))
+            if((($registro->numeroGrupoVerificacao == 205)&&($registro->numeroDoTeste == 2))
+                || (($registro->numeroGrupoVerificacao==334)&&($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==372)&&($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==286)&&($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==221)&&($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==354)&&($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao == 231)&&($registro->numeroDoTeste == 1))
+                || (($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1)))
+
             {
-                $dtmenos90dias = new Carbon();
-                $dtmenos90dias->subDays(90);
                 $resp_definidas = DB::table('resp_definidas')
                     ->select('mcu','unidade','data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao' )
                     ->where('mcu', '=', $registro->mcu)
@@ -783,17 +793,10 @@ class InspecaoController extends Controller
                 ->get();
 
                 /*
-                 * Para fins de complementação do apontamento, quando da verificação física na unidade, solicitar esclarecimentos ao Gerente quanto ao andamento dos processos relacionados às indenizações.
-                 *
-                 *  $resp_definidasApFisica = DB::table('resp_definidas')
-                    ->select('mcu','unidade','data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao' )
-                    ->where('mcu', '=', $registro->mcu)
-                    ->where('data', '<=',  $dtmenos90dias)
-                    ->where('nu_sei', '<>', '')
-                   ->where('situacao', '<>', 'CONCLUIDO')
-
-                ->get();
-                gerar informações para verificação do tipo física.
+                 * Para fins de complementação do apontamento, quando da verificação física
+                 *  na unidade, solicitar esclarecimentos ao Gerente quanto ao andamento dos
+                 *  processos relacionados às indenizações.
+   Definida (as CSEC’s dispõem de informações relacionadas a extravios a partir do ano de 2015
                  */
 
                 if(! $resp_definidas->isEmpty())
@@ -807,11 +810,9 @@ class InspecaoController extends Controller
                 {
                     $total = 0.00;
                     $dtmax = $dtmenos90dias;
-                    $dtmin = new Carbon();
+                    $dtmin = $dtnow;
                     $count = 0;
                 }
-
-
                 return view('compliance.inspecao.editar',compact
                 (
                   'registro'
@@ -824,19 +825,16 @@ class InspecaoController extends Controller
                 ));
             }
 
-            if(( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 ))
+            if((($registro->numeroGrupoVerificacao == 206 )&&($registro->numeroDoTeste == 1 ))
+                || (( $registro->numeroGrupoVerificacao == 335 ) && ( $registro->numeroDoTeste == 1 ))
+                || (($registro->numeroGrupoVerificacao == 232)&&($registro->numeroDoTeste == 3 ))
+                || (( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 )))
             {
-                $dtmenos12meses = Carbon::now();
-                $dtmenos12meses = $dtmenos12meses->subMonth(12);
-                $now = Carbon::now();
-                $now->format('Y-m-d');
-
+                $now=$dtnow->format('Y-m-d');
                 $rowAberturaFinalSemana=0;
                 $tempoDesarme='';
                 $tempoDePermanencia='';
-                $row =0;
                 $acessosEmFeriados='';
-                $dtmax = '';
                 $dataultimoevento='';
                 $aviso='';
                 $diferencaAbertura ='';
@@ -849,9 +847,7 @@ class InspecaoController extends Controller
                 $tempoAberturaPosExpediente='';
                 $tempoAberturaAntecipada='';
                 $naoMonitorado='';
-                $total = 0;
                 $acessos_final_semana ='';
-
                 $alarmesFinalSemana = DB::table('alarmes')
                     ->select('alarmes.*')
                     ->where('mcu', '=', $registro->mcu)
@@ -1000,7 +996,6 @@ class InspecaoController extends Controller
                             ,'class'=>'red white-text']);
                         return redirect()->route('compliance.unidades.editar',$registro->unidade_id);
                     }
-
                     foreach ($eventos  as $evento)
                     {
                         $eventominutos = (substr($evento->hora,0,2)*60)+substr($evento->hora,3,2);
@@ -1093,8 +1088,8 @@ class InspecaoController extends Controller
                 {
                     $maxdata = DB::table('alarmes')
                         ->where('mcu', '=', $registro->mcu )
-                        ->max('data');
-                 //   if(! $maxdata->isEmpty())
+                    ->max('data');
+
                    if(!empty($maxdata ))
                    {
                        $dataultimoevento = \Carbon\Carbon::parse($maxdata)->format('d/m/Y');
@@ -1103,10 +1098,9 @@ class InspecaoController extends Controller
                    {
                        $dataultimoevento = 'data não localizada nos parâmetros dessa pesquisa de inspeção';
                    }
-                    $naoMonitorado ='Não foi possível avaliar eventos recente da utilização do alarme monitorado
-                            dado que a unidade não está sendo monitorada.
-                            Adicionalmente verificaram que o último evento transmitido
-                             foi em ' .$dataultimoevento. '.';
+                   $naoMonitorado ='Não foi possível avaliar eventos recente da utilização do alarme monitorado
+                            dado que a unidade não está sendo monitorada. Aicionalmente verificaram que o último
+                             evento transmitido foi em ' .$dataultimoevento. '.';
                 }
 
                 return view('compliance.inspecao.editar',compact
@@ -1129,20 +1123,19 @@ class InspecaoController extends Controller
                 ));
             }
 
-            if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3))
-            {
-                $now = Carbon::now();
-                $now = $now->format('Y-m-d');
-                $dtmenos12meses =  Carbon::now()->subMonth(12);
+                if((($registro->numeroGrupoVerificacao==206) && ($registro->numeroDoTeste==2))
+                    || (($registro->numeroGrupoVerificacao==335) && ($registro->numeroDoTeste==2))
+                    || (($registro->numeroGrupoVerificacao==232) && ($registro->numeroDoTeste==4))
+                    || (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3)))
+                {
+
+                $now = $dtnow->format('Y-m-d');
                 $dtmenos12meses = $dtmenos12meses->format('Y-m-d');
                 $dtini = $dtmenos12meses;
-                $dtfim = $now;
-                $row=0;
+                $dtfim = $dtnow;
                 $aviso = '';
                 $periodo=array();
                 $naoMonitorado='';
-               
-
                 $eventos = DB::table('alarmes')
                     ->select('alarmes.*')
                     ->where('mcu', '=', $registro->mcu)
@@ -1150,7 +1143,6 @@ class InspecaoController extends Controller
                     ->orderBy('data' ,'asc')
                     ->orderBy('hora' ,'asc')
                 ->get();
-
                 if( $eventos->isEmpty() )
                 {
                     $dataultimoevento = \Carbon\Carbon::parse($dtmenos12meses)->format('d/m/Y');
@@ -1162,12 +1154,9 @@ class InspecaoController extends Controller
                 else
                 {
                     $dtmax = $eventos->max('data');
-
                     $periodo = CarbonPeriod::create($dtmax ,  $now );
                     $dataultimoevento = \Carbon\Carbon::parse($dtmax)->format('d/m/Y');
                     if ($periodo->count()>=15)  $aviso = 'a) A unidade inspecionada não está sendo monitorada há '. $periodo->count().' dias. Adicionalmente, verificaram que o último evento transmitido foi no dia ' .$dataultimoevento. '.';
-
-
                     // Se tem dados de alarme obter a lista de ferias por empregados da unidade
                     $ferias_por_mcu = DB::table('ferias_por_mcu')
                         ->join('cadastral', 'ferias_por_mcu.matricula', '=', 'cadastral.matricula')
@@ -1178,7 +1167,6 @@ class InspecaoController extends Controller
                         ->orderBy('ferias_por_mcu.inicio_fruicao' , 'asc')
                     ->get();
                     if(! $ferias_por_mcu->isEmpty())
-                   // if(!empty($ferias_por_mcu ))
                     {
                         foreach ($ferias_por_mcu  as $ferias)
                         {
@@ -1189,7 +1177,6 @@ class InspecaoController extends Controller
                                 ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                                 ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                                 ->delete();
-
                             $res = DB::table('alarmes')
                                 ->select('alarmes.*')
                                 ->where([['mcu', '=', $registro->mcu]])
@@ -1198,7 +1185,6 @@ class InspecaoController extends Controller
                                 ->orderBy('data' , 'asc')
                                 ->orderBy('hora' , 'asc')
                                 ->get();
-
                             if ($res->count('matricula')>=1)
                             {
                                 $motivo='Férias';
@@ -1217,7 +1203,6 @@ class InspecaoController extends Controller
                             }
                         }
                     }
-
                     // Se tem dados de alarme obter a lista de absenteísmo por empregados da unidade
                     $frequencias = DB::table('absenteismos')
                         ->join('cadastral', 'absenteismos.matricula', '=', 'cadastral.matricula')
@@ -1256,16 +1241,15 @@ class InspecaoController extends Controller
                                     $compartilhaSenha->codigo = $registro->codigo;
                                     $compartilhaSenha->numeroGrupoVerificacao  = $registro->numeroGrupoVerificacao;
                                     $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
-                                    $compartilhaSenha->matricula = $dados->matricula;
-                                    $compartilhaSenha->evento = $dados->armedesarme;
-                                    $compartilhaSenha->data = $dados->data;
+                                    $compartilhaSenha->matricula = $dado->matricula;
+                                    $compartilhaSenha->evento = $dado->armedesarme;
+                                    $compartilhaSenha->data = $dado->data;
                                     $compartilhaSenha->tipoafastamento = $frequencia->motivo;
                                     $compartilhaSenha->save();
                                 }
                             }
                         }
                     }
-                   
                     $compartilhaSenhas  =  DB::table('compartilhasenhas')
                         ->where('codigo', '=', $registro->codigo)
                         ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -1273,14 +1257,9 @@ class InspecaoController extends Controller
                         ->orderBy('data' ,'asc')
                         ->get();
                     $row = $compartilhaSenhas->count('codigo');
-
                     $dtmax = \Carbon\Carbon::parse($eventos->max('data'))->format('d/m/Y');
-
                 } //tem dados de alarme
                 if($row==false) $compartilhaSenhas=null;
-
-
-                $total=0.00;
                 return view('compliance.inspecao.editar',compact
                                 (
                                     'registro'
@@ -1296,13 +1275,15 @@ class InspecaoController extends Controller
                                 ));
             }
 
-            if (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==4))
+            if((($registro->numeroGrupoVerificacao==206) && ($registro->numeroDoTeste==3))
+                || (($registro->numeroGrupoVerificacao==335) && ($registro->numeroDoTeste==3))
+                || (($registro->numeroGrupoVerificacao==232) && ($registro->numeroDoTeste==6))
+                || (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==4)))
             {
                 $cftvs = DB::table('cftvs')
                    ->select( 'cftvs.*' )
                    ->where([['mcu', '=',  $registro->mcu  ]])
                    ->get();
-               $total=0.00;
                return view('compliance.inspecao.editar',compact
                                (
                                    'registro'
@@ -1312,17 +1293,15 @@ class InspecaoController extends Controller
 
                                ));
             }
-
-            if (($registro->numeroGrupoVerificacao==274) && ($registro->numeroDoTeste==1))
+            if((($registro->numeroGrupoVerificacao==212) && ($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==350) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==235) && ($registro->numeroDoTeste==4))
+                || (($registro->numeroGrupoVerificacao==274) && ($registro->numeroDoTeste==1)))
             {
-                $total=0.00;
-                $count = 0;
-
                 $plplistapendentes = DB::table('plplistapendentes')
                    ->select( 'plplistapendentes.*' )
                    ->where([['stomcu', '=',  $registro->mcu  ]])
                 ->get();
-
                 if( !empty($plplistapendentes->dh_lista_postagem ))
                 {
                     $count = $plplistapendentes->count('lista');
@@ -1332,37 +1311,35 @@ class InspecaoController extends Controller
                 {
                     $dtfim = Carbon::now();
                 }
-                return view('compliance.inspecao.editar',compact
-                               (
-                                   'registro'
-                                   , 'id'
-                                   , 'total'
-                                   , 'plplistapendentes'
-                                   ,'count'
-                                   ,'dtfim'
-                               ));
+                return view('compliance.inspecao.editar',
+                    compact(
+                       'registro'
+                       , 'id'
+                       , 'total'
+                       , 'plplistapendentes'
+                       ,'count'
+                       ,'dtfim'
+                    ));
             }
 
-            if (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1))
+            if((($registro->numeroGrupoVerificacao==200) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==330) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==287) && ($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==222) && ($registro->numeroDoTeste==4))
+                || (($registro->numeroGrupoVerificacao==239) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1)))
             {
-                $count = 0;
-                $total=0.00;
-                $dtmenos3meses = Carbon::now();
-                $dtmenos3meses = $dtmenos3meses->subMonth(3);
-
                 $controle_de_viagens = DB::table('controle_de_viagens')
                    ->select( 'controle_de_viagens.*' )
                    ->where('ponto_parada', '=', $registro->an8)
                     ->where('inicio_viagem', '=', $dtmenos3meses)
                 ->get();
-
-
                 if( !empty($controle_de_viagens->ponto_parada ))
                 {
                     $count = $controle_de_viagens->count('ponto_parada');
                 }
                 $dtini = $dtmenos3meses;
-                $dtfim =  Carbon::now();
+                $dtfim = $dtnow;
                 $periodo = new CarbonPeriod();
                 $periodo = CarbonPeriod::create($dtini ,  $dtfim );
                 $dias =$periodo->count()-1;
@@ -1373,7 +1350,6 @@ class InspecaoController extends Controller
                 }
                 $viagens = $dias*2;
                 $viagemNaorealizada =   $viagens-$count;
-//                dd(      $controle_de_viagens);
                 return view('compliance.inspecao.editar',compact
                    (
                        'registro'
@@ -1388,19 +1364,15 @@ class InspecaoController extends Controller
 
                    ));
             }
-
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==1))
+            if((($registro->numeroGrupoVerificacao==201) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==331) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==1)))
             {
-
-                $dtmenos110dias = new Carbon();
-                $dtmenos110dias->subDays(110);
                 $dtmenos110dias = \Carbon\Carbon::parse($dtmenos110dias)->format('Y-m-d');
-                $count = 0;
-                $total=0.00;
-
                 if($registro->tem_distribuicao == 'Não tem distribuição')
                 {
-                    $dtfim = new Carbon();
+                    $dtfim = $dtnow;
                     $dtini = $dtmenos110dias;
                     $sgdo_distribuicao='';
                 }
@@ -1411,10 +1383,7 @@ class InspecaoController extends Controller
                         ->where([['mcu', '=',  $registro->mcu  ]])
                         ->where([['data_incio_atividade', '>=',  $dtmenos110dias  ]])
                     ->get();
-
-
                     if(! $sgdo_distribuicao->isEmpty())
-                   // if( !empty( $sgdo_distribuicao ))
                     {
                         $count = $sgdo_distribuicao->count('mcu');
                         $dtfim = $sgdo_distribuicao->max('data_incio_atividade');
@@ -1437,14 +1406,12 @@ class InspecaoController extends Controller
                                     , 'dtfim'
                                 ));
             }
+            if((($registro->numeroGrupoVerificacao==201) && ($registro->numeroDoTeste==5))
+                || (($registro->numeroGrupoVerificacao==331) && ($registro->numeroDoTeste==4))
+                || (($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==3))
+                || (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==2)))
 
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==2))
             {
-                $dtmenos120dias = new Carbon();
-                $dtmenos120dias = $dtmenos120dias->subDays(120);
-                $count = 0;
-                $total=0.00;
-              //  $item=1;
                 $dtini=null;
                 $dtfim=null;
                 $media=null;
@@ -1453,17 +1420,13 @@ class InspecaoController extends Controller
                 $res=null;
                 $qtd_falhas=null;
                 $percentagem_falhas=null;
-
-
                 $lancamentossros =  DB::table('lancamentossro')
                     ->where('codigo', '=', $registro->codigo)
                     ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
                     ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                 ->get();
-
                 if( $lancamentossros->count('codigo') >= 1)      // játem lançamentos para avaliar...
                 {
-
                     $pend = 0;
                     $aval = 0;
                     foreach ($lancamentossros as $register)
@@ -1506,7 +1469,6 @@ class InspecaoController extends Controller
                         }
                         $percentagem_falhas = (($qtd_falhas / $amostra) * 100);
                         $percentagem_falhas = number_format($percentagem_falhas, 2, ',', '.');
-
                         $res = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -1514,18 +1476,6 @@ class InspecaoController extends Controller
                             ->where('falhaDetectada', '<>', 'Ok')
                             ->where('estado', '=', 'Avaliado')
                         ->get();
-//
-//                        if( !empty( $res ))
-//                        {
-//                            echo 'tem res';
-//                            var_dump($res );
-//                        }
-//                        else
-//                        {
-//                            echo 'nao tem res';
-//                        }
-//                        dd();
-
                         $micro_strategys = DB::table('micro_strategys')
                             ->where('nome_da_unidade', 'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
                             ->where([['data_do_evento', '>=', $dtmenos120dias]])
@@ -1557,7 +1507,7 @@ class InspecaoController extends Controller
                         $dtfim = $micro_strategys->max('data_do_evento');
                         $periodo = CarbonPeriod::create($dtini, $dtfim);
                         $dias = $periodo->count() - 1;
-                       // dd(' 1470  mostra-> '.     $mostra , 'val '.$aval);
+
                         return view('compliance.inspecao.editar', compact
                         (
                             'registro'
@@ -1620,7 +1570,6 @@ class InspecaoController extends Controller
                         })
                     ->get();
                     if(! $micro_strategys->isEmpty())
-                   // if( !empty( $micro_strategys ))// tem objetos na consulta para inserir no banco
                     {
                         $count = $micro_strategys->count('codigo_do_objeto');
                         $dtini = $micro_strategys->min('data_do_evento');
@@ -1642,7 +1591,6 @@ class InspecaoController extends Controller
                         //Você solicitou 53 itens, mas há apenas 43 itens disponíveis.
                         if( $amostra  > $count  ) $amostra = $count ;
                         //dd($amostra, $count);
-
                         if ($amostra >= 1)
                         {
                             $random = $micro_strategys->random($amostra);
@@ -1655,7 +1603,6 @@ class InspecaoController extends Controller
                                 $random = $micro_strategys->random(25);
                         }
                         $random->all();
-
                         foreach ($random as $dado)
                         {
                             $lancamentossro = new LancamentosSRO();
@@ -1674,7 +1621,6 @@ class InspecaoController extends Controller
                             ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                             ->where('estado', '=', 'Pendente')
                         ->get();
-
                         return view('compliance.inspecao.index_sro', compact
                         (
                             'registro'
@@ -1690,6 +1636,7 @@ class InspecaoController extends Controller
                             'registro'
                             , 'id'
                             , 'total' //xx
+
                             , 'count' //xx
                             , 'dtini'
                             , 'dtfim'
@@ -1705,13 +1652,11 @@ class InspecaoController extends Controller
                 }
 
             }
-
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==3))
+            if((($registro->numeroGrupoVerificacao==201) && ($registro->numeroDoTeste==6))
+                || (($registro->numeroGrupoVerificacao==331) && ($registro->numeroDoTeste==5))
+                || (($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==4))
+                || (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==3)))
             {
-                $dtmenos120dias = new Carbon();
-                $dtmenos120dias = $dtmenos120dias->subDays(120);
-                $count = 0;
-                $total=0.00;
                 $res=null;
                 $dtini=null;
                 $dtfim=null;
@@ -1720,7 +1665,6 @@ class InspecaoController extends Controller
                 $amostra=null;
                 $qtd_falhas=null;
                 $percentagem_falhas=null;
-
                 $lancamentossros =  DB::table('lancamentossro')
                     ->where('codigo', '=', $registro->codigo)
                     ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -1770,7 +1714,6 @@ class InspecaoController extends Controller
                         }
                         $percentagem_falhas = (($qtd_falhas / $amostra) * 100);
                         $percentagem_falhas = number_format($percentagem_falhas, 2, ',', '.');
-
                         $res = DB::table('lancamentossro')
                             ->where('codigo', '=', $registro->codigo)
                             ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -1958,13 +1901,12 @@ class InspecaoController extends Controller
                 }
 
             }
-
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==5))
+            if((($registro->numeroGrupoVerificacao==201) && ($registro->numeroDoTeste==15))
+                || (($registro->numeroGrupoVerificacao==331) && ($registro->numeroDoTeste==11))
+                || (($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==8))
+                || (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==5)))
             {
-                $dtmenos150dias = new Carbon();
-                $dtmenos150dias->subDays(150);
                 $dtini = $dtmenos150dias;
-
                 switch ($registro->se)
                 {
                     case 1 :{ $superintendência = 'CS'; } break;
@@ -2004,49 +1946,31 @@ class InspecaoController extends Controller
 
                 $count = $painel_extravios->count('unid_destino_apelido');
                 $dtfim = $painel_extravios->max('data_evento');
-
-                //var_dump($painel_extravios);
-               //dd( $count);
-
-//                $datas = DB::table('painel_extravios')
-//                   ->select( 'painel_extravios.data_evento' )
-//                   ->where([['painel_extravios.data_evento', '>=',  $dtmenos150dias  ]])
-//
-//                   ->get();
-//
-//                $dtfim = $datas->max('data_evento');
-
                 $countSupervisor=0;
                 $cadastral = DB::table('cadastral')
-                ->select( 'cadastral.*' )
-                ->where([['cadastral.mcu', '=',   $registro->mcu  ]])
-                ->where('cadastral.funcao',  'like', '%' . 'SUPERVISOR' . '%')
+                    ->select( 'cadastral.*' )
+                    ->where([['cadastral.mcu', '=',   $registro->mcu  ]])
+                    ->where('cadastral.funcao',  'like', '%' . 'SUPERVISOR' . '%')
                 ->get();
-
                 $countSupervisor = $cadastral->count('funcao');
-
-
-                $total=0.00;
                 return view('compliance.inspecao.editar',compact
-                               (
-                                   'registro'
-                                   , 'id'
-                                   , 'total'
-                                   , 'painel_extravios'
-                                   ,'count'
-                                   ,'dtini'
-                                   ,'dtfim'
-                                   ,'countSupervisor'
+                       (
+                           'registro'
+                           , 'id'
+                           , 'total'
+                           , 'painel_extravios'
+                           ,'count'
+                           ,'dtini'
+                           ,'dtfim'
+                           ,'countSupervisor'
 
-                               ));
+                       ));
             }
 
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==6))
+            if((($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==7))
+                || (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==6)))
             {
-                $dtmenos150dias = new Carbon();
-                $dtmenos150dias->subDays(150);
                 $dtini = $dtmenos150dias;
-
                 switch ($registro->se)
                 {
                     case 1 :{ $superintendência = 'CS'; } break;
@@ -2086,38 +2010,32 @@ class InspecaoController extends Controller
 
                 $count = $painel_extravios->count('unid_destino_apelido');
                 $dtfim = $painel_extravios->max('data_evento');
-
-
                 $countSupervisor=0;
                 $cadastral = DB::table('cadastral')
                     ->select( 'cadastral.*' )
                     ->where([['cadastral.mcu', '=',   $registro->mcu  ]])
                     ->where('cadastral.funcao',  'like', '%' . 'SUPERVISOR' . '%')
                 ->get();
-
                 $countSupervisor = $cadastral->count('funcao');
-
-                $total=0.00;
                 return view('compliance.inspecao.editar',compact
-                               (
-                                   'registro'
-                                   , 'id'
-                                   , 'total'
-                                   , 'painel_extravios'
-                                   ,'count'
-                                   ,'dtini'
-                                   ,'dtfim'
-                                   ,'countSupervisor'
+                       (
+                           'registro'
+                           , 'id'
+                           , 'total'
+                           , 'painel_extravios'
+                           ,'count'
+                           ,'dtini'
+                           ,'dtfim'
+                           ,'countSupervisor'
 
-                               ));
+                       ));
             }
-
-            if (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==7))
+            if((($registro->numeroGrupoVerificacao==201) && ($registro->numeroDoTeste==9))
+                || (($registro->numeroGrupoVerificacao==331) && ($registro->numeroDoTeste==8))
+                || (($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==9))
+                || (($registro->numeroGrupoVerificacao==277) && ($registro->numeroDoTeste==7)))
             {
-                $dtmenos365dias = new Carbon();
-                $dtmenos365dias->subDays(365);
-                $dtini = $dtmenos365dias;
-
+                $dtini = $dtmenos12meses;
                 switch ($registro->se)
                 {
                     case 1 :{ $superintendência = 'CS'; } break;
@@ -2162,36 +2080,34 @@ class InspecaoController extends Controller
                    ->get();
                 $count = $cie_eletronicas->count('respondida');
                 $dtfim = $cie_eletronicas->max('emissao');
-
-                $total=0.00;
                 return view('compliance.inspecao.editar',compact
-                               (
-                                   'registro'
-                                   , 'id'
-                                   , 'total'
-                                   , 'cie_eletronicas'
-                                   ,'count'
-                                   ,'dtini'
-                                   ,'dtfim'
+                       (
+                           'registro'
+                           , 'id'
+                           , 'total'
+                           , 'cie_eletronicas'
+                           ,'count'
+                           ,'dtini'
+                           ,'dtfim'
 
 
-                               ));
+                       ));
             }
+      //  dd($registro);
 
-            if (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==1))
+            if((($registro->numeroGrupoVerificacao==209) && ($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==337) && ($registro->numeroDoTeste==1))
+                || (($registro->numeroGrupoVerificacao==241) && ($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==1)))
+
             {
-                $dtmenos6meses = new Carbon();
-                $dtmenos6meses->subMonth(6);
                 $ref = substr($dtmenos6meses,0,4). substr($dtmenos6meses,5,2);
                 $dtini = substr($dtmenos6meses,0,4).'-'. substr($dtmenos6meses,5,2).'-01';
                 $dtini = \Carbon\Carbon::parse($dtini)->format('d/m/Y');
-                $count = 0;
-                $total=0.00;
                 $rowtfs=0;
                 $situacao =null;
                 $pgtoAdicionais='';
                 $counteventostfs=0;
-
                 $pgtadd = DB::table('pagamentos_adicionais')
                     ->select(
                                 'pagamentos_adicionais.ref'
@@ -2201,7 +2117,6 @@ class InspecaoController extends Controller
                 if(! $pgtadd->isEmpty())
                 {
                     $reffinal = $pgtadd->max('ref');
-
                     if(substr($reffinal,5,2)<10){
                         $dt='0'.substr($reffinal,5,2);
                     }else{
@@ -2216,7 +2131,6 @@ class InspecaoController extends Controller
                 {
                     $reffinal=null;
                 }
-
                 $pagamentos_adicionais = DB::table('pagamentos_adicionais')
                     ->where('sigla_lotacao',  'like', '%' . trim($registro->descricao) . '%')  //trim($registro->descricao)
                     ->where('ref', '>=', $ref) //
@@ -2224,8 +2138,6 @@ class InspecaoController extends Controller
                 $query
                     ->where('rubrica', '=', 'Trab. Fins Semana - Proporcional')
                     ->where('rubrica', '=', 'Trabalho Fins Semana')
-            //        ->where('rubrica', '=', 'Trabalho Fins de Semana Judicial (15%)')
-
                     ->orWhere('rubrica', '=', 'Hora Extra   70% - Norm')
                     ->orWhere('rubrica', '=', 'Hora Extra 100% - Norm')
                     ->orWhere('rubrica', '=', 'Hora Extra Not.70% - Norm')
@@ -2233,18 +2145,11 @@ class InspecaoController extends Controller
                 })
                 ->get();
 
-
                 if(! $pagamentos_adicionais->isEmpty())
                 {
                     $count = $pagamentos_adicionais->count('sigla_lotacao');
                 }
-                else
-                {
-                    $count = 0;
-                }
-
                 if  ( $count >= 1 ){
-
                     DB::table('pgto_adicionais_temp')
                         ->where('codigo', '=', $registro->codigo)
                         ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
@@ -2257,7 +2162,6 @@ class InspecaoController extends Controller
                         $month = $periodo->month;
                         $year = $periodo->year;
                         if($adicional-> rubrica == 'Trab. Fins Semana - Proporcional' ){
-
                             $eventos = DB::table('alarmes')
                                 ->where('mcu', '=', $registro->mcu)
                                 ->whereYear('data', $year)
@@ -2277,7 +2181,6 @@ class InspecaoController extends Controller
                             {
                                 $counteventostfs = 0;
                             }
-
                             if( $counteventostfs == 0){
                                 $situacao = 'Provento registrado em período que não houve registro de Desarme do Sistema de Alarme.';
                             }else{
@@ -2287,31 +2190,18 @@ class InspecaoController extends Controller
                                 }
                                 $situacao=null;
                             }
-
                         }
                         elseif
                                (($adicional-> rubrica    == 'Hora Extra   70% - Norm')
                             || ($adicional-> rubrica == 'Hora Extra 100% - Norm')
                             || ($adicional-> rubrica == 'Hora Extra Not.70% - Norm') )
                         {
-
-                                //   dd($registro);
-                                //+ " inicio_expediente ": " 09:00:00 "
-                                //+ " final_expediente ": " 17:00:00 "
                                 $inicio_expediente = new Carbon($registro->inicio_expediente); //$registro->inicio_expediente;
                                 $final_expediente = new Carbon($registro->final_expediente); //$registro->inicio_expediente;
-
-                                //  addHours
-                                //  subHours
-
                                 $inicio_expediente  = $inicio_expediente->subHours(3);
                                 $final_expediente   = $final_expediente->addHours(3);// 2012-02-04 00:00:00
-
                                 $inicio_expediente   = $inicio_expediente->toTimeString();
                                 $final_expediente   = $final_expediente->toTimeString(); //14:15:16
-
-                                // dd('hora '. $final_expediente);
-
                                 $eventos = DB::table('alarmes')
                                     ->where('mcu', '=', $registro->mcu)
                                     ->whereYear('data', $year)
@@ -2343,17 +2233,12 @@ class InspecaoController extends Controller
                                         $rowhe++;
                                     }
                                     $situacao = null;
-                                //    $situacao = 'Provento registrado em período que não houve registro de Desarme do Sistema de Alarme para '.intval($adicional->qtd/2) .' ocorrencias.' ;
                             }
 
                         }
-
                         if(($adicional-> rubrica == 'Trabalho Fins Semana' )&&($pgtoAdicionaisTemp->ref > '202008')){
                            $situacao = 'O  Acórdão do Dissídio Coletivo 2020/2021, vigente a partir de 01/08/2020, não prevê a manutenção do pagamento do Adicional de Fim de Semana.';
                         }
-
-                        //dd($situacao);
-
                         if (!$situacao==null)
                         {
                             $pgtoAdicionaisTemp = new PgtoAdicionaisTemp();
@@ -2374,7 +2259,6 @@ class InspecaoController extends Controller
                         }
 
                     }
-
                     $pgtoAdicionais = DB::table('pgto_adicionais_temp')
                         ->where('sto',  '=', $registro->sto)
                         ->where('mcu',  '=', $registro->mcu)
@@ -2385,22 +2269,12 @@ class InspecaoController extends Controller
                                     'pgto_adicionais_temp.*'
                         )
                     ->get();
-
-                    $total == 0.00;
-                    $count == 0;
-
                     if(! $pgtoAdicionais->isEmpty()) {
                         $total = $pgtoAdicionais->sum('valor');
                         $count = $pgtoAdicionais->count('matricula');
                     }
-                    else
-                    {
-                        $total=0.00;
-                        $count = 0;
-                    }
-
                 }
-               //dd($pgtoAdicionais);
+
                 return view('compliance.inspecao.editar',compact
                 (
                     'registro'
@@ -2414,10 +2288,11 @@ class InspecaoController extends Controller
                 ));
             }
 
-            if (($registro->numeroGrupoVerificacao==278) && ($registro->numeroDoTeste==2))
+            if((($registro->numeroGrupoVerificacao==209)&&($registro->numeroDoTeste==3))
+                || (($registro->numeroGrupoVerificacao==337)&&($registro->numeroDoTeste==2))
+                || (($registro->numeroGrupoVerificacao==241)&&($registro->numeroDoTeste==3))
+                || (($registro->numeroGrupoVerificacao==278)&&($registro->numeroDoTeste==2)))
             {
-                $dtmenos4meses = new Carbon();
-                $dtmenos4meses->subMonth(4);
                 $ref = substr($dtmenos4meses,0,4). substr($dtmenos4meses,5,2);
                 $count_atend = 0;
                 $count_dist = 0;
@@ -2426,10 +2301,8 @@ class InspecaoController extends Controller
                     ->select( 'pagamentos_adicionais.ref' )
                     ->where('ref', '>=', $ref)
                 ->get();
-
                 $dtini = $refini->min('ref');
                 $dtfim = $refini->max('ref');
-
                 switch ($registro->se)
                 {
                     case 1 :{ $superintendência = 'CS'; } break;
@@ -2482,19 +2355,16 @@ class InspecaoController extends Controller
                     ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
                     ->delete(); // limpa dados anteriores existentes do empregado da tabela temporária
                 }
-
                 foreach ($pagamentos_adicionais_dist  as $adicionais)
                 {
                     $situacao="Sem eventos de Distribuição Domiciliária.";
                     $mes = intval(substr($adicionais->ref,4,2));
-
                     $sgdo_distribuicao = DB::table('sgdo_distribuicao')
                         ->select('sgdo_distribuicao.*')
                         ->where([[ 'mcu', '>=', $registro->mcu ]])
                         ->where([[ 'matricula', '=', $adicionais->matricula ]])
                         ->whereMonth('data_termino_atividade', $mes)
                     ->get();
-
                     if(! $sgdo_distribuicao->isEmpty())
                     {
                         $count_sgdo = $sgdo_distribuicao->count('matricula');
@@ -2518,7 +2388,6 @@ class InspecaoController extends Controller
                         $pgtoAdicionaisTemp->ref = $adicionais->ref;
                         $pgtoAdicionaisTemp->valor = $adicionais->valor;
                         $pgtoAdicionaisTemp->situacao = $situacao;
-
                         $ferias_por_mcu = DB::table('ferias_por_mcu')
                         ->select('ferias_por_mcu.*')
                         ->where([[ 'matricula', '=', $adicionais->matricula ]])
@@ -2530,7 +2399,6 @@ class InspecaoController extends Controller
                         }else{
                             unset($pgtoAdicionaisTemp);
                         }
-
                     }
                 }
 
@@ -2553,10 +2421,8 @@ class InspecaoController extends Controller
 
                 foreach ($pagamentos_adicionais_atend  as $adicionais)
                 {
-
                     $situacao="Sem eventos de atendimento a clientes.";
                     $mes = intval(substr($adicionais->ref,4,2));
-
                     $bdf_fat_02 = DB::table('bdf_fat_02')
                         ->select('bdf_fat_02.*')
                         ->where([[ 'cd_orgao', '>=', $registro->sto ]])
@@ -2576,12 +2442,11 @@ class InspecaoController extends Controller
                         $pgtoAdicionaisTemp->ref = $adicionais->ref;
                         $pgtoAdicionaisTemp->valor = $adicionais->valor;
                         $pgtoAdicionaisTemp->situacao = $situacao;
-
                         $ferias_por_mcu = DB::table('ferias_por_mcu')
-                        ->select('ferias_por_mcu.*')
-                        ->where([[ 'matricula', '=', $adicionais->matricula ]])
-                        ->whereMonth('inicio_fruicao', $mes-1)
-                        ->whereYear('inicio_fruicao', $registro->ciclo)
+                            ->select('ferias_por_mcu.*')
+                            ->where([[ 'matricula', '=', $adicionais->matricula ]])
+                            ->whereMonth('inicio_fruicao', $mes-1)
+                            ->whereYear('inicio_fruicao', $registro->ciclo)
                         ->first();
 
                         if ($ferias_por_mcu->isEmpty())
@@ -2592,18 +2457,18 @@ class InspecaoController extends Controller
                         }
                     }
                 }
-                $total=0.00;
+
                 if (( $count_atend >= 1 ) || ( $count_dist >= 1 ))
                 {
                     $pgtoAdicionais = DB::table('pgto_adicionais_temp')
-                    ->where('sto',  '=', $registro->sto)
-                    ->where('mcu',  '=', $registro->mcu)
-                    ->where('codigo',  '=', $registro->codigo)
-                    ->where('numeroGrupoVerificacao',  '=', $registro->numeroGrupoVerificacao)
-                    ->where('numeroDoTeste',  '=', $registro->numeroDoTeste)
-                    ->select(
-                                'pgto_adicionais_temp.*'
-                    )
+                        ->where('sto',  '=', $registro->sto)
+                        ->where('mcu',  '=', $registro->mcu)
+                        ->where('codigo',  '=', $registro->codigo)
+                        ->where('numeroGrupoVerificacao',  '=', $registro->numeroGrupoVerificacao)
+                        ->where('numeroDoTeste',  '=', $registro->numeroDoTeste)
+                        ->select(
+                                    'pgto_adicionais_temp.*'
+                        )
                     ->get();
                     $total=$pgtoAdicionais->sum('valor');
                     $count = $pgtoAdicionais->count('matricula');
@@ -2625,7 +2490,6 @@ class InspecaoController extends Controller
                     , 'count'
                 ));
             }
-        $total=0.00;
         return view('compliance.inspecao.editar',compact('registro','id','total'));
     }
 
@@ -2633,8 +2497,6 @@ class InspecaoController extends Controller
 
     public function search (Request $request )
     {
-        //$dados = $request->all();
-
         if(($request->all()['gruposdeverificacao']==NULL) && ($request->all()['situacao']==NULL) && ($request->all()['search']==NULL))
         {
             \Session::flash('mensagem',['msg'=>'Para Filtrar ao menos uma opção é necessária.'
@@ -2642,7 +2504,6 @@ class InspecaoController extends Controller
             return redirect()->back();
         }else if(($request->all()['gruposdeverificacao']!=NULL) && ($request->all()['situacao']==NULL) && ($request->all()['search']==NULL))
         {
-        // dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
@@ -2659,13 +2520,8 @@ class InspecaoController extends Controller
            // ->Where([['itensdeinspecoes.status', '=', $request->all()['status']]])
            ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
            ->paginate(10);
-
-         //  \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Grupo de Verificação'
-         //   ,'class'=>'orange white-text']);
-
         }else if(($request->all()['gruposdeverificacao']!=NULL) && ($request->all()['situacao']!=NULL) && ($request->all()['search']==NULL))
         {
-            //dd($dados);
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
@@ -2753,15 +2609,12 @@ class InspecaoController extends Controller
             ,'class'=>'orange white-text']);
            // return redirect()->back();
         }
-
         $inspecao = Inspecao::find($request->all()['id']);
-
         $gruposdeverificacao = DB::table('gruposdeverificacao')
-        ->select('gruposdeverificacao.*')
-        ->where([['tipoUnidade_id', '=', $inspecao['tipoUnidade_id']]])
-        ->where([['tipoVerificacao', '=', $inspecao['tipoVerificacao']]])
+            ->select('gruposdeverificacao.*')
+            ->where([['tipoUnidade_id', '=', $inspecao['tipoUnidade_id']]])
+            ->where([['tipoVerificacao', '=', $inspecao['tipoVerificacao']]])
         ->get();
-
         $dado = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
@@ -2769,15 +2622,12 @@ class InspecaoController extends Controller
             ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
             ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
             ->where([['inspecoes.id', '=', $request->all()['id'] ]])
-            ->first();
-
+        ->first();
         return view('compliance.inspecao.index',compact('inspecao','registros','gruposdeverificacao','dado'));
     }
 
     public function index($id)  {
-
         $inspecao = Inspecao::find($id);
-
         $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
@@ -2793,9 +2643,7 @@ class InspecaoController extends Controller
             ->where([['situacao', '=', 'Em Inspeção' ]])
             ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
         ->paginate(10);
-
         $count = $registros->count('situacao');
-
         if($count == 0)
         {
             $registros = DB::table('itensdeinspecoes')

@@ -676,6 +676,7 @@ class VerificacoesController extends Controller
                     break;
                 default:  return redirect()->route('home');
             }
+
             return view('compliance.verificacoes.index',compact('registros','tiposDeUnidade', 'inspetores'));
         }
         else

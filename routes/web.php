@@ -66,9 +66,7 @@ Route::post('/admin/usuarios/{search?}', 'Admin\UsuarioController@search')->name
 Route::get('/admin/paginas', 'Admin\PaginasController@index')->name('admin.paginas');
 Route::get('/admin/paginas/editar/{id}', 'Admin\PaginasController@editar')->name('admin.paginas.editar');
 Route::put('/admin/paginas/atualizar/{id}', 'Admin\PaginasController@atualizar')->name('admin.paginas.atualizar');
-/**
- * inicio Rotas para importação de eventos de arme e desarme de alarmes nas unidades
- */
+
 Route::post('/compliance/unidades/salvarInspecao', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');
 Route::get('/compliance/unidades/gerarInspecao/{id}', 'Correios\UnidadesController@gerarInspecao')->name('compliance.unidades.gerarInspecao');
 Route::put('/compliance/unidades/atualizar/{id}','Correios\UnidadesController@atualizar')->name('compliance.unidades.atualizar');
@@ -115,8 +113,6 @@ Route::put('/compliance/inspecao/atualizar/{id}','Correios\InspecaoController@up
 //    atualizarsro
 Route::get('/compliance/inspecao/editar/{id}', 'Correios\InspecaoController@edit')->name('compliance.inspecao.editar');
 Route::put('/compliance/inspecao/editsro/{id}', 'Correios\InspecaoController@editsro')->name('compliance.inspecao.editar.sro');
-
-
 Route::get('/compliance/inspecao/exportsro/{id}', 'Correios\InspecaoController@exportsro')->name('compliance.inspecao.exportsro');
 
 //**
@@ -129,6 +125,10 @@ Route::get('/compliance/inspecao/{id}', 'Correios\InspecaoController@index')->na
 Route::get('/compliance/inspecao/corroborar/{id}', 'Correios\InspecaoController@corroborar')->name('compliance.inspecao.corroborar');
 Route::post('/compliance/inspecao/{search?}', 'Correios\InspecaoController@search')->name('compliance.inspecao.search');
 Route::get('/compliance/importacoes', 'Correios\Importacao\ImportacaoController@index')->name('importacao');
+
+/**
+ * inicio Rotas para importações
+ */
 
 Route::get('/compliance/importacoes/alarme/export', 'Correios\Importacao\ImportacaoController@exportAlarme')->name('compliance.export.alarme');
 Route::post('/compliance/importacoes/alarme', 'Correios\Importacao\ImportacaoController@importAlarme')->name('compliance.importacao.alarme');
@@ -208,6 +208,35 @@ Route::get('/compliance/importacoes/bdf_fat_02', 'Correios\Importacao\Importacao
 Route::get('/compliance/importacoes/microStrategy/export', 'Correios\Importacao\ImportacaoController@exportMicroStrategy')->name('compliance.export.microStrategy');
 Route::post('/compliance/importacoes/microStrategy', 'Correios\Importacao\ImportacaoController@importMicroStrategy')->name('compliance.importacao.microStrategy');
 Route::get('/compliance/importacoes/microStrategy', 'Correios\Importacao\ImportacaoController@microStrategy')->name('importacao.microStrategy');
+
+/**
+ * rotas para consolidar funcionalidades da inspeção automática
+ */
+
+Route::get('/compliance/monitoramento', 'Correios\MonitoramentoController@index')->name('compliance.monitoramento');
+Route::post('/compliance/monitoramento/create', 'Correios\MonitoramentoController@create')->name('compliance.monitoramento.create');
+//Route::post('/compliance/monitoramento/create', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');
+
+//Route::post('/compliance/unidades/salvarInspecao', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');
+//Route::get('/compliance/unidades/gerarInspecao/{id}', 'Correios\UnidadesController@gerarInspecao')->name('compliance.unidades.gerarInspecao');
+//Route::put('/compliance/unidades/atualizar/{id}','Correios\UnidadesController@atualizar')->name('compliance.unidades.atualizar');
+//Route::get('/compliance/unidades/editar/{id}', 'Correios\UnidadesController@edit')->name('compliance.unidades.editar');
+//Route::post('/compliance/unidades{id?}', 'Correios\UnidadesController@search')->name('compliance.unidades.search');
+
+
+/**
+ * rotas para planejar inspeções in loco
+ *
+ */
+
+
+Route::get('/compliance/planejamento', 'Correios\PlanejamentoController@index')->name('compliance.planejamento');
+Route::get('/compliance/planejamento/edit/{id}', 'Correios\PlanejamentoController@edit')->name('compliance.planejamento.edit');
+Route::post('/compliance/planejamento/update/{id}', 'Correios\PlanejamentoController@update')->name('compliance.planejamento.update');
+
+
+//Route::post('/compliance/planejamento/create', 'Correios\PlanejamentoController@create')->name('compliance.planejamento.create');
+
 
 /**
  * index – Lista os dados da tabela

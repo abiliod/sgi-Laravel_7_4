@@ -20,6 +20,9 @@
     @can('relato_listar')
         <li><a href="{{route('compliance.relatos')}}">Testes de Inspeção</a></li>
     @endcan
+{{--    @can('relato_listar')     @endcan--}}
+        <li><a href="{{route('compliance.monitoramento')}}">Inspeção Monitorada</a></li>
+
     <li class="divider"></li>
     @can('listar_importacoes')
         <li class="divider"></li>
@@ -36,6 +39,8 @@
     @can('inspecao_listar')
         <li><a href="{{route('compliance.verificacoes')}}">Inspeções</a></li>
     @endcan
+
+    <li><a href="{{route('compliance.planejamento')}}">Planejamento</a></li>
 
     @can('inspecao_listar')
         <li><a href="{{route('compliance.inspecionados')}}">Inspecionadas</a></li>
@@ -106,6 +111,11 @@
                     @can('relato_listar')
                         <li><a href="{{route('compliance.relatos')}}">Relatos</a></li>
                     @endcan
+                    {{--    @can('relato_listar')     @endcan--}}
+
+                    <li><a href="{{route('compliance.monitoramento')}}">Inspeção Monitorada</a></li>
+
+
 
                     @can('listar_importacoes')
                         <li class="divider"></li>
@@ -122,6 +132,8 @@
                     @can('inspecao_listar')
                         <li><a href="{{route('compliance.verificacoes')}}">Inspeções</a></li>
                     @endcan
+
+                    <li><a href="{{route('compliance.planejamento')}}">Planejamento Inspeções</a></li>
 
                     @can('inspecao_listar')
                         <li><a href="{{route('compliance.inspecionados')}}">Inspecionadas</a></li>

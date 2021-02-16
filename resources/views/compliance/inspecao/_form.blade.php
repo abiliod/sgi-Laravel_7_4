@@ -1,19 +1,19 @@
 <div class="row">
     <div class="row col s2">
         <p>
-            <input onChange="mudarApontamento('avaliacao')" class="with-gap" name="avaliacao" type="radio" id="avaliacao1" value="Conforme"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Conforme'  ? 'checked' : '')}}/>
+            <input onChange="mudarApontamento('avaliacao');" class="with-gap" name="avaliacao" type="radio" id="avaliacao1" value="Conforme"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Conforme'  ? 'checked' : '')}}/>
             <label for="avaliacao1">Conforme</label>
         </p>
         <p>
-            <input onChange="mudarApontamento('avaliacao')" class="with-gap" name="avaliacao" type="radio" id="avaliacao2" value="Não Conforme"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Não Conforme'  ? 'checked' : '')}}/>
+            <input onChange="mudarApontamento('avaliacao');" class="with-gap" name="avaliacao" type="radio" id="avaliacao2" value="Não Conforme"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Não Conforme'  ? 'checked' : '')}}/>
             <label for="avaliacao2">Não Conforme</label>
         </p>
         <p>
-            <input onChange="mudarApontamento('avaliacao')" class="with-gap" name="avaliacao" type="radio" id="avaliacao3" value="Não Executa Tarefa"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Não Executa Tarefa'  ? 'checked' : '')}}/>
+            <input onChange="mudarApontamento('avaliacao');" class="with-gap" name="avaliacao" type="radio" id="avaliacao3" value="Não Executa Tarefa"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Não Executa Tarefa'  ? 'checked' : '')}}/>
             <label for="avaliacao3">Não Executa Tarefa</label>
         </p>
         <p>
-            <input onChange="mudarApontamento('avaliacao')" class="with-gap" name="avaliacao" type="radio" id="avaliacao4" value="Não Verificado"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Não Verificado'  ? 'checked' : '')}}/>
+            <input onChange="mudarApontamento('avaliacao');" class="with-gap" name="avaliacao" type="radio" id="avaliacao4" value="Não Verificado"{{(isset($registro->avaliacao) && $registro->avaliacao == 'Não Verificado'  ? 'checked' : '')}}/>
             <label for="avaliacao4">Não Verificado</label>
         </p>
     </div>
@@ -30,6 +30,14 @@
 			</textarea>
 			<label for="ajuda">Ajuda do Item</label>
 	    </div>
+    </div>
+
+    <div class="input-field col s12" id="teste">
+        <i class="material-icons prefix">mode_edit</i>
+        <textarea  id="teste" name="teste" class="materialize-textarea">
+			{{ isset($registro->teste) ? $registro->teste : '' }}
+		</textarea>
+        <label for="teste">Teste de Inspeção: </label>
     </div>
 
     <div class="input-field col s12">
@@ -99,32 +107,20 @@
         <label for="consequencias">Possíveis Consequências da Situação Encontrada:</label>
     </div>
 
-
-    <div class="row col s12" id="itemsQuantificados" {{($registro->avaliacao == 'Não Conforme'  ? 'style=display:block;' : 'style=display:none;')}}>
-<div class="input-field  col s4">
-
-<p>
+<div class="row col s12" id="itemsQuantificados"
+    {{($registro->avaliacao == 'Não Conforme'  ? 'style=display:block;' : 'style=display:none;')}}>
+    <div class="input-field  col s4">
+        <select onChange="ItemQuantificado('itemQuantificado')"   id="itemQuantificado" name="itemQuantificado">
+            <option value="Sim" {{(isset($registro->itemQuantificado) && $registro->itemQuantificado == 'Sim'  ? 'selected' : '')}}>Sim</option>
+            <option value="Não" {{(isset($registro->itemQuantificado) && $registro->itemQuantificado == 'Não'  ? 'selected' : '')}}>Não</option>
+        </select>
         <label for="itemQuantificado">É Item Quantificado?</label>
-        </p><p> <br>
-            <input onChange="ItemQuantificado('itemQuantificado')"
-             class="with-gap" name="itemQuantificado" type="radio" id="itemQuantificado1"
-             value="Sim"{{(isset($registro->itemQuantificado)
-                && $registro->itemQuantificado == 'Sim'  ? 'checked' : '')}}/>
-            <label for="itemQuantificado1">Sim</label>
-
-            <input onChange="ItemQuantificado('itemQuantificado')"
-            class="with-gap" name="itemQuantificado" type="radio" id="itemQuantificado2"
-             value="Não"{{(isset($registro->itemQuantificado)
-                && $registro->itemQuantificado == 'Não'  ? 'checked' : '')}}/>
-            <label for="itemQuantificado2">Não</label>
-        </p><br>
-
     </div>
-    </div>
+</div>
 
-
-        <div class="row col s12" name="quantificacao" id="quantificacao"
-        {{($registro->avaliacao == 'Não Conforme'  ? 'style=display:block;' : 'style=display:none;')}}>
+<div  class="row col s12" class="row" name="quantificacao" id="quantificacao"
+    {{($registro->itemQuantificado == 'Não'  ? 'style=display:none;' : 'style=display:block;')}}
+>
             <div class="input-field col s4">
                 <input type="text" id="valorFalta" name="valorFalta" class="validate"
                 value="{{ isset($registro->valorFalta) ? $registro->valorFalta : '0,00'}}">
@@ -147,11 +143,9 @@
 
 
         <div class="row col s12" id="ereincidencia"
-        {{($registro->avaliacao == 'Não Conforme'  ? 'style=display:block;' : 'style=display:none;')}}
-        >
+        {{($registro->avaliacao == 'Não Conforme'  ? 'style=display:block;' : 'style=display:none;')}}>
             <div class="input-field  col s4">
-                <select onChange="Reincidencia('reincidencia')"  id="reincidencia" name="reincidencia"
-                >
+                <select onChange="Reincidencia('reincidencia')"  id="reincidencia" name="reincidencia">
                     <option value="Sim" {{(isset($registro->reincidencia) && $registro->reincidencia == 'Sim'  ? 'selected' : '')}}>Sim</option>
                     <option value="Não" {{(isset($registro->reincidencia) && $registro->reincidencia == 'Não'  ? 'selected' : '')}}>Não</option>
                 </select>

@@ -1,5 +1,4 @@
-
-@if($count>=1)
+@if($count >= 1)
     <div id="aprimoramento">
         <span class="lever" >Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição de
             {{ $competencia }}, constatou-se a existência de {{$count}} débitos de empregado sem regularização há mais de 90 dias, conforme relacionado a seguir:</span><br>

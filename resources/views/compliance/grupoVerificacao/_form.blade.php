@@ -15,7 +15,6 @@
         <option value="" {{(!empty($registro->tipoVerificacao) ? 'selected' : '')}}>Selecione um Tipo de Verificação</option>
         <option value="Presencial" {{(isset($registro->tipoVerificacao) && $registro->tipoVerificacao == 'Presencial'  ? 'selected' : '')}}>Presencial</option>
         <option value="Remoto" {{(isset($registro->tipoVerificacao) && $registro->tipoVerificacao == 'Remoto'  ? 'selected' : '')}}>Remoto</option>
-
     </select>
     <label for="tipoVerificacao" >Tipo de Verificação</label>
 </div>
@@ -38,6 +37,7 @@
     <input type="text" name="numeroGrupoVerificacao" class="validate" value="{{ isset($registro->numeroGrupoVerificacao) ? $registro->numeroGrupoVerificacao : '' }}">
     <label for="numeroGrupoVerificacao">Número do Grupo Verificacao</label>
 </div>
+
 <div class="input-field col s12">
     <input type="text" id="nomegrupo" name="nomegrupo" class="validate upper"  value="{{ isset($registro->nomegrupo) ? $registro->nomegrupo : '' }}" placerolder="nome do grupo">
     <label for="nomegrupo">Descrição</label>

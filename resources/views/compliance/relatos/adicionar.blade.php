@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container">
-	<h2 class="center">Adição de Grupo de Verificação</h2>
+	<h2 class="center">Adição de  Teste de Inspeções</h2>
 	<div class="row">
 	 	<nav>
          <div class="nav-wrapper green">
 		      	<div class="col s12">
 			        <a href="{{ route('home')}}" class="breadcrumb">Início</a>
-			        <a href="{{route('compliance.relatos')}}" class="breadcrumb">Grupos de Verificação</a>
-			        <a class="breadcrumb">Adição de Itens de Verificação</a>
+			        <a href="{{route('compliance.relatos')}}" class="breadcrumb"> Teste de Inspeções</a>
+			        <a class="breadcrumb">Adição de  Teste de Inspeções</a>
 		      	</div>
             </div>
 
@@ -26,7 +26,7 @@
 		<form action="{{ route('compliance.relatos.salvar') }}" method="post">
 		    @CSRF
             @include('compliance.relatos._form')
-            <div class="input-field col s12">
+            <div class="input-field col s6">
                 <button class="btn blue">Adicionar</button>
             </div>
 		</form>
