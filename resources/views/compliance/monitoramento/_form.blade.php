@@ -15,7 +15,7 @@
 </div>
 
 
-<div class="input-field col s6">
+<div class="input-field col s8">
     <select name="tipodeunidade" id="tipodeunidade">
         <option value="" selected>Tipo de Unidade</option>
         @foreach($tiposDeUnidade as $tipoDeUnidade)
@@ -24,7 +24,14 @@
     </select>
     <label for="tipodeunidade">Selecione um tipo de Unidade:</label>
 </div>
-
+<div class="input-field col s4">
+    <select name="ciclo" id="ciclo">
+        <option value="0" selected>Ciclo de Verificação</option>
+        <option value="2021" selected>2021</option>
+        <option value="2022">2022</option>
+    </select>
+    <label for="ciclo">Informe o Ciclo de Verificação:</label>
+</div>
 
 {{--            @can('inspeçãomonitorada_adicionar')      @endcan--}}
 

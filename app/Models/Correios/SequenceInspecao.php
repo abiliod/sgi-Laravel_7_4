@@ -13,4 +13,10 @@ class SequenceInspecao extends Model
         'sequence',
         'ciclo',
     ];
+
+    public static function find($id)
+    {
+        return SequenceInspecao::class;
+    }
+
 }

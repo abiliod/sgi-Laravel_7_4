@@ -20,7 +20,8 @@
         "laravel/ui": "^2.1",
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.32",
-        "phpoffice/phpspreadsheet": "^1.13"
+        "phpoffice/phpspreadsheet": "^1.13",
+        "tymon/jwt-auth": "1.0.2"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

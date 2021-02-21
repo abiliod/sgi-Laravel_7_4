@@ -215,6 +215,8 @@ Route::get('/compliance/importacoes/microStrategy', 'Correios\Importacao\Importa
 
 Route::get('/compliance/monitoramento', 'Correios\MonitoramentoController@index')->name('compliance.monitoramento');
 Route::post('/compliance/monitoramento/create', 'Correios\MonitoramentoController@create')->name('compliance.monitoramento.create');
+
+
 //Route::post('/compliance/monitoramento/create', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');
 
 //Route::post('/compliance/unidades/salvarInspecao', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');

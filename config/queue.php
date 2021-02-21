@@ -34,11 +34,32 @@ return [
             'driver' => 'sync',
         ],
 
-        'database' => [
+        'importacao' => [
             'driver' => 'database',
             'table' => 'jobs',
-            'queue' => 'default',
-            'retry_after' => 90,
+            'queue' => 'importacao',
+            'retry_after' => 50,
+        ],
+
+        'testeInspecao' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'testeInspecao',
+            'retry_after' => 50,
+        ],
+
+        'geraInspecao' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'geraInspecao',
+            'retry_after' => 50,
+        ],
+
+        'database' => [
+        'driver' => 'database',
+        'table' => 'jobs',
+        'queue' => 'default',
+        'retry_after' => 50,
         ],
 
         'beanstalkd' => [

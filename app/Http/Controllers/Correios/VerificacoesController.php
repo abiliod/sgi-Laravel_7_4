@@ -197,8 +197,8 @@ class VerificacoesController extends Controller
                         ->get();
 
                     $registros = DB::table('unidades')
-                        ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                        ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                        ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                        ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                         ->where([['status', '=', 'Em Inspeção']])
                         ->orderBy('codigo' , 'asc')
                         ->paginate(10);
@@ -206,8 +206,8 @@ class VerificacoesController extends Controller
                     if( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao'])) && (!empty($request->all()['inspetor'])) )
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -223,8 +223,8 @@ class VerificacoesController extends Controller
                     if( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao']))  )
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -237,8 +237,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['tipoUnidade_id']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -250,8 +250,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['tipoVerificacao']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
@@ -262,11 +262,11 @@ class VerificacoesController extends Controller
                     }
                     if(!empty($request->all()['search'])){
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
-                            ->where([['verificacoes.descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+                            ->where([['inspecoes.descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
 //                            ->Where([['unidades.se', '=', $businessUnitUser->se]])
                             ->paginate(10);
                         \Session::flash('mensagem',['msg'=>'Filtro Aplicado, [Por Unidade].'
@@ -274,8 +274,8 @@ class VerificacoesController extends Controller
                     }
                     if(!empty($request->all()['inspetor'])){
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
 //                            ->Where([['unidades.se', '=', $businessUnitUser->se]])
@@ -287,8 +287,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['codigo']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->where([['codigo', 'LIKE', '%' . $request->all()['codigo'] .'%' ]])
@@ -314,8 +314,8 @@ class VerificacoesController extends Controller
                     if( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao'])) && (!empty($request->all()['inspetor'])) )
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -331,8 +331,8 @@ class VerificacoesController extends Controller
                     if( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao']))  )
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -345,8 +345,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['tipoUnidade_id']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -358,8 +358,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['tipoVerificacao']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
@@ -370,11 +370,11 @@ class VerificacoesController extends Controller
                     }
                     if(!empty($request->all()['search'])){
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
-                            ->where([['verificacoes.descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+                            ->where([['inspecoes.descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
                             ->Where([['unidades.se', '=', $businessUnitUser->se]])
                             ->paginate(10);
                         \Session::flash('mensagem',['msg'=>'Filtro Aplicado, [Por Unidade].'
@@ -382,8 +382,8 @@ class VerificacoesController extends Controller
                     }
                     if(!empty($request->all()['inspetor'])){
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['unidades.se', '=', $businessUnitUser->se]])
@@ -395,8 +395,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['codigo']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->where([['codigo', 'LIKE', '%' . $request->all()['codigo'] .'%' ]])
@@ -429,8 +429,8 @@ class VerificacoesController extends Controller
                     if( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao'])) && (!empty($request->all()['inspetor'])) )
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -446,8 +446,8 @@ class VerificacoesController extends Controller
                     if( (!empty($request->all()['tipoUnidade_id'])) && (!empty($request->all()['tipoVerificacao']))  )
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -461,8 +461,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['tipoUnidade_id']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoUnidade_id', '=', $dados['tipoUnidade_id']]])
@@ -473,8 +473,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['tipoVerificacao']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->Where([['tipoVerificacao', '=', $dados['tipoVerificacao']]])
@@ -487,11 +487,11 @@ class VerificacoesController extends Controller
 
                     if(!empty($request->all()['search'])){
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
-                            ->where([['verificacoes.descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+                            ->where([['inspecoes.descricao', 'LIKE', '%' . $request->all()['search'] .'%' ]])
                             ->where([['inspetorcoordenador', '=', auth()->user()->document]])
                             ->orWhere([['inspetorcolaborador', '=', auth()->user()->document]])
                             ->paginate(10);
@@ -500,8 +500,8 @@ class VerificacoesController extends Controller
                     }
                     if(!empty($request->all()['inspetor'])){
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
 //                                ->Where([['inspetorcoordenador', '=', $dados['inspetor']]])
@@ -513,8 +513,8 @@ class VerificacoesController extends Controller
                     if(!empty($request->all()['codigo']))
                     {
                         $registros = DB::table('unidades')
-                            ->join('verificacoes', 'unidades.id',  '=',   'unidade_id')
-                            ->select('verificacoes.*','unidades.se','unidades.seDescricao')
+                            ->join('inspecoes', 'unidades.id',  '=',   'unidade_id')
+                            ->select('inspecoes.*','unidades.se','unidades.seDescricao')
                             ->where([['ciclo', '=', $dados['ciclo']]])
                             ->Where([['status', '=', $dados['status']]])
                             ->where([['codigo', 'LIKE', '%' . $request->all()['codigo'] .'%' ]])
@@ -584,6 +584,7 @@ class VerificacoesController extends Controller
                             ->where([['status', '=', 'Em Inspeção']])
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
+                       // dd('user 2 ',$registros);
                         }
                     break;
                 case 3:
@@ -609,7 +610,7 @@ class VerificacoesController extends Controller
                             ->union($first)
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
-
+                        //dd('user 3 ',$registros);
                         \Session::flash('mensagem',['msg'=>'Listando Inspeções da '.$businessUnitUser->seDescricao
                             ,'class'=>'orange white-text']);
                     }
@@ -638,7 +639,7 @@ class VerificacoesController extends Controller
                             ->union($first)
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
-
+                       // dd('user 4 ',$registros);
                         \Session::flash('mensagem',['msg'=>'Listando Inspeções da '.$businessUnitUser->seDescricao
                             ,'class'=>'orange white-text']);
                     }
@@ -672,11 +673,12 @@ class VerificacoesController extends Controller
                             ->union($first)
                             ->orderBy('codigo' , 'asc')
                             ->paginate(10);
+                        //dd('user 6 ',$registros);
                     }
                     break;
                 default:  return redirect()->route('home');
             }
-
+//dd($registros);
             return view('compliance.verificacoes.index',compact('registros','tiposDeUnidade', 'inspetores'));
         }
         else

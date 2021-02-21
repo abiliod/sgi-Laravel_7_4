@@ -9,9 +9,7 @@
                     <div class="input-field col s4">
                         <select name="ciclo" id="ciclo">
                           <!--  <option value="" selected>Ciclo de Verificação</option>  -->
-                            <option value="2019">2019</option>
-                            <option value="2020" selected>2020</option>
-                            <option value="2021">2021</option>
+                            <option value="2021" selected>2021</option>
                             <option value="2022">2022</option>
                         </select>
                         <label for="ciclo">Ciclo de Inspeção</label>
