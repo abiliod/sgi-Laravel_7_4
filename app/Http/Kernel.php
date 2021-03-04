@@ -70,7 +70,7 @@ class Kernel extends HttpKernel
 
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('queue:work --queue = importacao, testeInspecao, geraInspecao --tries=3')
+        $schedule->command('queue:work --queue = importacao, avaliaInspecao, geraInspecao --tries=3')
             ->yearly();
     }
 }

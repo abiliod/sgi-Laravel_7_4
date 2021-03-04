@@ -35,10 +35,15 @@
 </div>
 @else
     <div id="aprimoramento">
-          <span class="lever">Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificaram a posição do mês
-              {{ $competencia }},
 
-              constataram que não havia Histórico de Pendências de Débitos de Empregados maior que 90 dias.</span><br>
+        @if(! $oportunidadeAprimoramento == '')
+            <span class="lever">{{ $oportunidadeAprimoramento  }}</span><br>
+        @else
+            <span class="lever">Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição do mês {{ $competencia }}, constataou-se que não havia Histórico de Pendências de Débitos de Empregados maior que 90 dias.</span><br>
+        @endif
+
+
+
     </div>
     <div id="historico"></div>
 @endif

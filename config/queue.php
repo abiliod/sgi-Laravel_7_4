@@ -28,6 +28,12 @@ return [
     |
     */
 
+    // Por exemplo, se o valor de retry_after for definido como 90, o trabalho será liberado
+    // de volta na fila se tiver sido processado por 90 segundos sem ser excluído.
+    // Normalmente, você deve definir o retry_after valor para o número máximo de segundos que
+    // seus trabalhos devem levar para concluir o processamento.
+    // php artisan queue:work --queue=importacao --timeout=60
+
     'connections' => [
 
         'sync' => [
@@ -38,28 +44,28 @@ return [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'importacao',
-            'retry_after' => 50,
+            'retry_after' => 720,
         ],
 
-        'testeInspecao' => [
+        'avaliaInspecao' => [
             'driver' => 'database',
             'table' => 'jobs',
-            'queue' => 'testeInspecao',
-            'retry_after' => 50,
+            'queue' => 'avaliaInspecao',
+            'retry_after' => 200,
         ],
 
         'geraInspecao' => [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'geraInspecao',
-            'retry_after' => 50,
+            'retry_after' => 200,
         ],
 
         'database' => [
         'driver' => 'database',
         'table' => 'jobs',
         'queue' => 'default',
-        'retry_after' => 50,
+        'retry_after' => 200,
         ],
 
         'beanstalkd' => [

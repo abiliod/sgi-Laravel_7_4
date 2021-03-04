@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Correios\Importacao;
 
 use App\Http\Controllers\Controller;
+
 use App\Models\Correios\TipoDeUnidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,10 +40,6 @@ use App\Exports\ExportSL02_bdf;
 use App\Models\Correios\ModelsAuxiliares\SMBxBDF_NaoConciliado;
 use App\Imports\ImportSMBxBDF_NaoConciliado;
 use App\Exports\ExportSMBxBDF_NaoConciliado;
-
-use App\Models\Correios\Cadastral;
-use App\Imports\ImportCadastral;
-use App\Exports\ExportCadastral;
 
 use App\Models\Correios\ModelsAuxiliares\Proter;
 use App\Imports\ImportProter;
@@ -107,6 +104,17 @@ use App\Exports\ExportMicroStrategy;
 use App\Models\Correios\Unidade;
 use App\Imports\ImportUnidades;
 
+use App\Models\Correios\ModelsAuxiliares\Snci;
+use App\Exports\ExportSnci;
+use App\Imports\ImportSnci;
+use App\Jobs\JobSnci;
+
+use App\Models\Correios\ModelsAuxiliares\Cadastral;
+use App\Imports\ImportCadastral;
+use App\Exports\ExportCadastral;
+use App\Jobs\JobCadastral;
+
+
 //        if( $request->file('file')->getClientOriginalName() != "270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx") {
 //            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
 //            O Arquivo de ser270-1-FINANCEIRO-WebCont_DebitoEmpregado.xlsx! Selecione Corretamente'
@@ -117,6 +125,214 @@ use App\Imports\ImportUnidades;
 
 class ImportacaoController extends Controller
 {
+
+//ExportSnci ImportSnci
+
+    // ######################### INICIO   SNCI ##################
+    public function exportSnci() {
+        return Excel::download(new ExportSnci, 'snci.xlsx');
+    }
+    public function importSnci(Request $request)
+    {
+//        DB::table('snci')->truncate();
+//        dd('truncou');
+
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        if (empty($request->file('file'))) {
+
+            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo. Não foi Selecionado
+            O Arquivo de ser 278-2-BDF_FAT_02.xlsx ! Selecione Corretamente'
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
+        if ($validator->passes()) {
+
+      //      ini_set('max_input_time', 480);
+      //      ini_set('max_execution_time', 460);
+
+            ini_set('memory_limit', '512M');
+            $snci = Excel::toArray(new ImportSnci, request()->file('file'));
+            $dt = Carbon::now();
+
+            $job = (new JobSnci( $snci , $dt))
+                ->onConnection('importacao')
+                ->onQueue('importacao')
+                ->delay($dt->addMinutes(1));
+            dispatch($job);
+
+            \Session::flash('mensagem', ['msg' => 'Job Snci aguardando processamento.'
+                , 'class' => 'blue white-text']);
+            ini_set('memory_limit', '64');
+            return redirect()->route('importacao');
+
+
+
+//            foreach ($snci as $dados) {
+//                foreach ($dados as $registro) {
+//
+////                    if (!empty($registro['dt_inic_desloc'])) {
+////                        try {
+////                            $dt_inic_desloc = substr($registro['dt_inic_desloc'], 6, 4) . '-' . substr($registro['dt_inic_desloc'], 3, 2) . '-' . substr($registro['dt_inic_desloc'], 0, 2);
+//////                            $dt_inic_desloc = $this->transformDate($dt_inic_desloc)->format('Y-m-d');
+////                        } catch (Exception $e) {
+////                            $dt_inic_desloc = null;
+////                        }
+////                    }
+////                    if (!empty($registro['dt_fim_desloc'])) {
+////                        try {
+////                            $dt_fim_desloc = substr($registro['dt_fim_desloc'], 6, 4) . '-' . substr($registro['dt_fim_desloc'], 3, 2) . '-' . substr($registro['dt_fim_desloc'], 0, 2);
+//////                            $dt_fim_desloc = $this->transformDate($dt_fim_desloc)->format('Y-m-d');
+////                        } catch (Exception $e) {
+////                            $dt_fim_desloc = null;
+////                        }
+////                    }
+////                    if (!empty($registro['data_previsao_solucao'])) {
+////                        try {
+////                            $data_previsao_solucao = substr($registro['data_previsao_solucao'], 6, 4) . '-' . substr($registro['data_previsao_solucao'], 3, 2) . '-' . substr($registro['data_previsao_solucao'], 0, 2);
+//////                            $data_previsao_solucao = $this->transformDate($data_previsao_solucao)->format('Y-m-d');
+////                        } catch (Exception $e) {
+////                            $data_previsao_solucao = null;
+////                        }
+////
+////                    }
+////                    if (!empty($registro['dt_posicao'])) {
+////                        try {
+////                            $dt_posicao = substr($registro['dt_posicao'], 6, 4) . '-' . substr($registro['dt_posicao'], 3, 2) . '-' . substr($registro['dt_posicao'], 0, 2);
+////                            $dt_posicao = $this->transformDate($dt_posicao)->format('Y-m-d');
+////                        } catch (Exception $e) {
+////                            $dt_posicao = null;
+////                        }
+////                    }
+////
+//
+//                    if (!empty($registro['dtultatu'])) {
+//                        try {
+//                            $dtultatu = substr($registro['dtultatu'], 6, 4) . '-' . substr($registro['dtultatu'], 3, 2) . '-' . substr($registro['dtultatu'], 0, 2);
+////                            $dtultatu = $this->transformDate($dtultatu)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dtultatu = null;
+//                        }
+//                    }
+//
+//                    if (!empty($registro['dt_inic_inspecao'])) {
+//                        try {
+//                            $dt_inic_inspecao = substr($registro['dt_inic_inspecao'], 6, 4) . '-' . substr($registro['dt_inic_inspecao'], 3, 2) . '-' . substr($registro['dt_inic_inspecao'], 0, 2);
+////                            $dt_inic_inspecao = $this->transformDate($dt_inic_inspecao)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dt_inic_inspecao = null;
+//                        }
+//                    }
+//
+//                    if (!empty($registro['dt_fim_inspecao'])) {
+//                        try {
+//                            $dt_fim_inspecao = substr($registro['dt_fim_inspecao'], 6, 4) . '-' . substr($registro['dt_fim_inspecao'], 3, 2) . '-' . substr($registro['dt_fim_inspecao'], 0, 2);
+////                            $dt_fim_inspecao = $this->transformDate($dt_fim_inspecao)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dt_fim_inspecao = null;
+//                        }
+//                    }
+//
+//                    if (!empty($registro['dt_encerram'])) {
+//                        try {
+//                            $dt_encerram = substr($registro['dt_encerram'], 6, 4) . '-' . substr($registro['dt_encerram'], 3, 2) . '-' . substr($registro['dt_encerram'], 0, 2);
+////                            $dt_encerram = $this->transformDate($dt_encerram)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dt_encerram = null;
+//                        }
+//                    }
+//
+//
+//
+//
+//                    if ($registro['falta'] > 0) {
+//                        $falta = str_replace(',', '.', $registro['falta']);
+//                    } else {
+//                        $falta = 0.00;
+//                    }
+//                    if( $registro['sobra'] > 0){
+//                        $sobra = str_replace(',', '.', $registro['sobra']);
+//                    }else{
+//                        $sobra=0.00;
+//                    }
+//                    if( $registro['emrisco'] > 0){
+//                        $risco = str_replace(',', '.', $registro['emrisco']);
+//                    }else{
+//                        $risco=0.00;
+//                    }
+//
+////                         var_dump($registro);
+////                      dd($registro);
+//
+//
+//                    $valor_recuperado = 0.00;
+//
+//                   Snci ::updateOrCreate([
+//                                'no_inspecao' =>  $registro['no_inspecao'],
+//                                'codigo_unidade' =>  $registro['codigo_unidade'],
+//                                'no_grupo' =>  $registro['no_grupo'],
+//                                'no_item' =>  $registro['no_item']
+//                          ], [
+//                                'modalidade' => $registro['modalidade'],
+//                                'diretoria' => $registro['diretoria'],
+//                                'codigo_unidade' => $registro['codigo_unidade'],
+//                                'descricao_da_unidade' => $registro['descricao_da_unidade'],
+//                                'no_inspecao' => $registro['no_inspecao'],
+//                                'no_grupo' => $registro['no_grupo'],
+//                                'descricao_do_grupo' => $registro['descricao_do_grupo'],
+//                                'no_item' => $registro['no_item'],
+//                                'descricao_item' => $registro['descricao_item'],
+//                                'codigo_reate' => $registro['codigo_reate'],
+//                                'ano' => $registro['ano'],
+//                                'sto' => $registro['codigo_unidade'],
+//                                'resposta' => $registro['resposta'],
+//                                'valor' => $registro['valor'],
+//                                'caracteresvlr' => $registro['caracteresvlr'],
+//                                'situacao' => $registro['situacao'],
+//                                'status' => $registro['status'],
+            //                                'comentario' => $registro['comentario'],
+//                                'sigla_do_status' => $registro['sigla_do_status'],
+//                                'descricao_do_status' => $registro['descricao_do_status'],
+//                                'dtultatu' => $dtultatu,
+//                                'dt_inic_inspecao' => $dt_inic_inspecao,
+//                                'dt_fim_inspecao' => $dt_fim_inspecao,
+//                                'dt_encerram' => $dt_encerram,
+//                                'status' => $registro['status'],
+//                                'sigla_do_status' => $registro['sigla_do_status'],
+//                                'descricao_do_status' => $registro['descricao_do_status'],
+//                                'falta' => $falta,
+//                                'sobra' => $sobra,
+//                                'emrisco' => $risco,
+//                                'valor_recuperado' => $valor_recuperado
+//                          ]);
+//
+//                   }
+//
+//            }
+
+        }
+
+
+        \Session::flash('mensagem', ['msg' => 'OK o Arquivo foi importado.'
+            , 'class' => 'blue white-text']);
+        ini_set('memory_limit', '64M');
+        return redirect()->route('importacao');
+     }
+
+
+
+    public function snci()
+    {
+        return view('compliance.importacoes.snci');  //
+    }
+    // ######################### FIM  SNCI #######################
+
+
+
 
     // ######################### INICIO   BDF_FAT_02 ##################
     public function exportBDF_FAT_02()
@@ -145,77 +361,80 @@ class ImportacaoController extends Controller
         {
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
+            ini_set('memory_limit', '256M');
 
             $bdf_fat_02 = Excel::toArray(new ImportBDF_FAT_02,  request()->file('file'));
             foreach($bdf_fat_02 as $dados)
             {
                 foreach($dados as $registro)
                 {
-                 //   dd($registro);
+                    //   dd($registro);
                     if(!empty($registro['dt_mov']))
                     {
-                            try
-                            {
-                                $dt_mov = $this->transformDate($registro['dt_mov'])->format('Y-m-d');
-                            }
-                            catch (Exception $e)
-                            {
-                                $dt_mov = null;
-                            }
-                        }
-                        $dt_postagem       = null;
-                        if(!empty($registro['dt_postagem']))
+                        try
                         {
-                            try {
-                                $dt_postagem = $this->transformDate($registro['dt_postagem'])->format('Y-m-d');
-                                // $dt_postagem =  Carbon::createFromFormat($registro['dt_postagem'])->format('Y-m-d');
-                            }
-                            catch (Exception $e)
-                            {
-                                $dt_postagem       = null;
-                            }
+                            $dt_mov = $this->transformDate($registro['dt_mov'])->format('Y-m-d');
                         }
-                        while(! $dt_mov == null )
+                        catch (Exception $e)
                         {
-                            BDF_FAT_02::updateOrCreate([
-                                'dt_mov' => $dt_mov
-                                ,'cd_orgao' => $registro['cd_orgao']
-                                ,'servico' => $registro['servico']
-                                ,'nome_servico' => $registro['nome_servico']
-                                ,'vlr_final' => $registro['vlr_final']
-                            ],[
-                                'dt_mov' => $dt_mov
-                                ,'dr' => $registro['dr']
-                                ,'atendimento' => $registro['atendimento']
-                                ,'ag_postagem' => $registro['ag_postagem']
-                                ,'cd_orgao' => $registro['cd_orgao']
-                                ,'servico' => $registro['servico']
-                                ,'nome_servico' => $registro['nome_servico']
-                                ,'vlr_final' => $registro['vlr_final']
-                                , 'dt_postagem' => $dt_postagem
-                                ,'orgao' => $registro['orgao']
-                                ,'etiqueta' => $registro['etiqueta']
-                                ,'vlr_medida' => $registro['vlr_medida']
-                                ,'cd_grupo_pais_destino' => $registro['cd_grupo_pais_destino']
-                                ,'cep_destino' => $registro['cep_destino']
-                                ,'vlr_cobrado_destinatario' => $registro['vlr_cobrado_destinatario']
-                                ,'vlr_declarado' => $registro['vlr_declarado']
-                                ,'cod_adm' => $registro['cod_adm']
-                                ,'produto' => $registro['produto']
-                                ,'qtde_prestada' => $registro['qtde_prestada']
-                                ,'vlr_servico' => $registro['vlr_servico']
-                                ,'vlr_desconto' => $registro['vlr_desconto']
-                                ,'acrescimo' => $registro['acrescimo']
-                                ,'cartao' => $registro['cartao']
-                                ,'documento' => $registro['documento']
-                                ,'servico_adicional' => $registro['servio_adicional']
-                                ,'contrato' => $registro['contrato']
-                            ]);
                             $dt_mov = null;
-                            $row ++;
                         }
+                    }
+                    $dt_postagem       = null;
+                    if(!empty($registro['dt_postagem']))
+                    {
+                        try {
+                            $dt_postagem = $this->transformDate($registro['dt_postagem'])->format('Y-m-d');
+                            // $dt_postagem =  Carbon::createFromFormat($registro['dt_postagem'])->format('Y-m-d');
+                        }
+                        catch (Exception $e)
+                        {
+                            $dt_postagem       = null;
+                        }
+                    }
+                    while(! $dt_mov == null )
+                    {
+                        BDF_FAT_02::updateOrCreate([
+                            'dt_mov' => $dt_mov
+                            ,'cd_orgao' => $registro['cd_orgao']
+                            ,'servico' => $registro['servico']
+                            ,'nome_servico' => $registro['nome_servico']
+                            ,'vlr_final' => $registro['vlr_final']
+                        ],[
+                            'dt_mov' => $dt_mov
+                            ,'dr' => $registro['dr']
+                            ,'atendimento' => $registro['atendimento']
+                            ,'ag_postagem' => $registro['ag_postagem']
+                            ,'cd_orgao' => $registro['cd_orgao']
+                            ,'servico' => $registro['servico']
+                            ,'nome_servico' => $registro['nome_servico']
+                            ,'vlr_final' => $registro['vlr_final']
+                            , 'dt_postagem' => $dt_postagem
+                            ,'orgao' => $registro['orgao']
+                            ,'etiqueta' => $registro['etiqueta']
+                            ,'vlr_medida' => $registro['vlr_medida']
+                            ,'cd_grupo_pais_destino' => $registro['cd_grupo_pais_destino']
+                            ,'cep_destino' => $registro['cep_destino']
+                            ,'vlr_cobrado_destinatario' => $registro['vlr_cobrado_destinatario']
+                            ,'vlr_declarado' => $registro['vlr_declarado']
+                            ,'cod_adm' => $registro['cod_adm']
+                            ,'produto' => $registro['produto']
+                            ,'qtde_prestada' => $registro['qtde_prestada']
+                            ,'vlr_servico' => $registro['vlr_servico']
+                            ,'vlr_desconto' => $registro['vlr_desconto']
+                            ,'acrescimo' => $registro['acrescimo']
+                            ,'cartao' => $registro['cartao']
+                            ,'documento' => $registro['documento']
+                            ,'servico_adicional' => $registro['servio_adicional']
+                            ,'contrato' => $registro['contrato']
+                        ]);
+                        $dt_mov = null;
+                        $row ++;
+                    }
                 }
             }
+
+
             DB::table('bdf_fat_02')->where('dt_postagem', '<=', $dtmenos210dias)->delete();
             if ($row >= 1){
                 \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
@@ -225,10 +444,10 @@ class ImportacaoController extends Controller
                     ,'class'=>'green white-text']);
             }
             return redirect()->route('importacao');
-            }
+        }
         else
         {
-         return back()->with(['errors'=>$validator->errors()->all()]);
+            return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
     public function bdf_fat_02()
@@ -2159,9 +2378,9 @@ class ImportacaoController extends Controller
     {
         return Excel::download(new ExportCadastral, 'cadastrals.xlsx');
     }
+
     public function importCadastral(Request $request)
     {
-        $row=0;
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx'
         ]);
@@ -2172,62 +2391,50 @@ class ImportacaoController extends Controller
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
-
         if($validator->passes())
         {
-          //  DB::table('cadastral')->truncate(); //excluir e zerar a tabela
+       //     DB::table('cadastral')->truncate(); //excluir e zerar a tabela
+
             $cadastrals = Excel::toArray(new ImportCadastral,  request()->file('file'));
             $dt = Carbon::now();
-            ini_set('max_input_time', 350);
-            ini_set('max_execution_time', 350);
-            foreach($cadastrals as $registros)
-            {
-                foreach($registros as $dado)
-                {
-                    $cad = DB::table('cadastral')
-                        ->where('matricula', '=',  $dado['matricula'])
-                        ->select(
-                            'cadastral.id'
-                        )
-                        ->first();
-                    if(!empty(  $cad->id ))
-                    {
-                        $registro = Cadastral::find($cad->id);
-                        $registro->se      = $dado['secs'];
-                        $registro->mcu      = (int)$dado['mcu'];
-                        $registro->lotacao      = $dado['lotacao'];
-                        $registro->matricula      = $dado['matricula'];
-                        $registro->nome_do_empregado      = $dado['nome'];
-                        $registro->cargo      = $dado['cargo'];
-                        $registro->especializ      = $dado['especialidade'];
-                        $registro->funcao      = $dado['funcao'];
-                        $registro->situacao      = 'ATIVO';
-                        $registro->updated_at = Carbon::now();
-                    }
-                    else
-                    {
-                        $registro = new Cadastral();
-                        $registro->se      = $dado['secs'];
-                        $registro->mcu      = (int)$dado['mcu'];
-                        $registro->lotacao      = $dado['lotacao'];
-                        $registro->matricula      = $dado['matricula'];
-                        $registro->nome_do_empregado      = $dado['nome'];
-                        $registro->cargo      = $dado['cargo'];
-                        $registro->especializ      = $dado['especialidade'];
-                        $registro->funcao      = $dado['funcao'];
-                        $registro->situacao      = 'ATIVO';
-                    }
-                    $registro ->save();
-                    $row++;
-               }
-                $affected = DB::table('cadastral')
-                    ->where('se', $dado['secs'])
-                    ->where('updated_at', '<', $dt)
-                ->update(['situacao' => null]);
-            }
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                ,'class'=>'green white-text']);
+
+            $job = (new JobCadastral($cadastrals, $dt ))
+                ->onQueue('importacao')->delay($dt->addMinutes(1));
+            dispatch($job);
+
+            \Session::flash('mensagem', ['msg' => 'Job Cadastral aguardando processamento.'
+                , 'class' => 'blue white-text']);
             return redirect()->route('importacao');
+
+//            foreach($cadastrals as $registros)
+//            {
+//                foreach($registros as $dado)
+//                {
+//                    //dd($dado);
+//
+//                    Cadastral :: updateOrCreate([
+//                        'matricula' => $dado['matricula']
+//                    ],[
+//                        'matricula' => $dado['matricula']
+//                        ,'se' => $dado['secs']
+//                        ,'mcu' => (int)$dado['mcu']
+//                        ,'lotacao' => $dado['lotacao']
+//                        ,'nome_do_empregado' => $dado['nome']
+//                        ,'cargo' => $dado['cargo']
+//                        ,'especializ' => $dado['especialidade']
+//                        ,'funcao' => $dado['funcao']
+//                        ,'sexo' => $dado['sexo']
+//                        ,'situacao' => 'ATIVO'
+//                        ,'updated_at' => Carbon::now()
+//                    ]);
+//               }
+//                $affected = DB::table('cadastral')
+//                    ->where('se', $dado['secs'])
+//                    ->where('updated_at', '<', $dt)
+//                ->update(['situacao' => null]);
+//                dd($affected);
+//            }
+
         }else{
             \Session::flash('mensagem',['msg'=>'Registros Cadastral Não pôde ser importado! Tente novamente'
                 ,'class'=>'red white-text']);

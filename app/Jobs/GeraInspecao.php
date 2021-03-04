@@ -18,7 +18,6 @@ class GeraInspecao implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected   $superintendencias, $status , $ciclo, $dataAgenda;
-
     public function __construct(  $superintendencias, $status , $ciclo, $dataAgenda )
     {
         $this->superintendencias = $superintendencias;

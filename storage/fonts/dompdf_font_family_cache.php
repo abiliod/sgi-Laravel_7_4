@@ -78,6 +78,6 @@
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'material icons' => array(
-    'normal' => $fontDir . '/material-icons-normal_b58fda30e9a7fa49813c57fbfd44f0c0',
+    'normal' => $fontDir . '/material-icons-normal_e704367e8c2ce04916e1dcb9c3189544',
   ),
 ) ?>

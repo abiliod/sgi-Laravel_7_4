@@ -30,12 +30,11 @@
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
                                 Imprima o Relatório WebSGQ 3 - Efetivo analitico por MCU VEJA o lay-out:
-                                [SE/CS	Matrícula	Nome	Lotação	MCU	Cargo	Especialidade	Função]
+                                [SE/CS	Matrícula	Nome	Lotação	MCU	Cargo	Especialidade	Função	sexo]
                                 Sistema: http://intranetmg2/WebSGQ3/principal.asp MENU consulta->efetivo->analitico por mcu .
-                                Pesquisar  Superintendencia, selecionar a SE interessada marcar incluir orgãos subordinados, em seguida importar para o excel.
-                                Ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ 3 - Efetivo analitico por MCU-GO.xlsx).
+                                Pesquisar  Superintendencia, selecionar a SE interessada marcar incluir orgãos subordinados, na caixa de rolagem selecione a opção sexo em seguida importar para o excel.
+                                Ajuste o cabeçalho da planilha para o lay out indicado. Ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ 3 - Efetivo analitico por MCU-GO.xlsx).
                                 Frequencia: MENSAL.
-                                Se o sistema der erro TIME-OUT, divida a planilha para que a mesma tenha uma quantidade menor de registros.
                         </textarea>
                     </div>
 

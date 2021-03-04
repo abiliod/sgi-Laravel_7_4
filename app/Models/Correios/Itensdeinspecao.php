@@ -33,6 +33,7 @@ class Itensdeinspecao extends Model
         'evidencia',
         'norma',
         'diretorio',
+        'pontuado',
 
     ];
 

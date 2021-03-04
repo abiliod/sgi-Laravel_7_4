@@ -209,12 +209,22 @@ Route::get('/compliance/importacoes/microStrategy/export', 'Correios\Importacao\
 Route::post('/compliance/importacoes/microStrategy', 'Correios\Importacao\ImportacaoController@importMicroStrategy')->name('compliance.importacao.microStrategy');
 Route::get('/compliance/importacoes/microStrategy', 'Correios\Importacao\ImportacaoController@microStrategy')->name('importacao.microStrategy');
 
+//importacao.  importSnci exportSnci snci
+
+Route::get('/compliance/importacoes/snci/export', 'Correios\Importacao\ImportacaoController@exportSnci')->name('compliance.export.snci');
+Route::post('/compliance/importacoes/snci', 'Correios\Importacao\ImportacaoController@importSnci')->name('compliance.importacao.snci');
+Route::get('/compliance/importacoes/snci', 'Correios\Importacao\ImportacaoController@snci')->name('importacao.snci');
+
+
 /**
  * rotas para consolidar funcionalidades da inspeção automática
  */
 
-Route::get('/compliance/monitoramento', 'Correios\MonitoramentoController@index')->name('compliance.monitoramento');
+Route::post('/compliance/monitoramento/avaliacao', 'Correios\MonitoramentoController@avaliacao')->name('compliance.monitoramento.avaliacao');
+Route::get('/compliance/monitoramento/avaliar', 'Correios\MonitoramentoController@avaliar')->name('compliance.monitoramento.avaliar');
 Route::post('/compliance/monitoramento/create', 'Correios\MonitoramentoController@create')->name('compliance.monitoramento.create');
+Route::get('/compliance/monitoramento/criar', 'Correios\MonitoramentoController@criar')->name('compliance.monitoramento.criar');
+Route::get('/compliance/monitoramento/show', 'Correios\MonitoramentoController@show')->name('compliance.monitoramento.show');
 
 
 //Route::post('/compliance/monitoramento/create', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');

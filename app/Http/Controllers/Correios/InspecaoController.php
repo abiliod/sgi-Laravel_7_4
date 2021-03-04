@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Correios;
 
 use App\Http\Controllers\Controller;
+use App\Models\Correios\TesteDeVerificacao;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -125,6 +126,7 @@ class InspecaoController extends Controller
             $registro->numeroGrupoReincidente = null;
             $registro->numeroItemReincidente = null;
             $registro->orientacao = null;
+            $registro->pontuado=0.00;
 
             if(($dados['situacao']=="Inspecionado")||($dados['situacao']=="Corroborado")){
                 $registro->eventosSistema =
@@ -153,6 +155,7 @@ class InspecaoController extends Controller
             $registro->valorFalta ='0.00';
             $registro->valorSobra ='0.00';
             $registro->valorRisco ='0.00';
+
             if(isset($dados['itemQuantificado'])){
                if($dados['itemQuantificado'] =="Sim"){
                     $registro->itemQuantificado  = $dados['itemQuantificado'];
@@ -166,7 +169,24 @@ class InspecaoController extends Controller
                         return back()->withInput();
                     }
                }
-          }
+            }
+
+            // begin 24/02/2020  calcula total de pontos
+            $relevancias = DB::table('relevancias')
+               ->select( 'relevancias.*'  )
+            ->get();
+            $tolerancia = ($relevancias->min('valor_final') * 0.1);
+
+            $testeVerificacao = TesteDeVerificacao::find($registro->testeVerificacao_id);
+
+            foreach ($relevancias as $reg)
+            {
+                if(($reg->valor_inicio >= $dados['valorFalta']) || ($reg->valor_final <= $dados['valorFalta']))
+                {
+                    $registro->pontuado = $reg->fator_multiplicador * intval($testeVerificacao->totalPontos) ;
+                }
+            }
+            // end 24/02/2020  calcula total de pontos
 
           if(isset($dados['reincidencia'])) {
                 if($dados['reincidencia'] =="Sim") {
@@ -421,7 +441,6 @@ class InspecaoController extends Controller
             ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
             ->where([['itensdeinspecoes.id', '=', $id ]])
             ->first();
-
             if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
                 || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
             {
@@ -441,6 +460,19 @@ class InspecaoController extends Controller
                 {
                     $count = $debitoempregados->count('matricula');
                     $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
+
+                    $relevancias = DB::table('relevancias')
+                       ->select( 'relevancias.*'  )
+                    ->get();
+                    $tolerancia = ($relevancias->min('valor_final') * 0.1);
+
+                    if($total <= $tolerancia ){
+                        $avaliacao = 'Conforme';
+                        $count = 0;
+                        $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que havia histórico de pendências de débito de Empregados maior que 90 dias. Porém, a mesma está dentro da margem de tolerância definida pelo Departamento de Controle Interno que é de R$ '. number_format($relevancias->min('valor_final'), 2, ',', '.');
+
+                    }
+
                 }
                 else
                 {
@@ -455,8 +487,10 @@ class InspecaoController extends Controller
                     , 'competencia'
                     , 'total'
                    , 'count'
+                   ,'oportunidadeAprimoramento'
                 ));
             }
+
             if((($registro->numeroGrupoVerificacao == 202)&&($registro->numeroDoTeste == 1))
                 || (($registro->numeroGrupoVerificacao == 332)&&($registro->numeroDoTeste ==1))
                 || (($registro->numeroGrupoVerificacao == 213)&&($registro->numeroDoTeste ==1))
