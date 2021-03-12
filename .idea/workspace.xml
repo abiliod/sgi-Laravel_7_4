@@ -27,34 +27,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/promo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/promo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.styleci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.styleci.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Imports/ImportCadastral.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Imports/ImportCadastral.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/GeraInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/GeraInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/Alarme.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/Alarme.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/Cadastral.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/Cadastral.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ClienteMonitoramento.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/Itensdeinspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/Itensdeinspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/UnidadeEndereco.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/UnidadeEndereco.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/laravel.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_09_015933_create_clientes_monitoramento_table.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/cadastral.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/JobCadastral.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobCadastral.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/PermissaoTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/PermissaoTableSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-1.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/monitoramento/_form.blade.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/monitoramento/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/monitoramento/criar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_Admin/_nav.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_Admin/_nav.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/_sgiweb/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/_sgiweb/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/fonts/dompdf_font_family_cache.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/fonts/dompdf_font_family_cache.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/snci.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/snci.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidades.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1298,6 +1280,38 @@
       <workItem from="1614811237141" duration="1749000" />
       <workItem from="1614818104711" duration="1292000" />
       <workItem from="1614820004162" duration="1514000" />
+      <workItem from="1614950160812" duration="1609000" />
+      <workItem from="1614952003393" duration="1807000" />
+      <workItem from="1614954677419" duration="793000" />
+      <workItem from="1614983454834" duration="163000" />
+      <workItem from="1615317817152" duration="379000" />
+      <workItem from="1615318398659" duration="156000" />
+      <workItem from="1615318695070" duration="307000" />
+      <workItem from="1615371183918" duration="1635000" />
+      <workItem from="1615373371723" duration="1925000" />
+      <workItem from="1615375532566" duration="1392000" />
+      <workItem from="1615380267493" duration="801000" />
+      <workItem from="1615406323288" duration="1221000" />
+      <workItem from="1615410837882" duration="1013000" />
+      <workItem from="1615413137358" duration="2021000" />
+      <workItem from="1615416847657" duration="1759000" />
+      <workItem from="1615418657799" duration="1912000" />
+      <workItem from="1615421309540" duration="1769000" />
+      <workItem from="1615424252248" duration="1770000" />
+      <workItem from="1615465098800" duration="1401000" />
+      <workItem from="1615467472632" duration="1782000" />
+      <workItem from="1615469314298" duration="1784000" />
+      <workItem from="1615471650542" duration="2382000" />
+      <workItem from="1615474189274" duration="1746000" />
+      <workItem from="1615476188431" duration="1296000" />
+      <workItem from="1615480714660" duration="1810000" />
+      <workItem from="1615482590782" duration="1778000" />
+      <workItem from="1615484616704" duration="2521000" />
+      <workItem from="1615487228521" duration="974000" />
+      <workItem from="1615488357721" duration="2046000" />
+      <workItem from="1615490802986" duration="737000" />
+      <workItem from="1615493512740" duration="601000" />
+      <workItem from="1615542517230" duration="371000" />
     </task>
     <task id="LOCAL-00092" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
       <created>1608821692761</created>
@@ -1734,11 +1748,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607101487361" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1614293892445">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1615485436973">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1613659908437" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1614293892445" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1615485436973" />
     <state x="213" y="0" key="CommitChangelistDialog2" timestamp="1613950180512">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

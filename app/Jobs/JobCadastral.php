@@ -38,7 +38,7 @@ class JobCadastral implements ShouldQueue
     {
         $cadastrals = $this->cadastrals;
         $dt  = $this->dt;
-
+        ini_set('memory_limit', '512M');
         foreach($cadastrals as $registros)
         {
             foreach($registros as $dado)
@@ -54,16 +54,15 @@ class JobCadastral implements ShouldQueue
                     ,'cargo' => $dado['cargo']
                     ,'especializ' => $dado['especialidade']
                     ,'funcao' => $dado['funcao']
-                    ,'sexo' => $dado['sexo']
+                    ,'sexo' => $dado['ppes_sexo']
                     ,'situacao' => 'ATIVO'
-                    ,'updated_at' => Carbon::now()
                 ]);
             }
             DB::table('cadastral')
                 ->where('se', $dado['secs'])
                 ->where('updated_at', '<', $dt)
                 ->update(['situacao' => null]);
-//            dd($affected);
         }
+        ini_set('memory_limit', '64M');
     }
 }

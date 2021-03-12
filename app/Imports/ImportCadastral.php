@@ -42,7 +42,7 @@ class ImportCadastral implements
             'situacao'      => $row['situacao'],
 //            'data_nascto'      => $row['data_nascto'],
 //            'data_admissao'      => $row['data_admissao'],
-//            'se'      => $row['se'],
+            'se'      => $row['se'],
         ]);
     }
 }

@@ -29,6 +29,22 @@
             </div>
         @endcan
 
+        @can('importar_bdSNCI')
+            <div class="col s12 m6">
+                <div class="card #dd2c00 deep-orange accent-4">
+                    <div class="card-content white-text">
+                        <span class="card-title">Sistema: SNCI, bases anteriores </span>
+                        <p>Grupo Tabelas Auxiliares</p>
+                        <p>Função: Gestão de Reincidências</p>
+                        <p>Assunto: Integridade de Inspeções</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" href="{{route('importacao.snci')}}">Importar Planilha</a>
+                    </div>
+                </div>
+            </div>
+        @endcan
+
         @can('importar_cadastral')
             <div class="col s12 m6">
                 <div class="card #004d40 teal darken-4">
@@ -334,20 +350,7 @@
             </div>
         @endcan
 
-            @can('importar_bdSNCI')      @endcan
-                <div class="col s12 m6">
-                    <div class="card #dd2c00 deep-orange accent-4">
-                        <div class="card-content white-text">
-                            <span class="card-title">Sistema: SNCI, bases anteriores </span>
-                            <p>Grupo Tabelas Auxiliares</p>
-                            <p>Função: Gestão de Reincidências</p>
-                            <p>Assunto: Integridade de Inspeções</p>
-                        </div>
-                        <div class="card-action">
-                            <a class="white-text" href="{{route('importacao.snci')}}">Importar Planilha</a>
-                        </div>
-                    </div>
-                </div>
+
 
 </div>
 @endsection

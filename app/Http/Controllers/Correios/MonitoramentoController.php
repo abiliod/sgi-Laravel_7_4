@@ -67,251 +67,275 @@ class MonitoramentoController extends Controller
             $tipodeunidade =  $request->all(['tipodeunidade']);
             $ciclo =  $request->all(['ciclo']);
 
-//            foreach ($superintendencias as $res)
-//            {
-//                foreach ($res as $superintendencia)
-//                {
-//                    if ($superintendencia == 1)
-//                    {
-//                        $registros = DB::table('itensdeinspecoes')
-//                            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-//                            ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
-//                            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-//                            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-//                            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
-//                            ->where([['situacao', '=',  'Em Inspeção' ]])
-//                            ->where([['se', '>', 1 ]])   //depois mudar a condição para ser >1
-//                            ->where([['inspecoes.ciclo', '=', $ciclo ]])
-//                            ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
-//                            //->where([['sto', '=', 16300050 ]]) //ac anapolis
-//                            //->limit(100)
-//                        ->get();
-//
-//                        foreach ($registros as $registro)
-//                        {
-//                            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
-//                                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
-//                            {
-//                                $mescompetencia = DB::table('debitoempregados')
-//                                    ->select('competencia')
-//                                    ->where([['debitoempregados.competencia', '>=', 1 ]])
-//                                    ->orderBy('competencia' ,'desc')
-//                                ->first();
-//                                $debitoempregados = DB::table('debitoempregados')
-//                                    ->select('data', 'documento', 'historico', 'matricula', 'valor' )
-//                                    ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
-//                                    ->where([['debitoempregados.sto', '=', $registro->mcu ]])
-//                                    ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
-//                                ->get();
-//                                if(! $debitoempregados->isEmpty())
-//                                {
-//                                    $count = $debitoempregados->count('matricula');
-//                                    $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
-//                                }
-//                                else
-//                                {
-//                                    $count = 0;
-//                                    $total = 0.00;
-//                                }
-//                                $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
-//                                if($count >= 1){
-//                                    $avaliacao = 'Não Conforme';
-//                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição de '
-//                                    . $competencia .', constatou-se a existência de '. $count . ' débitos de empregado sem regularização há mais de 90 dias, conforme relacionado a seguir:';
-//                                    $evidencia = "\n".'Data'."\t".'Documento'."\t".'Histórico'."\t".'Matricula'."\t".'Valor';
-//                                    foreach($debitoempregados as $debitoempregado){
-//                                        $evidencia =  $evidencia ."\n". date( 'd/m/Y' , strtotime($debitoempregado->data))
-//                                            ."\t". $debitoempregado->documento
-//                                            ."\t". $debitoempregado->historico
-//                                            ."\t". $debitoempregado->matricula
-//                                            ."\t". ' R$ '. number_format($debitoempregado->valor, 2, ',', '.');
-//                                    }
-//                                    $evidencia =  $evidencia ."\n".'Total '."\t".'R$ '. number_format($total, 2, ',', '.');
-//                                    $relevancias = DB::table('relevancias')
-//                                       ->select( 'relevancias.*'  )
-//                                    ->get();
-//                                    $tolerancia = ($relevancias->min('valor_final') * 0.1);
-//                                    if($total <= $tolerancia ){
-//                                        $avaliacao = 'Conforme';
-//                                        $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que havia histórico de pendências de débito de Empregados maior que 90 dias. Porém, a mesma está dentro da margem de tolerância definida pelo Departamento de Controle Interno que é de R$ '. number_format($relevancias->min('valor_final'), 2, ',', '.');
-//                                        $pontuado=0.00;
-//                                    }
-//                                    else{
-//                                        foreach ($relevancias as $row)
-//                                        {
-//                                            if(($row->valor_inicio >= $total) || ($row->valor_final <= $total))
-//                                            {
-//                                                $pontuado = $row->fator_multiplicador * intval($registro->totalPontos) ;
-//                                            }
-//                                        }
-//                                    }
-//                                    $dto = DB::table('itensdeinspecoes')
-//                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
-//                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
-//                                        ->select( 'itensdeinspecoes.*'  )
-//                                    ->first();
-//                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
-//                                    $itensdeinspecao->avaliacao  = $avaliacao;
-//                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
-//                                    $itensdeinspecao->evidencia  = $evidencia;
-//                                    $itensdeinspecao->valorFalta = $total;
-//                                    $itensdeinspecao->situacao   = 'Corroborado';
-//                                    $itensdeinspecao->pontuado   = $pontuado;
-//                                    $itensdeinspecao->itemQuantificado = 'Sim';
-//                                    $itensdeinspecao->orientacao= $registro->orientacao;
-//                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
-//                                    $itensdeinspecao->update();
-//                                } // fim se o contador de eventos  >1
-//                                else
-//                                {
-//                                    //se não houve registro para a unidade o contador é zero e o resultado é conforme
-//                                    $avaliacao = 'Conforme';
-//                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que não havia histórico de pendências de débito de Empregados maior que 90 dias.';
-//                                    $dto = DB::table('itensdeinspecoes')
-//                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
-//                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
-//                                        ->select( 'itensdeinspecoes.*'  )
-//                                        ->first();
-//                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
-//                                    $itensdeinspecao->avaliacao  = $avaliacao;
-//                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
-//                                    $itensdeinspecao->evidencia  = null;
-//                                    $itensdeinspecao->valorFalta = 0.00;
-//                                    $itensdeinspecao->situacao   = 'Corroborado';
-//                                    $itensdeinspecao->pontuado   = 0.00;
-//                                    $itensdeinspecao->itemQuantificado = 'Não';
-//                                    $itensdeinspecao->orientacao= null;
-//                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
-//                                    $itensdeinspecao->update();
-//                                }
-//                            } // fim doteste 230 4
-//                        }
-//                    }// fim doteste se superintendencia = 1
-//                    else
-//                    {
-//                        // inicio dotestee diversas superintendencias
-//                        $registros = DB::table('itensdeinspecoes')
-//                            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-//                            ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
-//                            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-//                            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-//                            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
-//                            ->where([['situacao', '=',  'Em Inspeção' ]])
-//                            ->where([['se', '=', $superintendencia ]])
-//                            ->where([['inspecoes.ciclo', '=', $ciclo ]])
-//                            ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
-//                           // ->limit(5)
-//                        ->get();
-//                        foreach ($registros as $registro)
-//                        {
-//                            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
-//                                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
-//                            {
-//                                $mescompetencia = DB::table('debitoempregados')
-//                                    ->select('competencia')
-//                                    ->where([['debitoempregados.competencia', '>=', 1 ]])
-//                                    ->orderBy('competencia' ,'desc')
-//                                ->first();
-//                                $debitoempregados = DB::table('debitoempregados')
-//                                    ->select('data', 'documento', 'historico', 'matricula', 'valor' )
-//                                    ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
-//                                    ->where([['debitoempregados.sto', '=', $registro->mcu ]])
-//                                    ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
-//                                ->get();
-//                                if(! $debitoempregados->isEmpty())
-//                                {
-//                                    $count = $debitoempregados->count('matricula');
-//                                    $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
-//                                }
-//                                else
-//                                {
-//                                    $count = 0;
-//                                    $total = 0.00;
-//                                }
-//                                $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
-//                                if($count >= 1){
-//                                    $avaliacao = 'Não Conforme';
-//                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição de '
-//                                        . $competencia .', constatou-se a existência de '. $count . ' débitos de empregado sem regularização há mais de 90 dias, conforme relacionado a seguir:';
-//                                    $evidencia = "\n".'Data'."\t".'Documento'."\t".'Histórico'."\t".'Matricula'."\t".'Valor';
-//                                    foreach($debitoempregados as $debitoempregado){
-//                                        $evidencia =  $evidencia ."\n". date( 'd/m/Y' , strtotime($debitoempregado->data))
-//                                            ."\t". $debitoempregado->documento
-//                                            ."\t". $debitoempregado->historico
-//                                            ."\t". $debitoempregado->matricula
-//                                            ."\t". ' R$ '. number_format($debitoempregado->valor, 2, ',', '.');
-//                                    }
-//                                    $evidencia =  $evidencia ."\n".'Total '."\t".'R$ '. number_format($total, 2, ',', '.');
-//                                    $relevancias = DB::table('relevancias')
-//                                        ->select( 'relevancias.*'  )
-//                                        ->get();
-//                                    $tolerancia = ($relevancias->min('valor_final') * 0.1);
-//                                    if($total <= $tolerancia ){
-//                                        $avaliacao = 'Conforme';
-//                                        $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que havia histórico de pendências de débito de Empregados maior que 90 dias. Porém, a mesma está dentro da margem de tolerância definida pelo Departamento de Controle Interno que é de R$ '. number_format($relevancias->min('valor_final'), 2, ',', '.');
-//                                        $pontuado=0.00;
-//                                    }
-//                                    else{
-//                                        foreach ($relevancias as $row)
-//                                        {
-//                                            if(($row->valor_inicio >= $total) || ($row->valor_final <= $total))
-//                                            {
-//                                                $pontuado = $row->fator_multiplicador * intval($registro->totalPontos) ;
-//                                            }
-//                                        }
-//                                    }
-//                                    $dto = DB::table('itensdeinspecoes')
-//                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
-//                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
-//                                        ->select( 'itensdeinspecoes.*'  )
-//                                    ->first();
-//                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
-//                                    $itensdeinspecao->avaliacao  = $avaliacao;
-//                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
-//                                    $itensdeinspecao->evidencia  = $evidencia;
-//                                    $itensdeinspecao->valorFalta = $total;
-//                                    $itensdeinspecao->situacao   = 'Corroborado';
-//                                    $itensdeinspecao->pontuado   = $pontuado;
-//                                    $itensdeinspecao->itemQuantificado = 'Sim';
-//                                    $itensdeinspecao->orientacao= $registro->orientacao;
-//                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
-//                                    $itensdeinspecao->update();
-//
-//                                }else{  //se não houve registro para a unidade o contador é zero e o resultado é conforme
-//
-//                                    $avaliacao = 'Conforme';
-//                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que não havia histórico de pendências de débito de Empregados maior que 90 dias.';
-//                                    $dto = DB::table('itensdeinspecoes')
-//                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
-//                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
-//                                        ->select( 'itensdeinspecoes.*'  )
-//                                        ->first();
-//                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
-//                                    $itensdeinspecao->avaliacao  = $avaliacao;
-//                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
-//                                    $itensdeinspecao->evidencia  = null;
-//                                    $itensdeinspecao->valorFalta = 0.00;
-//                                    $itensdeinspecao->situacao   = 'Corroborado';
-//                                    $itensdeinspecao->pontuado   = 0.00;
-//                                    $itensdeinspecao->itemQuantificado = 'Não';
-//                                    $itensdeinspecao->orientacao= null;
-//                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
-//                                    $itensdeinspecao->update();
-//                                }
-//                            } // fim doteste
-//                        }
-//                    }
-//                }
-//            }
+            foreach ($superintendencias as $res)
+            {
+                foreach ($res as $superintendencia)
+                {
+                    if ($superintendencia == 1)
+                    {
+                    //    dd('todas superintendncias', $superintendencia);
+                        $registros = DB::table('itensdeinspecoes')
+                            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                            ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
+                            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
+                            ->where([['situacao', '=',  'Em Inspeção' ]])
+                            ->where([['se', '>', 1 ]])   //depois mudar a condição para ser >1
+                            ->where([['inspecoes.ciclo', '=', $ciclo ]])
+                            ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
+                            ->where([['sto', '=', 16300866 ]]) //ac anapolis
+                            //->limit(100)
+                        ->get();
+
+                        foreach ($registros as $registro)
+                        {
+
+
+
+                            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
+                                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
+                            {
+                                $mescompetencia = DB::table('debitoempregados')
+                                    ->select('competencia')
+                                    ->where([['debitoempregados.competencia', '>=', 1 ]])
+                                    ->orderBy('competencia' ,'desc')
+                                ->first();
+                                $debitoempregados = DB::table('debitoempregados')
+                                    ->select('data', 'documento', 'historico', 'matricula', 'valor' )
+                                    ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
+                                    ->where([['debitoempregados.sto', '=', $registro->mcu ]])
+                                    ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
+                                ->get();
+                                if(! $debitoempregados->isEmpty())
+                                {
+                                    $count = $debitoempregados->count('matricula');
+                                    $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
+                                }
+                                else
+                                {
+                                    $count = 0;
+                                    $total = 0.00;
+                                }
+
+
+
+                                $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
+                                if($count >= 1){
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição de '
+                                    . $competencia .', constatou-se a existência de '. $count . ' débitos de empregado sem regularização há mais de 90 dias, conforme relacionado a seguir:';
+                                    $evidencia = "\n".'Data'."\t".'Documento'."\t".'Histórico'."\t".'Matricula'."\t".'Valor';
+
+                                    foreach($debitoempregados as $debitoempregado){
+                                        $evidencia =  $evidencia ."\n". date( 'd/m/Y' , strtotime($debitoempregado->data))
+                                            ."\t". $debitoempregado->documento
+                                            ."\t". $debitoempregado->historico
+                                            ."\t". $debitoempregado->matricula
+                                            ."\t". ' R$ '. number_format($debitoempregado->valor, 2, ',', '.');
+                                    }
+                                    $evidencia =  $evidencia ."\n".'Total '."\t".'R$ '. number_format($total, 2, ',', '.');
+                                    $relevancias = DB::table('relevancias')
+                                       ->select( 'relevancias.*'  )
+                                    ->get();
+                                    $tolerancia = ($relevancias->min('valor_final') * 0.1);
+                                    if($total <= $tolerancia ){
+                                        $avaliacao = 'Conforme';
+                                        $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que havia histórico de pendências de débito de Empregados maior que 90 dias. Porém, a mesma está dentro da margem de tolerância definida pelo Departamento de Controle Interno que é de R$ '. number_format($relevancias->min('valor_final'), 2, ',', '.');
+                                        $pontuado=0.00;
+                                    }
+                                    else{
+                                        foreach ($relevancias as $row)
+                                        {
+                                            if(($row->valor_inicio >= $total) || ($row->valor_final <= $total))
+                                            {
+                                                $pontuado = $row->fator_multiplicador * intval($registro->totalPontos) ;
+                                            }
+                                        }
+                                    }
+
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                    ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = $evidencia;
+                                    $itensdeinspecao->valorFalta = $total;
+                                    $itensdeinspecao->situacao   = 'Corroborado';
+                                    $itensdeinspecao->pontuado   = $pontuado;
+                                    $itensdeinspecao->itemQuantificado = 'Sim';
+                                    $itensdeinspecao->orientacao= $registro->orientacao;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+
+                                    $itensdeinspecao->update();
+                                } // fim se o contador de eventos  >1
+                                else
+                                {
+
+                                    //se não houve registro para a unidade o contador é zero e o resultado é conforme
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que não havia histórico de pendências de débito de Empregados maior que 90 dias.';
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = null;
+                                    $itensdeinspecao->valorFalta = 0.00;
+                                    $itensdeinspecao->situacao   = 'Corroborado';
+                                    $itensdeinspecao->pontuado   = 0.00;
+                                    $itensdeinspecao->itemQuantificado = 'Não';
+                                    $itensdeinspecao->orientacao= null;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                }
+                            } // fim doteste 230 4
+                        }
+                    }// fim doteste se superintendencia = 1
+                    else
+                    {
+                        // inicio dotestee diversas superintendencias
+                        $registros = DB::table('itensdeinspecoes')
+                            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                            ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
+                            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                            ->select('itensdeinspecoes.*','inspecoes.*','unidades.*','testesdeverificacao.*','gruposdeverificacao.*')
+                            ->where([['situacao', '=',  'Em Inspeção' ]])
+                            ->where([['se', '=', $superintendencia ]])
+                            ->where([['inspecoes.ciclo', '=', $ciclo ]])
+
+                            ->where([['sto', '=', 16303458 ]]) //ac anapolis
+
+                            ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
+                           // ->limit(5)
+                        ->get();
+//                        dd('Item de Inspeção ->', $registros);
+
+                        foreach ($registros as $registro)
+                        {
+//                            dd('Item de Inspeção ->', $registro);
+
+                            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
+                                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
+                            {
+
+//                                dd('Item de Inspeção ->'. $registro->numeroGrupoVerificacao.'  teste-> '.$registro->numeroDoTeste);
+
+                                $mescompetencia = DB::table('debitoempregados')
+                                    ->select('competencia')
+                                    ->where([['debitoempregados.competencia', '>=', 1 ]])
+                                    ->orderBy('competencia' ,'desc')
+                                ->first();
+                                $debitoempregados = DB::table('debitoempregados')
+                                    ->select('data', 'documento', 'historico', 'matricula', 'valor' )
+                                    ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
+                                    ->where([['debitoempregados.sto', '=', $registro->mcu ]])
+                                    ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
+                                ->get();
+//                                dd('Item de debito empregado', $debitoempregados);
+                                if(! $debitoempregados->isEmpty())
+                                {
+                                    $count = $debitoempregados->count('matricula');
+                                    $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
+                                }
+                                else
+                                {
+                                    $count = 0;
+                                    $total = 0.00;
+                                }
+
+                                $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
+                                if($count >= 1){
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição de '
+                                        . $competencia .', constatou-se a existência de '. $count . ' débitos de empregado sem regularização há mais de 90 dias, conforme relacionado a seguir:';
+                                    $evidencia = "\n".'Data'."\t".'Documento'."\t".'Histórico'."\t".'Matricula'."\t".'Valor';
+                                    foreach($debitoempregados as $debitoempregado){
+                                        $evidencia =  $evidencia ."\n". date( 'd/m/Y' , strtotime($debitoempregado->data))
+                                            ."\t". $debitoempregado->documento
+                                            ."\t". $debitoempregado->historico
+                                            ."\t". $debitoempregado->matricula
+                                            ."\t". ' R$ '. number_format($debitoempregado->valor, 2, ',', '.');
+                                    }
+                                    $evidencia =  $evidencia ."\n".'Total '."\t".'R$ '. number_format($total, 2, ',', '.');
+                                    $relevancias = DB::table('relevancias')
+                                        ->select( 'relevancias.*'  )
+                                        ->get();
+                                    $tolerancia = ($relevancias->min('valor_final') * 0.1);
+                                    if($total <= $tolerancia ){
+                                        $avaliacao = 'Conforme';
+                                        $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que havia histórico de pendências de débito de Empregados maior que 90 dias. Porém, a mesma está dentro da margem de tolerância definida pelo Departamento de Controle Interno que é de R$ '. number_format($relevancias->min('valor_final'), 2, ',', '.');
+                                        $pontuado=0.00;
+                                    }
+                                    else{
+                                        foreach ($relevancias as $row)
+                                        {
+                                            if(($row->valor_inicio >= $total) || ($row->valor_final <= $total))
+                                            {
+                                                $pontuado = $row->fator_multiplicador * intval($registro->totalPontos) ;
+                                            }
+                                        }
+                                    }
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                    ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = $evidencia;
+                                    $itensdeinspecao->valorFalta = $total;
+                                    $itensdeinspecao->situacao   = 'Corroborado';
+                                    $itensdeinspecao->pontuado   = $pontuado;
+                                    $itensdeinspecao->itemQuantificado = 'Sim';
+                                    $itensdeinspecao->orientacao= $registro->orientacao;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                    dd('Item de Inspeção ->', $itensdeinspecao);
+                                }else{  //se não houve registro para a unidade o contador é zero e o resultado é conforme
+
+                                    $avaliacao = 'Conforme';
+                                    dd('Avaliação -> '. $avaliacao);
+                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que não havia histórico de pendências de débito de Empregados maior que 90 dias.';
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = null;
+                                    $itensdeinspecao->valorFalta = 0.00;
+                                    $itensdeinspecao->situacao   = 'Corroborado';
+                                    $itensdeinspecao->pontuado   = 0.00;
+                                    $itensdeinspecao->itemQuantificado = 'Não';
+                                    $itensdeinspecao->orientacao= null;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                }
+                            } // fim doteste
+                        }
+                    }
+                }
+            }
 
             //     dd($superintendencias, $tipodeunidade , $ciclo);
 
 //            para ativar a fila no console
 //            php artisan queue:work --queue=avaliaInspecao
 
-            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
-                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
-            dispatch($job);
+//            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
+//                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
+//            dispatch($job);
 
             \Session::flash('mensagem', ['msg' => 'Job aguardando processamento.'
                 , 'class' => 'blue white-text']);

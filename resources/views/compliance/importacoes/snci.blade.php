@@ -31,7 +31,16 @@
                     <div class="input-field"  id ="ajuda" style="display:none;">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea  id="ajuda" name="ajuda" class="materialize-textarea">
-                        Disponibilizada pelo DEPARTAMENTO.
+                       Planilha disponibilizada pelo DCINT.  Edit a planilha deixando apenas as colunas a seguir:
+                       [Modalidade	Diretoria	Código Unidade	Descrição da Unidade	Nº Inspeção	Nº Grupo	Descrição do Grupo	Nº Item	Descrição Item	Código REATE	ANO	Resposta	Comentário	Valor	CaracteresVlr	Falta	Sobra	EmRisco	DtUltAtu	DT_Inic Inspeção	DT_Fim Inspecao	Hora Inspecao	Situação	DT_Encerram	Status	Sigla do Status	Descrição do Status	DT_Posição]
+                            Operações avançadas: no terminal inicie o serviço, digite o seguinte comando.
+                            php artisan queue:work --queue=importacao
+                            Cria um novo arquivo excel coloque aproximadamente 1000 linnhas por vez e agente o Job.
+                            o serviço será inicializado  e o resultado esperado será por exemplo:
+                            [2021-03-08 06:36:13][210] Processing: App\Jobs\JobSnci
+                            [2021-03-08 10:19:30][210] Processed:  App\Jobs\JobSnci
+                            [2021-03-08 10:19:31][211] Processing: App\Jobs\JobSnci
+
                         </textarea>
                     </div>
                     <form action="{{ route('compliance.importacao.snci') }}" method="POST" name="importform"
