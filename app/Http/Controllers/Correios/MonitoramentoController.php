@@ -56,6 +56,8 @@ class MonitoramentoController extends Controller
              'superintendencia' => 'required'
             , 'tipodeunidade' => 'required'
          ]);
+
+
         if (!$validator->passes()) {
             \Session::flash('mensagem', ['msg' => 'Parâmetros insuficiente para o agendamento do Job.'
                 , 'class' => 'red white-text']);
@@ -67,12 +69,9 @@ class MonitoramentoController extends Controller
             $tipodeunidade =  $request->all(['tipodeunidade']);
             $ciclo =  $request->all(['ciclo']);
 
-            foreach ($superintendencias as $res)
-            {
-                foreach ($res as $superintendencia)
-                {
-                    if ($superintendencia == 1)
-                    {
+            foreach ($superintendencias as $res) {
+                foreach ($res as $superintendencia) {
+                    if ($superintendencia == 1) {
                     //    dd('todas superintendncias', $superintendencia);
                         $registros = DB::table('itensdeinspecoes')
                             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
@@ -88,6 +87,7 @@ class MonitoramentoController extends Controller
                             //->limit(100)
                         ->get();
 
+
                         foreach ($registros as $registro)
                         {
 
@@ -96,6 +96,10 @@ class MonitoramentoController extends Controller
                             if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
                                 || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
                             {
+
+                                dd($registro);
+
+
                                 $mescompetencia = DB::table('debitoempregados')
                                     ->select('competencia')
                                     ->where([['debitoempregados.competencia', '>=', 1 ]])
@@ -198,9 +202,8 @@ class MonitoramentoController extends Controller
                             } // fim doteste 230 4
                         }
                     }// fim doteste se superintendencia = 1
-                    else
-                    {
-                        // inicio dotestee diversas superintendencias
+                    else {
+                        // inicio dotestee diversas superintendencias estou aki
                         $registros = DB::table('itensdeinspecoes')
                             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
                             ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
@@ -210,54 +213,99 @@ class MonitoramentoController extends Controller
                             ->where([['situacao', '=',  'Em Inspeção' ]])
                             ->where([['se', '=', $superintendencia ]])
                             ->where([['inspecoes.ciclo', '=', $ciclo ]])
-
                             ->where([['sto', '=', 16303458 ]]) //ac anapolis
-
                             ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
-                           // ->limit(5)
                         ->get();
-//                        dd('Item de Inspeção ->', $registros);
 
-                        foreach ($registros as $registro)
-                        {
-//                            dd('Item de Inspeção ->', $registro);
-
+                        foreach ($registros as $registro) {
                             if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
-                                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1)))
-                            {
+                                || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1))) {
 
-//                                dd('Item de Inspeção ->'. $registro->numeroGrupoVerificacao.'  teste-> '.$registro->numeroDoTeste);
+                                $reincidente = 0;
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $reinc = 'Não';
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao',   'no_grupo',  'no_item','dt_fim_inspecao','dt_inic_inspecao')
+                                    ->where([['descricao_item',  'like', '%3131)?%']])
+                                    ->where([['sto', '=', $registro->sto ]])
+                                    ->orderBy('no_inspecao' ,'desc')
+                                ->first();
 
+                                try{
+                                    if( $reincidencia->no_inspecao > 1) {
+                                        $reincidente= 1;
+                                        $reinc = 'Sim';
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                    }
+                                }
+                                    catch (\Exception $e) {
+                                        $reincidente = 0;
+                                }
                                 $mescompetencia = DB::table('debitoempregados')
                                     ->select('competencia')
                                     ->where([['debitoempregados.competencia', '>=', 1 ]])
                                     ->orderBy('competencia' ,'desc')
                                 ->first();
-                                $debitoempregados = DB::table('debitoempregados')
-                                    ->select('data', 'documento', 'historico', 'matricula', 'valor' )
-                                    ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
-                                    ->where([['debitoempregados.sto', '=', $registro->mcu ]])
-                                    ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
-                                ->get();
-//                                dd('Item de debito empregado', $debitoempregados);
-                                if(! $debitoempregados->isEmpty())
-                                {
+
+                                if($reincidente == 1) {
+
+                                    $debitoempregados = DB::table('debitoempregados')
+                                        ->select('data', 'documento', 'historico', 'matricula', 'valor' )
+                                        ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
+                                        ->where([['debitoempregados.data', '>=', $reincidencia_dt_fim_inspecao ]])
+                                        ->where([['debitoempregados.sto', '=', $registro->mcu ]])
+                                        ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
+                                    ->get();
+                                }
+                                else {
+                                    $debitoempregados = DB::table('debitoempregados')
+                                        ->select('data', 'documento', 'historico', 'matricula', 'valor' )
+                                        ->where([['debitoempregados.data', '<=', $dtmenos90dias ]])
+                                        ->where([['debitoempregados.sto', '=', $registro->mcu ]])
+                                        ->orWhere([['debitoempregados.sto', '=', $registro->sto ]])
+                                    ->get();
+                                }
+
+                                if(! $debitoempregados->isEmpty()) {
+
                                     $count = $debitoempregados->count('matricula');
                                     $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
+                                    $quebra = DB::table('relevancias')
+                                        ->select('valor_final' )
+                                        ->where('fator_multiplicador', '=', 1 )
+                                    ->first();
+                                    $quebracaixa = $quebra->valor_final * 0.1;
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                        ->where('valor_inicio', '<=', $total )
+                                        ->orderBy('valor_final' ,'desc')
+                                    ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
                                 }
-                                else
-                                {
+                                else {
                                     $count = 0;
                                     $total = 0.00;
                                 }
 
                                 $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
-                                if($count >= 1){
+
+                                if(( $count >= 1 ) && ( $total > $quebracaixa ) ) {
+
                                     $avaliacao = 'Não Conforme';
                                     $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, posição de '
                                         . $competencia .', constatou-se a existência de '. $count . ' débitos de empregado sem regularização há mais de 90 dias, conforme relacionado a seguir:';
                                     $evidencia = "\n".'Data'."\t".'Documento'."\t".'Histórico'."\t".'Matricula'."\t".'Valor';
+
                                     foreach($debitoempregados as $debitoempregado){
+
                                         $evidencia =  $evidencia ."\n". date( 'd/m/Y' , strtotime($debitoempregado->data))
                                             ."\t". $debitoempregado->documento
                                             ."\t". $debitoempregado->historico
@@ -265,29 +313,13 @@ class MonitoramentoController extends Controller
                                             ."\t". ' R$ '. number_format($debitoempregado->valor, 2, ',', '.');
                                     }
                                     $evidencia =  $evidencia ."\n".'Total '."\t".'R$ '. number_format($total, 2, ',', '.');
-                                    $relevancias = DB::table('relevancias')
-                                        ->select( 'relevancias.*'  )
-                                        ->get();
-                                    $tolerancia = ($relevancias->min('valor_final') * 0.1);
-                                    if($total <= $tolerancia ){
-                                        $avaliacao = 'Conforme';
-                                        $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que havia histórico de pendências de débito de Empregados maior que 90 dias. Porém, a mesma está dentro da margem de tolerância definida pelo Departamento de Controle Interno que é de R$ '. number_format($relevancias->min('valor_final'), 2, ',', '.');
-                                        $pontuado=0.00;
-                                    }
-                                    else{
-                                        foreach ($relevancias as $row)
-                                        {
-                                            if(($row->valor_inicio >= $total) || ($row->valor_final <= $total))
-                                            {
-                                                $pontuado = $row->fator_multiplicador * intval($registro->totalPontos) ;
-                                            }
-                                        }
-                                    }
+
                                     $dto = DB::table('itensdeinspecoes')
                                         ->Where([['inspecao_id', '=', $registro->inspecao_id]])
                                         ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
                                         ->select( 'itensdeinspecoes.*'  )
                                     ->first();
+
                                     $itensdeinspecao = Itensdeinspecao::find($dto->id);
                                     $itensdeinspecao->avaliacao  = $avaliacao;
                                     $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
@@ -296,14 +328,17 @@ class MonitoramentoController extends Controller
                                     $itensdeinspecao->situacao   = 'Corroborado';
                                     $itensdeinspecao->pontuado   = $pontuado;
                                     $itensdeinspecao->itemQuantificado = 'Sim';
-                                    $itensdeinspecao->orientacao= $registro->orientacao;
+                                    $itensdeinspecao->orientacao = $registro->orientacao;
                                     $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->reincidencia = $reinc;
+                                    $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                    $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                    $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
                                     $itensdeinspecao->update();
-                                    dd('Item de Inspeção ->', $itensdeinspecao);
-                                }else{  //se não houve registro para a unidade o contador é zero e o resultado é conforme
+                                }
+                                else {  //se não houve registro para a unidade o contador é zero e o resultado é conforme
 
                                     $avaliacao = 'Conforme';
-                                    dd('Avaliação -> '. $avaliacao);
                                     $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema WebCont – Composição Analítica da conta 11202.994000, verificada a posição do mês '. $competencia .' constatou-se que não havia histórico de pendências de débito de Empregados maior que 90 dias.';
                                     $dto = DB::table('itensdeinspecoes')
                                         ->Where([['inspecao_id', '=', $registro->inspecao_id]])
@@ -397,8 +432,7 @@ class MonitoramentoController extends Controller
         }
     }
 
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
 
         $validator = Validator::make($request->all(), [
              'data' => 'required'
@@ -406,13 +440,13 @@ class MonitoramentoController extends Controller
             , 'tipodeunidade' => 'required'
             , 'ciclo' => 'required'
         ]);
+
         if (!$validator->passes()) {
             \Session::flash('mensagem', ['msg' => 'Parâmetros insuficiente para o agendamento do Job.'
                 , 'class' => 'red white-text']);
             return redirect()->back();
         }
-        else
-        {
+        else {
             $dados = $request->all();
             $superintendencias = $request->all(['superintendencia']);
             $ciclo = $dados['ciclo'];
@@ -426,6 +460,8 @@ class MonitoramentoController extends Controller
                     ['id', '=', $dados['tipodeunidade']],
                 ])
             ->get();
+
+
             if ($tipoInspecao->isEmpty()) {
                 \Session::flash('mensagem', ['msg' => 'Tipo de Inspeção não Previsto!'
                     , 'class' => 'red white-text']);
@@ -433,221 +469,217 @@ class MonitoramentoController extends Controller
             }
             else
             {
-// php artisan queue:work --queue=geraInspecao
-//        ####################  begin  JOB ################
+            // php artisan queue:work --queue=geraInspecao
+            // ####################  begin  JOB ################
+                foreach ($superintendencias as $dados) {
+                    foreach ($dados as $superintendencia) {
+                        if ($superintendencia == 1)
+                        {
+                            $unidades = DB::table('unidades')
+                                ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                                ->select(
+                                    'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                                )
+                                ->where([['tiposdeunidade.inspecionar', '=', 'Sim']])
+                                ->where([['tiposdeunidade.tipoInspecao', '=', 'Monitorada']])
+                                ->where([['unidades.status_unidadeDesc', '=', $status]])
+                                ->Where([['se', '>', $superintendencia]])
+                                ->orderBy('seDescricao', 'desc')
+                                ->orderBy('tipoOrgaoDesc', 'asc')
+                                ->orderBy('descricao', 'asc')
+                                ->get();
+                            if (!$unidades->isEmpty()) {
+                                foreach ($unidades as $unidade) {
 
-//                foreach ($superintendencias as $dados) {
-//                    foreach ($dados as $superintendencia) {
-//                        if ($superintendencia == 1)
-//                        {
-//                            $unidades = DB::table('unidades')
-//                                ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
-//                                ->select(
-//                                    'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
-//                                )
-//                                ->where([['tiposdeunidade.inspecionar', '=', 'Sim']])
-//                                ->where([['tiposdeunidade.tipoInspecao', '=', 'Monitorada']])
-//                                ->where([['unidades.status_unidadeDesc', '=', $status]])
-//                                ->Where([['se', '>', $superintendencia]])
-//                                ->orderBy('seDescricao', 'desc')
-//                                ->orderBy('tipoOrgaoDesc', 'asc')
-//                                ->orderBy('descricao', 'asc')
-//                                ->get();
-//                            if (!$unidades->isEmpty()) {
-//                                foreach ($unidades as $unidade)
-//                                {
-////                              geracao
-//                                    $res = DB::table('inspecoes')
-//                                        ->Where([['unidade_id', '=', $unidade->id]])
-//                                        ->Where([['ciclo', '=', $ciclo ]])
-//                                        ->Where([['tipoVerificacao', '=', 'Monitorada' ]])
-//                                        ->get();
-//                                    if ($res->isEmpty()){
-//                                        $sup = DB::table('unidades')
-//                                            ->select('unidades.se' )
-//                                            ->where([['id', '=', $unidade->id]])
-//                                            ->first();
-//                                        if ( $sup->se>1) {
-//                                            $sequence_inspcaos = DB::table('sequence_inspcaos')
-//                                                ->select('sequence_inspcaos.*')
-//                                                ->Where([['se', '=', $sup->se]])
-//                                                ->Where([['ciclo', '=', $ciclo]])
-//                                                ->first();
-//                                            if (!empty($sequence_inspcaos)) {
-//                                                $sequence_id = $sequence_inspcaos->id;
-//                                                $sequence = $sequence_inspcaos->sequence;
-//                                                $sequence++;
-//                                                DB::table('sequence_inspcaos')
-//                                                    ->where('id', $sequence_id)
-//                                                    ->update(['sequence' => $sequence]);
-//                                            } else {
-//                                                $sequence = 2001;
-//                                                SequenceInspecao::create([
-//                                                    'se' => $sup->se
-//                                                    , 'ciclo' => $ciclo
-//                                                    , 'sequence' => $sequence
-//                                                ]);
-//                                            }
-//                                            $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
-//                                            if ($sup->se < 10) {
-//                                                $se = '0' . $sup->se;
-//                                            } else {
-//                                                $se = $sup->se;
-//                                            }
-//                                            $codigo = $se . $sequence . $ciclo;
-//
-//                                        //    dd($sequence, $sequence_inspcaos, $sup, $superintendencia, $unidade);
-//
-//                                            $inspecao = new Inspecao;
-//                                            $inspecao->ciclo = $ciclo;
-//                                            $inspecao->descricao = $unidade->descricao;
-//                                            $inspecao->datainiPreInspeção = $dataAgenda;
-//                                            $inspecao->codigo = $codigo;
-//                                            $inspecao->unidade_id = $unidade->id;
-//                                            $inspecao->tipoUnidade_id = $unidade->tipoUnidade_id;
-//                                            $inspecao->tipoVerificacao = 'Monitorada';
-//                                            $inspecao->status = 'Em Inspeção';
-//                                            $inspecao->unidade_id = $unidade->id;
-//                                            $inspecao->save();
-//                                            $parametros = DB::table('tiposdeunidade')
-//                                                ->join('gruposdeverificacao', 'tiposdeunidade.id', '=', 'tipoUnidade_id')
-//                                                ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-//                                                ->where([
-//                                                    ['gruposdeverificacao.tipoUnidade_id', '=', $inspecao->tipoUnidade_id] //" tipoUnidade_id " => " 1 "
-//                                                ])
-//                                                ->where([
-//                                                    ['gruposdeverificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao] //" tipoVerificacao " => " Remoto "
-//                                                ])
-//                                                ->where([
-//                                                    ['gruposdeverificacao.ciclo', '=', $inspecao->ciclo] // REGRA o Caderno é por ciclo
-//                                                ])
-//                                                ->get();
-//                                            foreach ($parametros as $parametro) //itens de inspeção
-//                                            {
-//                                                $registro = new Itensdeinspecao;
-//                                                $registro->inspecao_id = $inspecao->id; //veriricação relacionada
-//                                                $registro->unidade_id = $unidade->id; //unidade verificada
-//                                                $registro->tipoUnidade_id = $unidade->tipoUnidade_id; //Tipo de unidade
-//                                                $registro->grupoVerificacao_id = $parametro->grupoVerificacao_id;//grupo de verificação
-//                                                $registro->testeVerificacao_id = $parametro->id;// $registro->id teste de verificação
-//                                                $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
-//                                                $registro->consequencias = $parametro->consequencias;
-//                                                $registro->norma = $parametro->norma;
-//                                                $registro->save();
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        else
-//                        {
-//                            //gerar para todas selecionadas
-//                            $unidades = DB::table('unidades')
-//                                ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
-//                                ->select(
-//                                    'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
-//                                )
-//                                ->where([['tiposdeunidade.inspecionar', '=', 'Sim']])
-//                                ->where([['tiposdeunidade.tipoInspecao', '=', 'Monitorada']])
-//                                ->where([['unidades.status_unidadeDesc', '=', $status]])
-//                                ->Where([['se', '=', $superintendencia]])
-//                                ->orderBy('seDescricao', 'desc')
-//                                ->orderBy('tipoOrgaoDesc', 'asc')
-//                                ->orderBy('descricao', 'asc')
-//                                ->get();
-//                            if (!$unidades->isEmpty())
-//                            {
-//                                foreach ($unidades as $unidade)
-//                                {
-//                                    //checa se já não existe inspeção para o ciclo
-//                                    $res = DB::table('inspecoes')
-//                                        ->Where([['unidade_id', '=', $unidade->id]])
-//                                        ->Where([['ciclo', '=', $ciclo ]])
-//                                        ->Where([['tipoVerificacao', '=', 'Monitorada' ]])
-//                                        ->get();
-//                                    if ($res->isEmpty()){
-////                              gera numeração
-//                                        $sequence_inspcaos = DB::table('sequence_inspcaos')
-//                                            ->select('sequence_inspcaos.*')
-//                                            ->Where([['se', '=', $superintendencia]])
-//                                            ->Where([['ciclo', '=', $ciclo ]])
-//                                        ->first();
-//                                        $strsuperintendencia = intval($superintendencia);
-//                                        if (!empty($sequence_inspcaos)) {
-//                                            $sequence_id = $sequence_inspcaos->id;
-//                                            $sequence = $sequence_inspcaos->sequence;
-//                                            $sequence ++;
-//                                            $affected = DB::table('sequence_inspcaos')
-//                                                ->where('id', $sequence_id)
-//                                                ->update(['sequence' => $sequence]);
-//                                      //      dd($affected , $sequence);
-//                                        } else {
-//                                            $sequence = 2001;
-//                                            $affected =  SequenceInspecao::create([
-//                                                'se' => $strsuperintendencia
-//                                                ,'ciclo' => $ciclo
-//                                                ,'sequence' => $sequence
-//                                            ]);
-////                                           dd('else ' ,$affected);
-//                                        }
-//
-////                                        dd($superintendencia, $strsuperintendencia, $sequence_inspcaos);
-//                                        $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
-//                                        if ($strsuperintendencia < 10) {
-//                                            $se = '0'.$strsuperintendencia;
-//                                        } else {
-//                                            $se = $strsuperintendencia;
-//                                        }
-//                                        $codigo = $se . $sequence . $ciclo;
-//                                       // dd($codigo);
-//                                        $inspecao = new Inspecao;
-//                                        $inspecao->ciclo = $ciclo;
-//                                        $inspecao->descricao = $unidade->descricao;
-//                                        $inspecao->datainiPreInspeção = $dataAgenda ;
-//                                        $inspecao->codigo = $codigo;
-//                                        $inspecao->unidade_id = $unidade->id;
-//                                        $inspecao->tipoUnidade_id = $unidade->tipoUnidade_id;
-//                                        $inspecao->tipoVerificacao = 'Monitorada';
-//                                        $inspecao->status =  'Em Inspeção';
-//                                        $inspecao->unidade_id = $unidade->id;
-//                                        $inspecao->save();
-//                                        $parametros = DB::table('tiposdeunidade')
-//                                            ->join('gruposdeverificacao', 'tiposdeunidade.id', '=', 'tipoUnidade_id')
-//                                            ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-//                                            ->where([
-//                                                ['gruposdeverificacao.tipoUnidade_id', '=', $inspecao->tipoUnidade_id] //" tipoUnidade_id " => " 1 "
-//                                            ])
-//                                            ->where([
-//                                                ['gruposdeverificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao] //" tipoVerificacao " => " Remoto "
-//                                            ])
-//                                            ->where([
-//                                                ['gruposdeverificacao.ciclo', '=', $inspecao->ciclo] // REGRA o Caderno é por ciclo
-//                                            ])
-//                                            ->get();
-//                                        foreach ($parametros as $parametro) {
-//                                            $registro = new Itensdeinspecao;
-//                                            $registro->inspecao_id = $inspecao->id; //veriricação relacionada
-//                                            $registro->unidade_id = $unidade->id; //unidade verificada
-//                                            $registro->tipoUnidade_id = $unidade->tipoUnidade_id; //Tipo de unidade
-//                                            $registro->grupoVerificacao_id = $parametro->grupoVerificacao_id;//grupo de verificação
-//                                            $registro->testeVerificacao_id = $parametro->id;// $registro->id teste de verificação
-//                                            $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
-//                                            $registro->consequencias = $parametro->consequencias;
-//                                            $registro->norma = $parametro->norma;
-//                                            $registro->save();
-//                                        }
-//                                    }
-//                                //    dd($inspecao ,'ultimo teste ->',$registro);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
+                                    //checa se já não existe inspeção para o ciclo
+                                    $res = DB::table('inspecoes')
+                                        ->Where([['unidade_id', '=', $unidade->id]])
+                                        ->Where([['ciclo', '=', $ciclo ]])
+                                        ->Where([['tipoVerificacao', '=', 'Monitorada' ]])
+                                        ->get();
+                                    if ($res->isEmpty()){
+//                              gera numeração
+                                        $sequence_inspcaos = DB::table('sequence_inspcaos')
+                                            ->select('sequence_inspcaos.*')
+                                            ->Where([['se', '=', $superintendencia]])
+                                            ->Where([['ciclo', '=', $ciclo ]])
+                                            ->first();
+                                        $strsuperintendencia = intval($superintendencia);
+                                        if (!empty($sequence_inspcaos)) {
+                                            $sequence_id = $sequence_inspcaos->id;
+                                            $sequence = $sequence_inspcaos->sequence;
+                                            $sequence ++;
+                                            $affected = DB::table('sequence_inspcaos')
+                                                ->where('id', $sequence_id)
+                                                ->update(['sequence' => $sequence]);
+                                            //      dd($affected , $sequence);
+                                        } else {
+                                            $sequence = 2001;
+                                            $affected =  SequenceInspecao::create([
+                                                'se' => $strsuperintendencia
+                                                ,'ciclo' => $ciclo
+                                                ,'sequence' => $sequence
+                                            ]);
+//                                           dd('else ' ,$affected);
+                                        }
 
-//        ####################  end  JOB ################
+//                                        dd($superintendencia, $strsuperintendencia, $sequence_inspcaos);
+                                        $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
+                                        if ($strsuperintendencia < 10) {
+                                            $se = '0'.$strsuperintendencia;
+                                        } else {
+                                            $se = $strsuperintendencia;
+                                        }
+                                        $codigo = $se . $sequence . $ciclo;
+                                        // dd($codigo);
+                                        $inspecao = new Inspecao;
+                                        $inspecao->ciclo = $ciclo;
+                                        $inspecao->descricao = $unidade->descricao;
+                                        $inspecao->datainiPreInspeção = $dataAgenda ;
+                                        $inspecao->codigo = $codigo;
+                                        $inspecao->unidade_id = $unidade->id;
+                                        $inspecao->tipoUnidade_id = $unidade->tipoUnidade_id;
+                                        $inspecao->tipoVerificacao = 'Monitorada';
+                                        $inspecao->status =  'Em Inspeção';
+                                        $inspecao->unidade_id = $unidade->id;
+                                        $inspecao->save();
+                                        $parametros = DB::table('tiposdeunidade')
+                                            ->join('gruposdeverificacao', 'tiposdeunidade.id', '=', 'tipoUnidade_id')
+                                            ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                                            ->where([
+                                                ['gruposdeverificacao.tipoUnidade_id', '=', $inspecao->tipoUnidade_id] //" tipoUnidade_id " => " 1 "
+                                            ])
+                                            ->where([
+                                                ['gruposdeverificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao] //" tipoVerificacao " => " Remoto "
+                                            ])
+                                            ->where([
+                                                ['gruposdeverificacao.ciclo', '=', $inspecao->ciclo] // REGRA o Caderno é por ciclo
+                                            ])
+                                            ->get();
+                                        foreach ($parametros as $parametro) {
+                                            $registro = new Itensdeinspecao;
+                                            $registro->inspecao_id = $inspecao->id; //veriricação relacionada
+                                            $registro->unidade_id = $unidade->id; //unidade verificada
+                                            $registro->tipoUnidade_id = $unidade->tipoUnidade_id; //Tipo de unidade
+                                            $registro->grupoVerificacao_id = $parametro->grupoVerificacao_id;//grupo de verificação
+                                            $registro->testeVerificacao_id = $parametro->id;// $registro->id teste de verificação
+                                            $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
+                                            $registro->consequencias = $parametro->consequencias;
+                                            $registro->norma = $parametro->norma;
+                                            $registro->save();
+                                        }
+                                    }
+                                    //    dd($inspecao ,'ultimo teste ->',$registro);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //gerar para todas selecionadas
+                            $unidades = DB::table('unidades')
+                                ->join('tiposdeunidade', 'unidades.tipoUnidade_id', '=', 'tiposdeunidade.id')
+                                ->select(
+                                    'unidades.*', 'tiposdeunidade.inspecionar', 'tiposdeunidade.tipoInspecao'
+                                )
+                                ->where([['tiposdeunidade.inspecionar', '=', 'Sim']])
+                                ->where([['tiposdeunidade.tipoInspecao', '=', 'Monitorada']])
+                                ->where([['unidades.status_unidadeDesc', '=', $status]])
+                                ->Where([['se', '=', $superintendencia]])
+                                ->orderBy('seDescricao', 'desc')
+                                ->orderBy('tipoOrgaoDesc', 'asc')
+                                ->orderBy('descricao', 'asc')
+                                ->get();
+                            if (!$unidades->isEmpty())
+                            {
+                                foreach ($unidades as $unidade) {
 
-//dd($superintendencias, $status , $ciclo, $dataAgenda);
+                                    //checa se já não existe inspeção para o ciclo
+                                    $res = DB::table('inspecoes')
+                                        ->Where([['unidade_id', '=', $unidade->id]])
+                                        ->Where([['ciclo', '=', $ciclo ]])
+                                        ->Where([['tipoVerificacao', '=', 'Monitorada' ]])
+                                        ->get();
+                                    if ($res->isEmpty()){
+//                              gera numeração
+                                        $sequence_inspcaos = DB::table('sequence_inspcaos')
+                                            ->select('sequence_inspcaos.*')
+                                            ->Where([['se', '=', $superintendencia]])
+                                            ->Where([['ciclo', '=', $ciclo ]])
+                                        ->first();
+                                        $strsuperintendencia = intval($superintendencia);
+                                        if (!empty($sequence_inspcaos)) {
+                                            $sequence_id = $sequence_inspcaos->id;
+                                            $sequence = $sequence_inspcaos->sequence;
+                                            $sequence ++;
+                                            $affected = DB::table('sequence_inspcaos')
+                                                ->where('id', $sequence_id)
+                                                ->update(['sequence' => $sequence]);
+                                      //      dd($affected , $sequence);
+                                        } else {
+                                            $sequence = 2001;
+                                            $affected =  SequenceInspecao::create([
+                                                'se' => $strsuperintendencia
+                                                ,'ciclo' => $ciclo
+                                                ,'sequence' => $sequence
+                                            ]);
+//                                           dd('else ' ,$affected);
+                                        }
+
+//                                        dd($superintendencia, $strsuperintendencia, $sequence_inspcaos);
+                                        $sequence = str_pad($sequence, 4, '0', STR_PAD_LEFT);
+                                        if ($strsuperintendencia < 10) {
+                                            $se = '0'.$strsuperintendencia;
+                                        } else {
+                                            $se = $strsuperintendencia;
+                                        }
+                                        $codigo = $se . $sequence . $ciclo;
+                                       // dd($codigo);
+                                        $inspecao = new Inspecao;
+                                        $inspecao->ciclo = $ciclo;
+                                        $inspecao->descricao = $unidade->descricao;
+                                        $inspecao->datainiPreInspeção = $dataAgenda ;
+                                        $inspecao->codigo = $codigo;
+                                        $inspecao->unidade_id = $unidade->id;
+                                        $inspecao->tipoUnidade_id = $unidade->tipoUnidade_id;
+                                        $inspecao->tipoVerificacao = 'Monitorada';
+                                        $inspecao->status =  'Em Inspeção';
+                                        $inspecao->unidade_id = $unidade->id;
+                                        $inspecao->save();
+                                        $parametros = DB::table('tiposdeunidade')
+                                            ->join('gruposdeverificacao', 'tiposdeunidade.id', '=', 'tipoUnidade_id')
+                                            ->join('testesdeverificacao', 'grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                                            ->where([
+                                                ['gruposdeverificacao.tipoUnidade_id', '=', $inspecao->tipoUnidade_id] //" tipoUnidade_id " => " 1 "
+                                            ])
+                                            ->where([
+                                                ['gruposdeverificacao.tipoVerificacao', '=', $inspecao->tipoVerificacao] //" tipoVerificacao " => " Remoto "
+                                            ])
+                                            ->where([
+                                                ['gruposdeverificacao.ciclo', '=', $inspecao->ciclo] // REGRA o Caderno é por ciclo
+                                            ])
+                                            ->get();
+                                        foreach ($parametros as $parametro) {
+                                            $registro = new Itensdeinspecao;
+                                            $registro->inspecao_id = $inspecao->id; //veriricação relacionada
+                                            $registro->unidade_id = $unidade->id; //unidade verificada
+                                            $registro->tipoUnidade_id = $unidade->tipoUnidade_id; //Tipo de unidade
+                                            $registro->grupoVerificacao_id = $parametro->grupoVerificacao_id;//grupo de verificação
+                                            $registro->testeVerificacao_id = $parametro->id;// $registro->id teste de verificação
+                                            $registro->oportunidadeAprimoramento = $parametro->roteiroConforme;
+                                            $registro->consequencias = $parametro->consequencias;
+                                            $registro->norma = $parametro->norma;
+                                            $registro->save();
+                                        }
+                                    }
+                                //    dd($inspecao ,'ultimo teste ->',$registro);
+                                }
+                            }
+                        }
+                    }
+                }
+            //  ####################  end  JOB ################
+
+
 
                 $job = (new GeraInspecao($superintendencias, $status , $ciclo, $dataAgenda))
                     ->onQueue('geraInspecao')->delay($dataAgenda->addMinutes(1));
@@ -716,17 +748,18 @@ class MonitoramentoController extends Controller
     public function show(){
         return view('compliance.monitoramento.show');  //
     }
-//    public function transformDate($value, $format = 'Y-m-d')
-//    {
-//        try
-//        {
-//            return \Carbon\Carbon::instance(
-//                \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-//        }
-//        catch (\ErrorException $e)
-//        {
-//            return \Carbon\Carbon::createFromFormat($format, $value);
-//        }
-//    }
+
+    public function transformDate($value, $format = 'Y-m-d')
+    {
+        try
+        {
+            return \Carbon\Carbon::instance(
+                \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        }
+        catch (\ErrorException $e)
+        {
+            return \Carbon\Carbon::createFromFormat($format, $value);
+        }
+    }
 
 }

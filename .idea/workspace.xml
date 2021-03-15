@@ -26,7 +26,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="" />
+    <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/GeraInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/GeraInspecao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -1300,14 +1305,29 @@
       <workItem from="1615488357721" duration="2046000" />
       <workItem from="1615490802986" duration="737000" />
       <workItem from="1615493512740" duration="601000" />
-      <workItem from="1615542517230" duration="823000" />
-    </task>
-    <task id="LOCAL-00093" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
-      <created>1608821730707</created>
-      <option name="number" value="00093" />
-      <option name="presentableId" value="LOCAL-00093" />
-      <option name="project" value="LOCAL" />
-      <updated>1608821730708</updated>
+      <workItem from="1615542517230" duration="1694000" />
+      <workItem from="1615544944300" duration="1899000" />
+      <workItem from="1615548121534" duration="646000" />
+      <workItem from="1615577058149" duration="2357000" />
+      <workItem from="1615579456383" duration="1306000" />
+      <workItem from="1615582231527" duration="1785000" />
+      <workItem from="1615584052650" duration="908000" />
+      <workItem from="1615587639022" duration="1780000" />
+      <workItem from="1615589573569" duration="1814000" />
+      <workItem from="1615591697048" duration="1783000" />
+      <workItem from="1615593515565" duration="2662000" />
+      <workItem from="1615596234059" duration="1841000" />
+      <workItem from="1615598113066" duration="1032000" />
+      <workItem from="1615633632244" duration="28000" />
+      <workItem from="1615726243396" duration="425000" />
+      <workItem from="1615729392400" duration="125000" />
+      <workItem from="1615759132352" duration="713000" />
+      <workItem from="1615761539742" duration="493000" />
+      <workItem from="1615762062640" duration="366000" />
+      <workItem from="1615763236608" duration="459000" />
+      <workItem from="1615810750548" duration="1050000" />
+      <workItem from="1615812621933" duration="851000" />
+      <workItem from="1615814435470" duration="412000" />
     </task>
     <task id="LOCAL-00094" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
       <created>1608821843530</created>
@@ -1645,7 +1665,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615543000786</updated>
     </task>
-    <option name="localTasksCounter" value="142" />
+    <task id="LOCAL-00142" summary="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral criação  do job para unidades mas o mesmo precisa refatorar o codigo.">
+      <created>1615543461912</created>
+      <option name="number" value="00142" />
+      <option name="presentableId" value="LOCAL-00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1615543461912</updated>
+    </task>
+    <option name="localTasksCounter" value="143" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1676,7 +1703,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexVerificações:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formIndexSro:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto InspecaoController:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formPainelextravio:" />
@@ -1701,7 +1727,8 @@
     <MESSAGE value="11/02/2021 - novos campos em ajustes basicos para inicio da implementação da rotinas eletrônicas." />
     <MESSAGE value="21/02/2021 - Implementação de API, utilizando o componente JWT, configuração de sistema para proporcionar criação de serviços para geração automática de inspeções para as unidades a serem auditadas." />
     <MESSAGE value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral." />
-    <option name="LAST_COMMIT_MESSAGE" value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral." />
+    <MESSAGE value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral criação  do job para unidades mas o mesmo precisa refatorar o codigo." />
+    <option name="LAST_COMMIT_MESSAGE" value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral criação  do job para unidades mas o mesmo precisa refatorar o codigo." />
   </component>
   <component name="WindowStateProjectService">
     <state x="263" y="24" key="#CLI_Interpreters" timestamp="1614273892818">
@@ -1742,11 +1769,11 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1613659908437" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1615485436973" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1615542999337">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1615543461119">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615542999337" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615543461119" />
     <state width="323" height="442" key="Diff.GoToChangePopup" timestamp="1615543203336">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1818,11 +1845,11 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2" timestamp="1615543278356">
+    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2" timestamp="1615543501771">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615543278356" />
+    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615543501771" />
     <state x="454" y="240" key="com.intellij.database.actions.DdlActions$ModifyObject$1" timestamp="1613072409356">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
