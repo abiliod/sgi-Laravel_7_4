@@ -53,7 +53,7 @@ return [
             'queue' => 'avaliaInspecao',
             'retry_after' => 200,
         ],
-
+// php artisan queue:work --queue=geraInspecao
         'geraInspecao' => [
             'driver' => 'database',
             'table' => 'jobs',
