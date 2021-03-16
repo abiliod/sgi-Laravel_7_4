@@ -245,7 +245,7 @@ Route::get('/compliance/monitoramento/show', 'Correios\MonitoramentoController@s
 Route::get('/compliance/planejamento', 'Correios\PlanejamentoController@index')->name('compliance.planejamento');
 Route::get('/compliance/planejamento/edit/{id}', 'Correios\PlanejamentoController@edit')->name('compliance.planejamento.edit');
 Route::post('/compliance/planejamento/update/{id}', 'Correios\PlanejamentoController@update')->name('compliance.planejamento.update');
-
+Route::post('/compliance/planejamento/{search?}', 'Correios\PlanejamentoController@search')->name('compliance.planejamento.search');
 
 //Route::post('/compliance/planejamento/create', 'Correios\PlanejamentoController@create')->name('compliance.planejamento.create');
 

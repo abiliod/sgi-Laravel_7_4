@@ -4,7 +4,7 @@
         <h2 class="center">Planejamento de Inspeção</h2>
         <div class="row">
             <div class="nav-wrapper green">
-                <form action="{/{route('compliance.verificacoes.search')}}" method="post">
+                <form action="{{route('compliance.planejamento.search')}}" method="post">
                     @csrf
                     <div class="input-field col s4">
                         <select name="ciclo" id="ciclo">
@@ -25,7 +25,7 @@
                     <div class="input-field col s4">
                         <select name="tipoVerificacao" id="tipoVerificacao">
                             <option value="" selected>Tipo de Inspeção</option>
-                            <option value="Monitorada">Presencial</option>
+                            <option value="Monitorada">Monitorada</option>
                             <option value="Presencial">Presencial</option>
                             <option value="Remoto">Remoto</option>
                         </select>

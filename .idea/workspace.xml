@@ -28,9 +28,13 @@
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/GeraInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/GeraInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/PlanejamentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/PlanejamentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/planejamento/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/planejamento/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1327,21 +1331,40 @@
       <workItem from="1615763236608" duration="459000" />
       <workItem from="1615810750548" duration="1050000" />
       <workItem from="1615812621933" duration="851000" />
-      <workItem from="1615814435470" duration="412000" />
-    </task>
-    <task id="LOCAL-00094" summary=" 23/12/20 - Ajuste filtro importações SMBBDF;">
-      <created>1608821843530</created>
-      <option name="number" value="00094" />
-      <option name="presentableId" value="LOCAL-00094" />
-      <option name="project" value="LOCAL" />
-      <updated>1608821843530</updated>
-    </task>
-    <task id="LOCAL-00095" summary=" 23/12/20 - Ajuste projeto:">
-      <created>1609971884949</created>
-      <option name="number" value="00095" />
-      <option name="presentableId" value="LOCAL-00095" />
-      <option name="project" value="LOCAL" />
-      <updated>1609971884950</updated>
+      <workItem from="1615814435470" duration="1163000" />
+      <workItem from="1615817583926" duration="1798000" />
+      <workItem from="1615819409899" duration="5685000" />
+      <workItem from="1615826218263" duration="1748000" />
+      <workItem from="1615828007273" duration="1778000" />
+      <workItem from="1615829828965" duration="1781000" />
+      <workItem from="1615831674590" duration="1779000" />
+      <workItem from="1615833486976" duration="1285000" />
+      <workItem from="1615839115576" duration="1301000" />
+      <workItem from="1615840929380" duration="1787000" />
+      <workItem from="1615842758268" duration="1228000" />
+      <workItem from="1615856739768" duration="1768000" />
+      <workItem from="1615858540114" duration="1793000" />
+      <workItem from="1615860396877" duration="615000" />
+      <workItem from="1615890521502" duration="1768000" />
+      <workItem from="1615893968053" duration="1780000" />
+      <workItem from="1615895856134" duration="1780000" />
+      <workItem from="1615897692515" duration="1776000" />
+      <workItem from="1615899496848" duration="1787000" />
+      <workItem from="1615901355109" duration="1244000" />
+      <workItem from="1615902805147" duration="1334000" />
+      <workItem from="1615907545179" duration="2264000" />
+      <workItem from="1615909838077" duration="1865000" />
+      <workItem from="1615911759778" duration="1786000" />
+      <workItem from="1615913599604" duration="1787000" />
+      <workItem from="1615915454358" duration="1877000" />
+      <workItem from="1615917361957" duration="1783000" />
+      <workItem from="1615919182582" duration="4249000" />
+      <workItem from="1615923492517" duration="1781000" />
+      <workItem from="1615925299863" duration="747000" />
+      <workItem from="1615929472252" duration="945000" />
+      <workItem from="1615931494079" duration="1698000" />
+      <workItem from="1615933511695" duration="1351000" />
+      <workItem from="1615936335432" duration="1007000" />
     </task>
     <task id="LOCAL-00096" summary="06/01/2021 - Ajuste projeto form270-1:">
       <created>1609972086168</created>
@@ -1672,7 +1695,21 @@
       <option name="project" value="LOCAL" />
       <updated>1615543461912</updated>
     </task>
-    <option name="localTasksCounter" value="143" />
+    <task id="LOCAL-00143" summary="15/03/2021 - Finalização da rotina de job para geração de inspeção monitorada.">
+      <created>1615814899518</created>
+      <option name="number" value="00143" />
+      <option name="presentableId" value="LOCAL-00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1615814899520</updated>
+    </task>
+    <task id="LOCAL-00144" summary="15/03/2021 - Finalização da rotina de job para geração de inspeção monitorada.">
+      <created>1615814947419</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1615814947419</updated>
+    </task>
+    <option name="localTasksCounter" value="145" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1703,7 +1740,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="06/01/2021 - Ajuste projeto formIndexSro:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto InspecaoController:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formPainelextravio:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formsgdodistribuicao:" />
@@ -1728,7 +1764,8 @@
     <MESSAGE value="21/02/2021 - Implementação de API, utilizando o componente JWT, configuração de sistema para proporcionar criação de serviços para geração automática de inspeções para as unidades a serem auditadas." />
     <MESSAGE value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral." />
     <MESSAGE value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral criação  do job para unidades mas o mesmo precisa refatorar o codigo." />
-    <option name="LAST_COMMIT_MESSAGE" value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral criação  do job para unidades mas o mesmo precisa refatorar o codigo." />
+    <MESSAGE value="15/03/2021 - Finalização da rotina de job para geração de inspeção monitorada." />
+    <option name="LAST_COMMIT_MESSAGE" value="15/03/2021 - Finalização da rotina de job para geração de inspeção monitorada." />
   </component>
   <component name="WindowStateProjectService">
     <state x="263" y="24" key="#CLI_Interpreters" timestamp="1614273892818">
@@ -1760,20 +1797,15 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="300" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1614124862359" />
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1607101487361">
-      <screen x="0" y="0" width="1366" height="728" />
-    </state>
-    <state x="413" y="110" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607101487361" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1615485436973">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1613659908437" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1615485436973" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1615543461119">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1615814946591">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="308" y="0" key="CommitChangelistDialog2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091008901" />
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615543461119" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615814946591" />
     <state width="323" height="442" key="Diff.GoToChangePopup" timestamp="1615543203336">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1836,20 +1868,18 @@
     </state>
     <state x="518" y="286" key="NewPhpFileDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1614023965446" />
     <state x="518" y="286" key="NewPhpFileDialog/0.0.1366.728@0.0.1366.728" timestamp="1614036584737" />
-    <state x="519" y="65" key="RollbackChangesDialog" timestamp="1613499797015">
+    <state x="519" y="65" key="RollbackChangesDialog" timestamp="1615920351039">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="519" y="65" key="RollbackChangesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607089167749" />
-    <state x="519" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1613499797015" />
+    <state x="519" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1615920351039" />
     <state width="553" height="446" key="SwitcherDM" timestamp="1607453353390">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2" timestamp="1615543501771">
+    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2" timestamp="1615814951588">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="96" key="Vcs.Push.Dialog.v2/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1607091026254" />
-    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615543501771" />
+    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615814951588" />
     <state x="454" y="240" key="com.intellij.database.actions.DdlActions$ModifyObject$1" timestamp="1613072409356">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1858,18 +1888,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="92" y="92" width="1182" height="544" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1366.728@0.0.1366.728" timestamp="1607990268145" />
-    <state x="339" y="157" width="672" height="677" key="run.anything.popup" timestamp="1611955482853">
+    <state x="339" y="157" width="672" height="677" key="run.anything.popup" timestamp="1615818179062">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="157" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1611955482853" />
+    <state x="339" y="157" width="672" height="677" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1615818179062" />
     <state x="475" y="222" key="scopes" timestamp="1614189551396">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="475" y="222" key="scopes/0.0.1366.728@0.0.1366.728" timestamp="1614189551396" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1614122778721">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1615924222081">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1612976871342" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1614122778721" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1615924222081" />
   </component>
 </project>

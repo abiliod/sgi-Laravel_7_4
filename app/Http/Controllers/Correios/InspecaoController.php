@@ -162,7 +162,6 @@ class InspecaoController extends Controller
                     $registro->valorFalta  = $dados['valorFalta'];
                     $registro->valorSobra  = $dados['valorSobra'];
                     $registro->valorRisco  = $dados['valorRisco'];
-                   //dd(  $registro->itemQuantificado ,   $dados['itemQuantificado']);
                     if(($dados['valorFalta']=="") && ($dados['valorSobra']=="") &&($dados['valorRisco']=="")) {
                         \Session::flash('mensagem',['msg'=>'Informe ao menos um valor quantificado ausente.'
                         ,'class'=>'red white-text']);
@@ -2536,70 +2535,49 @@ class InspecaoController extends Controller
             \Session::flash('mensagem',['msg'=>'Para Filtrar ao menos uma opção é necessária.'
             ,'class'=>'red white-text']);
             return redirect()->back();
-        }else if(($request->all()['gruposdeverificacao']!=NULL) && ($request->all()['situacao']==NULL) && ($request->all()['search']==NULL))
-        {
+        }
+        if(($request->all()['gruposdeverificacao']!==NULL) && ($request->all()['situacao']!==NULL) && ($request->all()['search']!=NULL)) {
             $registros = DB::table('itensdeinspecoes')
-            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-            ->select('itensdeinspecoes.*'
+                ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                ->select('itensdeinspecoes.*'
                     ,'gruposdeverificacao.numeroGrupoVerificacao'
                     ,'gruposdeverificacao.nomegrupo'
                     ,'testesdeverificacao.numeroDoTeste'
                     ,'testesdeverificacao.teste'
-            )
-            ->where([['inspecao_id', '=', $request->all()['id']]])
-          //  ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
-            ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
-           // ->Where([['itensdeinspecoes.status', '=', $request->all()['status']]])
-           ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
-           ->paginate(10);
-        }else if(($request->all()['gruposdeverificacao']!=NULL) && ($request->all()['situacao']!=NULL) && ($request->all()['search']==NULL))
-        {
-            $registros = DB::table('itensdeinspecoes')
-            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-            ->select('itensdeinspecoes.*'
-                    ,'gruposdeverificacao.numeroGrupoVerificacao'
-                    ,'gruposdeverificacao.nomegrupo'
-                    ,'testesdeverificacao.numeroDoTeste'
-                    ,'testesdeverificacao.teste'
-            )
-            ->where([['inspecao_id', '=', $request->all()['id']]])
-          //  ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
-            ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
-            ->Where([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
-            ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
-           ->paginate(10);
-           \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Grupo de Verificação e Status'
-            ,'class'=>'orange white-text']);
-
-        }else if(($request->all()['gruposdeverificacao']==NULL) && ($request->all()['situacao']!=NULL) && ($request->all()['search']==NULL))
-        {
-           // dd($dados);
-            $registros = DB::table('itensdeinspecoes')
-            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-            ->select('itensdeinspecoes.*'
-                    ,'gruposdeverificacao.numeroGrupoVerificacao'
-                    ,'gruposdeverificacao.nomegrupo'
-                    ,'testesdeverificacao.numeroDoTeste'
-                    ,'testesdeverificacao.teste'
-            )
-            ->where([['inspecao_id', '=', $request->all()['id']]])
-          //  ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
-           // ->Where([['itensdeinspecoes.grupoinspecao_id', '=', $request->all()['gruposdeverificacao']]])
-            ->Where([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
-            ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                )
+                ->where([['inspecao_id', '=', $request->all()['id']]])
+                ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
+                ->orWhere([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
+                ->orwhere([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+                ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                ->groupBy('itensdeinspecoes.testeVerificacao_id')
             ->paginate(10);
-            \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Status'
-            ,'class'=>'orange white-text']);
+        }
 
-        }else if(($request->all()['gruposdeverificacao']==NULL) && ($request->all()['situacao']==NULL) && ($request->all()['search']!=NULL))
-        {
-           // dd($dados);
+        if(($request->all()['gruposdeverificacao']!==NULL) && ($request->all()['situacao']==NULL) && ($request->all()['search']==NULL)) {
+            $registros = DB::table('itensdeinspecoes')
+                ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                ->select('itensdeinspecoes.*'
+                        ,'gruposdeverificacao.numeroGrupoVerificacao'
+                        ,'gruposdeverificacao.nomegrupo'
+                        ,'testesdeverificacao.numeroDoTeste'
+                        ,'testesdeverificacao.teste'
+                )
+                ->where([['inspecao_id', '=', $request->all()['id']]])
+                ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
+                ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                ->groupBy('itensdeinspecoes.testeVerificacao_id')
+            ->paginate(10);
+            \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Grupo de Verificação'
+                ,'class'=>'orange white-text']);
+        }
+
+        if(($request->all()['gruposdeverificacao']==NULL) && ($request->all()['situacao']!==NULL) && ($request->all()['search']==NULL)) {
+
             $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
             ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
@@ -2611,38 +2589,59 @@ class InspecaoController extends Controller
                     ,'testesdeverificacao.teste'
             )
             ->where([['inspecao_id', '=', $request->all()['id']]])
-            ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
-           // ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
-          //  ->Where([['itensdeinspecoes.status', '=', $request->all()['status']]])
-          ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                ->Where([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
+                ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                ->groupBy('itensdeinspecoes.testeVerificacao_id')
+           ->paginate(10);
+
+
+
+            $count = $registros->count('situacao');
+            if($count == 0) {
+                \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Situação. Não há registros nessa situação o sistema considerou todos.'
+                    ,'class'=>'red white-text']);
+                $registros = DB::table('itensdeinspecoes')
+                    ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+                    ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+                    ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+                    ->select('itensdeinspecoes.*'
+                        ,'gruposdeverificacao.numeroGrupoVerificacao'
+                        ,'gruposdeverificacao.nomegrupo'
+                        ,'testesdeverificacao.numeroDoTeste'
+                        ,'testesdeverificacao.teste'
+                    )
+                    ->where([['inspecao_id', '=', $request->all()['id']]])
+                    ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                    ->groupBy('itensdeinspecoes.testeVerificacao_id')
+                    ->paginate(10);
+            }
+            else{
+                \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Situação'
+                    ,'class'=>'orange white-text']);
+            }
+        }
+
+        if(($request->all()['gruposdeverificacao']==NULL) && ($request->all()['situacao']==NULL) && ($request->all()['search']!==NULL)){
+            $registros = DB::table('itensdeinspecoes')
+            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
+            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
+            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
+            ->select('itensdeinspecoes.*'
+                    ,'gruposdeverificacao.numeroGrupoVerificacao'
+                    ,'gruposdeverificacao.nomegrupo'
+                    ,'testesdeverificacao.numeroDoTeste'
+                    ,'testesdeverificacao.teste'
+            )
+            ->where([['inspecao_id', '=', $request->all()['id']]])
+                ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
+                ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
+                ->groupBy('itensdeinspecoes.testeVerificacao_id')
             ->paginate(10);
             \Session::flash('mensagem',['msg'=>'Filtro Aplicado! Descrição'
             ,'class'=>'orange white-text']);
 
-        }else{
-            //dd($dados);
-            $registros = DB::table('itensdeinspecoes')
-            ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
-            ->join('gruposdeverificacao', 'itensdeinspecoes.grupoVerificacao_id', '=', 'gruposdeverificacao.id')
-            ->join('testesdeverificacao', 'itensdeinspecoes.testeVerificacao_id', '=', 'testesdeverificacao.id')
-            ->select('itensdeinspecoes.*'
-                    ,'gruposdeverificacao.numeroGrupoVerificacao'
-                    ,'gruposdeverificacao.nomegrupo'
-                    ,'testesdeverificacao.numeroDoTeste'
-                    ,'testesdeverificacao.teste'
-            )
-            ->where([['inspecao_id', '=', $request->all()['id']]])
-            ->where([['testesdeverificacao.teste', 'LIKE', '%' . $request->all()['search'] .'%' ]])
-            ->Where([['itensdeinspecoes.grupoVerificacao_id', '=', $request->all()['gruposdeverificacao']]])
-            ->Where([['itensdeinspecoes.situacao', '=', $request->all()['situacao']]])
-           // ->orderBy('itensdeinspecoes.testeVerificacao_id' , 'asc')
-            //->orderBy('gruposdeverificacao.numeroGrupoVerificacao', 'asc','itensdeinspecoes.id' , 'asc')
-           ->paginate(10);
-
-            \Session::flash('mensagem',['msg'=>'Filtro Aplicado!  Grupo de Verificação, Descrição e Status'
-            ,'class'=>'orange white-text']);
-           // return redirect()->back();
         }
+
         $inspecao = Inspecao::find($request->all()['id']);
         $gruposdeverificacao = DB::table('gruposdeverificacao')
             ->select('gruposdeverificacao.*')

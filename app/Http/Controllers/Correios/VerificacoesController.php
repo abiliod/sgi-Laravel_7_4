@@ -163,7 +163,7 @@ class VerificacoesController extends Controller
         return view('compliance.verificacoes.index',compact('registros','tiposDeUnidade', 'inspetores'));
     }
 
-    public function search (Request $request)
+    public function search( Request $request)
     {
         $dados = $request->all();
         $tiposDeUnidade = DB::table('tiposdeunidade')

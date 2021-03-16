@@ -214,10 +214,15 @@
 
                         @if($registro->situacao == 'Inspecionado')
                             <th>
-                                @if($dado->inspetorcolaborador ==  auth()->user()->document)
-                                     <a class="btn blue" href="javascript: if(confirm('Corroborar Todos Registros dessa Inspeção?'))
+                                @if($registro->tipoVerificacao == 'Monitorada')
+                                <th>Ação:</th>
+                                @else
+                                    @if($dado->inspetorcolaborador ==  auth()->user()->document)
+                                        <a class="btn blue" href="javascript: if(confirm('Corroborar Todos Registros dessa Inspeção?'))
                                      { window.location.href = '{{ route('compliance.inspecao.corroborar',$registro->inspecao_id) }}' }">Corroborar_Tudo</a>
+                                    @endif
                                 @endif
+
                             </th>
                         @else
                             <th>Ação:</th>
