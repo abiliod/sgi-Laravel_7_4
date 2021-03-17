@@ -46,19 +46,19 @@ return [
             'queue' => 'importacao',
             'retry_after' => 720,
         ],
-
+// php artisan queue:work --queue=avaliaInspecao
         'avaliaInspecao' => [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'avaliaInspecao',
-            'retry_after' => 200,
+            'retry_after' => 720,
         ],
 // php artisan queue:work --queue=geraInspecao
         'geraInspecao' => [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'geraInspecao',
-            'retry_after' => 200,
+            'retry_after' => 720,
         ],
 
         'database' => [

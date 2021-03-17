@@ -63,11 +63,28 @@ class MonitoramentoController extends Controller
             $superintendencias = $request->all(['superintendencia']);
             $tipodeunidade =  $request->all(['tipodeunidade']);
             $ciclo =  $request->all(['ciclo']);
+//#########################################################################################################
+//            para ativar a fila no console
+//            php artisan queue:work --queue=avaliaInspecao
+
+//            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
+//                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
+//            dispatch($job);
+//
+//            \Session::flash('mensagem', ['msg' => 'Job AvaliaInspecao aguardando processamento.'
+//                , 'class' => 'blue white-text']);
+//            return redirect()->back();
+
+//   O valor de 134217728 bytes é equivalente a 128M
+//   Erro de Memória.Isso ocorre porque no arquivo php.ini o parâmetro memory_limit está configurado para 128M. E para consertar o problema é só editar o arquivo e alterar para 256M.
+//#########################################################################################################
+
+
+
             foreach ($superintendencias as $res) { // request é Array de indice para Superintendências
                 foreach ($res as $superintendencia) { // percorre o Array de objeto Superintendências
+
                     // testa se o primeiro parâmetro é para todas superintendecia onde SE == 1
-
-
                     // Inicio do teste para todas superintendencias
                     if ($superintendencia == 1) {
                         // se verdadeiro se SE == 1 seleciona todas superintendência cujo a SE > 1
@@ -86,6 +103,7 @@ class MonitoramentoController extends Controller
                             //->limit(100)
                         ->get();
 
+//                      Inicio processamento da aavaliação
                         foreach ($registros as $registro) {
                             if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
                                 || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1))) {
@@ -95,7 +113,6 @@ class MonitoramentoController extends Controller
                                 $numeroGrupoReincidente = null;
                                 $numeroItemReincidente = null;
                                 $reinc = 'Não';
-
                                 $reincidencia = DB::table('snci')
                                     ->select('no_inspecao',   'no_grupo',  'no_item','dt_fim_inspecao','dt_inic_inspecao')
                                     ->where([['descricao_item',  'like', '%3131)?%']])
@@ -118,15 +135,12 @@ class MonitoramentoController extends Controller
                                 catch (\Exception $e) {
                                     $reincidente = 0;
                                 }
-
                                 $mescompetencia = DB::table('debitoempregados')
                                     ->select('competencia')
                                     ->where([['debitoempregados.competencia', '>=', 1 ]])
                                     ->orderBy('competencia' ,'desc')
                                     ->first();
-
                                 $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
-
                                 if($reincidente == 1) {
                                     $debitoempregados = DB::table('debitoempregados')
                                         ->select('data', 'documento', 'historico', 'matricula', 'valor' )
@@ -142,12 +156,10 @@ class MonitoramentoController extends Controller
                                         ->Where([['debitoempregados.sto', '=', $registro->sto ]])
                                         ->get();
                                 }
-//                              dd( $reincidencia_dt_fim_inspecao,  $reincidente , $registro->sto );
                                 if(! $debitoempregados->isEmpty()) {
 
                                     $count = $debitoempregados->count('matricula');
                                     $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
-
                                     $quebra = DB::table('relevancias')
                                         ->select('valor_final' )
                                         ->where('fator_multiplicador', '=', 1 )
@@ -222,11 +234,11 @@ class MonitoramentoController extends Controller
                                     $itensdeinspecao->orientacao= null;
                                     $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
                                     $itensdeinspecao->update();
+//                                     dd($competencia);
                                 }
                             } // fim doteste
-                        }
-
-                    }// Fim do teste para todas superintendencias se superintendencia = 1
+                        } // Fim processamento da aavaliação
+                    }  // Fim do teste para todas superintendencias se superintendencia = 1
 
                     // inicio dotestee para uma superintendencias
                     else {
@@ -243,7 +255,7 @@ class MonitoramentoController extends Controller
 //                            ->where([['sto', '=', 16303458 ]]) //ac anapolis
                             ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
                         ->get();
-
+//                      Inicio processamento da aavaliação
                         foreach ($registros as $registro) {
                             if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
                                 || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1))) {
@@ -276,15 +288,12 @@ class MonitoramentoController extends Controller
                                     catch (\Exception $e) {
                                         $reincidente = 0;
                                 }
-
                                 $mescompetencia = DB::table('debitoempregados')
                                     ->select('competencia')
                                     ->where([['debitoempregados.competencia', '>=', 1 ]])
                                     ->orderBy('competencia' ,'desc')
                                 ->first();
-
                                 $competencia = substr($mescompetencia->competencia, 4, 2).'/'.substr($mescompetencia->competencia, 0, 4);
-
                                 if($reincidente == 1) {
                                     $debitoempregados = DB::table('debitoempregados')
                                         ->select('data', 'documento', 'historico', 'matricula', 'valor' )
@@ -300,12 +309,9 @@ class MonitoramentoController extends Controller
                                         ->Where([['debitoempregados.sto', '=', $registro->sto ]])
                                     ->get();
                                 }
-//                              dd( $reincidencia_dt_fim_inspecao,  $reincidente , $registro->sto );
                                 if(! $debitoempregados->isEmpty()) {
-
                                     $count = $debitoempregados->count('matricula');
                                     $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
-
                                     $quebra = DB::table('relevancias')
                                         ->select('valor_final' )
                                         ->where('fator_multiplicador', '=', 1 )
@@ -380,28 +386,13 @@ class MonitoramentoController extends Controller
                                     $itensdeinspecao->orientacao= null;
                                     $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
                                     $itensdeinspecao->update();
+//                                     dd($competencia);
                                 }
                             } // fim doteste
-                        }
+                        } // Fim processamento da aavaliação
                     } // Fim do teste para uma superintendencias
                 }
             }
-
-            //     dd($superintendencias, $tipodeunidade , $ciclo);
-
-//            para ativar a fila no console
-//            php artisan queue:work --queue=avaliaInspecao
-
-//            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
-//                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
-//            dispatch($job);
-
-            \Session::flash('mensagem', ['msg' => 'Job aguardando processamento.'
-                , 'class' => 'blue white-text']);
-            return redirect()->back();
-
-//            O valor de 134217728 bytes é equivalente a 128M
-//Isso ocorre porque no arquivo php.ini o parâmetro memory_limit está configurado para 128M. E para consertar o problema é só editar o arquivo e alterar para 256M.
 
         }
     }

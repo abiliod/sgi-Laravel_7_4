@@ -28,13 +28,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b2ae1ee3-a190-45e7-a1f1-6d3cb3e30ba5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/PlanejamentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/PlanejamentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/VerificacoesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/planejamento/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/planejamento/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/mail.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/mail.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1364,14 +1361,12 @@
       <workItem from="1615929472252" duration="945000" />
       <workItem from="1615931494079" duration="1698000" />
       <workItem from="1615933511695" duration="1351000" />
-      <workItem from="1615936335432" duration="1007000" />
-    </task>
-    <task id="LOCAL-00096" summary="06/01/2021 - Ajuste projeto form270-1:">
-      <created>1609972086168</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1609972086168</updated>
+      <workItem from="1615936335432" duration="1535000" />
+      <workItem from="1615980071619" duration="1522000" />
+      <workItem from="1615982527024" duration="1786000" />
+      <workItem from="1615984347236" duration="1775000" />
+      <workItem from="1615986187438" duration="1379000" />
+      <workItem from="1615989434134" duration="381000" />
     </task>
     <task id="LOCAL-00097" summary="06/01/2021 - Ajuste projeto form270-1:">
       <created>1609972213382</created>
@@ -1709,7 +1704,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615814947419</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="16/03/2021 - Ajuste nas funcionalidades de listagem de inspeções e listagem de itens de inspeções para atender a necessidade da Inspeção Monitorada.">
+      <created>1615937611977</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1615937611978</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1740,7 +1742,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="06/01/2021 - Ajuste projeto InspecaoController:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formPainelextravio:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto formsgdodistribuicao:" />
     <MESSAGE value="06/01/2021 - Ajuste projeto UnidadesController:" />
@@ -1765,7 +1766,8 @@
     <MESSAGE value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral." />
     <MESSAGE value="12/03/2021 - Refatoração de código das funções de importação para unidades e cadastral, conclusão do job SNCI e job cadastral criação  do job para unidades mas o mesmo precisa refatorar o codigo." />
     <MESSAGE value="15/03/2021 - Finalização da rotina de job para geração de inspeção monitorada." />
-    <option name="LAST_COMMIT_MESSAGE" value="15/03/2021 - Finalização da rotina de job para geração de inspeção monitorada." />
+    <MESSAGE value="16/03/2021 - Ajuste nas funcionalidades de listagem de inspeções e listagem de itens de inspeções para atender a necessidade da Inspeção Monitorada." />
+    <option name="LAST_COMMIT_MESSAGE" value="16/03/2021 - Ajuste nas funcionalidades de listagem de inspeções e listagem de itens de inspeções para atender a necessidade da Inspeção Monitorada." />
   </component>
   <component name="WindowStateProjectService">
     <state x="263" y="24" key="#CLI_Interpreters" timestamp="1614273892818">
@@ -1802,10 +1804,10 @@
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728/1366.0.1366.768@0.0.1366.728" timestamp="1613659908437" />
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1615485436973" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1615814946591">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1615937610396">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615814946591" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1615937610396" />
     <state width="323" height="442" key="Diff.GoToChangePopup" timestamp="1615543203336">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -1876,10 +1878,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="553" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1607453353390" />
-    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2" timestamp="1615814951588">
+    <state x="299" y="114" width="816" height="507" key="Vcs.Push.Dialog.v2" timestamp="1615937824227">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="2" width="816" height="656" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615814951588" />
+    <state x="299" y="114" width="816" height="507" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1615937824227" />
     <state x="454" y="240" key="com.intellij.database.actions.DdlActions$ModifyObject$1" timestamp="1613072409356">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
