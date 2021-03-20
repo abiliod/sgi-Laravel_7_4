@@ -37,8 +37,9 @@ class AvaliaInspecao implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
+    public function handle() {
+        ini_set('memory_limit', '512M');
+
         $dtnow = new Carbon();
         $dtmenos30dias = new Carbon();
         $dtmenos60dias = new Carbon();
@@ -82,7 +83,6 @@ class AvaliaInspecao implements ShouldQueue
                 // Inicio do teste para todas superintendencias
                 if ($superintendencia == 1) {
                     // se verdadeiro se SE == 1 seleciona todas superintendência cujo a SE > 1
-
                     $registros = DB::table('itensdeinspecoes')
                         ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
                         ->join('unidades', 'itensdeinspecoes.unidade_id', '=', 'unidades.id')
@@ -93,20 +93,454 @@ class AvaliaInspecao implements ShouldQueue
                         ->where([['se', '=', 1 ]])
                         ->where([['inspecoes.ciclo', '=', $ciclo ]])
                         ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
-                        ->where([['sto', '=', 16300866 ]]) //ac anapolis
-                        //->limit(100)
                         ->get();
 
 //                      Inicio processamento da aavaliação
                     foreach ($registros as $registro) {
+
+
+
+//                      Inicio do teste PROTER
+                        if((($registro->numeroGrupoVerificacao == 202)&&($registro->numeroDoTeste == 1))
+                            || (($registro->numeroGrupoVerificacao == 332)&&($registro->numeroDoTeste ==1))
+                            || (($registro->numeroGrupoVerificacao == 213)&&($registro->numeroDoTeste ==1))
+                            || (($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 5))
+                            || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 2)))  {
+//                                dd($registro);
+                            $countproters_peso =0;
+                            $countproters_cep =0;
+                            $reincidencia = DB::table('snci')
+                                ->select('no_inspecao',   'no_grupo',  'no_item','dt_fim_inspecao','dt_inic_inspecao')
+                                ->where([['descricao_item',  'like', '%PROTER%']])
+                                ->where([['sto', '=', $registro->sto ]])
+                                ->orderBy('no_inspecao' ,'desc')
+                                ->first();
+                            try{
+                                if( $reincidencia->no_inspecao > 1) {
+                                    $reincidente = 1;
+                                    $reinc = 'Sim';
+                                    $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                    $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                    $numeroItemReincidente = $reincidencia->no_item;
+                                    $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                    $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                    $reincidencia_dt_fim_inspecao->subMonth(3);
+                                    $reincidencia_dt_inic_inspecao->subMonth(3);
+                                }
+                            }
+                            catch (\Exception $e) {
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                            }
+//                          Inicio tem Reincidencia proter
+                            if($reincidente == 1) {
+                                $proters_con = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_entrega_sro'
+                                        ,'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'CON']])
+                                    ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+                                $proters_peso = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_peso'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_peso', '=', 'S']])
+                                    ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+
+                                $proters_cep = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_cep'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_cep', '=', 'S']])
+                                    ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+//                                    dd('var -> ', $proters_cep,$registro->mcu, $reincidencia_dt_fim_inspecao,  $dtmenos90dias );
+
+                                if(! $proters_con->isEmpty()){
+                                    $countproters_con = $proters_con->count('no_do_objeto');
+                                }
+                                else{
+                                    $countproters_con = 0;
+                                }
+
+                                if(! $proters_peso->isEmpty())
+                                {
+                                    $countproters_peso = $proters_peso->count('no_do_objeto');
+                                    $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_peso  = 0.00;
+                                }
+
+                                if(! $proters_cep->isEmpty())
+                                {
+                                    $countproters_cep = $proters_cep->count('no_do_objeto');
+                                    $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_cep  = 0.00;
+                                }
+
+                                $total = $total_proters_peso + $total_proters_cep;
+                                $countproters = $countproters_con + $countproters_peso +$countproters_cep;
+
+
+//                                  Inicio se tem pendencia proter com reincidencia
+                                if(($countproters_con >= 1) || ($total > 0.00) ){
+                                    $pontuado = 0;  //  verificar  declaração no inicio da rotina
+                                    if($total > 0.00) {
+                                        $quebra = DB::table('relevancias')
+                                            ->select('valor_final' )
+                                            ->where('fator_multiplicador', '=', 1 )
+                                            ->first();
+                                        $quebracaixa = $quebra->valor_final * 0.1;
+
+                                        $fm = DB::table('relevancias')
+                                            ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                            ->where('valor_inicio', '<=', $total )
+                                            ->orderBy('valor_final' ,'desc')
+                                            ->first();
+                                        $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                    }
+
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema Proter a partir de Jan/2017. Excetuando os ultimos 90 dias da data dessa inspeção, constatou-se a existência de pendências sem regularização há mais de 90 dias conforme relacionado a seguir:';
+                                    $evidencia ='';
+
+                                    if(! $proters_con->isEmpty()){
+                                        $countproters_con = $proters_con->count('no_do_objeto');
+                                        $evidencia = "\n".'Pendencia(s) de Contabilização: '.$countproters_con.' Pendência(s)';
+                                        $evidencia = $evidencia = "\n".'Data da Pendência'."\t".'Número do Objeto'."\t".'CEP Entrega';
+
+                                        foreach($proters_con as $proter_con){
+                                            $evidencia = $evidencia = "\n".date( 'd/m/Y' , strtotime($proter_con->data_da_pendencia))
+                                                ."\t".$proter_con->no_do_objeto
+                                                ."\t".$proter_con->cep_entrega_sro;
+                                        }
+                                    }
+
+                                    if ($total > $quebracaixa ) {
+
+                                        if (!$proters_peso->isEmpty()) {
+
+                                            $countproters_peso = $proters_peso->count('no_do_objeto');
+                                            $evidencia1 = "\n" . 'Divergência(s) de Peso: ' . $countproters_peso . ' Pendência(s)';
+                                            $evidencia1 = $evidencia1 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                            foreach ($proters_peso as $proter_peso) {
+                                                $evidencia1 = $evidencia1 = "\n" . date('d/m/Y', strtotime($proter_peso->data_da_pendencia))
+                                                    . "\t" . $proter_peso->no_do_objeto
+                                                    . "\t" . 'R$ ' . number_format($proter_peso->diferenca_a_recolher, 2, ',', '.');
+                                            }
+                                        }
+                                        if (!$proters_cep->isEmpty()) {
+
+                                            $countproters_cep = $proters_cep->count('no_do_objeto');
+                                            $evidencia2 = "\n" . 'Divergência(s) de CEP: ' . $countproters_cep . ' Pendência(s)';
+                                            $evidencia2 = $evidencia2 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                            foreach ($proters_cep as $proter_cep) {
+                                                $evidencia2 = $evidencia2 = "\n" . date('d/m/Y', strtotime($proter_cep->data_da_pendencia))
+                                                    . "\t" . $proter_cep->no_do_objeto
+                                                    . "\t" . 'R$ ' . number_format($proter_cep->diferenca_a_recolher, 2, ',', '.');
+                                            }
+                                        }
+
+                                        $evidencia3 = "\n" . 'Total ' . "\t" . 'R$ ' . number_format($total, 2, ',', '.');
+                                    }
+
+                                    if ((!empty($evidencia2)) && (!empty($evidencia1))) {
+                                        $evidencia = $evidencia . $evidencia1 . $evidencia2 . $evidencia3;
+                                    }
+                                    elseif (!empty($evidencia1)) {
+                                        $evidencia = $evidencia . $evidencia1 . $evidencia3;
+                                    }
+                                    elseif(!empty($evidencia2)){
+                                        $evidencia = $evidencia . $evidencia2 . $evidencia3;
+                                    }
+
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = $evidencia;
+                                    $itensdeinspecao->valorFalta = $total;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = $pontuado;
+                                    $itensdeinspecao->itemQuantificado = 'Sim';
+                                    $itensdeinspecao->orientacao = $registro->orientacao;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->reincidencia = $reinc;
+                                    $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                    $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                    $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+                                    $itensdeinspecao->update();
+                                }
+//                                  Fim se tem pendencia proter com reincidencia
+//                                  Inicio Não tem pendencia proter com reincidencia
+                                else{
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Sistema Proter, do período de Janeiro/2017 a '. date( 'd/m/Y' , strtotime($dtmenos90dias)).', constatou-se que não havia pendências com mais de 90 dias.';
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = null;
+                                    $itensdeinspecao->valorFalta = 0.00;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = 0.00;
+                                    $itensdeinspecao->itemQuantificado = 'Não';
+                                    $itensdeinspecao->orientacao= null;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                }
+//                                  fim Não tem pendencia proter com reincidencia
+
+                            }
+//                          Fim se tem reincidencia
+
+//                          Inicio se não reincidencia
+                            else {
+                                $proters_con = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_entrega_sro'
+                                        ,'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'CON']])
+//                                        ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+                                $proters_peso = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_peso'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_peso', '=', 'S']])
+//                                        ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+                                $proters_cep = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_cep'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_cep', '=', 'S']])
+//                                        ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+                                if(! $proters_con->isEmpty()){
+                                    $countproters_con = $proters_con->count('no_do_objeto');
+                                }
+                                else{
+                                    $countproters_con = 0;
+                                }
+
+                                if(! $proters_peso->isEmpty())
+                                {
+                                    $countproters_peso = $proters_peso->count('no_do_objeto');
+                                    $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_peso  = 0.00;
+                                }
+
+                                if(! $proters_cep->isEmpty())
+                                {
+                                    $countproters_cep = $proters_cep->count('no_do_objeto');
+                                    $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_cep  = 0.00;
+                                }
+
+                                $total = $total_proters_peso + $total_proters_cep;
+                                $countproters = $countproters_con + $countproters_peso +$countproters_cep;
+//                                  Inicio se tem pendencia proter sem reincidencia
+                                if($countproters >= 1){
+
+                                    if(($countproters_con >= 1) || ($total > 0.00) ) {
+                                        $pontuado = 0;  //  verificar  declaração no inicio da rotina
+                                        if ($total > 0.00) {
+                                            $quebra = DB::table('relevancias')
+                                                ->select('valor_final')
+                                                ->where('fator_multiplicador', '=', 1)
+                                                ->first();
+                                            $quebracaixa = $quebra->valor_final * 0.1;
+
+                                            $fm = DB::table('relevancias')
+                                                ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                                ->where('valor_inicio', '<=', $total)
+                                                ->orderBy('valor_final', 'desc')
+                                                ->first();
+                                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                        }
+
+                                        $avaliacao = 'Não Conforme';
+                                        $oportunidadeAprimoramento = 'Em análise aos dados do Sistema Proter do período de  Janeiro/2017 a ' . date('d/m/Y', strtotime($dtmenos90dias)) . ' constatou-se as seguintes pendências com mais de 90 dias:';
+                                        $evidencia = '';
+                                        if (!$proters_con->isEmpty()) {
+
+                                            $countproters_con = $proters_con->count('no_do_objeto');
+                                            $evidencia = "\n" . 'Pendencia(s) de Contabilização: ' . $countproters_con . ' Pendência(s)';
+                                            $evidencia = $evidencia = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'CEP Entrega';
+
+                                            foreach ($proters_con as $proter_con) {
+                                                $evidencia = $evidencia = "\n" . date('d/m/Y', strtotime($proter_con->data_da_pendencia))
+                                                    . "\t" . $proter_con->no_do_objeto
+                                                    . "\t" . $proter_con->cep_entrega_sro;
+                                            }
+                                        }
+
+                                        if ($total > $quebracaixa) {
+
+                                            if (!$proters_peso->isEmpty()) {
+
+                                                $countproters_peso = $proters_peso->count('no_do_objeto');
+                                                $evidencia1 = "\n" . 'Divergência(s) de Peso: ' . $countproters_peso . ' Pendência(s)';
+                                                $evidencia1 = $evidencia1 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                                foreach ($proters_peso as $proter_peso) {
+                                                    $evidencia1 = $evidencia1 = "\n" . date('d/m/Y', strtotime($proter_peso->data_da_pendencia))
+                                                        . "\t" . $proter_peso->no_do_objeto
+                                                        . "\t" . 'R$ ' . number_format($proter_peso->diferenca_a_recolher, 2, ',', '.');
+                                                }
+                                            }
+                                            if (!$proters_cep->isEmpty()) {
+
+                                                $countproters_cep = $proters_cep->count('no_do_objeto');
+                                                $evidencia2 = "\n" . 'Divergência(s) de CEP: ' . $countproters_cep . ' Pendência(s)';
+                                                $evidencia2 = $evidencia2 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                                foreach ($proters_cep as $proter_cep) {
+                                                    $evidencia2 = $evidencia2 = "\n" . date('d/m/Y', strtotime($proter_cep->data_da_pendencia))
+                                                        . "\t" . $proter_cep->no_do_objeto
+                                                        . "\t" . 'R$ ' . number_format($proter_cep->diferenca_a_recolher, 2, ',', '.');
+                                                }
+                                            }
+
+                                            $evidencia3 = "\n" . 'Total ' . "\t" . 'R$ ' . number_format($total, 2, ',', '.');
+                                        }
+
+                                        if ((!empty($evidencia2)) && (!empty($evidencia1))) {
+                                            $evidencia = $evidencia . $evidencia1 . $evidencia2 . $evidencia3;
+                                        }
+                                        elseif (!empty($evidencia1)) {
+                                            $evidencia = $evidencia . $evidencia1 . $evidencia3;
+                                        }
+                                        elseif(!empty($evidencia2)){
+                                            $evidencia = $evidencia . $evidencia2 . $evidencia3;
+                                        }
+                                    }
+
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = $evidencia;
+                                    $itensdeinspecao->valorFalta = $total;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = $pontuado;
+                                    $itensdeinspecao->itemQuantificado = 'Sim';
+                                    $itensdeinspecao->orientacao = $registro->orientacao;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->reincidencia = $reinc;
+                                    $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                    $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                    $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+                                    $itensdeinspecao->update();
+                                }
+//                                  Fim se tem pendencia proter sem reincidencia
+//                                  Inicio conforme
+                                else{
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Sistema Proter, do período de Janeiro/2017 a '. date( 'd/m/Y' , strtotime($dtmenos90dias)).', constatou-se que não havia pendências com mais de 90 dias.';
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = null;
+                                    $itensdeinspecao->valorFalta = 0.00;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = 0.00;
+                                    $itensdeinspecao->itemQuantificado = 'Não';
+                                    $itensdeinspecao->orientacao= null;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                }
+//                                  Fim Conforme
+
+
+                            }
+//                          Fim se não  reincidencia
+//                          dd( '653',$dtmenos90dias , $registro->mcu, $countproters_con, $countproters_peso,  $countproters_cep );
+
+                        }
+//                      Final do teste PROTER
+
+//                      Início do teste WebCont
                         if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
                             || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1))) {
 
-                            $reincidente = 0;
-                            $codVerificacaoAnterior = null;
-                            $numeroGrupoReincidente = null;
-                            $numeroItemReincidente = null;
-                            $reinc = 'Não';
                             $reincidencia = DB::table('snci')
                                 ->select('no_inspecao',   'no_grupo',  'no_item','dt_fim_inspecao','dt_inic_inspecao')
                                 ->where([['descricao_item',  'like', '%3131)?%']])
@@ -150,8 +584,8 @@ class AvaliaInspecao implements ShouldQueue
                                     ->Where([['debitoempregados.sto', '=', $registro->sto ]])
                                     ->get();
                             }
-                            if(! $debitoempregados->isEmpty()) {
 
+                            if(! $debitoempregados->isEmpty()) {
                                 $count = $debitoempregados->count('matricula');
                                 $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
                                 $quebra = DB::table('relevancias')
@@ -230,11 +664,12 @@ class AvaliaInspecao implements ShouldQueue
                                 $itensdeinspecao->update();
 //                                     dd($competencia);
                             }
-                        } // fim doteste
-                    } // Fim processamento da aavaliação
+                        } // fim doteste webCont
+                    }
+                    // Fim do teste WebCont
                 }  // Fim do teste para todas superintendencias se superintendencia = 1
 
-                // inicio dotestee para uma superintendencias
+                // inicio do testee para uma superintendencias
                 else {
 
                     $registros = DB::table('itensdeinspecoes')
@@ -246,19 +681,462 @@ class AvaliaInspecao implements ShouldQueue
                         ->where([['situacao', '=',  'Em Inspeção' ]])
                         ->where([['se', '=', $superintendencia ]])
                         ->where([['inspecoes.ciclo', '=', $ciclo ]])
-//                            ->where([['sto', '=', 16303458 ]]) //ac anapolis
                         ->where([['itensdeinspecoes.tipoUnidade_id', '=', $tipodeunidade ]])
                         ->get();
-//                      Inicio processamento da aavaliação
+//                  Inicio processamento da aavaliação
                     foreach ($registros as $registro) {
+
+
+//                      Inicio do teste PROTER
+                        if((($registro->numeroGrupoVerificacao == 202)&&($registro->numeroDoTeste == 1))
+                            || (($registro->numeroGrupoVerificacao == 332)&&($registro->numeroDoTeste ==1))
+                            || (($registro->numeroGrupoVerificacao == 213)&&($registro->numeroDoTeste ==1))
+                            || (($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 5))
+                            || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 2)))  {
+//                                dd($registro);
+                            $countproters_peso =0;
+                            $countproters_cep =0;
+                            $reincidencia = DB::table('snci')
+                                ->select('no_inspecao',   'no_grupo',  'no_item','dt_fim_inspecao','dt_inic_inspecao')
+                                ->where([['descricao_item',  'like', '%PROTER%']])
+                                ->where([['sto', '=', $registro->sto ]])
+                                ->orderBy('no_inspecao' ,'desc')
+                                ->first();
+                            try{
+                                if( $reincidencia->no_inspecao > 1) {
+                                    $reincidente = 1;
+                                    $reinc = 'Sim';
+                                    $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                    $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                    $numeroItemReincidente = $reincidencia->no_item;
+                                    $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                    $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                    $reincidencia_dt_fim_inspecao->subMonth(3);
+                                    $reincidencia_dt_inic_inspecao->subMonth(3);
+                                }
+                                else{
+                                    $reincidente = 0;
+                                    $reinc = 'Não';
+                                    $codVerificacaoAnterior = null;
+                                    $numeroGrupoReincidente = null;
+                                    $numeroItemReincidente = null;
+                                }
+                            }
+                            catch (\Exception $e) {
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                            }
+//                          Inicio tem Reincidencia proter
+                            if($reincidente == 1) {
+                                $proters_con = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_entrega_sro'
+                                        ,'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'CON']])
+                                    ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+                                $proters_peso = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_peso'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_peso', '=', 'S']])
+                                    ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+
+                                $proters_cep = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_cep'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_cep', '=', 'S']])
+                                    ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+//                                    dd('var -> ', $proters_cep,$registro->mcu, $reincidencia_dt_fim_inspecao,  $dtmenos90dias );
+
+                                if(! $proters_con->isEmpty()){
+                                    $countproters_con = $proters_con->count('no_do_objeto');
+                                }
+                                else{
+                                    $countproters_con = 0;
+                                }
+
+                                if(! $proters_peso->isEmpty())
+                                {
+                                    $countproters_peso = $proters_peso->count('no_do_objeto');
+                                    $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_peso  = 0.00;
+                                }
+
+                                if(! $proters_cep->isEmpty())
+                                {
+                                    $countproters_cep = $proters_cep->count('no_do_objeto');
+                                    $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_cep  = 0.00;
+                                }
+
+                                $total = $total_proters_peso + $total_proters_cep;
+                                $countproters = $countproters_con + $countproters_peso +$countproters_cep;
+
+
+//                                  Inicio se tem pendencia proter com reincidencia
+                                if(($countproters_con >= 1) || ($total > 0.00) ){
+                                    $pontuado = 0;  //  verificar  declaração no inicio da rotina
+                                    if($total > 0.00) {
+                                        $quebra = DB::table('relevancias')
+                                            ->select('valor_final' )
+                                            ->where('fator_multiplicador', '=', 1 )
+                                            ->first();
+                                        $quebracaixa = $quebra->valor_final * 0.1;
+
+                                        $fm = DB::table('relevancias')
+                                            ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                            ->where('valor_inicio', '<=', $total )
+                                            ->orderBy('valor_final' ,'desc')
+                                            ->first();
+                                        $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                    }
+
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em Análise aos dados do Sistema Proter a partir de Jan/2017. Excetuando os ultimos 90 dias da data dessa inspeção, constatou-se a existência de pendências sem regularização há mais de 90 dias conforme relacionado a seguir:';
+                                    $evidencia ='';
+
+                                    if(! $proters_con->isEmpty()){
+                                        $countproters_con = $proters_con->count('no_do_objeto');
+                                        $evidencia = "\n".'Pendencia(s) de Contabilização: '.$countproters_con.' Pendência(s)';
+                                        $evidencia = $evidencia = "\n".'Data da Pendência'."\t".'Número do Objeto'."\t".'CEP Entrega';
+
+                                        foreach($proters_con as $proter_con){
+                                            $evidencia = $evidencia = "\n".date( 'd/m/Y' , strtotime($proter_con->data_da_pendencia))
+                                                ."\t".$proter_con->no_do_objeto
+                                                ."\t".$proter_con->cep_entrega_sro;
+                                        }
+                                    }
+
+                                    if ($total > $quebracaixa ) {
+
+                                        if (!$proters_peso->isEmpty()) {
+
+                                            $countproters_peso = $proters_peso->count('no_do_objeto');
+                                            $evidencia1 = "\n" . 'Divergência(s) de Peso: ' . $countproters_peso . ' Pendência(s)';
+                                            $evidencia1 = $evidencia1 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                            foreach ($proters_peso as $proter_peso) {
+                                                $evidencia1 = $evidencia1 = "\n" . date('d/m/Y', strtotime($proter_peso->data_da_pendencia))
+                                                    . "\t" . $proter_peso->no_do_objeto
+                                                    . "\t" . 'R$ ' . number_format($proter_peso->diferenca_a_recolher, 2, ',', '.');
+                                            }
+                                        }
+                                        if (!$proters_cep->isEmpty()) {
+
+                                            $countproters_cep = $proters_cep->count('no_do_objeto');
+                                            $evidencia2 = "\n" . 'Divergência(s) de CEP: ' . $countproters_cep . ' Pendência(s)';
+                                            $evidencia2 = $evidencia2 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                            foreach ($proters_cep as $proter_cep) {
+                                                $evidencia2 = $evidencia2 = "\n" . date('d/m/Y', strtotime($proter_cep->data_da_pendencia))
+                                                    . "\t" . $proter_cep->no_do_objeto
+                                                    . "\t" . 'R$ ' . number_format($proter_cep->diferenca_a_recolher, 2, ',', '.');
+                                            }
+                                        }
+
+                                        $evidencia3 = "\n" . 'Total ' . "\t" . 'R$ ' . number_format($total, 2, ',', '.');
+                                    }
+
+                                    if ((!empty($evidencia2)) && (!empty($evidencia1))) {
+                                        $evidencia = $evidencia . $evidencia1 . $evidencia2 . $evidencia3;
+                                    }
+                                    elseif (!empty($evidencia1)) {
+                                        $evidencia = $evidencia . $evidencia1 . $evidencia3;
+                                    }
+                                    elseif(!empty($evidencia2)){
+                                        $evidencia = $evidencia . $evidencia2 . $evidencia3;
+                                    }
+
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = $evidencia;
+                                    $itensdeinspecao->valorFalta = $total;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = $pontuado;
+                                    $itensdeinspecao->itemQuantificado = 'Sim';
+                                    $itensdeinspecao->orientacao = $registro->orientacao;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->reincidencia = $reinc;
+                                    $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                    $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                    $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+                                    $itensdeinspecao->update();
+                                }
+//                                  Fim se tem pendencia proter com reincidencia
+//                                  Inicio Não tem pendencia proter com reincidencia
+                                else{
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Sistema Proter, do período de Janeiro/2017 a '. date( 'd/m/Y' , strtotime($dtmenos90dias)).', constatou-se que não havia pendências com mais de 90 dias.';
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = null;
+                                    $itensdeinspecao->valorFalta = 0.00;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = 0.00;
+                                    $itensdeinspecao->itemQuantificado = 'Não';
+                                    $itensdeinspecao->orientacao= null;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                }
+//                                  fim Não tem pendencia proter com reincidencia
+
+                            }
+//                          Fim se tem reincidencia
+
+//                          Inicio se não reincidencia
+                            else {
+                                $proters_con = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_entrega_sro'
+                                        ,'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'CON']])
+//                                        ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+                                $proters_peso = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_peso'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_peso', '=', 'S']])
+//                                        ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+                                $proters_cep = DB::table('proters')
+                                    ->select(
+                                        'tipo_de_pendencia'
+                                        , 'no_do_objeto'
+                                        , 'cep_destino'
+                                        , 'divergencia_cep'
+                                        , 'diferenca_a_recolher'
+                                        , 'data_da_pendencia'
+                                    )
+                                    ->where([['mcu', '=', $registro->mcu]])
+                                    ->where([['tipo_de_pendencia', '=', 'DPC']])
+                                    ->where([['divergencia_cep', '=', 'S']])
+//                                        ->where([['data_da_pendencia', '>=', $reincidencia_dt_fim_inspecao ]])
+                                    ->where([['data_da_pendencia', '<=', $dtmenos90dias ]])
+                                    ->get();
+
+                                if(! $proters_con->isEmpty()){
+                                    $countproters_con = $proters_con->count('no_do_objeto');
+                                }
+                                else{
+                                    $countproters_con = 0;
+                                }
+
+                                if(! $proters_peso->isEmpty())
+                                {
+                                    $countproters_peso = $proters_peso->count('no_do_objeto');
+                                    $total_proters_peso  = $proters_peso->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_peso  = 0.00;
+                                }
+
+                                if(! $proters_cep->isEmpty())
+                                {
+                                    $countproters_cep = $proters_cep->count('no_do_objeto');
+                                    $total_proters_cep  = $proters_cep->sum('diferenca_a_recolher');
+                                }
+                                else
+                                {
+                                    $total_proters_cep  = 0.00;
+                                }
+
+                                $total = $total_proters_peso + $total_proters_cep;
+                                $countproters = $countproters_con + $countproters_peso +$countproters_cep;
+//                                  Inicio se tem pendencia proter sem reincidencia
+                                if($countproters >= 1){
+
+                                    if(($countproters_con >= 1) || ($total > 0.00) ) {
+                                        $pontuado = 0;  //  verificar  declaração no inicio da rotina
+                                        if ($total > 0.00) {
+                                            $quebra = DB::table('relevancias')
+                                                ->select('valor_final')
+                                                ->where('fator_multiplicador', '=', 1)
+                                                ->first();
+                                            $quebracaixa = $quebra->valor_final * 0.1;
+
+                                            $fm = DB::table('relevancias')
+                                                ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                                ->where('valor_inicio', '<=', $total)
+                                                ->orderBy('valor_final', 'desc')
+                                                ->first();
+                                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                        }
+
+                                        $avaliacao = 'Não Conforme';
+                                        $oportunidadeAprimoramento = 'Em análise aos dados do Sistema Proter do período de  Janeiro/2017 a ' . date('d/m/Y', strtotime($dtmenos90dias)) . ' constatou-se as seguintes pendências com mais de 90 dias:';
+                                        $evidencia = '';
+                                        if (!$proters_con->isEmpty()) {
+
+                                            $countproters_con = $proters_con->count('no_do_objeto');
+                                            $evidencia = "\n" . 'Pendencia(s) de Contabilização: ' . $countproters_con . ' Pendência(s)';
+                                            $evidencia = $evidencia = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'CEP Entrega';
+
+                                            foreach ($proters_con as $proter_con) {
+                                                $evidencia = $evidencia = "\n" . date('d/m/Y', strtotime($proter_con->data_da_pendencia))
+                                                    . "\t" . $proter_con->no_do_objeto
+                                                    . "\t" . $proter_con->cep_entrega_sro;
+                                            }
+                                        }
+
+                                        if ($total > $quebracaixa) {
+
+                                            if (!$proters_peso->isEmpty()) {
+
+                                                $countproters_peso = $proters_peso->count('no_do_objeto');
+                                                $evidencia1 = "\n" . 'Divergência(s) de Peso: ' . $countproters_peso . ' Pendência(s)';
+                                                $evidencia1 = $evidencia1 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                                foreach ($proters_peso as $proter_peso) {
+                                                    $evidencia1 = $evidencia1 = "\n" . date('d/m/Y', strtotime($proter_peso->data_da_pendencia))
+                                                        . "\t" . $proter_peso->no_do_objeto
+                                                        . "\t" . 'R$ ' . number_format($proter_peso->diferenca_a_recolher, 2, ',', '.');
+                                                }
+                                            }
+                                            if (!$proters_cep->isEmpty()) {
+
+                                                $countproters_cep = $proters_cep->count('no_do_objeto');
+                                                $evidencia2 = "\n" . 'Divergência(s) de CEP: ' . $countproters_cep . ' Pendência(s)';
+                                                $evidencia2 = $evidencia2 = "\n" . 'Data da Pendência' . "\t" . 'Número do Objeto' . "\t" . 'Diferença na Tarifação (R$)';
+                                                foreach ($proters_cep as $proter_cep) {
+                                                    $evidencia2 = $evidencia2 = "\n" . date('d/m/Y', strtotime($proter_cep->data_da_pendencia))
+                                                        . "\t" . $proter_cep->no_do_objeto
+                                                        . "\t" . 'R$ ' . number_format($proter_cep->diferenca_a_recolher, 2, ',', '.');
+                                                }
+                                            }
+
+                                            $evidencia3 = "\n" . 'Total ' . "\t" . 'R$ ' . number_format($total, 2, ',', '.');
+                                        }
+
+                                        if ((!empty($evidencia2)) && (!empty($evidencia1))) {
+                                            $evidencia = $evidencia . $evidencia1 . $evidencia2 . $evidencia3;
+                                        }
+                                        elseif (!empty($evidencia1)) {
+                                            $evidencia = $evidencia . $evidencia1 . $evidencia3;
+                                        }
+                                        elseif(!empty($evidencia2)){
+                                            $evidencia = $evidencia . $evidencia2 . $evidencia3;
+                                        }
+                                    }
+
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = $evidencia;
+                                    $itensdeinspecao->valorFalta = $total;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = $pontuado;
+                                    $itensdeinspecao->itemQuantificado = 'Sim';
+                                    $itensdeinspecao->orientacao = $registro->orientacao;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->reincidencia = $reinc;
+                                    $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                    $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                    $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+                                    $itensdeinspecao->update();
+                                }
+//                                  Fim se tem pendencia proter sem reincidencia
+//                                  Inicio conforme
+                                else{
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Sistema Proter, do período de Janeiro/2017 a '. date( 'd/m/Y' , strtotime($dtmenos90dias)).', constatou-se que não havia pendências com mais de 90 dias.';
+                                    $dto = DB::table('itensdeinspecoes')
+                                        ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                        ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                        ->select( 'itensdeinspecoes.*'  )
+                                        ->first();
+                                    $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                    $itensdeinspecao->avaliacao  = $avaliacao;
+                                    $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                    $itensdeinspecao->evidencia  = null;
+                                    $itensdeinspecao->valorFalta = 0.00;
+                                    $itensdeinspecao->situacao   = 'Inspecionado';
+                                    $itensdeinspecao->pontuado   = 0.00;
+                                    $itensdeinspecao->itemQuantificado = 'Não';
+                                    $itensdeinspecao->orientacao= null;
+                                    $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                    $itensdeinspecao->update();
+                                }
+//                                  Fim Conforme
+
+
+                            }
+//                          Fim se não  reincidencia
+//                          dd( '653',$dtmenos90dias , $registro->mcu, $countproters_con, $countproters_peso,  $countproters_cep );
+
+                        }
+//                      Final do teste PROTER
+
+//                      Início do teste WebCont
                         if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 4))
                             || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste == 1))) {
-
-                            $reincidente = 0;
-                            $codVerificacaoAnterior = null;
-                            $numeroGrupoReincidente = null;
-                            $numeroItemReincidente = null;
-                            $reinc = 'Não';
 
                             $reincidencia = DB::table('snci')
                                 ->select('no_inspecao',   'no_grupo',  'no_item','dt_fim_inspecao','dt_inic_inspecao')
@@ -303,6 +1181,7 @@ class AvaliaInspecao implements ShouldQueue
                                     ->Where([['debitoempregados.sto', '=', $registro->sto ]])
                                     ->get();
                             }
+
                             if(! $debitoempregados->isEmpty()) {
                                 $count = $debitoempregados->count('matricula');
                                 $total = $debitoempregados->sum('valor'); // soma a coluna valor da coleção de dados
@@ -382,11 +1261,15 @@ class AvaliaInspecao implements ShouldQueue
                                 $itensdeinspecao->update();
 //                                     dd($competencia);
                             }
-                        } // fim doteste
-                    } // Fim processamento da aavaliação
+                        } // fim doteste webCont
+                    }
+                    // Fim do teste WebCont
+
                 } // Fim do teste para uma superintendencias
             }
         }
-
+        ini_set('memory_limit', '128M');
     }
+
+//$this->command->info('Avaliação Realizada com sucesso!');
 }

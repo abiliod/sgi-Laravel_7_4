@@ -29,7 +29,7 @@
                 <tbody>
                 @foreach($proters_con as $proter_con)
                     <tr>
-                        <td>{{ date( 'd/m/Y' , strtotime($proter_con->data_da_postagem))}}</td>
+                        <td>{{ date( 'd/m/Y' , strtotime($proter_con->data_da_pendencia))}}</td>
                         <td>{{ $proter_con->no_do_objeto }}</td>
                         <td>{{ $proter_con->cep_entrega_sro }}</td>
                     </tr>
@@ -51,7 +51,7 @@
                     <tbody>
                     @foreach($proters_cep as $data)
                         <tr>
-                            <td>    {{ date( 'd/m/Y' , strtotime($data->data_da_postagem))}}    </td>
+                            <td>    {{ date( 'd/m/Y' , strtotime($data->data_da_pendencia))}}    </td>
                             <td>    {{ $data->no_do_objeto }}    </td>
                             <td>    {{  'R$ '.number_format($data->diferenca_a_recolher, 2, ',', '.') }}    </td>
                         </tr>
@@ -77,7 +77,7 @@
                     <tbody>
                     @foreach($proters_peso as $proter_peso)
                         <tr>
-                            <td>{{ date( 'd/m/Y' , strtotime($proter_peso->data_da_postagem))}}</td>
+                            <td>{{ date( 'd/m/Y' , strtotime($proter_peso->data_da_pendencia))}}</td>
                             <td>{{ $proter_peso->no_do_objeto }}</td>
                             <td>{{  'R$ '.number_format($proter_peso->diferenca_a_recolher, 2, ',', '.') }}</td>
                         </tr>

@@ -44,10 +44,12 @@ use App\Exports\ExportSMBxBDF_NaoConciliado;
 use App\Models\Correios\ModelsAuxiliares\Proter;
 use App\Imports\ImportProter;
 use App\Exports\ExportProter;
+use App\Jobs\JobProter;
 
 use App\Models\Correios\ModelsAuxiliares\DebitoEmpregado;
 use App\Imports\ImportDebitoEmpregados;
 use App\Exports\ExportDebitoEmpregados;
+use App\Jobs\JobWebCont;
 
 use App\Models\Correios\Alarme;
 use App\Imports\ImportAlarmes;
@@ -119,8 +121,6 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class ImportacaoController extends Controller
 {
-
-
 
     // ######################### INICIO   BDF_FAT_02 ##################
     public function exportBDF_FAT_02()
@@ -1805,10 +1805,38 @@ class ImportacaoController extends Controller
         }
         if($validator->passes())
         {
-            ini_set('max_input_time', 350);
-            ini_set('max_execution_time', 350);
+            ini_set('memory_limit', '512M');
             $proters = Excel::toArray(new ImportProter,  request()->file('file'));
+            $dt_job = Carbon::now();
+            ini_set('memory_limit', '128M');
+// ############### API carbon não está funcionando CORRETAMENTE com JOBs.
+//  php artisan queue:work --queue=importacao
 
+//            Try{
+//                $job = (new JobProter( $proters, $dt_job))
+//                    ->onConnection('importacao')
+//                    ->onQueue('importacao')
+//                    ->delay($dt_job->addMinutes(1));
+//                dispatch($job);
+//                \Session::flash('mensagem', ['msg' => 'JobProter, aguardando processamento.'
+//                    , 'class' => 'blue white-text']);
+//                return redirect()->route('importacao');
+//            } catch (\Exception $e) {
+//                if(substr( $e->getCode(), 0, 2) == 'HY'){
+//                    \Session::flash('mensagem', ['msg' => 'JobProter, tente uma quantidade menor
+//                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: '.$e->getCode(), 'class' => 'red white-text']);
+//                }else {
+//                    \Session::flash('mensagem', ['msg' => 'JobProter, não pode ser importado Erro: '.$e->getCode().'.'
+//                        , 'class' => 'red white-text']);
+//                }
+//                return redirect()->route('importacao');
+//            }
+
+//            DB::table('proters')->truncate(); //excluir e zerar a tabela
+//            dd();
+//          Inicio importar PROTERS
+
+//
             foreach($proters as $registros)
             {
                 foreach($registros as $dado)
@@ -1844,7 +1872,7 @@ class ImportacaoController extends Controller
                         {
                             $registro = Proter::find($res->id);
                             $registro->se  = $dado['se'];
-                            $registro->tipo_de_pendencia  = $dado['tipo_de_unidade'];
+                            $registro->tipo_de_pendencia  = $dado['tipo_de_pendencia'];
                             $registro->status_da_pendencia  = $dado['status_da_pendencia'];
                             $registro->tipo_de_unidade  = $dado['tipo_de_unidade'];
                             $registro->mcu  = $dado['stomcu'];
@@ -1980,21 +2008,27 @@ class ImportacaoController extends Controller
                         }
                     }
                     $registro ->save();
+//                    var_dump( $registro );
+//                    dd( '$registro' );
                     $row++;
                     if ((! $mcuanterior == $registro->mcu ) && (! $mcuanterior == 0))
                     {
                         DB::table('proters')
                             ->where('mcu', '=', $mcuanterior)
-                            ->where('updated_at', '<=', $dtmenos35dias)
+                            ->where('updated_at', '<', $dt_job)
                         ->delete();
                     }
                     $mcuanterior = $registro->mcu;
                 }
 
             }
+
             DB::table('proters')
                 ->where('status_da_pendencia', '<>', 'Pendente')
                 ->delete();
+//            FIM importar PROTERS
+
+
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
@@ -2033,15 +2067,49 @@ class ImportacaoController extends Controller
         }
         if($validator->passes())
         {
+            ini_set('memory_limit', '512M');
             $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
-            foreach($debitoEmpregados as $dados)
-            {
-                foreach($dados as $registro)
-                {
+            $dt_job = Carbon::now();
+            ini_set('memory_limit', '128M');
+
+// ######################################  não ligar  job ainda, pois precisa ajuste.
+
+//            Try{
+//                $job = (new JobWebCont( $debitoEmpregados , $dt_job))
+//                    ->onConnection('importacao')
+//                    ->onQueue('importacao')
+//                    ->delay($dt->addMinutes(1));
+//                dispatch($job);
+//                \Session::flash('mensagem', ['msg' => 'Job JobWebCont, aguardando processamento.'
+//                    , 'class' => 'blue white-text']);
+//                return redirect()->route('importacao');
+//            }
+//            catch (\Exception $e) {
+//                if(substr( $e->getCode(), 0, 2) == 'HY'){
+//                    \Session::flash('mensagem', ['msg' => ' Job JobWebCont, tente uma quantidade menor de registros.
+//                    Tente um arquivo de aproximadamente 4.00kb. Erro'. $e->getCode() , 'class' => 'red white-text']);
+//                }
+//                else {
+//                    \Session::flash('mensagem', ['msg' => 'Job JobWebCont, não pode ser importado. Erro '. $e->getCode() , 'class' => 'red white-text']);
+//                }
+//                return redirect()->route('importacao');
+//            }
+
+            foreach($debitoEmpregados as $dados) {
+                foreach($dados as $registro) {
                     $debitoEmpregado = new DebitoEmpregado;
                     $debitoEmpregado->cia      = $registro['cia'];
                     $debitoEmpregado->conta  = $registro['conta'];
                     $debitoEmpregado->competencia  = $registro['competencia'];
+
+//                    $time = strtotime($registro['data']);
+//                    $dt = date('Y-m-d',$time);
+//                    $dt = substr($registro['data'], 6, 4) . '-' . substr($registro['data'], 3, 2) . '-' . substr($registro['data'], 0, 2);
+//                    $debitoEmpregado->data         = $dt;
+//                    dd($dt , $registro['data']);
+//                    $dt         = $this->transformDate($registro['data']);
+//                    $debitoEmpregado->data         = $registro['data'];
+
                     $dt         = $this->transformDate($registro['data']);
                     $debitoEmpregado->data         = $dt;
                     $debitoEmpregado->lote  = $registro['lote'];
@@ -2060,14 +2128,16 @@ class ImportacaoController extends Controller
                     $debitoEmpregado->regularizacao  = $registro['regularizacao'];
                     $debitoEmpregado->anexo  = $registro['anexo'];
                     $debitoEmpregado ->save();
+//                    dd(      $debitoEmpregado );
                     $row++;
                 }
+                DB::table('debitoempregados')
+                    ->where('cia', '=', $registro['cia'])
+                    ->where('conta', '=', $registro['conta'])
+                    ->where('competencia', '<', $registro['competencia'])
+                    ->delete();
             }
-            $affected = DB::table('debitoempregados')
-                ->where('cia', '=', $registro['cia'])
-                ->where('conta', '=', $registro['conta'])
-                ->where('competencia', '<', $registro['competencia'])
-                ->delete();
+
 
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
@@ -2487,25 +2557,6 @@ class ImportacaoController extends Controller
                 $unidades = Excel::toArray(new ImportUnidades,  request()->file('file'));
             }
 
-//            Try{
-//                $job = (new JobUnidades( $unidades))
-//                    ->onConnection('importacao')
-//                    ->onQueue('importacao')
-//                    ->delay($dt->addMinutes(1));
-//                dispatch($job);
-//            } catch (\Exception $e) {
-//                if(substr( $e->getCode(), 0, 2) == 'HY'){
-//                    \Session::flash('mensagem', ['msg' => 'Job Unidades  R55001A, tente uma quantidade menor de registros. Tente um arquivo de aproximadamente 4.00kb.'
-//                        , 'class' => 'red white-text']);
-//                }else {
-//                    \Session::flash('mensagem', ['msg' => 'Job Unidades  R55001A, não pode ser importado, erro não identificado.'
-//                        , 'class' => 'red white-text']);
-//                }
-//                \Session::flash('mensagem', ['msg' => 'Job Unidades  R55001A, aguardando processamento.'
-//                    , 'class' => 'blue white-text']);
-//                ini_set('memory_limit', '64');
-//                return redirect()->route('importacao');
-//            }
 
             foreach($unidades as $dados) {
                 foreach($dados as $registro) {
@@ -2686,7 +2737,7 @@ class ImportacaoController extends Controller
         return view('compliance.importacoes.unidades');  //
     }
     // ######################### FIM IMPORTAR UNIDADES ###############
-
+//////                            $dt_inic_desloc = $this->transformDate($dt_inic_desloc)->format('Y-m-d');
     public function transformDate($value, $format = 'Y-m-d')
     {
         try
