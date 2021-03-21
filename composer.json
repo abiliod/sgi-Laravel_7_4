@@ -10,8 +10,7 @@
     "require": {
         "php": "^7.4.16",
         "barryvdh/laravel-dompdf": "^0.8.6",
-        "doctrine/common": "2.7.0",
-        "doctrine/dbal": "2.5.13",
+        "doctrine/dbal": "^3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "geekcom/validator-docs": "^3.4",
@@ -23,7 +22,6 @@
         "nesbot/carbon": "^2.32",
         "phpoffice/phpspreadsheet": "^1.16",
         "tymon/jwt-auth": "~1.0.0-rc.4.1"
-
     },
     "require-dev": {
         "facade/ignition": "^2.0",
