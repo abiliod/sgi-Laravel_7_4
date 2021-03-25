@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sgiweb-Laravel_7_4.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sgiweb-Laravel_7_4.iml" afterDir="false" />
+    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Jobs/JobProter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobProter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/JobWebCont.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobWebCont.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SMBxBDF_NaoConciliado.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SMBxBDF_NaoConciliado.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,6 +187,56 @@
       <workItem from="1616330156197" duration="1019000" />
       <workItem from="1616334033365" duration="1785000" />
       <workItem from="1616336778994" duration="739000" />
+      <workItem from="1616339058110" duration="1437000" />
+      <workItem from="1616349655969" duration="7000" />
+      <workItem from="1616350454256" duration="20000" />
+      <workItem from="1616413781352" duration="1480000" />
+      <workItem from="1616415311371" duration="1782000" />
+      <workItem from="1616417130408" duration="1361000" />
+      <workItem from="1616422475067" duration="1783000" />
+      <workItem from="1616424498143" duration="1793000" />
+      <workItem from="1616426317561" duration="699000" />
+      <workItem from="1616432930583" duration="1784000" />
+      <workItem from="1616434748466" duration="1786000" />
+      <workItem from="1616436558694" duration="1568000" />
+      <workItem from="1616438358469" duration="1373000" />
+      <workItem from="1616441194618" duration="1148000" />
+      <workItem from="1616443047901" duration="2481000" />
+      <workItem from="1616445608067" duration="599000" />
+      <workItem from="1616454054456" duration="13011000" />
+      <workItem from="1616511068497" duration="1612000" />
+      <workItem from="1616517019356" duration="1852000" />
+      <workItem from="1616519514953" duration="1786000" />
+      <workItem from="1616521335706" duration="4483000" />
+      <workItem from="1616525855787" duration="1786000" />
+      <workItem from="1616527669119" duration="1785000" />
+      <workItem from="1616529484006" duration="1785000" />
+      <workItem from="1616531303743" duration="1691000" />
+      <workItem from="1616534649739" duration="1785000" />
+      <workItem from="1616573708140" duration="1773000" />
+      <workItem from="1616575514387" duration="1847000" />
+      <workItem from="1616577422557" duration="830000" />
+      <workItem from="1616579463130" duration="1781000" />
+      <workItem from="1616581277954" duration="1288000" />
+      <workItem from="1616583189315" duration="1786000" />
+      <workItem from="1616585003259" duration="1785000" />
+      <workItem from="1616586819795" duration="1784000" />
+      <workItem from="1616588630608" duration="1810000" />
+      <workItem from="1616590472303" duration="1816000" />
+      <workItem from="1616592318728" duration="1852000" />
+      <workItem from="1616594280480" duration="1880000" />
+      <workItem from="1616596199461" duration="1787000" />
+      <workItem from="1616598012894" duration="915000" />
+      <workItem from="1616600923995" duration="1830000" />
+      <workItem from="1616602793666" duration="1781000" />
+      <workItem from="1616604607110" duration="1719000" />
+      <workItem from="1616606472950" duration="1586000" />
+      <workItem from="1616609057855" duration="1786000" />
+      <workItem from="1616610879531" duration="2735000" />
+      <workItem from="1616613809660" duration="3791000" />
+      <workItem from="1616623090506" duration="1821000" />
+      <workItem from="1616625063988" duration="3653000" />
+      <workItem from="1616671255307" duration="320000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -193,7 +245,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616262868336</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="21/03/2020 Ajuste de funcionalidade para importação do Proter.">
+      <created>1616339163928</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1616339163928</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,16 +260,22 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php." />
-    <option name="LAST_COMMIT_MESSAGE" value="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php." />
+    <MESSAGE value="21/03/2020 Ajuste de funcionalidade para importação do Proter." />
+    <MESSAGE value="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf." />
+    <option name="LAST_COMMIT_MESSAGE" value="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1616262865738">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1616671605787">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1616262865738" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1616262874287">
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1616671605787" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1616671623166">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1616262874287" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1616671623166" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1616579717838">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1616579717838" />
   </component>
 </project>
