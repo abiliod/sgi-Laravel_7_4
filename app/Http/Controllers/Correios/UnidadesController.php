@@ -34,12 +34,15 @@ class UnidadesController extends Controller
 
             $unidade = Unidade::find($dados['unidade_id']); // unidade inspecionada
 
-            //gerar numeração
+            //gerar numeração a inspeção gerada manualmente começa com o número 1 até 1999
             $sequence_inspcaos = DB::table('sequence_inspcaos')
                 ->select('sequence_inspcaos.*')
                 ->Where([['se', '=', $unidade->se]])
                 ->Where([['ciclo', '=', $dados['ciclo']]])
+                ->Where([['sequence', '<', 2000]])
+                ->orderBy('sequence','desc')
                 ->first();
+
 
             if(!empty($sequence_inspcaos))
             {
@@ -53,7 +56,6 @@ class UnidadesController extends Controller
             }
             else
             {
-                // dd('nao t tem');
                 $sequence=1;
                 $sequenceInspecao = new SequenceInspecao;
                 $sequenceInspecao->se      = $unidade->se;
@@ -65,8 +67,6 @@ class UnidadesController extends Controller
             $sequence = str_pad(  $sequenceInspecao->sequence , 4, '0', STR_PAD_LEFT);
             $codigo = $unidade->se.$sequence.$dados['ciclo'];
 
-
-//dd($dados ['tipoVerificacao']);
             if( $dados ['tipoVerificacao'] != 'previa')
             {
                 $inspecao = new Inspecao;

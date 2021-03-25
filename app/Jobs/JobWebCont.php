@@ -37,43 +37,63 @@ class JobWebCont implements ShouldQueue
     {
 
         $debitoEmpregados = $this->debitoEmpregados;
+        $dt_job = $this->dt_job;
         ini_set('memory_limit', '512M');
 
-        foreach($debitoEmpregados as $dados)
-        {
-            foreach($dados as $registro)
-            {
-                $dateWanted = $registro['data_de_leitura'];
-                $dateWanted = \Illuminate\Support\Carbon::createFromFormat('m/d/Y', $dateWanted)->format('Y-m-d');
-                $debitoEmpregado = new DebitoEmpregado;
-                $debitoEmpregado->cia      = $registro['cia'];
-                $debitoEmpregado->conta  = $registro['conta'];
-                $debitoEmpregado->competencia  = $registro['competencia'];
-
-                $debitoEmpregado->data         = $dateWanted;
-                $debitoEmpregado->lote  = $registro['lote'];
-                $debitoEmpregado->tp  = $registro['tp'];
-                $debitoEmpregado->sto  = $registro['mcu_doc1'];
-                $debitoEmpregado->nome_unidade  = $registro['nome_agencia_doc2'];
-                $debitoEmpregado->historico  = $registro['historico'];
-                $debitoEmpregado->valor  = $registro['valor'];
-                $debitoEmpregado->observacoes  = $registro['observacoes'];
-                $debitoEmpregado->documento  = $registro['documento_ref1'];
-                $debitoEmpregado->matricula  = $registro['matricula_ref2'];
-                $debitoEmpregado->nomeEmpregado  = $registro['nome_empregado_ref3'];
-                $debitoEmpregado->justificativa  = $registro['justificativa_ad1'];
-                $debitoEmpregado->regularizacao  = $registro['regularizacao'];
-                $debitoEmpregado->acao  = $registro['acao'];
-                $debitoEmpregado->regularizacao  = $registro['regularizacao'];
-                $debitoEmpregado->anexo  = $registro['anexo'];
-                $debitoEmpregado ->save();
-                $row++;
+        foreach($debitoEmpregados as $dados) {
+            foreach($dados as $dado) {
+                if(! $dado['data']=='') {
+                    $data = $this->transformDate($dado['data']);
+                }
+                else {
+                    $data = null;
+                }
+                if( ! empty($dado['valor'])) {
+                    try {
+                        $valor = str_replace(",", ".", $dado['valor']);
+                    }
+                    catch (\Exception $e) {
+                        $valor = 0.00;
+                    }
+                }
+                else{
+                    $valor = 0.00;
+                }
+                DebitoEmpregado :: updateOrCreate([
+                    'conta' => $dado['conta']
+                    , 'matricula' => $dado['matricula_ref2']
+                    , 'data' => $data
+                ],
+                    [
+                        'conta' => $dado['conta']
+                        , 'matricula' => $dado['matricula_ref2']
+                        , 'data' => $data
+                        , 'cia' => $dado['cia']
+                        , 'competencia' => $dado['competencia']
+                        , 'lote' => $dado['lote']
+                        , 'tp' => $dado['tp']
+                        , 'sto' => $dado['mcu_doc1']
+                        , 'nome_unidade' => $dado['nome_agencia_doc2']
+                        , 'historico' => $dado['historico']
+                        , 'observacoes' => $dado['observacoes']
+                        , 'documento' => $dado['documento_ref1']
+                        , 'nomeEmpregado' => $dado['nome_empregado_ref3']
+                        , 'justificativa' => $dado['justificativa_ad1']
+                        , 'regularizacao' => $dado['regularizacao']
+                        , 'acao' => $dado['acao']
+                        , 'anexo' => $dado['anexo']
+                        , 'valor' => $valor
+                    ]);
+//                    dd($res);
             }
+//              higieniza a base de dados  excluindo por regional registros de
+//              competências anteriores que nao foram atualiados.
             DB::table('debitoempregados')
-                ->where('cia', '=', $registro['cia'])
-                ->where('conta', '=', $registro['conta'])
-                ->where('competencia', '<', $registro['competencia'])
-            ->delete();
+                ->where('cia', '=', $dado['cia'])
+                ->where('conta', '=', $dado['conta'])
+                ->where('competencia', '<', $dado['competencia'])
+                ->where('updated_at', '<', $dt_job)
+                ->delete();
         }
 
         ini_set('memory_limit', '128M');

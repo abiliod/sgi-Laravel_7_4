@@ -62,6 +62,9 @@ class AvaliaInspecao implements ShouldQueue
         $dtmenos6meses->subMonth(6);
         $dtmenos12meses->subMonth(12);
         $pontuado=0.00;
+        $valorRisco=0.00;
+        $valorSobra=0.00;
+        $valorFalta=0.00;
 
         $periodo = new CarbonPeriod();
         $total=0.00;
@@ -97,6 +100,349 @@ class AvaliaInspecao implements ShouldQueue
 
 //                      Inicio processamento da aavaliação
                     foreach ($registros as $registro) {
+
+//                       Inicio  do teste SMB_BDF
+                        if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 6))
+                            || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste== 3))) {
+
+                            $reincidencia = DB::table('snci')
+                                ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                ->where([['descricao_item', 'like', '%valor depositado na conta bancária%']])
+                                ->where([['sto', '=', $registro->sto]])
+                                ->orderBy('no_inspecao', 'desc')
+                                ->first();
+                            try {
+                                if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                    $reincidente = 1;
+                                    $reinc = 'Sim';
+                                    $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                    $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                    $numeroItemReincidente = $reincidencia->no_item;
+                                    $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                    $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                    $reincidencia_dt_fim_inspecao->subMonth(3);
+                                    $reincidencia_dt_inic_inspecao->subMonth(3);
+                                    $evidencia=null;
+                                }
+                            } catch (\Exception $e) {
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia=null;
+                            }
+                            $smb_bdf_naoconciliados = DB::table('smb_bdf_naoconciliados')
+                                ->select(
+                                    'smb_bdf_naoconciliados.*'
+                                )
+                                ->where('mcu', '=', $registro->mcu)
+                                ->where('Divergencia', '<>', 0)
+                                ->where('Status', '=', 'Pendente')
+                                ->where('Data', '>=', $dtmenos90dias)
+                                ->orderBy('Data', 'asc')
+                                ->get();
+//                              Inicio  se tem registro de pendências SMB_BDF
+                            if (!$smb_bdf_naoconciliados->isEmpty()) {
+                                $count = $smb_bdf_naoconciliados->count('id');
+                                $dtfim = $smb_bdf_naoconciliados->max('Data');
+
+//                              Inicio  se há divergencia
+                                if ($count !== 0) {
+
+                                    $smb = $smb_bdf_naoconciliados->sum('SMBDinheiro') + $smb_bdf_naoconciliados->sum('SMBBoleto');
+                                    $bdf = $smb_bdf_naoconciliados->sum('BDFDinheiro') + $smb_bdf_naoconciliados->sum('BDFBoleto');
+                                    $divergencia = $smb_bdf_naoconciliados->sum('Divergencia');
+//                                      Inicio  se divergencia é um valor diferente de zero
+                                    if ($divergencia !== 0.0) {
+
+                                        foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
+                                            $smblast = $smb_bdf_naoconciliado->SMBDinheiro + $smb_bdf_naoconciliado->SMBBoleto;
+                                            $bdflast = $smb_bdf_naoconciliado->BDFDinheiro + $smb_bdf_naoconciliado->BDFBoleto;
+                                            $divergencialast = $smb_bdf_naoconciliado->Divergencia;
+                                            $total = ($smblast - $bdflast) - $divergencialast;
+                                        }
+//                                          Inicio Testa ultimo registro se tem compensação
+                                        if (($smblast + $bdflast) == ($divergencialast * -1)) {
+
+                                            $avaliacao = 'Conforme';
+                                            $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de '.date( 'd/m/Y' , strtotime($dtmenos90dias)) .' a ' . date( 'd/m/Y' , strtotime($dtnow)).', verificou-se a inexistência de divergências.';
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = $evidencia;
+                                            $itensdeinspecao->valorFalta = $valorFalta;
+                                            $itensdeinspecao->valorSobra = $valorSobra;
+                                            $itensdeinspecao->valorRisco = $valorRisco;
+                                            $itensdeinspecao->consequencias = null;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = 0.00;
+                                            $itensdeinspecao->itemQuantificado = 'Não';
+                                            $itensdeinspecao->orientacao= null;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+//                                            dd('line -> 818' ,$itensdeinspecao);
+//                                            $itensdeinspecao->update();
+
+                                        }
+//                                          Final Testa ultimo registro se tem compensação
+//                                          Inicio Testa ultimo registro com compensação
+                                        else{
+
+                                            $avaliacao = 'Não Conforme';
+                                            $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de ' . date( 'd/m/Y' , strtotime($dtmenos90dias)). ' a ' . date( 'd/m/Y' , strtotime($dtnow)) .', constatou-se a existência de divergências entre o valor depositado na conta bancária dos Correios pela Agência e o valor do bloqueto gerado no sistema SARA, no total de R$ ' .number_format($divergencia, 2, ',', '.').' , conforme relacionado a seguir:';
+
+                                            $evidencia = $evidencia ."\n".'Data'."\t".'Divergência'."\t".'Tipo';
+                                            foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado){
+                                                $evidencia = $evidencia. "\n"
+                                                    .date( 'd/m/Y' , strtotime($smb_bdf_naoconciliado->Data))
+                                                    ."\t".'R$ '.number_format($smb_bdf_naoconciliado->Divergencia, 2, ',', '.');
+
+                                                if(($smb_bdf_naoconciliado->BDFDinheiro<>0) && ($smb_bdf_naoconciliado->BDFCheque<>0) && ($smb_bdf_naoconciliado->BDFBoleto<>0)){
+                                                    $evidencia = $evidencia. "\t".'Dinheiro/Cheque/Boleto';
+                                                }
+                                                elseif (($smb_bdf_naoconciliado->BDFDinheiro<>0) && ($smb_bdf_naoconciliado->BDFBoleto<>0)){
+                                                    $evidencia = $evidencia. "\t".'Dinheiro/Boleto';
+                                                }
+                                                elseif (($smb_bdf_naoconciliado->BDFDinheiro<>0) && ($smb_bdf_naoconciliado->BDFCheque<>0)){
+                                                    $evidencia = $evidencia. "\t".'Dinheiro/Cheque';
+                                                }
+                                                elseif (($smb_bdf_naoconciliado->BDFBoleto<>0) && ($smb_bdf_naoconciliado->BDFCheque<>0)){
+                                                    $evidencia = $evidencia. "\t".'Boleto/Cheque';
+                                                }
+                                                elseif ($smb_bdf_naoconciliado->BDFDinheiro<>0){
+                                                    $evidencia = $evidencia . "\t".'Dinheiro';
+                                                }
+                                                elseif ($smb_bdf_naoconciliado->BDFBoleto<>0){
+                                                    $evidencia = $evidencia. "\t".'Boleto';
+                                                }
+                                                elseif ($smb_bdf_naoconciliado->BDFCheque<>0){
+                                                    $evidencia = $evidencia . "\t".'Cheque';
+                                                }
+                                                else{
+                                                    $evidencia = $evidencia . "\t".'Não identificado';
+                                                }
+                                            }
+
+                                            if($divergencia > 0.00) {
+                                                $total= $divergencia;
+                                                $evidencia = $evidencia. "\n".'Em Falta '.$divergencia;
+                                                $valorFalta = $total;
+                                                $valorSobra = null;
+                                                $valorRisco= null;
+
+                                            }
+                                            else{
+                                                $total= $divergencia *-1;
+                                                $evidencia = $evidencia."\n".'Em Falta '.$total;
+                                                $valorSobra = null;
+                                                $valorFalta = $total;
+                                                $valorRisco= null;
+                                            }
+//                                                dd('line 876',  $smb , $bdf ,$divergencia, $total );
+
+                                            $quebra = DB::table('relevancias')
+                                                ->select('valor_final' )
+                                                ->where('fator_multiplicador', '=', 1 )
+                                                ->first();
+                                            $quebracaixa = $quebra->valor_final * 0.1;
+                                            $fm = DB::table('relevancias')
+                                                ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                                ->where('valor_inicio', '<=', $total )
+                                                ->orderBy('valor_final' ,'desc')
+                                                ->first();
+                                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+
+//                                                dd('line 821',  $smb , $bdf ,$divergencia, $total );
+
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = $evidencia;
+                                            $itensdeinspecao->valorFalta = $valorFalta;
+                                            $itensdeinspecao->valorSobra = $valorSobra;
+                                            $itensdeinspecao->valorRisco = $valorRisco;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = $pontuado;
+                                            $itensdeinspecao->itemQuantificado = 'Sim';
+                                            $itensdeinspecao->orientacao = $registro->orientacao;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                            $itensdeinspecao->reincidencia = $reinc;
+                                            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                                                dd('line 917 -> ',$itensdeinspecao);
+                                            $itensdeinspecao->update();
+                                        }
+//                                          Final Testa ultimo registro com compensação
+                                    }
+//                                      Final  se divergencia é um valor diferente de zero
+
+//                                      Inicio  se divergencia é um valor igual zero
+                                    if ($divergencia == 0.0){
+
+                                        $dataanterior = null;
+                                        foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
+                                            if ($dataanterior !== null) {
+                                                $dataantual = $dataanterior;
+                                                $dataantual->addDays(1);
+                                                $unidade_enderecos = DB::table('unidade_enderecos')
+                                                    ->Where([['mcu', '=', $registro->mcu]])
+                                                    ->select( 'unidade_enderecos.*'  )
+                                                    ->first();
+                                                $feriado = DB::table('feriados')
+                                                    ->Where([['data_do_feriado', '=', $dataantual]])
+                                                    ->Where([['nome_municipio', '=', $unidade_enderecos->cidade]])
+                                                    ->Where([['uf', '=', $unidade_enderecos->uf]])
+                                                    ->select( 'feriados.*'  )
+                                                    ->first();
+
+                                                if($feriado)  {
+                                                    $diasemana = $dataanterior;
+                                                    $diasemana->addDays(5);
+                                                }
+                                                else {
+                                                    // dayOfWeek returns a number between 0 (sunday) and 6 (saturday)
+                                                    $diasemana = $dataanterior->dayOfWeek;
+                                                    if ($diasemana == 5) { //Sexta
+                                                        $dataanterior->addDays(3);
+                                                    }
+                                                    if ($diasemana == 4) { //Quinta
+                                                        $dataanterior->addDays(4);
+                                                    }
+                                                    if ($diasemana <= 3) { // seg a quarta
+                                                        $dataanterior->addDays(2);
+                                                    }
+                                                }
+
+
+                                                $periodo = CarbonPeriod::create($dataanterior, $smb_bdf_naoconciliado->Data);
+
+                                                if($periodo->count()>1){
+                                                    $avaliacao = 'Não Conforme';
+                                                    $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”,  referente ao período de '. date( 'd/m/Y' , strtotime($dtmenos90dias)). ' a ' . date( 'd/m/Y' , strtotime($dtnow)) .', constatou-se a existência de depositos na conta dos Correios pela Agência com prazo superior D+1. Evento em data anterior à '.date( 'd/m/Y' , strtotime($dataanterior)) ;
+                                                    $total = $smb_bdf_naoconciliado->BDFBoleto;
+                                                    $valorRisco = $smb_bdf_naoconciliado->BDFBoleto;
+                                                    break;
+                                                }
+                                            }
+                                            $dataanterior = new Carbon($smb_bdf_naoconciliado->Data);
+                                        }
+                                        if($periodo->count()>1){
+                                            $quebra = DB::table('relevancias')
+                                                ->select('valor_final' )
+                                                ->where('fator_multiplicador', '=', 1 )
+                                                ->first();
+                                            $quebracaixa = $quebra->valor_final * 0.1;
+
+                                            $fm = DB::table('relevancias')
+                                                ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                                ->where('valor_inicio', '<=', $total )
+                                                ->orderBy('valor_final' ,'desc')
+                                                ->first();
+                                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+
+                                            $evidencia = $evidencia."\n".'Data'."\t".'Valor do Boleto';
+                                            foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
+                                                $evidencia = $evidencia . "\n"
+                                                    . date('d/m/Y', strtotime($smb_bdf_naoconciliado->Data))
+                                                    . "\t" . 'R$ ' . number_format($smb_bdf_naoconciliado->BDFBoleto, 2, ',', '.');
+                                            }
+
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = $evidencia;
+                                            $itensdeinspecao->valorFalta = $valorFalta;
+                                            $itensdeinspecao->valorSobra = $valorSobra;
+                                            $itensdeinspecao->valorRisco = $valorRisco;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = $pontuado;
+                                            $itensdeinspecao->itemQuantificado = 'Sim';
+                                            $itensdeinspecao->orientacao = $registro->orientacao;
+                                            $itensdeinspecao->consequencias = null;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                            $itensdeinspecao->reincidencia = $reinc;
+                                            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                                                dd('line 977 ->  valor em risco ',$itensdeinspecao);
+                                            $itensdeinspecao->update();
+                                        }
+                                        else{
+                                            $avaliacao = 'Conforme';
+                                            $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de '.date( 'd/m/Y' , strtotime($dtmenos90dias)) .' a ' . date( 'd/m/Y' , strtotime($dtnow)).', verificou-se a inexistência de divergências.';
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = null;
+                                            $itensdeinspecao->valorFalta = 0.00;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = 0.00;
+                                            $itensdeinspecao->itemQuantificado = 'Não';
+                                            $itensdeinspecao->orientacao= null;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+//                                                dd('line -> 994' ,$itensdeinspecao);
+                                            $itensdeinspecao->update();
+                                        }
+                                    }
+//                                      Final  se divergencia é um valor igual zero
+                                }
+//                              Final  se há divergencia
+
+                            }
+//                              Final  se tem registro de pendências SMB_BDF
+//                              Inicio  se Não tem registro de pendências SMB_BDF
+                            else{
+                                $avaliacao = 'Conforme';
+                                $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de '.date( 'd/m/Y' , strtotime($dtmenos90dias)) .' a ' . date( 'd/m/Y' , strtotime($dtnow)).', verificou-se a inexistência de divergências.';
+
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select( 'itensdeinspecoes.*'  )
+                                    ->first();
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao  = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia  = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao   = 'Inspecionado';
+                                $itensdeinspecao->pontuado   = 0.00;
+                                $itensdeinspecao->itemQuantificado = 'Não';
+                                $itensdeinspecao->consequencias = null;
+                                $itensdeinspecao->orientacao= null;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+//                                    dd('line -> 1027 não tem registro de pendências SMB_BDF' ,$itensdeinspecao);
+                                $itensdeinspecao->update();
+                            }
+//                              Final  se Não tem registro de pendências SMB_BDF
+
+                        }
+//                      Final  do teste SMB_BDF
 
 
 
@@ -664,9 +1010,11 @@ class AvaliaInspecao implements ShouldQueue
                                 $itensdeinspecao->update();
 //                                     dd($competencia);
                             }
-                        } // fim doteste webCont
+                        }
+                        // fim doteste webCont
+
                     }
-                    // Fim do teste WebCont
+
                 }  // Fim do teste para todas superintendencias se superintendencia = 1
 
                 // inicio do testee para uma superintendencias
@@ -685,6 +1033,349 @@ class AvaliaInspecao implements ShouldQueue
                         ->get();
 //                  Inicio processamento da aavaliação
                     foreach ($registros as $registro) {
+
+//                       Inicio  do teste SMB_BDF
+                        if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 6))
+                            || (($registro->numeroGrupoVerificacao == 270)&&($registro->numeroDoTeste== 3))) {
+
+                            $reincidencia = DB::table('snci')
+                                ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                ->where([['descricao_item', 'like', '%valor depositado na conta bancária%']])
+                                ->where([['sto', '=', $registro->sto]])
+                                ->orderBy('no_inspecao', 'desc')
+                                ->first();
+                            try {
+                                if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                    $reincidente = 1;
+                                    $reinc = 'Sim';
+                                    $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                    $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                    $numeroItemReincidente = $reincidencia->no_item;
+                                    $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                    $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                    $reincidencia_dt_fim_inspecao->subMonth(3);
+                                    $reincidencia_dt_inic_inspecao->subMonth(3);
+                                    $evidencia=null;
+                                }
+                            } catch (\Exception $e) {
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia=null;
+                            }
+                            $smb_bdf_naoconciliados = DB::table('smb_bdf_naoconciliados')
+                                ->select(
+                                    'smb_bdf_naoconciliados.*'
+                                )
+                                ->where('mcu', '=', $registro->mcu)
+                                ->where('Divergencia', '<>', 0)
+                                ->where('Status', '=', 'Pendente')
+                                ->where('Data', '>=', $dtmenos90dias)
+                                ->orderBy('Data', 'asc')
+                                ->get();
+//                              Inicio  se tem registro de pendências SMB_BDF
+                            if (!$smb_bdf_naoconciliados->isEmpty()) {
+                                $count = $smb_bdf_naoconciliados->count('id');
+                                $dtfim = $smb_bdf_naoconciliados->max('Data');
+
+//                              Inicio  se há divergencia
+                                if ($count !== 0) {
+
+                                    $smb = $smb_bdf_naoconciliados->sum('SMBDinheiro') + $smb_bdf_naoconciliados->sum('SMBBoleto');
+                                    $bdf = $smb_bdf_naoconciliados->sum('BDFDinheiro') + $smb_bdf_naoconciliados->sum('BDFBoleto');
+                                    $divergencia = $smb_bdf_naoconciliados->sum('Divergencia');
+//                                      Inicio  se divergencia é um valor diferente de zero
+                                    if ($divergencia !== 0.0) {
+
+                                        foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
+                                            $smblast = $smb_bdf_naoconciliado->SMBDinheiro + $smb_bdf_naoconciliado->SMBBoleto;
+                                            $bdflast = $smb_bdf_naoconciliado->BDFDinheiro + $smb_bdf_naoconciliado->BDFBoleto;
+                                            $divergencialast = $smb_bdf_naoconciliado->Divergencia;
+                                            $total = ($smblast - $bdflast) - $divergencialast;
+                                        }
+//                                          Inicio Testa ultimo registro se tem compensação
+                                        if (($smblast + $bdflast) == ($divergencialast * -1)) {
+
+                                            $avaliacao = 'Conforme';
+                                            $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de '.date( 'd/m/Y' , strtotime($dtmenos90dias)) .' a ' . date( 'd/m/Y' , strtotime($dtnow)).', verificou-se a inexistência de divergências.';
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = $evidencia;
+                                            $itensdeinspecao->valorFalta = $valorFalta;
+                                            $itensdeinspecao->valorSobra = $valorSobra;
+                                            $itensdeinspecao->valorRisco = $valorRisco;
+                                            $itensdeinspecao->consequencias = null;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = 0.00;
+                                            $itensdeinspecao->itemQuantificado = 'Não';
+                                            $itensdeinspecao->orientacao= null;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+//                                            dd('line -> 818' ,$itensdeinspecao);
+//                                            $itensdeinspecao->update();
+
+                                        }
+//                                          Final Testa ultimo registro se tem compensação
+//                                          Inicio Testa ultimo registro com compensação
+                                        else{
+
+                                            $avaliacao = 'Não Conforme';
+                                            $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de ' . date( 'd/m/Y' , strtotime($dtmenos90dias)). ' a ' . date( 'd/m/Y' , strtotime($dtnow)) .', constatou-se a existência de divergências entre o valor depositado na conta bancária dos Correios pela Agência e o valor do bloqueto gerado no sistema SARA, no total de R$ ' .number_format($divergencia, 2, ',', '.').' , conforme relacionado a seguir:';
+
+                                            $evidencia = $evidencia ."\n".'Data'."\t".'Divergência'."\t".'Tipo';
+                                            foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado){
+                                                $evidencia = $evidencia. "\n"
+                                                    .date( 'd/m/Y' , strtotime($smb_bdf_naoconciliado->Data))
+                                                    ."\t".'R$ '.number_format($smb_bdf_naoconciliado->Divergencia, 2, ',', '.');
+
+                                                if(($smb_bdf_naoconciliado->BDFDinheiro<>0) && ($smb_bdf_naoconciliado->BDFCheque<>0) && ($smb_bdf_naoconciliado->BDFBoleto<>0)){
+                                                    $evidencia = $evidencia. "\t".'Dinheiro/Cheque/Boleto';
+                                                }
+                                                elseif (($smb_bdf_naoconciliado->BDFDinheiro<>0) && ($smb_bdf_naoconciliado->BDFBoleto<>0)){
+                                                    $evidencia = $evidencia. "\t".'Dinheiro/Boleto';
+                                                }
+                                                elseif (($smb_bdf_naoconciliado->BDFDinheiro<>0) && ($smb_bdf_naoconciliado->BDFCheque<>0)){
+                                                    $evidencia = $evidencia. "\t".'Dinheiro/Cheque';
+                                                }
+                                                elseif (($smb_bdf_naoconciliado->BDFBoleto<>0) && ($smb_bdf_naoconciliado->BDFCheque<>0)){
+                                                    $evidencia = $evidencia. "\t".'Boleto/Cheque';
+                                                }
+                                                elseif ($smb_bdf_naoconciliado->BDFDinheiro<>0){
+                                                    $evidencia = $evidencia . "\t".'Dinheiro';
+                                                }
+                                                elseif ($smb_bdf_naoconciliado->BDFBoleto<>0){
+                                                    $evidencia = $evidencia. "\t".'Boleto';
+                                                }
+                                                elseif ($smb_bdf_naoconciliado->BDFCheque<>0){
+                                                    $evidencia = $evidencia . "\t".'Cheque';
+                                                }
+                                                else{
+                                                    $evidencia = $evidencia . "\t".'Não identificado';
+                                                }
+                                            }
+
+                                            if($divergencia > 0.00) {
+                                                $total= $divergencia;
+                                                $evidencia = $evidencia. "\n".'Em Falta '.$divergencia;
+                                                $valorFalta = $total;
+                                                $valorSobra = null;
+                                                $valorRisco= null;
+//                                                o Dpto disse para pontuar como falta.pare
+
+                                            }
+                                            else{
+                                                $total= $divergencia *-1;
+                                                $evidencia = $evidencia."\n".'Em Falta '.$total;
+                                                $valorSobra = null;
+                                                $valorFalta = $total;
+                                                $valorRisco= null;
+                                            }
+//                                                dd('line 876',  $smb , $bdf ,$divergencia, $total );
+
+                                            $quebra = DB::table('relevancias')
+                                                ->select('valor_final' )
+                                                ->where('fator_multiplicador', '=', 1 )
+                                                ->first();
+                                            $quebracaixa = $quebra->valor_final * 0.1;
+                                            $fm = DB::table('relevancias')
+                                                ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                                ->where('valor_inicio', '<=', $total )
+                                                ->orderBy('valor_final' ,'desc')
+                                                ->first();
+                                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+
+//                                                dd('line 821',  $smb , $bdf ,$divergencia, $total );
+
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = $evidencia;
+                                            $itensdeinspecao->valorFalta = $valorFalta;
+                                            $itensdeinspecao->valorSobra = $valorSobra;
+                                            $itensdeinspecao->valorRisco = $valorRisco;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = $pontuado;
+                                            $itensdeinspecao->itemQuantificado = 'Sim';
+                                            $itensdeinspecao->orientacao = $registro->orientacao;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                            $itensdeinspecao->reincidencia = $reinc;
+                                            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                                                dd('line 917 -> ',$itensdeinspecao);
+                                            $itensdeinspecao->update();
+                                        }
+//                                          Final Testa ultimo registro com compensação
+                                    }
+//                                      Final  se divergencia é um valor diferente de zero
+
+//                                      Inicio  se divergencia é um valor igual zero
+                                    if ($divergencia == 0.0){
+
+                                        $dataanterior = null;
+                                        foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
+                                            if ($dataanterior !== null) {
+                                                $dataantual = $dataanterior;
+                                                $dataantual->addDays(1);
+                                                $unidade_enderecos = DB::table('unidade_enderecos')
+                                                    ->Where([['mcu', '=', $registro->mcu]])
+                                                    ->select( 'unidade_enderecos.*'  )
+                                                    ->first();
+                                                $feriado = DB::table('feriados')
+                                                    ->Where([['data_do_feriado', '=', $dataantual]])
+                                                    ->Where([['nome_municipio', '=', $unidade_enderecos->cidade]])
+                                                    ->Where([['uf', '=', $unidade_enderecos->uf]])
+                                                    ->select( 'feriados.*'  )
+                                                    ->first();
+                                                if($feriado)  {
+                                                    $diasemana = $dataanterior;
+                                                    $diasemana->addDays(5);
+                                                }
+                                                else {
+                                                    // dayOfWeek returns a number between 0 (sunday) and 6 (saturday)
+                                                    $diasemana = $dataanterior->dayOfWeek;
+                                                    if ($diasemana == 5) { //Sexta
+                                                        $dataanterior->addDays(3);
+                                                    }
+                                                    if ($diasemana == 4) { //Quinta
+                                                        $dataanterior->addDays(4);
+                                                    }
+                                                    if ($diasemana <= 3) { // seg a quarta
+                                                        $dataanterior->addDays(2);
+                                                    }
+                                                }
+
+
+                                                $periodo = CarbonPeriod::create($dataanterior, $smb_bdf_naoconciliado->Data);
+
+                                                if($periodo->count()>1){
+                                                    $avaliacao = 'Não Conforme';
+                                                    $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”,  referente ao período de '. date( 'd/m/Y' , strtotime($dtmenos90dias)). ' a ' . date( 'd/m/Y' , strtotime($dtnow)) .', constatou-se a existência de depositos na conta dos Correios pela Agência com prazo superior D+1. Evento em data anterior à '.date( 'd/m/Y' , strtotime($dataanterior)) ;
+                                                    $total = $smb_bdf_naoconciliado->BDFBoleto;
+                                                    $valorRisco = $smb_bdf_naoconciliado->BDFBoleto;
+                                                    break;
+                                                }
+                                            }
+                                            $dataanterior = new Carbon($smb_bdf_naoconciliado->Data);
+                                        }
+                                        if($periodo->count()>1){
+                                            $quebra = DB::table('relevancias')
+                                                ->select('valor_final' )
+                                                ->where('fator_multiplicador', '=', 1 )
+                                                ->first();
+                                            $quebracaixa = $quebra->valor_final * 0.1;
+
+                                            $fm = DB::table('relevancias')
+                                                ->select('fator_multiplicador', 'valor_final', 'valor_inicio' )
+                                                ->where('valor_inicio', '<=', $total )
+                                                ->orderBy('valor_final' ,'desc')
+                                                ->first();
+                                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+
+                                            $evidencia = $evidencia."\n".'Data'."\t".'Valor do Boleto';
+                                            foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
+                                                $evidencia = $evidencia . "\n"
+                                                    . date('d/m/Y', strtotime($smb_bdf_naoconciliado->Data))
+                                                    . "\t" . 'R$ ' . number_format($smb_bdf_naoconciliado->BDFBoleto, 2, ',', '.');
+                                            }
+
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = $evidencia;
+                                            $itensdeinspecao->valorFalta = $valorFalta;
+                                            $itensdeinspecao->valorSobra = $valorSobra;
+                                            $itensdeinspecao->valorRisco = $valorRisco;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = $pontuado;
+                                            $itensdeinspecao->itemQuantificado = 'Sim';
+                                            $itensdeinspecao->orientacao = $registro->orientacao;
+                                            $itensdeinspecao->consequencias = null;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+                                            $itensdeinspecao->reincidencia = $reinc;
+                                            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                                                dd('line 1314 ->  valor em risco ',$itensdeinspecao);
+                                            $itensdeinspecao->update();
+                                        }
+                                        else{
+                                            $avaliacao = 'Conforme';
+                                            $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de '.date( 'd/m/Y' , strtotime($dtmenos90dias)) .' a ' . date( 'd/m/Y' , strtotime($dtnow)).', verificou-se a inexistência de divergências.';
+                                            $dto = DB::table('itensdeinspecoes')
+                                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                                ->select( 'itensdeinspecoes.*'  )
+                                                ->first();
+                                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                            $itensdeinspecao->avaliacao  = $avaliacao;
+                                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                            $itensdeinspecao->evidencia  = null;
+                                            $itensdeinspecao->valorFalta = 0.00;
+                                            $itensdeinspecao->situacao   = 'Inspecionado';
+                                            $itensdeinspecao->pontuado   = 0.00;
+                                            $itensdeinspecao->itemQuantificado = 'Não';
+                                            $itensdeinspecao->orientacao= null;
+                                            $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+//                                                dd('line -> 994' ,$itensdeinspecao);
+                                            $itensdeinspecao->update();
+                                        }
+                                    }
+//                                      Final  se divergencia é um valor igual zero
+                                }
+//                              Final  se há divergencia
+
+                            }
+//                              Final  se tem registro de pendências SMB_BDF
+//                              Inicio  se Não tem registro de pendências SMB_BDF
+                            else{
+                                $avaliacao = 'Conforme';
+                                $oportunidadeAprimoramento = 'Em análise ao sistema SDE – Sistema de Depósito Bancário, na opção "Contabilização", Conciliação SMB x BDF – dados “Não Conciliados”, referente ao período de '.date( 'd/m/Y' , strtotime($dtmenos90dias)) .' a ' . date( 'd/m/Y' , strtotime($dtnow)).', verificou-se a inexistência de divergências.';
+
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select( 'itensdeinspecoes.*'  )
+                                    ->first();
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao  = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia  = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao   = 'Inspecionado';
+                                $itensdeinspecao->pontuado   = 0.00;
+                                $itensdeinspecao->itemQuantificado = 'Não';
+                                $itensdeinspecao->consequencias = null;
+                                $itensdeinspecao->orientacao= null;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado remotamente por Websgi em '.date( 'd/m/Y' , strtotime($dtnow)).'.';
+//                                    dd('line -> 1027 não tem registro de pendências SMB_BDF' ,$itensdeinspecao);
+                                $itensdeinspecao->update();
+                            }
+//                              Final  se Não tem registro de pendências SMB_BDF
+
+                        }
+//                      Final  do teste SMB_BDF
 
 
 //                      Inicio do teste PROTER
@@ -1263,8 +1954,6 @@ class AvaliaInspecao implements ShouldQueue
                             }
                         } // fim doteste webCont
                     }
-                    // Fim do teste WebCont
-
                 } // Fim do teste para uma superintendencias
             }
         }

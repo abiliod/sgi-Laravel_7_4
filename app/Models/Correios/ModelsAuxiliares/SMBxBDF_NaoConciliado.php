@@ -10,7 +10,6 @@ class SMBxBDF_NaoConciliado extends Model
 
     protected $fillable=
     [
-
           'mcu',
           'Agencia',
           'CNPJ',
@@ -24,12 +23,9 @@ class SMBxBDF_NaoConciliado extends Model
           'BDFBoleto',
           'Divergencia',
           'Status',
-
     ];
-
     protected $casts =
     [
         'Data' => 'date:Y-m-d',
-
     ];
 }
