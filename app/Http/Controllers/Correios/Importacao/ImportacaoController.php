@@ -4,25 +4,19 @@ namespace App\Http\Controllers\Correios\Importacao;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Correios\TipoDeUnidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 
 use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Concerns\ToModel;
-use phpDocumentor\Reflection\Types\Null_;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Carbon\Carbon;
 
 use App\Models\Correios\ModelsAuxiliares\FeriasPorMcu;
 use App\Imports\ImportFeriasPorMcu;
-use App\Exports\ExportFeriasPorMcu;
+
 
 use App\Models\Correios\UnidadeEndereco;
-use App\Imports\ImportUnidadeEndereco;
-use App\Exports\ExportUnidadeEndereco;
 
 
 use App\Models\Correios\ModelsAuxiliares\Feriado;
@@ -105,19 +99,17 @@ use App\Exports\ExportMicroStrategy;
 
 use App\Models\Correios\Unidade;
 use App\Imports\ImportUnidades;
-use App\Jobs\JobUnidades;
 
-use App\Models\Correios\ModelsAuxiliares\Snci;
+
 use App\Exports\ExportSnci;
 use App\Imports\ImportSnci;
 use App\Jobs\JobSnci;
 
-use App\Models\Correios\ModelsAuxiliares\Cadastral;
+
 use App\Imports\ImportCadastral;
 use App\Exports\ExportCadastral;
 use App\Jobs\JobCadastral;
 
-use PhpParser\Node\Stmt\TryCatch;
 
 class ImportacaoController extends Controller
 {
@@ -1603,9 +1595,8 @@ class ImportacaoController extends Controller
     public function exportSmb_bdf() {
         return Excel::download(new ExportSMBxBDF_NaoConciliado, 'SMBxBDF_NaoConciliado.xlsx');
     }
-    public function importSmb_bdf(Request $request)
-    {
-        $row = 0;
+    public function importSmb_bdf(Request $request) {
+
         $dtmenos120dias = Carbon::now();
         $dtmenos120dias = $dtmenos120dias->subDays(120);
         $validator = Validator::make($request->all(),[
@@ -1619,96 +1610,74 @@ class ImportacaoController extends Controller
             return redirect()->route('importacao');
         }
 
-//        if( $request->file('file')->getClientOriginalName() != "270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xlsx") {
-//            \Session::flash('mensagem',['msg'=>'Erro na Seleção do Arquivo.
-//            O Arquivo de ser  270-3-FINANCEIRO-SMB_ BDF_DepositosNaoConciliados.xls! Selecione Corretamente'
-//                ,'class'=>'red white-text']);
-//            return redirect()->route('importacao');
-//        }
+        if($validator->passes()) {
 
-        if($validator->passes())
-        {
             $SMBxBDF_NaoConciliado = Excel::toArray(new ImportSMBxBDF_NaoConciliado,  request()->file('file'));
-            foreach($SMBxBDF_NaoConciliado as $registros)
-            {
-                foreach($registros as $dado)
-                {
+
+            foreach($SMBxBDF_NaoConciliado as $registros) {
+                foreach($registros as $dado) {
+
                     $dt         = $this->transformDate($dado['data'])->format('Y-m-d');
                     $dt =   substr(   $dt,0,10);
                     try {
                         $dt         = $this->transformDate($dado['data']);
-                    }catch (Exception $e)
-                    {
+                    }catch (\Exception $e) {
                         $dt ='';
                     }
 
-                    if($dado['smbdinheiro'] != 0){
+                    if($dado['smbdinheiro'] != 0) {
                         $smbdinheiro = str_replace(",", ".", $dado['smbdinheiro']);
                     }
-                    else
-                    {
+                    else {
                         $smbdinheiro = 0.00;
                     }
 
                     if($dado['smbcheque'] != 0) {
                         $smbcheque = str_replace(",", ".", $dado['smbcheque']);
                     }
-                    else
-                    {
+                    else {
                         $smbcheque = 0.00;
                     }
 
-                    if($dado['smbboleto'] != 0)
-                    {
+                    if($dado['smbboleto'] != 0) {
                         $smbboleto = str_replace(",", ".", $dado['smbboleto']);
                     }
-                    else
-                    {
+                    else {
                         $smbboleto = 0.00;
                     }
 
-                    if($dado['smbestorno'] != 0)
-                    {
+                    if($dado['smbestorno'] != 0) {
                         $smbestorno = str_replace(",", ".", $dado['smbestorno']);
                     }
-                    else
-                    {
+                    else {
                         $smbestorno = 0.00;
                     }
 
-                    if($dado['bdfdinheiro'] != 0)
-                    {
+                    if($dado['bdfdinheiro'] != 0) {
                         $bdfdinheiro = str_replace(",", ".", $dado['bdfdinheiro']);
                     }
-                    else
-                    {
+                    else {
                         $bdfdinheiro = 0.00;
                     }
 
-                    if($dado['bdfcheque'] != 0)
-                    {
+                    if($dado['bdfcheque'] != 0) {
                         $bdfcheque = str_replace(",", ".", $dado['bdfcheque']);
                     }
-                    else
-                    {
+                    else {
                         $bdfcheque = 0.00;
                     }
 
-                    if($dado['bdfboleto'] != 0)
-                    {
+                    if($dado['bdfboleto'] != 0) {
                         $bdfboleto = str_replace(",", ".", $dado['bdfboleto']);
                     }
-                    else
-                    {
+                    else {
                         $bdfboleto = 0.00;
                     }
 
-                    if($dado['divergencia'] != 0)
-                    {
+                    if($dado['divergencia'] != 0) {
                         $divergencia = str_replace(",", ".", $dado['divergencia']);
                     }
-                    else
-                    {
+                    else {
                         $divergencia = 0.00;
                     }
 
@@ -1718,10 +1687,8 @@ class ImportacaoController extends Controller
                         ->select(
                             'smb_bdf_naoconciliados.id'
                         )
-                        ->first();
-
-                    if(!empty(  $res->id ))
-                    {
+                    ->first();
+                    if( ! empty( $res->id )) {
                         $smb_bdf_naoconciliados = SMBxBDF_NaoConciliado::find($res->id);
                         $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
                         $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
@@ -1737,10 +1704,8 @@ class ImportacaoController extends Controller
                         $smb_bdf_naoconciliados->bdfboleto = $bdfboleto;
                         $smb_bdf_naoconciliados->divergencia = $divergencia;
                     }
-                    else
-                    {
-                        if($dado['status'] == 'Pendente' )
-                        {
+                    else {
+                        if($dado['status'] == 'Pendente' ) {
                             $smb_bdf_naoconciliados = new SMBxBDF_NaoConciliado;
                             $smb_bdf_naoconciliados->mcu  = $dado['mcu'];
                             $smb_bdf_naoconciliados->agencia      = $dado['agencia'];
@@ -1758,14 +1723,14 @@ class ImportacaoController extends Controller
                         }
                     }
                     $smb_bdf_naoconciliados->save();
-                    $row ++;
+//                    $row ++;
                 }
             }
-            $affected = DB::table('smb_bdf_naoconciliados')
+            DB::table('smb_bdf_naoconciliados')
                 ->where('data', '<', $dtmenos120dias)
             ->delete();
 
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+            \Session::flash('mensagem',['msg'=>'O Arquivo subiu corretamente'
                 ,'class'=>'green white-text']);
 
             return redirect()->route('importacao');
@@ -2000,12 +1965,15 @@ class ImportacaoController extends Controller
         }
         if($validator->passes())
         {
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
             ini_set('memory_limit', '512M');
             $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
             $dt_job = Carbon::now();
-            ini_set('memory_limit', '128M');
 
-// ######################################  não ligar  job ainda, pois precisa ajuste.
+
+
+// ######################################  não ligar  job precisa debugar está dando erro cogigo 0 (zero).
 
 //            Try{
 //                $job = (new JobWebCont( $debitoEmpregados , $dt_job))
@@ -2015,6 +1983,9 @@ class ImportacaoController extends Controller
 //                dispatch($job);
 //                \Session::flash('mensagem', ['msg' => 'Job JobWebCont, aguardando processamento.'
 //                    , 'class' => 'blue white-text']);
+//                ini_set('memory_limit', '128M');
+//                ini_set('max_input_time', 60);
+//                ini_set('max_execution_time', 60);
 //                return redirect()->route('importacao');
 //            }
 //            catch (\Exception $e) {
@@ -2025,55 +1996,73 @@ class ImportacaoController extends Controller
 //                else {
 //                    \Session::flash('mensagem', ['msg' => 'Job JobWebCont, não pode ser importado. Erro '. $e->getCode() , 'class' => 'red white-text']);
 //                }
+//                ini_set('memory_limit', '128M');
+//                ini_set('max_input_time', 60);
+//                ini_set('max_execution_time', 60);
 //                return redirect()->route('importacao');
 //            }
 
             foreach($debitoEmpregados as $dados) {
-                foreach($dados as $registro) {
-                    $debitoEmpregado = new DebitoEmpregado;
-                    $debitoEmpregado->cia      = $registro['cia'];
-                    $debitoEmpregado->conta  = $registro['conta'];
-                    $debitoEmpregado->competencia  = $registro['competencia'];
+                foreach($dados as $dado) {
 
-//                    $time = strtotime($registro['data']);
-//                    $dt = date('Y-m-d',$time);
-//                    $dt = substr($registro['data'], 6, 4) . '-' . substr($registro['data'], 3, 2) . '-' . substr($registro['data'], 0, 2);
-//                    $debitoEmpregado->data         = $dt;
-//                    dd($dt , $registro['data']);
-//                    $dt         = $this->transformDate($registro['data']);
-//                    $debitoEmpregado->data         = $registro['data'];
-
-                    $dt         = $this->transformDate($registro['data']);
-                    $debitoEmpregado->data         = $dt;
-                    $debitoEmpregado->lote  = $registro['lote'];
-                    $debitoEmpregado->tp  = $registro['tp'];
-                    $debitoEmpregado->sto  = $registro['mcu_doc1'];
-                    $debitoEmpregado->nome_unidade  = $registro['nome_agencia_doc2'];
-                    $debitoEmpregado->historico  = $registro['historico'];
-                    $debitoEmpregado->valor  = $registro['valor'];
-                    $debitoEmpregado->observacoes  = $registro['observacoes'];
-                    $debitoEmpregado->documento  = $registro['documento_ref1'];
-                    $debitoEmpregado->matricula  = $registro['matricula_ref2'];
-                    $debitoEmpregado->nomeEmpregado  = $registro['nome_empregado_ref3'];
-                    $debitoEmpregado->justificativa  = $registro['justificativa_ad1'];
-                    $debitoEmpregado->regularizacao  = $registro['regularizacao'];
-                    $debitoEmpregado->acao  = $registro['acao'];
-                    $debitoEmpregado->regularizacao  = $registro['regularizacao'];
-                    $debitoEmpregado->anexo  = $registro['anexo'];
-                    $debitoEmpregado ->save();
-//                    dd(      $debitoEmpregado );
-                    $row++;
+                    if(! $dado['data']=='') {
+                        $data = $this->transformDate($dado['data']);
+                    }
+                    else {
+                        $data = null;
+                    }
+                    if( ! empty($dado['valor'])) {
+                        try {
+                            $valor = str_replace(",", ".", $dado['valor']);
+                        }
+                        catch (\Exception $e) {
+                            $valor = 0.00;
+                        }
+                    }
+                    else{
+                        $valor = 0.00;
+                    }
+//                    dd($dado);
+                   $res = DebitoEmpregado :: updateOrCreate([
+                        'conta' => $dado['conta']
+                        , 'matricula' => $dado['matricula_ref2']
+                        , 'data' => $data
+                   ],
+                        [
+                            'conta' => $dado['conta']
+                            , 'matricula' => $dado['matricula_ref2']
+                            , 'data' => $data
+                            , 'cia' => $dado['cia']
+                            , 'competencia' => $dado['competencia']
+                            , 'lote' => $dado['lote']
+                            , 'tp' => $dado['tp']
+                            , 'sto' => $dado['mcu_doc1']
+                            , 'nome_unidade' => $dado['nome_agencia_doc2']
+                            , 'historico' => $dado['historico']
+                            , 'observacoes' => $dado['observacoes']
+                            , 'documento' => $dado['documento_ref1']
+                            , 'nomeEmpregado' => $dado['nome_empregado_ref3']
+                            , 'justificativa' => $dado['justificativa_ad1']
+                            , 'regularizacao' => $dado['regularizacao']
+                            , 'acao' => $dado['acao']
+                            , 'anexo' => $dado['anexo']
+                            , 'valor' => $valor
+                        ]);
+//                    dd($res);
                 }
+//              higieniza a base de dados  excluindo por regional registros de
+//              competências anteriores que nao foram atualiados.
                 DB::table('debitoempregados')
-                    ->where('cia', '=', $registro['cia'])
-                    ->where('conta', '=', $registro['conta'])
-                    ->where('competencia', '<', $registro['competencia'])
+                    ->where('cia', '=', $dado['cia'])
+                    ->where('conta', '=', $dado['conta'])
+                    ->where('competencia', '<', $dado['competencia'])
+                    ->where('updated_at', '<', $dt_job)
                     ->delete();
             }
+            ini_set('max_input_time', 60);
+            ini_set('max_execution_time', 60);
 
-
-
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
+            \Session::flash('mensagem',['msg'=>'O Arquivo WebCont subiu Corretamente'
                 ,'class'=>'green white-text']);
             return redirect()->route('importacao');
         }else{
@@ -2081,6 +2070,7 @@ class ImportacaoController extends Controller
                 ,'class'=>'red white-text']);
             return redirect()->route('importacao');
         }
+
     }
     public function debitoEmpregados()
     {
