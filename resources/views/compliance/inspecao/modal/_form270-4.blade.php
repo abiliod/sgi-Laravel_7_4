@@ -4,7 +4,7 @@
             Em análise ao Relatório "Saldo de Numerário em relação ao Limite de Saldo",
             do sistema BDF,
             referente ao período de {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}
-            a  {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}}, constataram que não houve
+            a  {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}}, constataram que não houve
             descumprimento do limite de saldo estabelecido para a unidade.
         </span>
     </div>
@@ -15,11 +15,12 @@
         <span class="lever rigth">
             Em análise ao Relatório “Saldo de Numerário em relação ao Limite de Saldo", do sistema BDF,
             referente ao período de
-            {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}}, a
+            {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}}, a
             {{\Carbon\Carbon::parse($dtnow)->format('d/m/Y')}}
-            constataram que o limite do
+            constatou-se que o limite do
             saldo estabelecido para a unidade foi descumprido em {{$ocorrencias}} dias,
-            o que corresponde a uma média de {{ $mediaocorrencias }} ocorrências por mês, considerando o período, conforme detalhado a seguir:
+            o que corresponde a uma média de {{ $mediaocorrencias }} ocorrências por mês, considerando o
+            período, conforme detalhado a seguir:
         </span>
     </div>
     <div id="historico">
@@ -122,37 +123,7 @@
             </table>
         @endif
         <p></p>
-        @if(! $sl02bdfs120->isEmpty())
-            <span class="lever rigth">
-               No período de  {{\Carbon\Carbon::parse($dtmenos120dias)->format('d/m/Y')}} a {{\Carbon\Carbon::parse($dtmenos90dias)->format('d/m/Y')}}, constataram que o limite do
-               saldo estabelecido para a unidade foi descumprido em {{$ocorrencias120}} dias.  Média de {{ (number_format(($ocorrencias120/22)*100, 2, ',', '.')) }} por cento dos dias no período de 30 dias, e saldo médio ultrapassado de
-               {{ 'R$'.number_format($acumulados120/$ocorrencias120, 2, ',', '.') }}.
-            </span>
-            <table class="highlight">
-                <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Saldo de Numerário</th>
-                    <th>Limite de Saldo</th>
-                    <th>Diferença</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($sl02bdfs120 as $tabela)
-                    <tr>
-                        <td>{{ \Carbon\Carbon::parse($tabela->dt_movimento)->format('d/m/Y')}}</td>
-                        <td>{{ 'R$'.number_format($tabela->saldo_atual, 2, ',', '.') }}</td>
-                        <td>{{ 'R$'.number_format($tabela->limite, 2, ',', '.') }}</td>
-                        <td>{{ 'R$'.number_format($tabela->diferenca, 2, ',', '.') }}</td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td>Total</td>
-                    <td>{{  'R$ '.number_format($acumulados120, 2, ',', '.') }}</td>
-                </tr>
-                </tbody>
-            </table>
-        @endif
+
     </div>
     <div id="historico1"></div>
 

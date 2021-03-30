@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Correios;
 
 use App\Http\Controllers\Controller;
+use App\Models\Correios\ModelsAuxiliares\SL02_bdf;
 use App\Models\Correios\TesteDeVerificacao;
 use Auth;
 use Illuminate\Http\Request;
@@ -1396,173 +1397,286 @@ class InspecaoController extends Controller
                 ));
         }
 //      Final  do teste SMB_BDF
-            if((($registro->numeroGrupoVerificacao == 230)&&($registro->numeroDoTeste == 7))
-                || (($registro->numeroGrupoVerificacao==270)&&($registro->numeroDoTeste==4)))
+
+//                       Inicio  do teste SLD-02-BDF
+        if ((($registro->numeroGrupoVerificacao == 230) && ($registro->numeroDoTeste == 7))
+            || (($registro->numeroGrupoVerificacao == 270) && ($registro->numeroDoTeste == 4))) {
+
+            $acumulados30 = 0;
+            $acumulados60 = 0;
+            $acumulados90 = 0;
+            $ocorrencias30 = 0;
+            $ocorrencias60 = 0;
+            $ocorrencias90 = 0;
+            $codVerificacaoAnterior = null;
+            $numeroGrupoReincidente = null;
+            $numeroItemReincidente = null;
+            $evidencia = null;
+            $valorSobra = null;
+            $valorFalta = null;
+            $valorRisco = null;
+            $total = 0;
+            $pontuado = null;
+            $itemQuantificado='Não';
+            $reincidente = 0;
+            $reinc = 'Não';
+
+            $sl02bdfsMaxdata = SL02_bdf::where('cod_orgao', $registro->sto)->max('dt_movimento');
+
+            if(! empty($sl02bdfsMaxdata))
             {
+                $sl02bdfsMaxdata = new Carbon($sl02bdfsMaxdata);
+                $dtmenos30dias = new Carbon($sl02bdfsMaxdata);
+                $dtmenos60dias = new Carbon($sl02bdfsMaxdata);
+                $dtmenos90dias = new Carbon($sl02bdfsMaxdata);
+                $dtmenos30dias = $dtmenos30dias->subDays(30);
+                $dtmenos60dias = $dtmenos60dias->subDays(60);
+                $dtmenos90dias = $dtmenos90dias->subDays(90);
+                $evidencia = null;
+
                 $sl02bdfs30 = DB::table('sl02bdfs')
                     ->select('sl02bdfs.*')
                     ->where('cod_orgao', '=', $registro->sto)
-                    ->where('dt_movimento', '<=', $dtmenos30dias)
+                    ->where('dt_movimento', '>=', $dtmenos30dias)
                     ->where('diferenca', '>=', 1)
                     ->orderBy('dt_movimento', 'desc')
-                ->get();
+                    ->get();
+
+                if (! $sl02bdfs30->isEmpty()) {
+                    $acumulados30 = $sl02bdfs30->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias30 = $sl02bdfs30->count('diferenca');
+                    $evidencia = $evidencia. "\n" . 'Período '
+                        . date('d/m/Y', strtotime($sl02bdfsMaxdata)).', até '
+                        . date('d/m/Y', strtotime($dtmenos30dias)).'.';
+                    $evidencia = $evidencia. "\n" . 'Data' . "\t" . 'Saldo de Numerário' . "\t" . 'Limite de Saldo' . "\t" . 'Diferença' ;
+                    $row=1;
+                    foreach ($sl02bdfs30 as $tabela) {
+
+                        $evidencia = $evidencia . "\n" . date('d/m/Y', strtotime($tabela->dt_movimento))
+                            . "\t" . 'R$'.number_format($tabela->saldo_atual, 2, ',', '.')
+                            . "\t" . 'R$'.number_format($tabela->limite, 2, ',', '.')
+                            . "\t" . 'R$'.number_format($tabela->diferenca, 2, ',', '.');
+                        $row ++;
+                    }
+                    $acumulados30 = $acumulados30 / $row;
+                    $evidencia = $evidencia . "\n" .'Quantidade de ocorrências em 30 dias ' .$ocorrencias30
+                        .'. Quantidade média de ocorrências em 30 dias '
+                        .number_format((($ocorrencias30 / 23) * 100), 2, ',', '.')
+                        .'. Valor médio ultrapassado R$ '
+                        .number_format($acumulados30, 2, ',', '.');
+
+                }
 
                 $sl02bdfs60 = DB::table('sl02bdfs')
                     ->select('sl02bdfs.*')
                     ->where('cod_orgao', '=', $registro->sto)
-                    ->where('dt_movimento', '>', $dtmenos30dias)
-                    ->where('dt_movimento', '<=', $dtmenos60dias)
+                    ->where('dt_movimento', '<', $dtmenos30dias)
+                    ->where('dt_movimento', '>=', $dtmenos60dias)
                     ->where('diferenca', '>=', 1)
                     ->orderBy('dt_movimento', 'desc')
                     ->get();
+
+                if (! $sl02bdfs60->isEmpty()) {
+                    $acumulados60 = $sl02bdfs60->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias60 = $sl02bdfs60->count('diferenca');
+                    $evidencia = $evidencia. "\n" . 'Período '
+                        . date('d/m/Y', strtotime($dtmenos30dias)).', até '
+                        . date('d/m/Y', strtotime($dtmenos60dias)).'.';
+                    $evidencia = $evidencia. "\n" . 'Data' . "\t" . 'Saldo de Numerário' . "\t" . 'Limite de Saldo' . "\t" . 'Diferença' ;
+                    $row=1;
+                    foreach ($sl02bdfs60 as $tabela) {
+
+                        $evidencia = $evidencia . "\n" . date('d/m/Y', strtotime($tabela->dt_movimento))
+                            . "\t" . 'R$'.number_format($tabela->saldo_atual, 2, ',', '.')
+                            . "\t" . 'R$'.number_format($tabela->limite, 2, ',', '.')
+                            . "\t" . 'R$'.number_format($tabela->diferenca, 2, ',', '.');
+                        $row ++;
+                    }
+                    $acumulados60 = $acumulados60 / $row;
+                    $evidencia = $evidencia . "\n" .'Quantidade de ocorrências em 30 dias ' .$ocorrencias60
+                        .'. Quantidade média de ocorrências em 30 dias '
+                        .number_format((($ocorrencias60 / 23) * 100), 2, ',', '.')
+                        .'. Valor médio ultrapassado R$ '
+                        .number_format($acumulados60, 2, ',', '.');
+
+                }
 
                 $sl02bdfs90 = DB::table('sl02bdfs')
                     ->select('sl02bdfs.*')
                     ->where('cod_orgao', '=', $registro->sto)
-                    ->where('dt_movimento', '>', $dtmenos60dias)
-                    ->where('dt_movimento', '<=', $dtmenos90dias)
+                    ->where('dt_movimento', '<', $dtmenos60dias)
+                    ->where('dt_movimento', '>=', $dtmenos90dias)
                     ->where('diferenca', '>=', 1)
                     ->orderBy('dt_movimento', 'desc')
                     ->get();
 
-                $sl02bdfs120 = DB::table('sl02bdfs')
-                    ->select('sl02bdfs.*')
-                    ->where('cod_orgao', '=', $registro->sto)
-                    ->where('dt_movimento', '>', $dtmenos90dias)
-                    ->where('dt_movimento', '<=', $dtmenos120dias)
-                    ->where('diferenca', '>=', 1)
-                    ->orderBy('dt_movimento', 'desc')
-                ->get();
+                if (! $sl02bdfs90->isEmpty()) {
+                    $acumulados90 = $sl02bdfs90->sum('diferenca'); // soma a coluna valor da coleção de dados
+                    $ocorrencias90 = $sl02bdfs90->count('diferenca');
+                    $evidencia = $evidencia. "\n" . 'Período '
+                        . date('d/m/Y', strtotime($dtmenos60dias)).', até '
+                        . date('d/m/Y', strtotime($dtmenos90dias)).'.';
+                    $evidencia = $evidencia. "\n" . 'Data' . "\t" . 'Saldo de Numerário' . "\t" . 'Limite de Saldo' . "\t" . 'Diferença' ;
+                    $row=1;
+                    foreach ($sl02bdfs90 as $tabela) {
 
-                if(! $sl02bdfs30->isEmpty())
-                {
-                    $acumulados30  = $sl02bdfs30->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias30  = $sl02bdfs30->count('diferenca');
-                    if($ocorrencias30==0)
-                    {
-                        $media30=0;
+                        $evidencia = $evidencia . "\n" . date('d/m/Y', strtotime($tabela->dt_movimento))
+                            . "\t" . 'R$'.number_format($tabela->saldo_atual, 2, ',', '.')
+                            . "\t" . 'R$'.number_format($tabela->limite, 2, ',', '.')
+                            . "\t" . 'R$'.number_format($tabela->diferenca, 2, ',', '.');
+                        $row ++;
                     }
-                    else
-                    {
-                        $media30 =   $acumulados30/$ocorrencias30 ;
-                    }
-                    $limite = $sl02bdfs30->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem30 = $media30 / $limite;
-                }
-                else
-                {
-                    $acumulados30=0;
-                    $ocorrencias30=0;
-                    $media30=0;
-                    $porcentagem30=0;
-                }
-                if(! $sl02bdfs60->isEmpty())
-                {
-                    $acumulados60  = $sl02bdfs60->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias60  = $sl02bdfs60->count('diferenca');
-                    if($ocorrencias60==0)
-                    {
-                        $media60=0;
-                    }
-                    else
-                    {
-                        $media60 =   $acumulados60/$ocorrencias60 ;
-                    }
-                    $limite = $sl02bdfs60->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem60 = $media60 / $limite;
-                }
-                else
-                {
-                    $acumulados60=0;
-                    $ocorrencias60=0;
-                    $media60=0;
-                    $porcentagem60=0;
+                    $acumulados90 = $acumulados90 / $row;
+                    $evidencia = $evidencia . "\n" .'Quantidade de ocorrências em 30 dias ' .$ocorrencias90
+                        .'. Quantidade média de ocorrências em 30 dias '
+                        .number_format((($ocorrencias90 / 23) * 100), 2, ',', '.')
+                        .'. Valor médio ultrapassado R$ '
+                        .number_format($acumulados90, 2, ',', '.');
+
                 }
 
-                if(! $sl02bdfs90->isEmpty())
-                {
-                    $acumulados90  = $sl02bdfs90->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias90  = $sl02bdfs90->count('diferenca');
-                    if($ocorrencias90==0)
-                    {
-                        $media90=0;
-                    }
-                    else
-                    {
-                        $media90 =   $acumulados90/$ocorrencias90 ;
-                    }
-                    $limite = $sl02bdfs90->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem90 = $media90 / $limite;
-                }
-                else
-                {
-                    $acumulados90=0;
-                    $ocorrencias90=0;
-                    $media90=0;
-                    $porcentagem90=0;
+                if(($acumulados30 >= 1) && ($acumulados60 >= 1) && ($acumulados90 >= 1)){
+                    $total = ($acumulados30 + $acumulados60 + $acumulados90)/3;
+                    $ocorrencias = $ocorrencias30 + $ocorrencias60 + $ocorrencias90;
                 }
 
-                if(! $sl02bdfs120->isEmpty())
-                {
-                    $acumulados120  = $sl02bdfs120->sum('diferenca'); // soma a coluna valor da coleção de dados
-                    $ocorrencias120  = $sl02bdfs120->count('diferenca');
-                    if($ocorrencias120==0)
-                    {
-                        $media120=0;
-                    }
-                    else
-                    {
-                        $media120 =   $acumulados120/$ocorrencias120 ;
-                    }
-                    $limite = $sl02bdfs120->max('limite');
-                    if ($limite==0) $limite=1;
-                    $porcentagem120 = $media120 / $limite;
-                }
-                else
-                {
-                    $acumulados120=0;
-                    $ocorrencias120=0;
-                    $media120=0;
-                    $porcentagem120=0;
-                }
-                $total  =    $acumulados30+$acumulados60+$acumulados90+$acumulados120;
-                $ocorrencias = $ocorrencias30+$ocorrencias60+$ocorrencias90+$ocorrencias120;
-                if( $ocorrencias >= 1 )
-                {
-                    $mediaocorrencias = (($ocorrencias/120)*22);
-                    $mediaocorrencias = number_format($mediaocorrencias, 2, ',', '.');
-                }
-                else
-                {
-                    $mediaocorrencias = 0;
+                if(($acumulados30 >= 1) && ($acumulados60 >= 1) && ($acumulados90 == 0)){
+                    $total = ($acumulados30 + $acumulados60)/2;
+                    $ocorrencias = $ocorrencias30 + $ocorrencias60;
                 }
 
-//             Considerando-se o contido no MANAFI 3/2, Em situações emergenciais,
-//             devidamente justificadas, as unidades sem Banco Postal poderão pernoitar
-//             com valores superiores ao limite estabelecido, desde que a média de dias
-//             ultrapassados não extrapolem o percentual de 20% ao mês."", considerar
-//             como NÃO CONFORME o item quando em um período de 30 dias foram identificados
-//             7 ou mais dias em que o ""Limite de Saldo"" tenha sido ultrapassado.
-//             O período a ser verificado deverá ser a partir do dia anterior da verificação (D-1),
-//             retroagindo 90 dias. Caso o sistema não apresente dados do dia anterior,
-//             avaliar os últimos 90 dias, de forma retroativa, a partir da data que estiver disponível no sistema.
+                if(($acumulados30 >= 1) && ($acumulados60 == 0) && ($acumulados90 == 0)){
+                    $total = $acumulados30;
+                    $ocorrencias = $ocorrencias30;
+                }
 
-                return view('compliance.inspecao.editar',compact(
-                    'registro'
-                    ,'id'
-                    ,'total'
-                    ,'dtnow'
-                    ,'sl02bdfs30','acumulados30','ocorrencias30', 'media30', 'porcentagem30'
-                    ,'sl02bdfs60','acumulados60','ocorrencias60', 'media60', 'porcentagem60'
-                    ,'sl02bdfs90','acumulados90','ocorrencias90', 'media90', 'porcentagem90'
-                    ,'sl02bdfs120','acumulados120','ocorrencias120', 'media120', 'porcentagem120'
-                    ,'dtmenos30dias',  'dtmenos60dias' , 'dtmenos90dias' ,'dtmenos120dias'
-                    ,'ocorrencias','mediaocorrencias'
-                ));
+                if(($acumulados30 == 0) && ($acumulados60 >= 1) && ($acumulados90 == 0)){
+                    $total = $acumulados60;
+                    $ocorrencias = $ocorrencias60;
+                }
+
+                if(($acumulados30 == 0) && ($acumulados60 == 0) && ($acumulados90 >= 1)){
+                    $total = $acumulados90;
+                    $ocorrencias = $ocorrencias90;
+                }
+//                                  if ( ((($ocorrencias30 / 23) * 100) > 20)  || ((($ocorrencias60 / 23) * 100) > 20) || ((($ocorrencias90 / 23) * 100) > 20))  // 20%
+                if (($ocorrencias30 >= 7) || ($ocorrencias60 >= 7) || ($ocorrencias90 >= 7))   // maior ou igul 7 ocorrências imprime tudo
+                {
+                    $avaliacao = 'Não Conforme';
+                    $oportunidadeAprimoramento = 'Em análise ao Relatório "Saldo de Numerário em relação
+                                         ao Limite de Saldo", do sistema BDF, referente ao período de ' . date('d/m/Y', strtotime($dtnow))
+                        . ' a ' . date('d/m/Y', strtotime($dtmenos90dias)) . ',
+                                            constatou-se que que o limite do saldo estabelecido para a unidade foi descumprido em '
+                        . $ocorrencias . ' dias, o que corresponde a uma média de ' . $ocorrencias/3 . ' ocorrências por mês, considerando o período, conforme detalhado a seguir:';
+
+                    $reincidencia = DB::table('snci')
+                        ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                        ->where([['descricao_item', 'like', '%Saldo que Passa%']])
+                        ->where([['sto', '=', $registro->sto]])
+                        ->orderBy('no_inspecao', 'desc')
+                        ->first();
+
+                    try {
+                        if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                            $reincidente = 1;
+                            $reinc = 'Sim';
+                            $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                            $numeroGrupoReincidente = $reincidencia->no_grupo;
+                            $numeroItemReincidente = $reincidencia->no_item;
+                            $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                            $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                            $reincidencia_dt_fim_inspecao->subMonth(3);
+                            $reincidencia_dt_inic_inspecao->subMonth(3);
+                            $evidencia = null;
+                        }
+                    }
+                    catch (\Exception $e) {
+                        $reincidente = 0;
+                        $reinc = 'Não';
+                    }
+                    if ($total > 0.00) {
+                        $itemQuantificado ='Sim';
+                        $evidencia  = $evidencia . "\n" . 'Em Risco ' .number_format($total, 2, ',', '.');
+                        $valorFalta = null;
+                        $valorSobra = null;
+                        $valorRisco = $total;
+                    }
+
+                    $quebra = DB::table('relevancias')
+                        ->select('valor_final')
+                        ->where('fator_multiplicador', '=', 1)
+                        ->first();
+                    $quebracaixa = $quebra->valor_final * 0.1;
+
+                    if( $valorFalta > $quebracaixa){
+                        $fm = DB::table('relevancias')
+                            ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                            ->where('valor_inicio', '<=', $total)
+                            ->orderBy('valor_final', 'desc')
+                            ->first();
+
+                        $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                    }
+                    else{
+                        $pontuado = $registro->totalPontos * 1;
+                    }
+                }
+                else {
+                    $avaliacao = 'Conforme';
+                    $oportunidadeAprimoramento = 'Em análise ao Relatório "Saldo de Numerário em relação ao Limite
+                                         de Saldo", do sistema BDF, referente ao período de ' . date('d/m/Y', strtotime($dtnow)) . ' a '
+                        . date('d/m/Y', strtotime($dtmenos90dias)) . ',
+                                            constatou-se que não houve descumprimento do limite de saldo estabelecido para a unidade.';
+                }
             }
+            else {
+                $avaliacao = 'Nao Verificado';
+                $oportunidadeAprimoramento = 'Não há Registros na base de dados para avaliar a unidade.';
+            }
+
+            $dto = DB::table('itensdeinspecoes')
+                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                ->select('itensdeinspecoes.*')
+                ->first();
+
+            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+            $itensdeinspecao->avaliacao = $avaliacao;
+            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+            $itensdeinspecao->evidencia = $evidencia;
+            $itensdeinspecao->valorFalta = $valorFalta;
+            $itensdeinspecao->valorSobra = $valorSobra;
+            $itensdeinspecao->valorRisco = $valorRisco;
+            $itensdeinspecao->situacao = 'Inspecionado';
+            $itensdeinspecao->pontuado = $pontuado;
+            $itensdeinspecao->itemQuantificado = $itemQuantificado;
+            $itensdeinspecao->orientacao = $registro->orientacao;
+            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+            $itensdeinspecao->reincidencia = $reinc;
+            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//        dd('line  -> ',$itensdeinspecao);
+            $itensdeinspecao->update();
+
+            return view('compliance.inspecao.editar',compact(
+                'registro'
+                ,'id'
+                ,'total'
+                ,'dtnow'
+                ,'sl02bdfs30','acumulados30','ocorrencias30', 'media30', 'porcentagem30'
+                ,'sl02bdfs60','acumulados60','ocorrencias60', 'media60', 'porcentagem60'
+                ,'sl02bdfs90','acumulados90','ocorrencias90', 'media90', 'porcentagem90'
+                ,'sl02bdfs120','acumulados120','ocorrencias120', 'media120', 'porcentagem120'
+                ,'dtmenos30dias',  'dtmenos60dias' , 'dtmenos90dias' ,'dtmenos120dias'
+                ,'ocorrencias','mediaocorrencias'
+            ));
+        }
+//                       Final  do teste SLD-02-BDF
+
+
+
 
             if((($registro->numeroGrupoVerificacao == 205)&&($registro->numeroDoTeste == 2))
                 || (($registro->numeroGrupoVerificacao==334)&&($registro->numeroDoTeste==1))

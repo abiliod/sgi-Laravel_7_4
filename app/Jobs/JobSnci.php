@@ -84,7 +84,7 @@ class JobSnci implements ShouldQueue
                     try {
                         $dtultatu = substr($registro['dtultatu'], 6, 4) . '-' . substr($registro['dtultatu'], 3, 2) . '-' . substr($registro['dtultatu'], 0, 2);
 //                            $dtultatu = $this->transformDate($dtultatu)->format('Y-m-d');
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $dtultatu = null;
                     }
                 }
@@ -93,7 +93,7 @@ class JobSnci implements ShouldQueue
                     try {
                         $dt_inic_inspecao = substr($registro['dt_inic_inspecao'], 6, 4) . '-' . substr($registro['dt_inic_inspecao'], 3, 2) . '-' . substr($registro['dt_inic_inspecao'], 0, 2);
 //                            $dt_inic_inspecao = $this->transformDate($dt_inic_inspecao)->format('Y-m-d');
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $dt_inic_inspecao = null;
                     }
                 }
@@ -102,7 +102,7 @@ class JobSnci implements ShouldQueue
                     try {
                         $dt_fim_inspecao = substr($registro['dt_fim_inspecao'], 6, 4) . '-' . substr($registro['dt_fim_inspecao'], 3, 2) . '-' . substr($registro['dt_fim_inspecao'], 0, 2);
 //                            $dt_fim_inspecao = $this->transformDate($dt_fim_inspecao)->format('Y-m-d');
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $dt_fim_inspecao = null;
                     }
                 }
@@ -111,7 +111,7 @@ class JobSnci implements ShouldQueue
                     try {
                         $dt_encerram = substr($registro['dt_encerram'], 6, 4) . '-' . substr($registro['dt_encerram'], 3, 2) . '-' . substr($registro['dt_encerram'], 0, 2);
 //                            $dt_encerram = $this->transformDate($dt_encerram)->format('Y-m-d');
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $dt_encerram = null;
                     }
                 }

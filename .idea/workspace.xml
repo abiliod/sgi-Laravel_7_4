@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf.">
+    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="25/03/2020 changem ide.">
+      <change afterPath="$PROJECT_DIR$/app/Jobs/JobSLD_02_BDF.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sgiweb-Laravel_7_4.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sgiweb-Laravel_7_4.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/UnidadesController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobProter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobProter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobWebCont.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobWebCont.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SMBxBDF_NaoConciliado.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SMBxBDF_NaoConciliado.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/JobSnci.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobSnci.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SL02_bdf.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SL02_bdf.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-4.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-4.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +28,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -148,7 +156,11 @@
       <path value="$PROJECT_DIR$/vendor/fzaninotto/faker" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
       <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
     </include_path>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1q20UfjGYCoqoYL7ke14PhivnUz" />
   <component name="ProjectViewState">
@@ -158,6 +170,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -167,8 +180,20 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
-    <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
-      <TestRunner scope="XML" />
+    <configuration name="SgiWeb" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <CommandLine workingDirectory="$PROJECT_DIR$">
+        <PhpTestInterpreterSettings>
+          <option name="interpreterName" value="PHP 7.4" />
+        </PhpTestInterpreterSettings>
+      </CommandLine>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <CommandLine>
+        <PhpTestInterpreterSettings>
+          <option name="interpreterName" value="PHP 7.4" />
+        </PhpTestInterpreterSettings>
+      </CommandLine>
       <method v="2" />
     </configuration>
   </component>
@@ -236,7 +261,57 @@
       <workItem from="1616613809660" duration="3791000" />
       <workItem from="1616623090506" duration="1821000" />
       <workItem from="1616625063988" duration="3653000" />
-      <workItem from="1616671255307" duration="320000" />
+      <workItem from="1616671255307" duration="4177000" />
+      <workItem from="1616675556120" duration="621000" />
+      <workItem from="1616684264088" duration="1491000" />
+      <workItem from="1616685811795" duration="1365000" />
+      <workItem from="1616688300615" duration="1771000" />
+      <workItem from="1616690111181" duration="2269000" />
+      <workItem from="1616692650900" duration="2068000" />
+      <workItem from="1616708930806" duration="1903000" />
+      <workItem from="1616710886939" duration="878000" />
+      <workItem from="1616721919847" duration="734000" />
+      <workItem from="1616760265350" duration="1776000" />
+      <workItem from="1616762093165" duration="1777000" />
+      <workItem from="1616763912895" duration="1781000" />
+      <workItem from="1616765818516" duration="301000" />
+      <workItem from="1616766677835" duration="1908000" />
+      <workItem from="1616768654029" duration="144000" />
+      <workItem from="1616770541855" duration="870000" />
+      <workItem from="1616799565543" duration="1780000" />
+      <workItem from="1616801389284" duration="870000" />
+      <workItem from="1616843815422" duration="1236000" />
+      <workItem from="1616846512370" duration="730000" />
+      <workItem from="1617014382967" duration="171000" />
+      <workItem from="1617015786973" duration="1570000" />
+      <workItem from="1617017597452" duration="1792000" />
+      <workItem from="1617019433982" duration="1777000" />
+      <workItem from="1617021247239" duration="1779000" />
+      <workItem from="1617023060446" duration="2495000" />
+      <workItem from="1617025615844" duration="1778000" />
+      <workItem from="1617027423043" duration="1781000" />
+      <workItem from="1617029256926" duration="1534000" />
+      <workItem from="1617031257067" duration="1777000" />
+      <workItem from="1617033083923" duration="1529000" />
+      <workItem from="1617035427499" duration="1776000" />
+      <workItem from="1617037251980" duration="1779000" />
+      <workItem from="1617039060639" duration="1675000" />
+      <workItem from="1617041087080" duration="1496000" />
+      <workItem from="1617043414304" duration="782000" />
+      <workItem from="1617045376852" duration="1837000" />
+      <workItem from="1617047304852" duration="1745000" />
+      <workItem from="1617049194201" duration="1304000" />
+      <workItem from="1617051737069" duration="731000" />
+      <workItem from="1617058045630" duration="1500000" />
+      <workItem from="1617059863549" duration="1122000" />
+      <workItem from="1617072031946" duration="466000" />
+      <workItem from="1617097716558" duration="600000" />
+      <workItem from="1617101951178" duration="1763000" />
+      <workItem from="1617103762254" duration="1779000" />
+      <workItem from="1617105572293" duration="1805000" />
+      <workItem from="1617107419674" duration="995000" />
+      <workItem from="1617111166631" duration="1777000" />
+      <workItem from="1617112978681" duration="508000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -252,7 +327,28 @@
       <option name="project" value="LOCAL" />
       <updated>1616339163928</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf.">
+      <created>1616671619078</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1616671619078</updated>
+    </task>
+    <task id="LOCAL-00004" summary="25/03/2020 Inclusão de rotinas de avaliação automatica para proter, webcont e smb-bdf, adequação de função para geração manual de inspeções.">
+      <created>1616671763575</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1616671763575</updated>
+    </task>
+    <task id="LOCAL-00005" summary="25/03/2020 changem ide.">
+      <created>1616671883871</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1616671883871</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,20 +358,46 @@
     <MESSAGE value="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php." />
     <MESSAGE value="21/03/2020 Ajuste de funcionalidade para importação do Proter." />
     <MESSAGE value="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf." />
-    <option name="LAST_COMMIT_MESSAGE" value="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf." />
+    <MESSAGE value="25/03/2020 Inclusão de rotinas de avaliação automatica para proter, webcont e smb-bdf, adequação de função para geração manual de inspeções." />
+    <MESSAGE value="25/03/2020 changem ide." />
+    <option name="LAST_COMMIT_MESSAGE" value="25/03/2020 changem ide." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1616671605787">
+    <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1616671605787" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1616671623166">
+    <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1617021521486" />
+    <state x="470" y="68" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1617021424023">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1616671623166" />
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1616579717838">
+    <state x="470" y="68" key="#com.intellij.ide.macro.MacrosDialog/0.0.1366.728@0.0.1366.728" timestamp="1617021424023" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617111383949">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1616579717838" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617111383949" />
+    <state x="397" y="0" key="CommitChangelistDialog2" timestamp="1617113140179">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="397" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617113140179" />
+    <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="557" y="113" key="EnvironmentVariablesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617021519112" />
+    <state x="470" y="118" key="FileChooserDialogImpl" timestamp="1617021512231">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="470" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1617021512231" />
+    <state x="479" y="65" key="RollbackChangesDialog" timestamp="1616688415581">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1616688415581" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1616671887746">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1616671887746" />
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1617107473731" />
   </component>
 </project>

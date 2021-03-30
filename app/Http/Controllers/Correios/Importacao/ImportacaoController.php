@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Correios\Importacao;
 
 use App\Http\Controllers\Controller;
 
+use App\Jobs\JobSLD_02_BDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -52,7 +53,6 @@ use App\Exports\ExportAlarmes;
 use App\Models\Correios\ModelsAuxiliares\Absenteismo;
 use App\Imports\ImportAbsenteismo;
 use App\Exports\ExportAbsenteismo;
-
 
 use App\Models\Correios\ModelsAuxiliares\Evento;
 use App\Imports\ImportEventos;
@@ -109,6 +109,7 @@ use App\Jobs\JobSnci;
 use App\Imports\ImportCadastral;
 use App\Exports\ExportCadastral;
 use App\Jobs\JobCadastral;
+//use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 
 
 class ImportacaoController extends Controller
@@ -1508,49 +1509,98 @@ class ImportacaoController extends Controller
 
         if($validator->passes())
         {
-            $time='350';
-            ini_set('max_input_time', $time);
-            ini_set('max_execution_time', $time);
+            $dt_job = Carbon::now();
+            $row =0;
+            $dtmenos150dias = $dt_job->subDays(150);
 
             $SL02_bdfs = Excel::toArray(new ImportSL02_bdf,  request()->file('file'));
+            //  php artisan queue:work --queue=importacao
+            ini_set('memory_limit', '512M');
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
+
+            Try{
+                $job = (new JobSLD_02_BDF( $SL02_bdfs, $dt_job, $dtmenos150dias))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                \Session::flash('mensagem', ['msg' => 'JobSLD_02_BDF, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+
+                return redirect()->route('importacao');
+            } catch (\Exception $e) {
+                if(substr( $e->getCode(), 0, 2) == 'HY'){
+                    \Session::flash('mensagem', ['msg' => 'JobSLD_02_BDF, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: '.$e->getCode(), 'class' => 'red white-text']);
+                }else {
+                    \Session::flash('mensagem', ['msg' => 'JobSLD_02_BDF, não pode ser importado Erro: '.$e->getCode().''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+
+
+
+
             foreach($SL02_bdfs as $registros)
             {
                 foreach($registros as $dado)
                 {
-                    if(!empty($dado['dt_movimento']))
-                    {
-                        try
-                        {
-                            $dt = $this->transformDate(strtr($dado['dt_movimento'], '/', '-'));
-                        }
-                        catch (Exception $e)
-                        {
-                            $dt = null;
-                        }
-                    }
-                    else
-                    {
-                        $dt = null;
-                    }
 
-                    $saldo_atual = floatval($dado['saldo_atual']);
-                    $limite = floatval($dado['limitevlr_limite_banco_postal_e_ect']);
-                    $diferenca = $saldo_atual - $limite;
+                    if(!empty($dado['dta'])) {
+//                        Alguns sistemas legados exportam as datas para excel já no formato excel.
+//                        Visto que as Datas no Excel são armazenadas em números de dias a partir de 1 de Janeiro de 1900,
+//                        portanto, para datas após esse período você pode criar um objeto DateTime e adicionar a quantidade de dias
+//                        da planilha excel.
+                        try {
+//                            $dt_number = intVal($dado['dta']);
+//                            if (is_numeric($dt_number)) {
+//                                $dt = new Carbon('1899-12-30');
+//                                $dt = $dt->addDays($dt_number);
+//                            }
+                          $dt = substr($dado['dta'], 6, 4) . '-' . substr($dado['dta'], 3, 2) . '-' . substr($dado['dta'], 0, 2);
+                        }
+                        catch (Exception $e) {
+                                $dt = null;
+                            }
+                        }
+                    else {
+//                        outra rotina  codigos  identificar planilhas que trazem datas em outros formatos e
+//                     refatorar os  jobs  para padronizars verificar os jobs CADASTRAL, PROTER SNCI WEBCONT. daqui pra frente todos jobs
+//                        gerados já estarão padronizados.
+                    }
+                    $saldo_atual = floatval($dado['saldo']);
+                    $limite = floatval($dado['limite']);
+                    if($saldo_atual > $limite){
+                        $diferenca = $saldo_atual - $limite;
+                    }
+                    else{
+                        $diferenca = 0;
+                    }
 
                     $res = DB::table('sl02bdfs')
-                        ->where('cod_orgao', '=',  $dado['cod_orgao'])
+                        ->where('cod_orgao', '=',  $dado['sto'])
                         ->where('dt_movimento','=', $dt)
                         ->select(
                             'sl02bdfs.id'
                         )
                         ->first();
+
                     if(!empty(  $res->id ))
                     {
                         $sl02bdfs = SL02_bdf::find($res->id);
                         $sl02bdfs->dr      = $dado['dr'];
-                        $sl02bdfs->cod_orgao  = $dado['cod_orgao'];
-                        $sl02bdfs->reop  = $dado['reop'];
-                        $sl02bdfs->orgao  = $dado['orgao'];
+                        $sl02bdfs->cod_orgao  = $dado['sto'];
+                        $sl02bdfs->reop  = $dado['reven'];
+                        $sl02bdfs->orgao  = $dado['agncia'];
                         $sl02bdfs->dt_movimento = $dt;
                         $sl02bdfs->saldo_atual = $saldo_atual;
                         $sl02bdfs->limite = $limite;
@@ -1560,21 +1610,21 @@ class ImportacaoController extends Controller
                     {
                         $sl02bdfs = new SL02_bdf;
                         $sl02bdfs->dr      = $dado['dr'];
-                        $sl02bdfs->cod_orgao  = $dado['cod_orgao'];
-                        $sl02bdfs->reop  = $dado['reop'];
-                        $sl02bdfs->orgao  = $dado['orgao'];
+                        $sl02bdfs->cod_orgao  = $dado['sto'];
+                        $sl02bdfs->reop  = $dado['reven'];
+                        $sl02bdfs->orgao  = $dado['agncia'];
                         $sl02bdfs->dt_movimento = $dt;
                         $sl02bdfs->saldo_atual = $saldo_atual;
                         $sl02bdfs->limite = $limite;
                         $sl02bdfs->diferenca = $diferenca;
                     }
-                    // dd(          $sl02bdfs);
+//                     dd(          $sl02bdfs);
                     $sl02bdfs->save();
                     $row ++;
                 }
             }
             $affected = DB::table('sl02bdfs')
-                ->where('dt_movimento', '<', $dtmenos120dias)
+                ->where('dt_movimento', '<', $dtmenos150dias)
                 ->delete();
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
@@ -1772,8 +1822,10 @@ class ImportacaoController extends Controller
             ini_set('memory_limit', '512M');
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
+
             $proters = Excel::toArray(new ImportProter,  request()->file('file'));
             $dt_job = Carbon::now();
+
             ini_set('memory_limit', '128M');
 // ############### API carbon não está funcionando CORRETAMENTE com JOBs.
 //  php artisan queue:work --queue=importacao
@@ -1787,6 +1839,7 @@ class ImportacaoController extends Controller
                     ->onQueue('importacao')
                     ->delay($dt_job->addMinutes(1));
                 dispatch($job);
+
                 ini_set('memory_limit', '128M');
                 ini_set('max_input_time', 60);
                 ini_set('max_execution_time', 60);
@@ -2296,152 +2349,152 @@ class ImportacaoController extends Controller
         // não foi implementado em face da exiguidade do tempo ###########33333
         //  #############   o código a seguir comentado  está na classe de serviço. ->> JobSnci  ##########
 
-//            foreach ($snci as $dados) {
-//                foreach ($dados as $registro) {
-//
-////                    if (!empty($registro['dt_inic_desloc'])) {
-////                        try {
-////                            $dt_inic_desloc = substr($registro['dt_inic_desloc'], 6, 4) . '-' . substr($registro['dt_inic_desloc'], 3, 2) . '-' . substr($registro['dt_inic_desloc'], 0, 2);
-//////                            $dt_inic_desloc = $this->transformDate($dt_inic_desloc)->format('Y-m-d');
-////                        } catch (Exception $e) {
-////                            $dt_inic_desloc = null;
-////                        }
-////                    }
-////                    if (!empty($registro['dt_fim_desloc'])) {
-////                        try {
-////                            $dt_fim_desloc = substr($registro['dt_fim_desloc'], 6, 4) . '-' . substr($registro['dt_fim_desloc'], 3, 2) . '-' . substr($registro['dt_fim_desloc'], 0, 2);
-//////                            $dt_fim_desloc = $this->transformDate($dt_fim_desloc)->format('Y-m-d');
-////                        } catch (Exception $e) {
-////                            $dt_fim_desloc = null;
-////                        }
-////                    }
-////                    if (!empty($registro['data_previsao_solucao'])) {
-////                        try {
-////                            $data_previsao_solucao = substr($registro['data_previsao_solucao'], 6, 4) . '-' . substr($registro['data_previsao_solucao'], 3, 2) . '-' . substr($registro['data_previsao_solucao'], 0, 2);
-//////                            $data_previsao_solucao = $this->transformDate($data_previsao_solucao)->format('Y-m-d');
-////                        } catch (Exception $e) {
-////                            $data_previsao_solucao = null;
-////                        }
-////
-////                    }
-////                    if (!empty($registro['dt_posicao'])) {
-////                        try {
-////                            $dt_posicao = substr($registro['dt_posicao'], 6, 4) . '-' . substr($registro['dt_posicao'], 3, 2) . '-' . substr($registro['dt_posicao'], 0, 2);
-////                            $dt_posicao = $this->transformDate($dt_posicao)->format('Y-m-d');
-////                        } catch (Exception $e) {
-////                            $dt_posicao = null;
-////                        }
-////                    }
-////
-//
-//                    if (!empty($registro['dtultatu'])) {
-//                        try {
-//                            $dtultatu = substr($registro['dtultatu'], 6, 4) . '-' . substr($registro['dtultatu'], 3, 2) . '-' . substr($registro['dtultatu'], 0, 2);
-////                            $dtultatu = $this->transformDate($dtultatu)->format('Y-m-d');
-//                        } catch (Exception $e) {
-//                            $dtultatu = null;
-//                        }
-//                    }
-//
-//                    if (!empty($registro['dt_inic_inspecao'])) {
-//                        try {
-//                            $dt_inic_inspecao = substr($registro['dt_inic_inspecao'], 6, 4) . '-' . substr($registro['dt_inic_inspecao'], 3, 2) . '-' . substr($registro['dt_inic_inspecao'], 0, 2);
-////                            $dt_inic_inspecao = $this->transformDate($dt_inic_inspecao)->format('Y-m-d');
-//                        } catch (Exception $e) {
-//                            $dt_inic_inspecao = null;
-//                        }
-//                    }
-//
-//                    if (!empty($registro['dt_fim_inspecao'])) {
-//                        try {
-//                            $dt_fim_inspecao = substr($registro['dt_fim_inspecao'], 6, 4) . '-' . substr($registro['dt_fim_inspecao'], 3, 2) . '-' . substr($registro['dt_fim_inspecao'], 0, 2);
-////                            $dt_fim_inspecao = $this->transformDate($dt_fim_inspecao)->format('Y-m-d');
-//                        } catch (Exception $e) {
-//                            $dt_fim_inspecao = null;
-//                        }
-//                    }
-//
-//                    if (!empty($registro['dt_encerram'])) {
-//                        try {
-//                            $dt_encerram = substr($registro['dt_encerram'], 6, 4) . '-' . substr($registro['dt_encerram'], 3, 2) . '-' . substr($registro['dt_encerram'], 0, 2);
-////                            $dt_encerram = $this->transformDate($dt_encerram)->format('Y-m-d');
-//                        } catch (Exception $e) {
-//                            $dt_encerram = null;
-//                        }
-//                    }
-//
-//
-//
-//
-//                    if ($registro['falta'] > 0) {
-//                        $falta = str_replace(',', '.', $registro['falta']);
-//                    } else {
-//                        $falta = 0.00;
-//                    }
-//                    if( $registro['sobra'] > 0){
-//                        $sobra = str_replace(',', '.', $registro['sobra']);
-//                    }else{
-//                        $sobra=0.00;
-//                    }
-//                    if( $registro['emrisco'] > 0){
-//                        $risco = str_replace(',', '.', $registro['emrisco']);
-//                    }else{
-//                        $risco=0.00;
-//                    }
-//
-////                         var_dump($registro);
-////                      dd($registro);
-//
-//
-//                    $valor_recuperado = 0.00;
-//
-//                   Snci ::updateOrCreate([
-//                                'no_inspecao' =>  $registro['no_inspecao'],
-//                                'codigo_unidade' =>  $registro['codigo_unidade'],
-//                                'no_grupo' =>  $registro['no_grupo'],
-//                                'no_item' =>  $registro['no_item']
-//                          ], [
-//                                'modalidade' => $registro['modalidade'],
-//                                'diretoria' => $registro['diretoria'],
-//                                'codigo_unidade' => $registro['codigo_unidade'],
-//                                'descricao_da_unidade' => $registro['descricao_da_unidade'],
-//                                'no_inspecao' => $registro['no_inspecao'],
-//                                'no_grupo' => $registro['no_grupo'],
-//                                'descricao_do_grupo' => $registro['descricao_do_grupo'],
-//                                'no_item' => $registro['no_item'],
-//                                'descricao_item' => $registro['descricao_item'],
-//                                'codigo_reate' => $registro['codigo_reate'],
-//                                'ano' => $registro['ano'],
-//                                'sto' => $registro['codigo_unidade'],
-//                                'resposta' => $registro['resposta'],
-//                                'valor' => $registro['valor'],
-//                                'caracteresvlr' => $registro['caracteresvlr'],
-//                                'situacao' => $registro['situacao'],
-//                                'status' => $registro['status'],
-//                                            'comentario' => $registro['comentario'],
-//                                'sigla_do_status' => $registro['sigla_do_status'],
-//                                'descricao_do_status' => $registro['descricao_do_status'],
-//                                'dtultatu' => $dtultatu,
-//                                'dt_inic_inspecao' => $dt_inic_inspecao,
-//                                'dt_fim_inspecao' => $dt_fim_inspecao,
-//                                'dt_encerram' => $dt_encerram,
-//                                'status' => $registro['status'],
-//                                'sigla_do_status' => $registro['sigla_do_status'],
-//                                'descricao_do_status' => $registro['descricao_do_status'],
-//                                'falta' => $falta,
-//                                'sobra' => $sobra,
-//                                'emrisco' => $risco,
-//                                'valor_recuperado' => $valor_recuperado
-//                          ]);
-//
-//                   }
-//
-//            }
+            foreach ($snci as $dados) {
+                foreach ($dados as $registro) {
 
-//        \Session::flash('mensagem', ['msg' => 'OK o Arquivo foi importado.'
-//            , 'class' => 'blue white-text']);
-//        ini_set('memory_limit', '64M');
-//        return redirect()->route('importacao');
+//                    if (!empty($registro['dt_inic_desloc'])) {
+//                        try {
+//                            $dt_inic_desloc = substr($registro['dt_inic_desloc'], 6, 4) . '-' . substr($registro['dt_inic_desloc'], 3, 2) . '-' . substr($registro['dt_inic_desloc'], 0, 2);
+////                            $dt_inic_desloc = $this->transformDate($dt_inic_desloc)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dt_inic_desloc = null;
+//                        }
+//                    }
+//                    if (!empty($registro['dt_fim_desloc'])) {
+//                        try {
+//                            $dt_fim_desloc = substr($registro['dt_fim_desloc'], 6, 4) . '-' . substr($registro['dt_fim_desloc'], 3, 2) . '-' . substr($registro['dt_fim_desloc'], 0, 2);
+////                            $dt_fim_desloc = $this->transformDate($dt_fim_desloc)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dt_fim_desloc = null;
+//                        }
+//                    }
+//                    if (!empty($registro['data_previsao_solucao'])) {
+//                        try {
+//                            $data_previsao_solucao = substr($registro['data_previsao_solucao'], 6, 4) . '-' . substr($registro['data_previsao_solucao'], 3, 2) . '-' . substr($registro['data_previsao_solucao'], 0, 2);
+////                            $data_previsao_solucao = $this->transformDate($data_previsao_solucao)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $data_previsao_solucao = null;
+//                        }
+//
+//                    }
+//                    if (!empty($registro['dt_posicao'])) {
+//                        try {
+//                            $dt_posicao = substr($registro['dt_posicao'], 6, 4) . '-' . substr($registro['dt_posicao'], 3, 2) . '-' . substr($registro['dt_posicao'], 0, 2);
+//                            $dt_posicao = $this->transformDate($dt_posicao)->format('Y-m-d');
+//                        } catch (Exception $e) {
+//                            $dt_posicao = null;
+//                        }
+//                    }
+//
+
+                    if (!empty($registro['dtultatu'])) {
+                        try {
+                            $dtultatu = substr($registro['dtultatu'], 6, 4) . '-' . substr($registro['dtultatu'], 3, 2) . '-' . substr($registro['dtultatu'], 0, 2);
+//                            $dtultatu = $this->transformDate($dtultatu)->format('Y-m-d');
+                        } catch (Exception $e) {
+                            $dtultatu = null;
+                        }
+                    }
+
+                    if (!empty($registro['dt_inic_inspecao'])) {
+                        try {
+                            $dt_inic_inspecao = substr($registro['dt_inic_inspecao'], 6, 4) . '-' . substr($registro['dt_inic_inspecao'], 3, 2) . '-' . substr($registro['dt_inic_inspecao'], 0, 2);
+//                            $dt_inic_inspecao = $this->transformDate($dt_inic_inspecao)->format('Y-m-d');
+                        } catch (Exception $e) {
+                            $dt_inic_inspecao = null;
+                        }
+                    }
+
+                    if (!empty($registro['dt_fim_inspecao'])) {
+                        try {
+                            $dt_fim_inspecao = substr($registro['dt_fim_inspecao'], 6, 4) . '-' . substr($registro['dt_fim_inspecao'], 3, 2) . '-' . substr($registro['dt_fim_inspecao'], 0, 2);
+//                            $dt_fim_inspecao = $this->transformDate($dt_fim_inspecao)->format('Y-m-d');
+                        } catch (Exception $e) {
+                            $dt_fim_inspecao = null;
+                        }
+                    }
+
+                    if (!empty($registro['dt_encerram'])) {
+                        try {
+                            $dt_encerram = substr($registro['dt_encerram'], 6, 4) . '-' . substr($registro['dt_encerram'], 3, 2) . '-' . substr($registro['dt_encerram'], 0, 2);
+//                            $dt_encerram = $this->transformDate($dt_encerram)->format('Y-m-d');
+                        } catch (Exception $e) {
+                            $dt_encerram = null;
+                        }
+                    }
+
+
+
+
+                    if ($registro['falta'] > 0) {
+                        $falta = str_replace(',', '.', $registro['falta']);
+                    } else {
+                        $falta = 0.00;
+                    }
+                    if( $registro['sobra'] > 0){
+                        $sobra = str_replace(',', '.', $registro['sobra']);
+                    }else{
+                        $sobra=0.00;
+                    }
+                    if( $registro['emrisco'] > 0){
+                        $risco = str_replace(',', '.', $registro['emrisco']);
+                    }else{
+                        $risco=0.00;
+                    }
+
+//                         var_dump($registro);
+//                      dd($registro);
+
+
+                    $valor_recuperado = 0.00;
+
+                   Snci ::updateOrCreate([
+                                'no_inspecao' =>  $registro['no_inspecao'],
+                                'codigo_unidade' =>  $registro['codigo_unidade'],
+                                'no_grupo' =>  $registro['no_grupo'],
+                                'no_item' =>  $registro['no_item']
+                          ], [
+                                'modalidade' => $registro['modalidade'],
+                                'diretoria' => $registro['diretoria'],
+                                'codigo_unidade' => $registro['codigo_unidade'],
+                                'descricao_da_unidade' => $registro['descricao_da_unidade'],
+                                'no_inspecao' => $registro['no_inspecao'],
+                                'no_grupo' => $registro['no_grupo'],
+                                'descricao_do_grupo' => $registro['descricao_do_grupo'],
+                                'no_item' => $registro['no_item'],
+                                'descricao_item' => $registro['descricao_item'],
+                                'codigo_reate' => $registro['codigo_reate'],
+                                'ano' => $registro['ano'],
+                                'sto' => $registro['codigo_unidade'],
+                                'resposta' => $registro['resposta'],
+                                'valor' => $registro['valor'],
+                                'caracteresvlr' => $registro['caracteresvlr'],
+                                'situacao' => $registro['situacao'],
+                                'status' => $registro['status'],
+                                'comentario' => $registro['comentario'],
+                                'sigla_do_status' => $registro['sigla_do_status'],
+                                'descricao_do_status' => $registro['descricao_do_status'],
+                                'dtultatu' => $dtultatu,
+                                'dt_inic_inspecao' => $dt_inic_inspecao,
+                                'dt_fim_inspecao' => $dt_fim_inspecao,
+                                'dt_encerram' => $dt_encerram,
+                                'status' => $registro['status'],
+                                'sigla_do_status' => $registro['sigla_do_status'],
+                                'descricao_do_status' => $registro['descricao_do_status'],
+                                'falta' => $falta,
+                                'sobra' => $sobra,
+                                'emrisco' => $risco,
+                                'valor_recuperado' => $valor_recuperado
+                          ]);
+
+                   }
+
+            }
+
+        \Session::flash('mensagem', ['msg' => 'OK o Arquivo foi importado.'
+            , 'class' => 'blue white-text']);
+        ini_set('memory_limit', '64M');
+        return redirect()->route('importacao');
     }
     public function snci()
     {

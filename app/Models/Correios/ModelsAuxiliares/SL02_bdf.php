@@ -18,13 +18,12 @@ class SL02_bdf extends Model
         'dt_movimento',
         'saldo_atual',
         'limite',
+        'diferenca',
     ];
-
 
     protected $casts =
     [
         'dt_movimento' => 'date:Y-m-d',
-
     ];
 
 }
