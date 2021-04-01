@@ -46,26 +46,9 @@ class MonitoramentoController extends Controller
         $dtmenos6meses->subMonth(6);
         $dtmenos12meses->subMonth(12);
 
-        $reincidente = 0;
         $codVerificacaoAnterior = null;
         $numeroGrupoReincidente = null;
         $numeroItemReincidente = null;
-        $reinc = 'Não';
-        $valorFalta = 0.00;
-        $valorSobra = 0.00;
-        $valorRisco = 0.00;
-
-        $pontuado = 0.00;
-
-        $periodo = new CarbonPeriod();
-        $total = 0.00;
-        $ocorrencias = 0;
-        $row = 0;
-        $dtmax = '';
-        $count = 0;
-        $avaliacao = 'Conforme';
-        $oportunidadeAprimoramento = '';
-
         $validator = Validator::make($request->all(), [
             'superintendencia' => 'required'
             , 'tipodeunidade' => 'required'
@@ -122,6 +105,178 @@ class MonitoramentoController extends Controller
 
 //                      Inicio processamento da aavaliação
                         foreach ($registros as $registro) {
+
+//                      Inicio  do teste Extravio Responsabilidade Definida
+                            if((($registro->numeroGrupoVerificacao == 205)&&($registro->numeroDoTeste == 2))
+                                || (($registro->numeroGrupoVerificacao==334)&&($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==372)&&($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==286)&&($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==221)&&($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==354)&&($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao == 231)&&($registro->numeroDoTeste == 1))
+                                || (($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1))) {
+
+
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $consequencias = null;
+                                $orientacao = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+
+                                //verifica histórico de inspeções
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%objetos indenizados por extravio%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                    ->first();
+
+                                try {
+
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+
+                                        //se houver registros de inspeções anteriores  consulta  com range  entre datas
+                                        $resp_definidas = DB::table('resp_definidas')
+                                            ->select('mcu', 'unidade', 'data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data_pagamento', '<=', $dtmenos90dias)
+                                            ->where('data_pagamento', '>=', $reincidencia_dt_fim_inspecao)
+                                            ->where('nu_sei', '=', '')
+
+                                            ->get();
+
+                                    }
+                                    else{
+                                        $resp_definidas = DB::table('resp_definidas')
+                                            ->select('mcu', 'unidade', 'data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data_pagamento', '<=', $dtmenos90dias)
+                                            ->where('nu_sei', '=', '')
+                                            ->get();
+                                    }
+                                }
+                                catch (\Exception $e) {
+
+                                    $resp_definidas = DB::table('resp_definidas')
+                                        ->select('mcu', 'unidade', 'data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao')
+                                        ->where('mcu', '=', $registro->mcu)
+                                        ->where('data_pagamento', '<=', $dtmenos90dias)
+                                        ->where('nu_sei', '=', '')
+                                        ->get();
+                                }
+
+                                if (!$resp_definidas->isEmpty()) {
+                                    $count = $resp_definidas->count('objeto');
+                                    $total = $resp_definidas->sum('valor_da_indenizacao');
+                                    $dtmax = $dtmenos90dias;
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise à planilha de controle de processos de apuração de extravios de objetos indenizados com responsabilidade definida, disponibilizada pela área de Segurança da Superintendência Regional CSEP, que detem informações a partir de 2015 até ' . date('d/m/Y', strtotime($dtmax)) . ', constatou-se a existência de ' . $count . ' processos pendentes de conclusão há mais de 90 dias sob responsabilidade da unidade, conforme relacionado a seguir:';
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                    $valorFalta =  $total;
+                                    $evidencia = $evidencia. "\n" . 'Número Objeto' . "\t" . 'Número Processo' . "\t" . 'Data Processo' . "\t" . 'Data Atualização' . "\t" . 'Última Atualização' . "\t" . 'Valor' ;
+
+                                    foreach ($sl02bdfs90 as $tabela) {
+//      ########## ATENÇÃO ##########
+// 01/04/2020 Abilio esse trecho de código precisa ser testado não havia dados suficiete para implementar o
+// teste no desenvolvimento caso houver algum ajuste  aualizar o controller InspeçãoController para esse item.
+
+                                        $evidencia = $evidencia . "\n" . $tabela->objeto . "\t"
+                                            . (isset($tabela->nu_sei) && $tabela->nu_sei == ''  ? '   ----------  ' : $tabela->nu_sei)
+                                            . "\t" . (isset($tabela->data_pagamento) && $tabela->data_pagamento == ''  ? '   ----------  '
+                                                : date('d/m/Y', strtotime($tabela->data_pagamento)))
+                                            . "\t" . (isset($tabela->data) && $tabela->data == ''  ? '   ----------  '
+                                                : date('d/m/Y', strtotime($tabela->data)))
+                                            . "\t" . (isset($tabela->situacao) && $tabela->situacao == ''  ? '   ----------  '
+                                                : $tabela->situacao)
+                                            . "\t" .  'R$'.number_format($tabela->valor_da_indenizacao, 2, ',', '.');
+                                    }
+                                    $evidencia = $evidencia . "\n" . 'Valor em Falta :'. "\t" .  'R$'.number_format($valorFalta, 2, ',', '.');
+//        ####################
+                                } else {
+                                    $dtmax = $dtmenos90dias;
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise à planilha de controle de processos de apuração de extravios de objetos indenizados com responsabilidade definida, disponibilizada pela área de Segurança da Superintendência Regional CSEP, que detem informações a partir de 2015 até ' . date('d/m/Y', strtotime($dtmax)) . ', constatou-se a inexistência de processos pendentes de conclusão há mais de 90 dias sob responsabilidade da unidade.';
+                                }
+
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
+
+                                if( $valorFalta > $quebracaixa){
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+                                    $pontuado = $registro->totalPontos * 1;
+                                }
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                          dd('line 1400 -> ',$itensdeinspecao);
+                                $itensdeinspecao->update();
+//
+//                                    return view('compliance.inspecao.editar', compact
+//                                    (
+//                                        'registro'
+//                                        , 'id'
+//                                        , 'total'
+//                                        , 'resp_definidas'
+//                                        , 'dtmax'
+//                                        , 'dtmin'
+//                                        , 'count'
+//                                    ));
+
+                            }
+//                      Final  do teste Extravio Responsabilidade Definida
+
 
 //                       Inicio  do teste SLD-02-BDF
                             if ((($registro->numeroGrupoVerificacao == 230) && ($registro->numeroDoTeste == 7))
@@ -716,7 +871,6 @@ class MonitoramentoController extends Controller
                             }
 //                      Final  do teste SMB_BDF
 
-
 //                      Inicio do teste PROTER
                             if ((($registro->numeroGrupoVerificacao == 202) && ($registro->numeroDoTeste == 1))
                                 || (($registro->numeroGrupoVerificacao == 332) && ($registro->numeroDoTeste == 1))
@@ -1298,10 +1452,182 @@ class MonitoramentoController extends Controller
                             ini_set('memory_limit', '512M');
                             ini_set('max_input_time', 350);
                             ini_set('max_execution_time', 350);
+//Proximo alarmes
 
                             ini_set('memory_limit', '128M');
                             ini_set('max_input_time', 120);
                             ini_set('max_execution_time', 120);
+
+//                      Inicio  do teste Extravio Responsabilidade Definida
+                            if((($registro->numeroGrupoVerificacao == 205)&&($registro->numeroDoTeste == 2))
+                                || (($registro->numeroGrupoVerificacao==334)&&($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==372)&&($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==286)&&($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==221)&&($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==354)&&($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao == 231)&&($registro->numeroDoTeste == 1))
+                                || (($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1))) {
+
+
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $consequencias = null;
+                                $orientacao = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+
+                                //verifica histórico de inspeções
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%objetos indenizados por extravio%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                ->first();
+
+                                try {
+
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+
+                                        //se houver registros de inspeções anteriores  consulta  com range  entre datas
+                                        $resp_definidas = DB::table('resp_definidas')
+                                            ->select('mcu', 'unidade', 'data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data_pagamento', '<=', $dtmenos90dias)
+                                            ->where('data_pagamento', '>=', $reincidencia_dt_fim_inspecao)
+                                            ->where('nu_sei', '=', '')
+
+                                        ->get();
+
+                                    }
+                                    else{
+                                        $resp_definidas = DB::table('resp_definidas')
+                                            ->select('mcu', 'unidade', 'data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data_pagamento', '<=', $dtmenos90dias)
+                                            ->where('nu_sei', '=', '')
+                                        ->get();
+                                    }
+                                }
+                                catch (\Exception $e) {
+
+                                    $resp_definidas = DB::table('resp_definidas')
+                                        ->select('mcu', 'unidade', 'data_pagamento', 'objeto', 'nu_sei', 'data', 'situacao', 'valor_da_indenizacao')
+                                        ->where('mcu', '=', $registro->mcu)
+                                        ->where('data_pagamento', '<=', $dtmenos90dias)
+                                        ->where('nu_sei', '=', '')
+                                    ->get();
+                                }
+
+                                if (!$resp_definidas->isEmpty()) {
+                                    $count = $resp_definidas->count('objeto');
+                                    $total = $resp_definidas->sum('valor_da_indenizacao');
+                                    $dtmax = $dtmenos90dias;
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise à planilha de controle de processos de apuração de extravios de objetos indenizados com responsabilidade definida, disponibilizada pela área de Segurança da Superintendência Regional CSEP, que detem informações a partir de 2015 até ' . date('d/m/Y', strtotime($dtmax)) . ', constatou-se a existência de ' . $count . ' processos pendentes de conclusão há mais de 90 dias sob responsabilidade da unidade, conforme relacionado a seguir:';
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                    $valorFalta =  $total;
+                                    $evidencia = $evidencia. "\n" . 'Número Objeto' . "\t" . 'Número Processo' . "\t" . 'Data Processo' . "\t" . 'Data Atualização' . "\t" . 'Última Atualização' . "\t" . 'Valor' ;
+
+                                    foreach ($sl02bdfs90 as $tabela) {
+//      ########## ATENÇÃO ##########
+// 01/04/2020 Abilio esse trecho de código precisa ser testado não havia dados suficiete para implementar o
+// teste no desenvolvimento caso houver algum ajuste  aualizar o controller InspeçãoController para esse item.
+
+                                        $evidencia = $evidencia . "\n" . $tabela->objeto . "\t"
+                                            . (isset($tabela->nu_sei) && $tabela->nu_sei == ''  ? '   ----------  ' : $tabela->nu_sei)
+                                            . "\t" . (isset($tabela->data_pagamento) && $tabela->data_pagamento == ''  ? '   ----------  '
+                                                : date('d/m/Y', strtotime($tabela->data_pagamento)))
+                                            . "\t" . (isset($tabela->data) && $tabela->data == ''  ? '   ----------  '
+                                                : date('d/m/Y', strtotime($tabela->data)))
+                                            . "\t" . (isset($tabela->situacao) && $tabela->situacao == ''  ? '   ----------  '
+                                                : $tabela->situacao)
+                                            . "\t" .  'R$'.number_format($tabela->valor_da_indenizacao, 2, ',', '.');
+                                      }
+                                    $evidencia = $evidencia . "\n" . 'Valor em Falta :'. "\t" .  'R$'.number_format($valorFalta, 2, ',', '.');
+//        ####################
+                            } else {
+                                    $dtmax = $dtmenos90dias;
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise à planilha de controle de processos de apuração de extravios de objetos indenizados com responsabilidade definida, disponibilizada pela área de Segurança da Superintendência Regional CSEP, que detem informações a partir de 2015 até ' . date('d/m/Y', strtotime($dtmax)) . ', constatou-se a inexistência de processos pendentes de conclusão há mais de 90 dias sob responsabilidade da unidade.';
+                                }
+
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
+
+                                if( $valorFalta > $quebracaixa){
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+                                    $pontuado = $registro->totalPontos * 1;
+                                }
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                          dd('line 1400 -> ',$itensdeinspecao);
+                                $itensdeinspecao->update();
+//
+//                                    return view('compliance.inspecao.editar', compact
+//                                    (
+//                                        'registro'
+//                                        , 'id'
+//                                        , 'total'
+//                                        , 'resp_definidas'
+//                                        , 'dtmax'
+//                                        , 'dtmin'
+//                                        , 'count'
+//                                    ));
+
+                            }
+//                      Final  do teste Extravio Responsabilidade Definida
 
 
 //                       Inicio  do teste SLD-02-BDF
@@ -1314,6 +1640,8 @@ class MonitoramentoController extends Controller
                                 $ocorrencias30 = 0;
                                 $ocorrencias60 = 0;
                                 $ocorrencias90 = 0;
+
+                                $evidencia = null;
                                 $codVerificacaoAnterior = null;
                                 $numeroGrupoReincidente = null;
                                 $numeroItemReincidente = null;
@@ -1483,7 +1811,7 @@ class MonitoramentoController extends Controller
                                             ->first();
 
                                         try {
-                                            if ($reincidencia->no_inspecao > 1) {
+                                        if ($reincidencia->no_inspecao > 1) {
 //                                        dd($reincidencia);
                                                 $reincidente = 1;
                                                 $reinc = 'Sim';

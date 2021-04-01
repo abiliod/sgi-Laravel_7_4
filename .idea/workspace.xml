@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="25/03/2020 changem ide.">
-      <change afterPath="$PROJECT_DIR$/app/Jobs/JobSLD_02_BDF.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sgiweb-Laravel_7_4.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sgiweb-Laravel_7_4.iml" afterDir="false" />
+    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobSnci.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobSnci.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SL02_bdf.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/SL02_bdf.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/sld02_bdf.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-4.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form270-4.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -311,7 +301,23 @@
       <workItem from="1617105572293" duration="1805000" />
       <workItem from="1617107419674" duration="995000" />
       <workItem from="1617111166631" duration="1777000" />
-      <workItem from="1617112978681" duration="508000" />
+      <workItem from="1617112978681" duration="969000" />
+      <workItem from="1617134755165" duration="999000" />
+      <workItem from="1617141765738" duration="1783000" />
+      <workItem from="1617143591389" duration="1776000" />
+      <workItem from="1617145396178" duration="1535000" />
+      <workItem from="1617147675313" duration="861000" />
+      <workItem from="1617152130849" duration="597000" />
+      <workItem from="1617185052959" duration="596000" />
+      <workItem from="1617186861036" duration="67000" />
+      <workItem from="1617214677954" duration="1740000" />
+      <workItem from="1617216470972" duration="1345000" />
+      <workItem from="1617271850608" duration="1785000" />
+      <workItem from="1617273694787" duration="1787000" />
+      <workItem from="1617275552128" duration="1770000" />
+      <workItem from="1617277350317" duration="1690000" />
+      <workItem from="1617280832952" duration="799000" />
+      <workItem from="1617287376045" duration="924000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -348,7 +354,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616671883871</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="30/03/2020 Inclusão de rotina para avaliar Saldo que passa, alteração da rotina de importação da planilha saldo que passa criação do serviço de importação para saldo que passa inclusão de serviço para avaliação automática para saldo que passa e ajuste no controle para saldo que passa para ficar aderente a inspeção automática. atualização de dependências via json.">
+      <created>1617113737049</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1617113737049</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +373,8 @@
     <MESSAGE value="25/03/2020 Inclusão de rotinas de importação proter ajuste para SMB_bdf." />
     <MESSAGE value="25/03/2020 Inclusão de rotinas de avaliação automatica para proter, webcont e smb-bdf, adequação de função para geração manual de inspeções." />
     <MESSAGE value="25/03/2020 changem ide." />
-    <option name="LAST_COMMIT_MESSAGE" value="25/03/2020 changem ide." />
+    <MESSAGE value="30/03/2020 Inclusão de rotina para avaliar Saldo que passa, alteração da rotina de importação da planilha saldo que passa criação do serviço de importação para saldo que passa inclusão de serviço para avaliação automática para saldo que passa e ajuste no controle para saldo que passa para ficar aderente a inspeção automática. atualização de dependências via json." />
+    <option name="LAST_COMMIT_MESSAGE" value="30/03/2020 Inclusão de rotina para avaliar Saldo que passa, alteração da rotina de importação da planilha saldo que passa criação do serviço de importação para saldo que passa inclusão de serviço para avaliação automática para saldo que passa e ajuste no controle para saldo que passa para ficar aderente a inspeção automática. atualização de dependências via json." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -375,10 +389,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617111383949" />
-    <state x="397" y="0" key="CommitChangelistDialog2" timestamp="1617113140179">
+    <state x="397" y="0" key="CommitChangelistDialog2" timestamp="1617113735078">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="397" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617113140179" />
+    <state x="397" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617113735078" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -391,10 +405,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1616688415581" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1616671887746">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617113746196">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1616671887746" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617113746196" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
