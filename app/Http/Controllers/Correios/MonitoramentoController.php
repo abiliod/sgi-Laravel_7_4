@@ -1325,8 +1325,9 @@ class MonitoramentoController extends Controller
                                                         ->first();
 //                                                    if(! $feriado->isEmpty()) {
                                                     if ($feriado) {
-                                                        $diasemana = $dataanterior->dayOfWeek;
-                                                        $diasemana->addDays(4);
+                                                        $diasemana = $dataanterior;
+                                                        $diasemana->addDays(5);
+
                                                     } else {
                                                         // dayOfWeek returns a number between 0 (sunday) and 6 (saturday)
                                                         $diasemana = $dataanterior->dayOfWeek;
@@ -3282,8 +3283,10 @@ class MonitoramentoController extends Controller
                                                         ->first();
 //                                                    if(! $feriado->isEmpty()) {
                                                     if ($feriado) {
-                                                        $diasemana = $dataanterior->dayOfWeek;
-                                                        $diasemana->addDays(4);
+
+                                                        $diasemana = $dataanterior;
+                                                        $diasemana->addDays(5);
+
                                                     } else {
                                                         // dayOfWeek returns a number between 0 (sunday) and 6 (saturday)
                                                         $diasemana = $dataanterior->dayOfWeek;

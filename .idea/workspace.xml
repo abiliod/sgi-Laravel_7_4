@@ -347,6 +347,7 @@
       <workItem from="1617632742449" duration="1712000" />
       <workItem from="1617634571409" duration="1701000" />
       <workItem from="1617640311250" duration="1811000" />
+      <workItem from="1617642433834" duration="3720000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -418,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617635648329</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="05/04/2020 Correção de bug  pendências SMB_BDF.">
+      <created>1617642624965</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1617642624965</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -434,7 +442,8 @@
     <MESSAGE value="01/04/2020 Inclusão de rotina para avaliar Responsabilidade Definida,   inclusão de serviço para avaliação automática para e ajuste no controle de imspeção manual ficar aderente a inspeção automática." />
     <MESSAGE value="05/04/2020 Inclusão de rotina para avaliar Responsabilidade Alarme,   inclusão de serviço para avaliação automática para alarme ajuste no controle de imspeção manual ficar aderente a inspeção automática correção de bug no sistema de gerar inspeção." />
     <MESSAGE value="05/04/2020 Inclusão de rotina  job importação de alarme." />
-    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Inclusão de rotina  job importação de alarme." />
+    <MESSAGE value="05/04/2020 Correção de bug  pendências SMB_BDF." />
+    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Correção de bug  pendências SMB_BDF." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -449,10 +458,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617622373957" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617635646886">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617642623165">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617635646886" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617642623165" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -465,10 +474,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1616688415581" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617635653698">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617642627192">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617635653698" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617642627192" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
