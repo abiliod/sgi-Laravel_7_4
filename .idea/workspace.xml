@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/JobSLD_02_BDF.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobSLD_02_BDF.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-2.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +25,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -317,7 +322,36 @@
       <workItem from="1617275552128" duration="1770000" />
       <workItem from="1617277350317" duration="1690000" />
       <workItem from="1617280832952" duration="799000" />
-      <workItem from="1617287376045" duration="924000" />
+      <workItem from="1617287376045" duration="1243000" />
+      <workItem from="1617291318029" duration="1404000" />
+      <workItem from="1617298752752" duration="1773000" />
+      <workItem from="1617300583473" duration="1711000" />
+      <workItem from="1617302630682" duration="1967000" />
+      <workItem from="1617304629655" duration="1781000" />
+      <workItem from="1617306441495" duration="1782000" />
+      <workItem from="1617309775485" duration="1770000" />
+      <workItem from="1617311593657" duration="2586000" />
+      <workItem from="1617314225675" duration="1911000" />
+      <workItem from="1617316169710" duration="627000" />
+      <workItem from="1617358393940" duration="1786000" />
+      <workItem from="1617360239009" duration="812000" />
+      <workItem from="1617362186710" duration="1789000" />
+      <workItem from="1617364005992" duration="1773000" />
+      <workItem from="1617366042915" duration="859000" />
+      <workItem from="1617368120170" duration="501000" />
+      <workItem from="1617370117744" duration="1124000" />
+      <workItem from="1617371931090" duration="3200000" />
+      <workItem from="1617389779718" duration="645000" />
+      <workItem from="1617391601435" duration="599000" />
+      <workItem from="1617393418160" duration="1633000" />
+      <workItem from="1617395644766" duration="133000" />
+      <workItem from="1617621076851" duration="1759000" />
+      <workItem from="1617622884488" duration="1710000" />
+      <workItem from="1617624713591" duration="1538000" />
+      <workItem from="1617626528586" duration="2348000" />
+      <workItem from="1617628922399" duration="713000" />
+      <workItem from="1617632742449" duration="1712000" />
+      <workItem from="1617634571409" duration="711000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -361,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617113737049</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="01/04/2020 Inclusão de rotina para avaliar Responsabilidade Definida,   inclusão de serviço para avaliação automática para e ajuste no controle de imspeção manual ficar aderente a inspeção automática.">
+      <created>1617289127982</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1617289127982</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,7 +415,8 @@
     <MESSAGE value="25/03/2020 Inclusão de rotinas de avaliação automatica para proter, webcont e smb-bdf, adequação de função para geração manual de inspeções." />
     <MESSAGE value="25/03/2020 changem ide." />
     <MESSAGE value="30/03/2020 Inclusão de rotina para avaliar Saldo que passa, alteração da rotina de importação da planilha saldo que passa criação do serviço de importação para saldo que passa inclusão de serviço para avaliação automática para saldo que passa e ajuste no controle para saldo que passa para ficar aderente a inspeção automática. atualização de dependências via json." />
-    <option name="LAST_COMMIT_MESSAGE" value="30/03/2020 Inclusão de rotina para avaliar Saldo que passa, alteração da rotina de importação da planilha saldo que passa criação do serviço de importação para saldo que passa inclusão de serviço para avaliação automática para saldo que passa e ajuste no controle para saldo que passa para ficar aderente a inspeção automática. atualização de dependências via json." />
+    <MESSAGE value="01/04/2020 Inclusão de rotina para avaliar Responsabilidade Definida,   inclusão de serviço para avaliação automática para e ajuste no controle de imspeção manual ficar aderente a inspeção automática." />
+    <option name="LAST_COMMIT_MESSAGE" value="01/04/2020 Inclusão de rotina para avaliar Responsabilidade Definida,   inclusão de serviço para avaliação automática para e ajuste no controle de imspeção manual ficar aderente a inspeção automática." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -385,14 +427,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="470" y="68" key="#com.intellij.ide.macro.MacrosDialog/0.0.1366.728@0.0.1366.728" timestamp="1617021424023" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617111383949">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617622373957">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617111383949" />
-    <state x="397" y="0" key="CommitChangelistDialog2" timestamp="1617113735078">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617622373957" />
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617289124441">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="397" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617113735078" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617289124441" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -405,10 +447,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1616688415581" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617113746196">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617289133243">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617113746196" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617289133243" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

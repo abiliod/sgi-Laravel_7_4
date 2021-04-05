@@ -42,6 +42,7 @@ class JobSLD_02_BDF implements ShouldQueue
         DB::table('sl02bdfs')
             ->where('dt_movimento', '<', $dtmenos150dias)
         ->delete();
+
         ini_set('memory_limit', '512M');
 
         foreach($SL02_bdfs as $registros) {
@@ -89,6 +90,7 @@ class JobSLD_02_BDF implements ShouldQueue
 
             }
         }
+
         ini_set('memory_limit', '128M');
     }
 }

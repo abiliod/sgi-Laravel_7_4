@@ -40,6 +40,7 @@ return [
             'driver' => 'sync',
         ],
 
+//  php artisan queue:work --queue=importacao
         'importacao' => [
             'driver' => 'database',
             'table' => 'jobs',

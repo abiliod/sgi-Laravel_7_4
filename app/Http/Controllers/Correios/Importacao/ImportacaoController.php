@@ -49,6 +49,7 @@ use App\Jobs\JobWebCont;
 use App\Models\Correios\Alarme;
 use App\Imports\ImportAlarmes;
 use App\Exports\ExportAlarmes;
+use App\Jobs\JobAlarmes;
 
 use App\Models\Correios\ModelsAuxiliares\Absenteismo;
 use App\Imports\ImportAbsenteismo;
@@ -1281,6 +1282,7 @@ class ImportacaoController extends Controller
     {
         $row = 0;
         $dtmenos12meses = Carbon::now();
+        $dt_job = Carbon::now();
         $dtmenos12meses = $dtmenos12meses->subMonth(12);
 
         $validator = Validator::make($request->all(),[
@@ -1298,10 +1300,46 @@ class ImportacaoController extends Controller
         if($validator->passes())
         {
 
+            //  php artisan queue:work --queue=importacao
+            ini_set('memory_limit', '512M');
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
 
             $alarmes = Excel::toArray(new ImportAlarmes,  request()->file('file'));
+
+            Try{
+                $job = (new JobAlarmes( $alarmes, $dt_job, $dtmenos12meses))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'JobAlarmes, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+
+                return redirect()->route('importacao');
+            } catch (\Exception $e) {
+                if(substr( $e->getCode(), 0, 2) == 'HY'){
+                    \Session::flash('mensagem', ['msg' => 'JobAlarmes, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: '.$e->getCode(), 'class' => 'red white-text']);
+                }else {
+                    \Session::flash('mensagem', ['msg' => 'JobAlarmes, não pode ser importado Erro: '.$e->getCode().''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+
+
+
+
+
 
             foreach($alarmes as $dados)
             {
@@ -1373,7 +1411,7 @@ class ImportacaoController extends Controller
     }
     /// ######################### FIM ALARMES #######################
 
-    /// ######################### BLOCO  RespDefinida  ###################
+    /// ######################### BLOCO  RespDefinida  nao tem job  aguardando definição com o 01-04=2020 departamento ###################
     public function exportRespDefinida()
     {
         return Excel::download(new ExportRespDefinida, 'RespDefinida.xlsx');
@@ -1990,8 +2028,6 @@ class ImportacaoController extends Controller
             return redirect()->route('importacao');
         }
     }
-
-
     public function proter()
     {
         return view('compliance.importacoes.proter');  //

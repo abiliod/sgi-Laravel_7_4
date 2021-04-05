@@ -4,7 +4,7 @@
         <span>
             Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de
             {{ date( 'd/m/Y' , strtotime($dtmenos12meses ))}}
-            a {{ date( 'd/m/Y' , strtotime($now))}}, constataram que:
+            a {{ date( 'd/m/Y' , strtotime($now))}}, constatou-se que:
         </span>
     </div>
     <div id="historico">{{ $naoMonitorado }}</div>
@@ -120,6 +120,7 @@
     </table>
     @endif
 
+        
     @if(isset($tempoAberturaPosExpediente)&&(!empty($tempoAberturaPosExpediente)))
     <p><span>Unidade em Risco. Abertura da unidade em horário fora do padrão
      em relação ao horário de fechamento da unidade conforme a seguir:</span> </p>

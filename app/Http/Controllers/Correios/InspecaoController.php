@@ -579,6 +579,7 @@ class InspecaoController extends Controller
                 ));
             }
 //      Final do teste WebCont
+
 //      Início do teste PROTER
             if((($registro->numeroGrupoVerificacao == 202)&&($registro->numeroDoTeste == 1))
                 || (($registro->numeroGrupoVerificacao == 332)&&($registro->numeroDoTeste ==1))
@@ -716,7 +717,7 @@ class InspecaoController extends Controller
                                 ->where('valor_inicio', '<=', $total )
                                 ->orderBy('valor_final' ,'desc')
                                 ->first();
-                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                            if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
                         }
 
                         $avaliacao = 'Não Conforme';
@@ -913,7 +914,7 @@ class InspecaoController extends Controller
                                     ->where('valor_inicio', '<=', $total)
                                     ->orderBy('valor_final', 'desc')
                                     ->first();
-                                $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
                             }
 
                             $avaliacao = 'Não Conforme';
@@ -1194,7 +1195,7 @@ class InspecaoController extends Controller
                                 ->where('valor_inicio', '<=', $total )
                                 ->orderBy('valor_final' ,'desc')
                                 ->first();
-                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                            if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
 
 //                                                dd('line 821',  $smb , $bdf ,$divergencia, $total );
 
@@ -1292,7 +1293,7 @@ class InspecaoController extends Controller
                                 ->where('valor_inicio', '<=', $total )
                                 ->orderBy('valor_final' ,'desc')
                                 ->first();
-                            $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                            if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
 
                             $evidencia = $evidencia."\n".'Data'."\t".'Valor do Boleto';
                             foreach ($smb_bdf_naoconciliados as $smb_bdf_naoconciliado) {
@@ -1616,10 +1617,10 @@ class InspecaoController extends Controller
                             ->orderBy('valor_final', 'desc')
                             ->first();
 
-                        $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                        if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
                     }
                     else{
-                        $pontuado = $registro->totalPontos * 1;
+                        if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
                     }
                 }
                 else {
@@ -1684,7 +1685,6 @@ class InspecaoController extends Controller
             || (($registro->numeroGrupoVerificacao==354)&&($registro->numeroDoTeste==1))
             || (($registro->numeroGrupoVerificacao == 231)&&($registro->numeroDoTeste == 1))
             || (($registro->numeroGrupoVerificacao==271)&&($registro->numeroDoTeste==1))) {
-
 
             $codVerificacaoAnterior = null;
             $numeroGrupoReincidente = null;
@@ -1801,10 +1801,10 @@ class InspecaoController extends Controller
                     ->where('valor_inicio', '<=', $total)
                     ->orderBy('valor_final', 'desc')
                     ->first();
-                $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
             }
             else{
-                $pontuado = $registro->totalPontos * 1;
+                if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
             }
             $dto = DB::table('itensdeinspecoes')
                 ->Where([['inspecao_id', '=', $registro->inspecao_id]])
@@ -1849,29 +1849,154 @@ class InspecaoController extends Controller
 
 //  Inicio  do teste Alarme Arme/desarme
 
-            if((($registro->numeroGrupoVerificacao == 206 )&&($registro->numeroDoTeste == 1 ))
-                || (( $registro->numeroGrupoVerificacao == 335 ) && ( $registro->numeroDoTeste == 1 ))
-                || (($registro->numeroGrupoVerificacao == 232)&&($registro->numeroDoTeste == 3 ))
-                || (( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 )))
-            {
-                $now=$dtnow->format('Y-m-d');
-                $rowAberturaFinalSemana=0;
-                $tempoDesarme='';
-                $tempoDePermanencia='';
-                $acessosEmFeriados='';
-                $dataultimoevento='';
-                $aviso='';
-                $diferencaAbertura ='';
-                $tempoAbertura ='';//armazena tempo de abertura menor que o previsto
-                $riscoAbertura ='';//armazena risco abertura fora do horário de atendimento
-                $rowtempoAbertura=0;
-                $rowriscoAbertura=0;
-                $rowtempoAberturaAntecipada=0;
-                $rowtempoAberturaPosExpediente=0;
-                $tempoAberturaPosExpediente='';
-                $tempoAberturaAntecipada='';
-                $naoMonitorado='';
-                $acessos_final_semana ='';
+        if((($registro->numeroGrupoVerificacao == 206 )&&($registro->numeroDoTeste == 1 ))
+            || (( $registro->numeroGrupoVerificacao == 335 ) && ( $registro->numeroDoTeste == 1 ))
+            || (($registro->numeroGrupoVerificacao == 232)&&($registro->numeroDoTeste == 3 ))
+            || (( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 )))
+        {
+            $now=$dtnow->format('Y-m-d');
+            $rowAberturaFinalSemana=0;
+            $tempoDesarme='';
+            $tempoDePermanencia=0;
+            $acessosEmFeriados='';
+            $dataultimoevento='';
+            $aviso='';
+            $diferencaAbertura ='';
+            $tempoAbertura ='';//armazena tempo de abertura menor que o previsto
+            $riscoAbertura ='';//armazena risco abertura fora do horário de atendimento
+            $rowtempoAbertura=0;
+            $rowriscoAbertura=0;
+            $rowtempoAberturaAntecipada=0;
+            $rowtempoAberturaPosExpediente=0;
+            $tempoAberturaPosExpediente='';
+            $tempoAberturaAntecipada='';
+            $naoMonitorado='';
+            $acessos_final_semana ='';
+            $codVerificacaoAnterior = null;
+            $numeroGrupoReincidente = null;
+            $numeroItemReincidente = null;
+            $evidencia = null;
+            $valorSobra = null;
+            $valorFalta = null;
+            $valorRisco = null;
+            $total = 0;
+            $pontuado = null;
+            $itemQuantificado = 'Não';
+            $reincidente = 0;
+            $reinc = 'Não';
+            $dtmin = $dtnow;
+            $count = 0;
+            $naoMonitorado = null;
+
+            //verifica histórico de inspeções
+            $reincidencia = DB::table('snci')
+                ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                ->where([['descricao_item', 'like', '%alarme funciona corretamente%']])
+                ->where([['sto', '=', $registro->sto]])
+                ->orderBy('no_inspecao', 'desc')
+                ->first();
+
+            try {
+                if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                    $reincidente = 1;
+                    $reinc = 'Sim';
+                    $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                    $numeroGrupoReincidente = $reincidencia->no_grupo;
+                    $numeroItemReincidente = $reincidencia->no_item;
+                    $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                    $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                    $reincidencia_dt_fim_inspecao->subMonth(3);
+                    $reincidencia_dt_inic_inspecao->subMonth(3);
+                    //se houver registros de inspeções anteriores  consulta  com range  entre datas
+
+//                                        ############   Finais de semana  #################
+                    $alarmesFinalSemana = DB::table('alarmes')
+                        ->select('alarmes.*')
+                        ->where('mcu', '=', $registro->mcu)
+                        ->where('data', '>=', $reincidencia_dt_fim_inspecao)
+                        ->whereIn('diaSemana', [0, 6])
+                        ->orderBy('data' ,'asc')
+                        ->orderBy('hora' ,'asc')
+                        ->get();
+
+//                                  ############   Feriados #################
+                    $feriadoporUnidades = DB::table('unidades')
+                        ->join('unidade_enderecos', 'unidades.mcu', '=', 'unidade_enderecos.mcu')
+                        ->join('feriados', 'unidade_enderecos.cidade', '=', 'feriados.nome_municipio')
+                        ->select(
+                            'feriados.*'
+                        )
+                        ->where([['unidades.mcu', '=', $registro->mcu]])
+                        ->where('data_do_feriado', '>=', $reincidencia_dt_fim_inspecao)
+                        ->get();
+
+
+                    $eventosf = DB::table('alarmes')
+                        ->select('alarmes.*')
+                        ->where('mcu', '=', $registro->mcu)
+                        ->where('data', '>=', $reincidencia_dt_fim_inspecao)
+                        ->where('armedesarme', '=', 'Desarme')
+                        ->orderBy('data' ,'asc')
+                        ->orderBy('hora' ,'asc')
+                        ->get();
+
+//                                  ############   Início Acessos fora do Padrão   #################
+                    $eventos = DB::table('alarmes')
+                        ->select('alarmes.*')
+                        ->where('mcu', '=', $registro->mcu)
+                        ->where('data', '>', $reincidencia_dt_fim_inspecao)
+                        ->orderBy('data' ,'asc')
+                        ->orderBy('hora' ,'asc')
+                        ->get();
+
+                }
+                else{
+
+//                                        ############   Finais de semana  #################
+                    $alarmesFinalSemana = DB::table('alarmes')
+                        ->select('alarmes.*')
+                        ->where('mcu', '=', $registro->mcu)
+                        ->where('data', '>', $dtmenos12meses)
+                        ->whereIn('diaSemana', [0, 6])
+                        ->orderBy('data' ,'asc')
+                        ->orderBy('hora' ,'asc')
+                        ->get();
+
+                    ############   Feriados #################
+                    $feriadoporUnidades = DB::table('unidades')
+                        ->join('unidade_enderecos', 'unidades.mcu', '=', 'unidade_enderecos.mcu')
+                        ->join('feriados', 'unidade_enderecos.cidade', '=', 'feriados.nome_municipio')
+                        ->select(
+                            'feriados.*'
+                        )
+                        ->where([['unidades.mcu', '=', $registro->mcu]])
+                        ->where('data_do_feriado', '>=', $dtmenos12meses)
+                        ->get();
+
+                    $eventosf = DB::table('alarmes')
+                        ->select('alarmes.*')
+                        ->where('mcu', '=', $registro->mcu)
+                        ->where('data', '>=', $dtmenos12meses)
+                        ->where('armedesarme', '=', 'Desarme')
+                        ->orderBy('data' ,'asc')
+                        ->orderBy('hora' ,'asc')
+                        ->get();
+//                                  ############   Início Acessos fora do Padrão   #################
+                    $eventos = DB::table('alarmes')
+                        ->select('alarmes.*')
+                        ->where('mcu', '=', $registro->mcu)
+                        ->where('data', '>=', $dtmenos12meses)
+                        ->where('armedesarme', '=', 'Desarme')
+                        ->orderBy('data' ,'asc')
+                        ->orderBy('hora' ,'asc')
+                        ->get();
+                }
+            }
+
+            catch (\Exception $e) {
+
+//                              ############   Finais de semana  #################
                 $alarmesFinalSemana = DB::table('alarmes')
                     ->select('alarmes.*')
                     ->where('mcu', '=', $registro->mcu)
@@ -1879,71 +2004,108 @@ class InspecaoController extends Controller
                     ->whereIn('diaSemana', [0, 6])
                     ->orderBy('data' ,'asc')
                     ->orderBy('hora' ,'asc')
-                ->get();
+                    ->get();
 
-                if(! $alarmesFinalSemana->isEmpty())
-                {
+                ############   Feriados #################
+                $feriadoporUnidades = DB::table('unidades')
+                    ->join('unidade_enderecos', 'unidades.mcu', '=', 'unidade_enderecos.mcu')
+                    ->join('feriados', 'unidade_enderecos.cidade', '=', 'feriados.nome_municipio')
+                    ->select(
+                        'feriados.*'
+                    )
+                    ->where([['unidades.mcu', '=', $registro->mcu]])
+                    ->where('data_do_feriado', '>=', $dtmenos12meses)
+                    ->get();
+
+                $eventosf = DB::table('alarmes')
+                    ->select('alarmes.*')
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('data', '>=', $dtmenos12meses)
+                    ->where('armedesarme', '=', 'Desarme')
+                    ->orderBy('data' ,'asc')
+                    ->orderBy('hora' ,'asc')
+                    ->get();
+
+//                              ############   Início Acessos fora do Padrão   #################
+                $eventos = DB::table('alarmes')
+                    ->select('alarmes.*')
+                    ->where('mcu', '=', $registro->mcu)
+                    ->where('data', '>=', $dtmenos12meses)
+                    ->where('armedesarme', '=', 'Desarme')
+                    ->orderBy('data' ,'asc')
+                    ->orderBy('hora' ,'asc')
+                    ->get();
+            }
+
+            $countFinalsemana = $alarmesFinalSemana->count('id');
+            $countFeriados = $eventosf->count('id');
+            $countEventos = $eventos->count('id');
+
+            if(($countFinalsemana>=1) || ($countFeriados>=1)|| ($countEventos>=1)){
+//                          ############   Início Finais de semana  #################
+                if(! $alarmesFinalSemana->isEmpty()) {
                     $count_alarmesFinalSemana  = $alarmesFinalSemana->count('armedesarme');
                     DB::table('acessos_final_semana')
                         ->where('mcu', '=', $registro->mcu)
-                    ->delete();
-                    foreach ($alarmesFinalSemana  as $tabela)
-                    {
-                        if($tabela->armedesarme == 'Desarme' )
-                        {
+                        ->delete();
+                    foreach ($alarmesFinalSemana  as $tabela) {
+                        if($tabela->armedesarme == 'Desarme' ) {
+
                             $tempoDesarme = (substr($tabela->hora,0,2)*60)+substr($tabela->hora,3,2);
                             $horaDesarme = $tabela->hora;
                             $dataDesarme = $tabela->data;
                             $eventodesarme = $tabela->armedesarme;
                             $diaEvento = $tabela->diaSemana;
                         }
-                        else
-                        {
-                            if (( isset($diaEvento) ) &&( $diaEvento == $tabela->diaSemana ) && ( $tabela->armedesarme == 'Arme' ))
-                            {
-                                $horaFechamento = $tabela->hora;
-                                $tempoArme = (substr($tabela->hora, 0, 2) * 60) + substr($tabela->hora, 3, 2);
-                                $tempoDePermanencia = $tempoArme - $tempoDesarme;
-                                $h = intdiv($tempoDePermanencia, 60);
-                                $m = $tempoDePermanencia % 60;
+                        else { // Evento Desarme
+//
+                            if (( isset($diaEvento) )
+                                && ( $diaEvento == $tabela->diaSemana )
+                                && ( $tabela->armedesarme == 'Arme' )) {
 
+                                try{
+                                    $horaFechamento = $tabela->hora;
+                                    $tempoArme = (substr($tabela->hora, 0, 2) * 60) + substr($tabela->hora, 3, 2);
+                                    $tempoDePermanencia = $tempoArme - $tempoDesarme;
+                                    $h = intdiv($tempoDePermanencia, 60);
+                                    $m = $tempoDePermanencia % 60;
+                                }
+                                catch (\Exception $e){
+                                    $h = 0;
+                                    $m = 0;
+                                }
 
-                                if ($tabela->diaSemana == 6)
-                                {
+                                if ($tabela->diaSemana == 6) {
                                     $diasemana = 'Sábado';
                                 }
-                                else
-                                {
+                                else {
                                     $diasemana = 'Domingo';
                                 }
                                 $peranencia = ($h < 10 ? '0' . $h : $h) . ':' . ($m < 10 ? '0' . $m : $m);
                                 $dataDesarme = date("d/m/Y", strtotime($dataDesarme));
 
                                 $acessoFinalSemana = new AcessoFinalSemana();
-                                    $acessoFinalSemana->mcu = $registro->mcu;
-                                    $acessoFinalSemana->evAbertura = $eventodesarme;
-                                    $acessoFinalSemana->evDataAbertura = $dataDesarme;
-                                    $acessoFinalSemana->evHoraAbertura = $horaDesarme;
-                                    $acessoFinalSemana->evFechamento = $tabela->armedesarme;
-                                    $acessoFinalSemana->evHoraFechamento = $horaFechamento;
-                                    $acessoFinalSemana->diaSemana = $diasemana;
-                                    $acessoFinalSemana->tempoPermanencia = $peranencia;
+                                $acessoFinalSemana->mcu = $registro->mcu;
+                                $acessoFinalSemana->evAbertura = $eventodesarme;
+                                $acessoFinalSemana->evDataAbertura = $dataDesarme;
+                                $acessoFinalSemana->evHoraAbertura = $horaDesarme;
+                                $acessoFinalSemana->evFechamento = $tabela->armedesarme;
+                                $acessoFinalSemana->evHoraFechamento = $horaFechamento;
+                                $acessoFinalSemana->diaSemana = $diasemana;
+                                $acessoFinalSemana->tempoPermanencia = $peranencia;
 
-                                if ($registro->trabalha_sabado =='Não')
-                                {
+                                if ($registro->trabalha_sabado =='Não') {
                                     $acessoFinalSemana->save();
                                     $rowAberturaFinalSemana++;
                                 }
-                                elseif ($registro->trabalha_domingo =='Não')
-                                {
+                                elseif ($registro->trabalha_domingo =='Não') {
                                     $acessoFinalSemana->save();
                                     $rowAberturaFinalSemana++;
                                 }
                             }
                         }
                     }
-                    if ( $rowAberturaFinalSemana >= 1 )
-                    {
+                    if ( $rowAberturaFinalSemana >= 1 ) {
                         $acessos_final_semana = DB::table('acessos_final_semana')
                             ->where('mcu',  '=', $registro->mcu)
                             ->select(
@@ -1953,195 +2115,319 @@ class InspecaoController extends Controller
                     }
                     else { $acessos_final_semana = '';}
                 }
-        /////////////////   Finais de semana  /////////////////////////////
+//                          ############   Final Finais de semana  #################
 
-        /////////////////   Feriados /////////////////////////////
-                $feriadoporUnidades = DB::table('unidades')
-                    ->join('unidade_enderecos', 'unidades.mcu', '=', 'unidade_enderecos.mcu')
-                    ->join('feriados', 'unidade_enderecos.cidade', '=', 'feriados.nome_municipio')
-                    ->select(
-                              'feriados.*'
-                    )
-                    ->where([['unidades.mcu', '=', $registro->mcu]])
-                    ->where('data_do_feriado', '>=', $dtmenos12meses)
-                ->get();
-
-                $eventos = DB::table('alarmes')
-                    ->select('alarmes.*')
-                    ->where('mcu', '=', $registro->mcu)
-                    ->where('armedesarme', '=', 'Desarme')
-                    ->orderBy('data' ,'asc')
-                    ->orderBy('hora' ,'asc')
-                ->get();
-
-                foreach ($feriadoporUnidades  as $feriadoporUnidade){
-                        foreach ($eventos  as $evento){
-                            if($feriadoporUnidade->data_do_feriado   ==  $evento->data){
-
-                                $acessosEmFeriados = ([
-                                    $row => ['Acesso' => \Carbon\Carbon::parse($evento->data)->format('d/m/Y'), 'hora' => $evento->hora],
-                                    ]);
-
-                            }
-                            $row++;
+//                          ############   Início Feriados  #################
+                $row = 1;
+                foreach ($feriadoporUnidades  as $feriadoporUnidade) {
+                    foreach ($eventosf  as $evento) {
+                        if($feriadoporUnidade->data_do_feriado   ==  $evento->data) {
+                            $acessosEmFeriados = ([
+                                $row => ['Acesso' => \Carbon\Carbon::parse($evento->data)->format('d/m/Y'), 'hora' => $evento->hora],
+                            ]);
 
                         }
+                        $row++;
+                    }
                 }
+//                          ############   Final Feriados   #################
 
-   /////////////////   Feriados /////////////////////////////
-
-   /////////////////   Acessos fora do Padrão /////////////////////////////
-
-                $eventos = DB::table('alarmes')
-                    ->select('alarmes.*')
-                    ->where('mcu', '=', $registro->mcu)
-                    ->where('data', '>', $dtmenos12meses)
-                    ->orderBy('data' ,'asc')
-                    ->orderBy('hora' ,'asc')
-                ->get();
-
-                if(! $eventos->isEmpty())
-                {
+//                          ############   Início Acessos fora do Padrão   #################
+                if(! $eventos->isEmpty()) {
                     $dtmax = $eventos->max('data');
                     if((isset($registro->inicio_expediente)) && (!empty($registro->inicio_expediente))
-                        ||(isset($registro->final_expediente)) && (!empty($registro->final_expediente)) )
-                    {
+                        ||(isset($registro->final_expediente)) && (!empty($registro->final_expediente)) ) {
+
                         $minutosinicioExpediente = (substr($registro->inicio_expediente,0,2)*60)+substr($registro->inicio_expediente,3,2);
                         $minutosfinalExpediente = (substr($registro->final_expediente,0,2)*60)+substr($registro->final_expediente,3,2);
-                    }
-                    else
-                    {
-                        \Session::flash('mensagem',['msg'=> auth()->user()->name.', Base de Dados da Unidade não atualizada.
-                         Atualize os horários de funcionamento.'
-                            ,'class'=>'red white-text']);
-                        return redirect()->route('compliance.unidades.editar',$registro->unidade_id);
-                    }
-                    foreach ($eventos  as $evento)
-                    {
-                        $eventominutos = (substr($evento->hora,0,2)*60)+substr($evento->hora,3,2);
-                        if ($evento->armedesarme =='Desarme' )
-                        {
-                            if (($eventominutos < ($minutosinicioExpediente-90)))
-                            {
-                                $diferencaAbertura =  $minutosinicioExpediente - $eventominutos;
+                        foreach ($eventos  as $evento) {
+                            $eventominutos = (substr($evento->hora,0,2)*60)+substr($evento->hora,3,2);
+                            if ($evento->armedesarme =='Desarme' ) {
 
-                                if($diferencaAbertura <0)
-                                {
-                                    $diferencaAbertura = $diferencaAbertura *-1;
-                                }
-                                $h = intdiv ($diferencaAbertura,60);
-                                if ($h<10)
-                                {
-                                    $h='0'.$h;
-                                }
-                                $m = $diferencaAbertura % 60;
-                                if ($m<10)
-                                {
-                                    $m='0'.$m;
-                                }
-                                $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
-                                $tempoAbertura = ([
-                                    $rowtempoAbertura => ['dataInicioExpediente' => $evento->data,
-                                    'InicioExpediente' => $registro->inicio_expediente,
-                                    'HorárioDeAbertura' => $evento->hora,
-                                    'DiferencaTempoDeAbertura' => $diferencaAbertura],
-                                ]);
-                                $rowtempoAbertura++;
-                            }
-                            ///////////////////////   TEMPO DE ABERTURA   //////////////////////////
+                                if (($eventominutos < ($minutosinicioExpediente-90))) {
 
-                            ///////////////////////   risco  DE ABERTURA   //////////////////////////
-                            if (($eventominutos < ($minutosinicioExpediente-120))){
-                                $diferencaAbertura =  $minutosinicioExpediente - $eventominutos;
-                                $h = intdiv ($diferencaAbertura,60);
-                                if ($h<10){
-                                    $h='0'.$h;
+                                    $diferencaAbertura =  $minutosinicioExpediente - $eventominutos;
+
+                                    if($diferencaAbertura <0) {
+                                        $diferencaAbertura = $diferencaAbertura *-1;
+                                    }
+                                    $h = intdiv ($diferencaAbertura,60);
+                                    if ($h<10) {
+                                        $h='0'.$h;
+                                    }
+                                    $m = $diferencaAbertura % 60;
+                                    if ($m<10) {
+                                        $m='0'.$m;
+                                    }
+                                    $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
+                                    $tempoAbertura = ([
+                                        $rowtempoAbertura => ['dataInicioExpediente' => $evento->data,
+                                            'InicioExpediente' => $registro->inicio_expediente,
+                                            'HorárioDeAbertura' => $evento->hora,
+                                            'DiferencaTempoDeAbertura' => $diferencaAbertura],
+                                    ]);
+                                    $rowtempoAbertura++;
                                 }
-                                $m = $diferencaAbertura % 60;
-                                if ($m<10){
-                                    $m='0'.$m;
+                                ///////////////////////   TEMPO DE ABERTURA   //////////////////////////
+
+                                ///////////////////////   risco  DE ABERTURA   //////////////////////////
+                                if (($eventominutos < ($minutosinicioExpediente-120))){
+                                    $diferencaAbertura =  $minutosinicioExpediente - $eventominutos;
+                                    $h = intdiv ($diferencaAbertura,60);
+                                    if ($h<10){
+                                        $h='0'.$h;
+                                    }
+                                    $m = $diferencaAbertura % 60;
+                                    if ($m<10){
+                                        $m='0'.$m;
+                                    }
+                                    $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
+                                    $tempoAberturaAntecipada = ([
+                                        $rowtempoAbertura => ['dataInicioExpediente' => $evento->data,
+                                            'InicioExpediente' => $registro->inicio_expediente,
+                                            'HorárioDeAbertura' => $evento->hora,
+                                            'DiferencaTempoDeAbertura' => $diferencaAbertura],
+                                    ]);
+                                    $rowtempoAberturaAntecipada++;
                                 }
-                                $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
-                                $tempoAberturaAntecipada = ([
-                                    $rowtempoAbertura => ['dataInicioExpediente' => $evento->data,
-                                    'InicioExpediente' => $registro->inicio_expediente,
-                                    'HorárioDeAbertura' => $evento->hora,
-                                    'DiferencaTempoDeAbertura' => $diferencaAbertura],
-                                ]);
-                                $rowtempoAberturaAntecipada++;
+                                if (($eventominutos > ($minutosfinalExpediente+50))) {
+                                    $diferencaAbertura =  $eventominutos - $minutosfinalExpediente;
+                                    $h = intdiv ($diferencaAbertura,60);
+                                    if ($h<10) {
+                                        $h='0'.$h;
+                                    }
+                                    $m = $diferencaAbertura % 60;
+                                    if ($m<10) {
+                                        $m='0'.$m;
+                                    }
+                                    $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
+                                    $tempoAberturaPosExpediente = ([
+                                        $rowtempoAbertura => ['dataFinalExpediente' => $evento->data,
+                                            'FinalExpediente' => $registro->final_expediente,
+                                            'HorárioDeAbertura' => $evento->hora,
+                                            'DiferencaTempoDeAbertura' => $diferencaAbertura],
+                                    ]);
+                                    $rowtempoAberturaPosExpediente++;
+                                }
                             }
-                            if (($eventominutos > ($minutosfinalExpediente+50)))
-                            {
-                                $diferencaAbertura =  $eventominutos - $minutosfinalExpediente;
-                                $h = intdiv ($diferencaAbertura,60);
-                                if ($h<10)
-                                {
-                                    $h='0'.$h;
-                                }
-                                $m = $diferencaAbertura % 60;
-                                if ($m<10)
-                                {
-                                    $m='0'.$m;
-                                }
-                                $diferencaAbertura = $h.':'.$m.':'.substr($evento->hora,6,2);
-                                $tempoAberturaPosExpediente = ([
-                                    $rowtempoAbertura => ['dataFinalExpediente' => $evento->data,
-                                    'FinalExpediente' => $registro->final_expediente,
-                                    'HorárioDeAbertura' => $evento->hora,
-                                    'DiferencaTempoDeAbertura' => $diferencaAbertura],
-                                ]);
-                                $rowtempoAberturaPosExpediente++;
+                            $periodo = CarbonPeriod::create($dtmax ,  $now );
+
+                            $dataultimoevento = date('d/m/Y', strtotime($evento->data));
+
+                            if ($periodo->count()>=15) {
+                                $aviso = 'a) Não foi possível avaliar eventos recente da utilização do alarme monitorado dado que a unidade não está sendo monitorada há '. $periodo->count().' dias. Incluindo a data da Inspeção. Adicionalmente verificaram que o último evento transmitido foi no dia ' .$dataultimoevento. '.';
                             }
                         }
-                        $periodo = CarbonPeriod::create($dtmax ,  $now );
-                        $dataultimoevento = \Carbon\Carbon::parse($evento->data)->format('d/m/Y');
-                        if ($periodo->count()>=15)
-                        {
-                            $aviso ='a) Não foi possível avaliar eventos recente da utilização do alarme monitorado
-                            dado que a unidade não está sendo monitorada há '. $periodo->count().' dias. Incluindo
-                            a data da Inspeção. Adicionalmente verificaram que o último evento transmitido
-                             foi no dia ' .$dataultimoevento. '.';
-                        }
                     }
+                    else {
+                        $avaliacao = 'Não Verificado';
+                        $oportunidadeAprimoramento = 'A Base de Dados da Unidade não está atualizada, atualize os registros da Unidade principalmente  horários de funcionamento. ';
+                        $consequencias = $registro->consequencias;
+                        $orientacao = $registro->orientacao;
+
+
+//                                            \Session::flash('mensagem',['msg'=> auth()->user()->name.', Base de Dados da Unidade não atualizada.
+//                                                                         Atualize os horários de funcionamento.'
+//                                                ,'class'=>'red white-text']);
+//                                            return redirect()->route('compliance.unidades.editar',$registro->unidade_id);
+
+                    }
+
                 }
-                if(($rowAberturaFinalSemana==0) && ($row ==0) && ($rowtempoAbertura==0) && ($rowtempoAberturaAntecipada ==0) && ($rowtempoAberturaPosExpediente ==0) )
-                {
+
+                if(($rowAberturaFinalSemana==0) && ($row ==0) && ($rowtempoAbertura==0) && ($rowtempoAberturaAntecipada ==0) && ($rowtempoAberturaPosExpediente ==0) ) {
                     $maxdata = DB::table('alarmes')
                         ->where('mcu', '=', $registro->mcu )
-                    ->max('data');
+                        ->max('data');
+                    if(!empty($maxdata )) {
+                        $dataultimoevento = date('d/m/Y', strtotime($evento->data));
+                    }
+                    else {
+                        $dataultimoevento = 'data não localizada nos parâmetros dessa pesquisa de inspeção';
+                    }
+                    $naoMonitorado = 'Não foi possível avaliar eventos recente da utilização do alarme monitorado dado que a unidade não está sendo monitorada. Aicionalmente verificaram que o último evento transmitido foi em ' .$dataultimoevento. '.';
+                }
+//                          ############   Final Acessos fora do Padrão    #################
 
-                   if(!empty($maxdata ))
-                   {
-                       $dataultimoevento = \Carbon\Carbon::parse($maxdata)->format('d/m/Y');
-                   }
-                   else
-                   {
-                       $dataultimoevento = 'data não localizada nos parâmetros dessa pesquisa de inspeção';
-                   }
-                   $naoMonitorado ='Não foi possível avaliar eventos recente da utilização do alarme monitorado
-                            dado que a unidade não está sendo monitorada. Aicionalmente verificaram que o último
-                             evento transmitido foi em ' .$dataultimoevento. '.';
+            }
+            else{
+                $avaliacao = 'Não Verificado';
+                $oportunidadeAprimoramento = 'Não há registro de eventos de alarme na base de dados para avaliar a unidade.';
+
+                $consequencias = $registro->consequencias;
+                $orientacao = $registro->orientacao;
+
+            }
+//dd($registro);
+            if ( !empty($naoMonitorado) ){
+                $avaliacao = 'Não Conforme';
+                $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de '. date('d/m/Y', strtotime($dtmenos12meses)) .' a ' . date('d/m/Y', strtotime($now)) .' , constatou-se que:';
+                $evidencia = $naoMonitorado;
+
+                $consequencias = $registro->consequencias;
+                $orientacao = $registro->orientacao;
+
+            }
+            else  if( ($rowAberturaFinalSemana >= 1) ||  (isset($tempoAbertura)&&(!empty($tempoAbertura))) || (isset($tempoAberturaPosExpediente)&&(!empty($tempoAberturaPosExpediente))) || (isset($acessosEmFeriados)&&(!empty($acessosEmFeriados))) || (isset($tempoAberturaAntecipada)&&(!empty($tempoAberturaAntecipada)))  ){
+                $avaliacao = 'Não Conforme';
+                $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme em '. date('d/m/Y', strtotime($now)) . ' referente ao período de ' . date('d/m/Y', strtotime($dtmenos12meses)) . ' a '. date('d/m/Y', strtotime($now)) .', constatou-se que o sistema permaneceu desativado e fora de funcionamento nos períodos relacionados a seguir:';
+
+                $consequencias = $registro->consequencias;
+                $orientacao = $registro->orientacao;
+            }
+            else{
+                $avaliacao = 'Conforme';
+                $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme em '. date('d/m/Y', strtotime($now)) . ' referente ao período de ' . date('d/m/Y', strtotime($dtmenos12meses)) . ' a '. date('d/m/Y', strtotime($now)) .', constatou-se que o sistema de alarme permaneceu ativado quando dos horários fora de atendimento inclusive finais de semana.:';
+                $orientacao = null;
+                $consequencias = null;
+
+            }
+
+            if($rowAberturaFinalSemana >= 1){
+                $evidencia = $evidencia."\n" . $rowAberturaFinalSemana .' - Ocorrências de desativação do alarme em períodos de finais de semana conforme a seguir:';
+                $evidencia = $evidencia . "\n" . 'Evento Abertura' . "\t" . 'Data Abertura' . "\t" . 'Hora Abertura' . "\t" . 'Evento Fechamento' . "\t" . 'Hora Fechamento' . "\t" . 'Dia Semana' . "\t" . 'Tempo Permanência';
+                foreach ($acessos_final_semana as $tabela){
+                    $evidencia = $evidencia  . "\n" . '$tabela->evAbertura'
+                        . "\t" . '$tabela->evDataAbertura' . "\t"
+                        . '$tabela->evHoraAbertura'
+                        . "\t"
+                        . '$tabela->evFechamento'
+                        . "\t"
+                        . '$tabela->evHoraFechamento'
+                        . "\t" . '$tabela->diaSemana'
+                        . "\t" . '$tabela->tempoPermanencia';
+                }
+            }
+
+            if(isset($tempoAbertura)&&(!empty($tempoAbertura))){
+
+                $evidencia = $evidencia."\n" . $rowAberturaFinalSemana .'Tempo de abertura em Relação ao Horário de Atendimento conforme a seguir:';
+                $evidencia = $evidencia . "\n" . 'Data' . "\t" . 'Horário Atendimento' . "\t" . 'Horário da Abertura' . "\t" . 'Tempo Abertura';
+                foreach ($tempoAbertura  as $tempo => $mdaData){
+                    $evidencia = $evidencia . "\n"
+                        . date('d/m/Y', strtotime($mdaData["dataInicioExpediente"]))
+                        . "\t" . $mdaData["InicioExpediente"] . "\t" . $mdaData["HorárioDeAbertura"]
+                        . "\t" . $mdaData["DiferencaTempoDeAbertura"];
                 }
 
-                return view('compliance.inspecao.editar',compact
-                (
-                  'registro'
-                , 'id'
-                , 'total'
-                , 'acessos_final_semana'
-                , 'rowAberturaFinalSemana'
-                , 'count_alarmesFinalSemana'
-                , 'acessosEmFeriados'
-                , 'tempoAbertura'
-                , 'tempoAberturaAntecipada'
-                , 'tempoAberturaPosExpediente'
-                , 'aviso'
-                , 'dtmax'
-                , 'now'
-                ,'dtmenos12meses'
-                ,'naoMonitorado'
-                ));
             }
+
+            if(isset($tempoAberturaAntecipada)&&(!empty($tempoAberturaAntecipada))){
+
+                $evidencia = $evidencia."\n" . $rowAberturaFinalSemana .' - Unidade em Risco. Abertura da Unidade em horário fora do padrão em relação ao horário de abertura da unidade conforme a seguir';
+                $evidencia = $evidencia . "\n" . 'Data' . "\t" . 'Data Abertura' . "\t" . 'Horário de Atendimento' . "\t" . 'Hora da Abertura' . "\t" . 'Tempo Abertura';
+                foreach ($tempoAberturaAntecipada  as $tempo => $mdaData){
+
+                    $evidencia = $evidencia . "\n"
+                        . date('d/m/Y', strtotime($mdaData["dataInicioExpediente"]))
+                        . "\t" . $mdaData["InicioExpediente"] . "\t" . $mdaData["HorárioDeAbertura"]
+                        . "\t" . $mdaData["DiferencaTempoDeAbertura"];
+
+                }
+            }
+
+            if(isset($tempoAberturaPosExpediente)&&(!empty($tempoAberturaPosExpediente))){
+                $evidencia = $evidencia."\n".'Unidade em Risco. Abertura da unidade em horário fora do padrão em relação ao horário de fechamento da unidade conforme a seguir:';
+                $evidencia = $evidencia
+                    . "\n" . 'Data'
+                    . "\t" . 'Horário Fechamento'
+                    . "\t" . 'Horário da Abertura'
+                    . "\t" . 'Tempo Abertura';
+
+                foreach ($tempoAberturaPosExpediente  as $tempo => $mdaData){
+                    $evidencia = $evidencia . "\n"
+                        . date('d/m/Y', strtotime($mdaData["dataFinalExpediente"]))
+                        . "\t" . $mdaData["FinalExpediente"]
+                        . "\t" . $mdaData["HorárioDeAbertura"]
+                        . "\t" . $mdaData["DiferencaTempoDeAbertura"];
+                }
+            }
+
+            if(isset($acessosEmFeriados)&&(!empty($acessosEmFeriados))){
+                $evidencia = $evidencia."\n".'Unidade em Risco. Abertura da unidade em dia de feriado conforme a seguir:';
+                $evidencia = $evidencia
+                    . "\n" . 'Data'
+                    . "\t" . 'Hora';
+                foreach ($acessosEmFeriados  as $acessosEmFeriado => $mdaData){
+                    $evidencia = $evidencia . "\n"
+                        . date('d/m/Y', strtotime($mdaData["Acesso"]))
+                        . "\t" . $mdaData["hora"];
+                }
+            }
+
+            if(isset($aviso)&&(!empty($aviso))){
+                $evidencia = $evidencia . "\n". $aviso;
+            }
+
+            $quebra = DB::table('relevancias')
+                ->select('valor_final')
+                ->where('fator_multiplicador', '=', 1)
+                ->first();
+            $quebracaixa = $quebra->valor_final * 0.1;
+
+            if( $valorFalta > $quebracaixa){
+                $fm = DB::table('relevancias')
+                    ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                    ->where('valor_inicio', '<=', $total)
+                    ->orderBy('valor_final', 'desc')
+                    ->first();
+                $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+            }
+            else{
+                if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
+            }
+            $dto = DB::table('itensdeinspecoes')
+                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                ->select('itensdeinspecoes.*')
+                ->first();
+            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+            $itensdeinspecao->avaliacao = $avaliacao;
+            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+            $itensdeinspecao->evidencia = $evidencia;
+            $itensdeinspecao->valorFalta = $valorFalta;
+            $itensdeinspecao->valorSobra = $valorSobra;
+            $itensdeinspecao->valorRisco = $valorRisco;
+            $itensdeinspecao->situacao = 'Inspecionado';
+            $itensdeinspecao->pontuado = $pontuado;
+            $itensdeinspecao->itemQuantificado = $itemQuantificado;
+            $itensdeinspecao->orientacao = $registro->orientacao;
+            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+            $itensdeinspecao->reincidencia = $reinc;
+            $itensdeinspecao->consequencias = $consequencias;
+            $itensdeinspecao->orientacao = $orientacao;
+            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+//                          echo 'line 1400 -> '.$dto->id , $itensdeinspecao;
+            $itensdeinspecao->update();
+
+
+//                                dd( $naoMonitorado , $aviso , $alarmesFinalSemana, $feriadoporUnidades,  $eventosf , $eventos);
+
+
+
+                                return view('compliance.inspecao.editar',compact
+                                (
+                                    'registro'
+                                    , 'id'
+                                    , 'total'
+                                    , 'acessos_final_semana'
+                                    , 'rowAberturaFinalSemana'
+                                    , 'count_alarmesFinalSemana'
+                                    , 'acessosEmFeriados'
+                                    , 'tempoAbertura'
+                                    , 'tempoAberturaAntecipada'
+                                    , 'tempoAberturaPosExpediente'
+                                    , 'aviso'
+                                    , 'dtmax'
+                                    , 'now'
+                                    ,'dtmenos12meses'
+                                    ,'naoMonitorado'
+                                ));
+
+
+        }
 
 //  Final  do teste Alarme Arme/desarme
 
