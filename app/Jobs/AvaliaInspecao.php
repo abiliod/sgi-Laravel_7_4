@@ -1435,9 +1435,9 @@ class AvaliaInspecao implements ShouldQueue
                                     $itensdeinspecao->avaliacao = $avaliacao;
                                     $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
                                     $itensdeinspecao->evidencia = $evidencia;
-                                    $itensdeinspecao->valorFalta = $valorFalta;
-                                    $itensdeinspecao->valorSobra = $valorSobra;
-                                    $itensdeinspecao->valorRisco = $valorRisco;
+//                                    $itensdeinspecao->valorFalta = $valorFalta;
+//                                    $itensdeinspecao->valorSobra = $valorSobra;
+//                                    $itensdeinspecao->valorRisco = $valorRisco;
                                     $itensdeinspecao->situacao = 'Inspecionado';
                                     $itensdeinspecao->pontuado = 0.00;
                                     $itensdeinspecao->itemQuantificado = 'Não';
@@ -3347,9 +3347,9 @@ class AvaliaInspecao implements ShouldQueue
                                     $itensdeinspecao->avaliacao = $avaliacao;
                                     $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
                                     $itensdeinspecao->evidencia = $evidencia;
-                                    $itensdeinspecao->valorFalta = $valorFalta;
-                                    $itensdeinspecao->valorSobra = $valorSobra;
-                                    $itensdeinspecao->valorRisco = $valorRisco;
+//                                    $itensdeinspecao->valorFalta = $valorFalta;
+//                                    $itensdeinspecao->valorSobra = $valorSobra;
+//                                    $itensdeinspecao->valorRisco = $valorRisco;
                                     $itensdeinspecao->situacao = 'Inspecionado';
                                     $itensdeinspecao->pontuado = 0.00;
                                     $itensdeinspecao->itemQuantificado = 'Não';

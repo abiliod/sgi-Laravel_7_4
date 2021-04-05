@@ -64,13 +64,13 @@ class MonitoramentoController extends Controller
 //            para ativar a fila no console
 //            php artisan queue:work --queue=avaliaInspecao
 
-            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
-                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
-            dispatch($job);
-
-            \Session::flash('mensagem', ['msg' => 'Job AvaliaInspecao aguardando processamento.'
-                , 'class' => 'blue white-text']);
-            return redirect()->back();
+//            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
+//                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
+//            dispatch($job);
+//
+//            \Session::flash('mensagem', ['msg' => 'Job AvaliaInspecao aguardando processamento.'
+//                , 'class' => 'blue white-text']);
+//            return redirect()->back();
 
 //   O valor de 134217728 bytes é equivalente a 128M
 
@@ -1440,9 +1440,9 @@ class MonitoramentoController extends Controller
                                     $itensdeinspecao->avaliacao = $avaliacao;
                                     $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
                                     $itensdeinspecao->evidencia = $evidencia;
-                                    $itensdeinspecao->valorFalta = $valorFalta;
-                                    $itensdeinspecao->valorSobra = $valorSobra;
-                                    $itensdeinspecao->valorRisco = $valorRisco;
+//                                    $itensdeinspecao->valorFalta = $valorFalta;
+//                                    $itensdeinspecao->valorSobra = $valorSobra;
+//                                    $itensdeinspecao->valorRisco = $valorRisco;
                                     $itensdeinspecao->situacao = 'Inspecionado';
                                     $itensdeinspecao->pontuado = 0.00;
                                     $itensdeinspecao->itemQuantificado = 'Não';
@@ -3397,9 +3397,9 @@ class MonitoramentoController extends Controller
                                     $itensdeinspecao->avaliacao = $avaliacao;
                                     $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
                                     $itensdeinspecao->evidencia = $evidencia;
-                                    $itensdeinspecao->valorFalta = $valorFalta;
-                                    $itensdeinspecao->valorSobra = $valorSobra;
-                                    $itensdeinspecao->valorRisco = $valorRisco;
+//                                    $itensdeinspecao->valorFalta = $valorFalta;
+//                                    $itensdeinspecao->valorSobra = $valorSobra;
+//                                    $itensdeinspecao->valorRisco = $valorRisco;
                                     $itensdeinspecao->situacao = 'Inspecionado';
                                     $itensdeinspecao->pontuado = 0.00;
                                     $itensdeinspecao->itemQuantificado = 'Não';
