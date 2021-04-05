@@ -2060,36 +2060,34 @@ class ImportacaoController extends Controller
             $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
             $dt_job = Carbon::now();
 
-
-
 // ######################################  não ligar  job precisa debugar está dando erro cogigo 0 (zero).
 
-//            Try{
-//                $job = (new JobWebCont( $debitoEmpregados , $dt_job))
-//                    ->onConnection('importacao')
-//                    ->onQueue('importacao')
-//                    ->delay($dt->addMinutes(1));
-//                dispatch($job);
-//                \Session::flash('mensagem', ['msg' => 'Job JobWebCont, aguardando processamento.'
-//                    , 'class' => 'blue white-text']);
-//                ini_set('memory_limit', '128M');
-//                ini_set('max_input_time', 60);
-//                ini_set('max_execution_time', 60);
-//                return redirect()->route('importacao');
-//            }
-//            catch (\Exception $e) {
-//                if(substr( $e->getCode(), 0, 2) == 'HY'){
-//                    \Session::flash('mensagem', ['msg' => ' Job JobWebCont, tente uma quantidade menor de registros.
-//                    Tente um arquivo de aproximadamente 4.00kb. Erro'. $e->getCode() , 'class' => 'red white-text']);
-//                }
-//                else {
-//                    \Session::flash('mensagem', ['msg' => 'Job JobWebCont, não pode ser importado. Erro '. $e->getCode() , 'class' => 'red white-text']);
-//                }
-//                ini_set('memory_limit', '128M');
-//                ini_set('max_input_time', 60);
-//                ini_set('max_execution_time', 60);
-//                return redirect()->route('importacao');
-//            }
+            Try{
+                $job = (new JobWebCont( $debitoEmpregados , $dt_job))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt->addMinutes(1));
+                dispatch($job);
+                \Session::flash('mensagem', ['msg' => 'Job JobWebCont, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+            catch (\Exception $e) {
+                if(substr( $e->getCode(), 0, 2) == 'HY'){
+                    \Session::flash('mensagem', ['msg' => ' Job JobWebCont, tente uma quantidade menor de registros.
+                    Tente um arquivo de aproximadamente 4.00kb. Erro'. $e->getCode() , 'class' => 'red white-text']);
+                }
+                else {
+                    \Session::flash('mensagem', ['msg' => 'Job JobWebCont, não pode ser importado. Erro '. $e->getCode() , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
 
             foreach($debitoEmpregados as $dados) {
                 foreach($dados as $dado) {

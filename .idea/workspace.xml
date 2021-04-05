@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -348,6 +348,8 @@
       <workItem from="1617634571409" duration="1701000" />
       <workItem from="1617640311250" duration="1811000" />
       <workItem from="1617642433834" duration="3720000" />
+      <workItem from="1617646239178" duration="881000" />
+      <workItem from="1617650521369" duration="341000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -426,7 +428,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617642624965</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="05/04/2020 Correção de bug e xls.">
+      <created>1617646512362</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1617646512362</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,7 +452,8 @@
     <MESSAGE value="05/04/2020 Inclusão de rotina para avaliar Responsabilidade Alarme,   inclusão de serviço para avaliação automática para alarme ajuste no controle de imspeção manual ficar aderente a inspeção automática correção de bug no sistema de gerar inspeção." />
     <MESSAGE value="05/04/2020 Inclusão de rotina  job importação de alarme." />
     <MESSAGE value="05/04/2020 Correção de bug  pendências SMB_BDF." />
-    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Correção de bug  pendências SMB_BDF." />
+    <MESSAGE value="05/04/2020 Correção de bug e xls." />
+    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Correção de bug e xls." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -458,10 +468,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617622373957" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617642623165">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617646509942">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617642623165" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617646509942" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -474,10 +484,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1616688415581" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617642627192">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617646523422">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617642627192" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617646523422" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
