@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobSLD_02_BDF.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobSLD_02_BDF.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/queue.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/queue.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-2.blade.php" afterDir="false" />
-    </list>
+    <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -351,7 +342,7 @@
       <workItem from="1617626528586" duration="2348000" />
       <workItem from="1617628922399" duration="713000" />
       <workItem from="1617632742449" duration="1712000" />
-      <workItem from="1617634571409" duration="711000" />
+      <workItem from="1617634571409" duration="1065000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -402,7 +393,21 @@
       <option name="project" value="LOCAL" />
       <updated>1617289127982</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="05/04/2020 Inclusão de rotina para avaliar Responsabilidade Alarme,   inclusão de serviço para avaliação automática para alarme ajuste no controle de imspeção manual ficar aderente a inspeção automática correção de bug no sistema de gerar inspeção.">
+      <created>1617635547139</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1617635547141</updated>
+    </task>
+    <task id="LOCAL-00009" summary="05/04/2020 Inclusão de rotina  job importação de alarme.">
+      <created>1617635634824</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1617635634824</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,7 +421,9 @@
     <MESSAGE value="25/03/2020 changem ide." />
     <MESSAGE value="30/03/2020 Inclusão de rotina para avaliar Saldo que passa, alteração da rotina de importação da planilha saldo que passa criação do serviço de importação para saldo que passa inclusão de serviço para avaliação automática para saldo que passa e ajuste no controle para saldo que passa para ficar aderente a inspeção automática. atualização de dependências via json." />
     <MESSAGE value="01/04/2020 Inclusão de rotina para avaliar Responsabilidade Definida,   inclusão de serviço para avaliação automática para e ajuste no controle de imspeção manual ficar aderente a inspeção automática." />
-    <option name="LAST_COMMIT_MESSAGE" value="01/04/2020 Inclusão de rotina para avaliar Responsabilidade Definida,   inclusão de serviço para avaliação automática para e ajuste no controle de imspeção manual ficar aderente a inspeção automática." />
+    <MESSAGE value="05/04/2020 Inclusão de rotina para avaliar Responsabilidade Alarme,   inclusão de serviço para avaliação automática para alarme ajuste no controle de imspeção manual ficar aderente a inspeção automática correção de bug no sistema de gerar inspeção." />
+    <MESSAGE value="05/04/2020 Inclusão de rotina  job importação de alarme." />
+    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Inclusão de rotina  job importação de alarme." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
