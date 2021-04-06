@@ -4,6 +4,11 @@
     <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/JobAlarmes.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobAlarmes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-3.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form272-3.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -349,7 +354,27 @@
       <workItem from="1617640311250" duration="1811000" />
       <workItem from="1617642433834" duration="3720000" />
       <workItem from="1617646239178" duration="881000" />
-      <workItem from="1617650521369" duration="341000" />
+      <workItem from="1617650521369" duration="1011000" />
+      <workItem from="1617653675891" duration="1777000" />
+      <workItem from="1617655496132" duration="1781000" />
+      <workItem from="1617657318182" duration="526000" />
+      <workItem from="1617707612204" duration="1780000" />
+      <workItem from="1617709580548" duration="1194000" />
+      <workItem from="1617711378924" duration="971000" />
+      <workItem from="1617714312230" duration="1528000" />
+      <workItem from="1617719320889" duration="2216000" />
+      <workItem from="1617721585355" duration="1784000" />
+      <workItem from="1617723408126" duration="1665000" />
+      <workItem from="1617727601752" duration="1780000" />
+      <workItem from="1617729438862" duration="1772000" />
+      <workItem from="1617731255244" duration="1432000" />
+      <workItem from="1617733533231" duration="1625000" />
+      <workItem from="1617735354371" duration="1684000" />
+      <workItem from="1617737169315" duration="4511000" />
+      <workItem from="1617741730583" duration="2280000" />
+      <workItem from="1617744043073" duration="1787000" />
+      <workItem from="1617746095092" duration="1777000" />
+      <workItem from="1617747918918" duration="904000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -435,7 +460,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617646512362</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="05/04/2020 Correção.">
+      <created>1617650929341</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1617650929341</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -453,7 +485,8 @@
     <MESSAGE value="05/04/2020 Inclusão de rotina  job importação de alarme." />
     <MESSAGE value="05/04/2020 Correção de bug  pendências SMB_BDF." />
     <MESSAGE value="05/04/2020 Correção de bug e xls." />
-    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Correção de bug e xls." />
+    <MESSAGE value="05/04/2020 Correção." />
+    <option name="LAST_COMMIT_MESSAGE" value="05/04/2020 Correção." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -464,14 +497,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="470" y="68" key="#com.intellij.ide.macro.MacrosDialog/0.0.1366.728@0.0.1366.728" timestamp="1617021424023" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617622373957">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1617746624389">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617622373957" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617646509942">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617746624389" />
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617650926917">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617646509942" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617650926917" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -484,10 +517,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1616688415581" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617646523422">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617650936513">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617646523422" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617650936513" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

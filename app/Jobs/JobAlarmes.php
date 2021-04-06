@@ -45,6 +45,7 @@ class JobAlarmes implements ShouldQueue
         ini_set('memory_limit', '512M');
         foreach($alarmes as $registros) {
             foreach($registros as $dado) {
+
                 $diaSemana    = null;
                 if(!empty($dado['data'])) {
                     try {

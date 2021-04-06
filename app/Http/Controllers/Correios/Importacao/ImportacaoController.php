@@ -54,6 +54,7 @@ use App\Jobs\JobAlarmes;
 use App\Models\Correios\ModelsAuxiliares\Absenteismo;
 use App\Imports\ImportAbsenteismo;
 use App\Exports\ExportAbsenteismo;
+use App\Jobs\JobAbsenteismo;
 
 use App\Models\Correios\ModelsAuxiliares\Evento;
 use App\Imports\ImportEventos;
@@ -1195,7 +1196,7 @@ class ImportacaoController extends Controller
     }
     // ######################### FIM CFTV #######################
 
-    // ########## INICIO ABSENTEISMO POR MCU   Frequencia por SE ##
+    // ########## INICIO ABSENTEISMO MCU   Frequencia por SE ##
     public function exportAbsenteismo() //Frequencia por SE
     {
         return Excel::download(new ExportAbsenteismo, 'absenteismo.xlsx');
@@ -1203,10 +1204,12 @@ class ImportacaoController extends Controller
     public function importAbsenteismo(Request $request)
     {
         $row = 0;
+        $dt_job = Carbon::now();
         $dtmenos12meses = Carbon::now();
         $dtmenos12meses = $dtmenos12meses->subMonth(12);
+
         $validator = Validator::make($request->all(),[
-            'file' => 'required|mimes:xlsx,xls,csv'
+            'file' => 'required|mimes:xlsx,xls'
         ]);
         if(empty($request->file('file')))
         {
@@ -1218,30 +1221,62 @@ class ImportacaoController extends Controller
 
         if($validator->passes())
         {
+
+            //  php artisan queue:work --queue=importacao
+            ini_set('memory_limit', '512M');
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
             $absenteismos = Excel::toArray(new ImportAbsenteismo,  request()->file('file'));
 
-            foreach($absenteismos as $dados)
-            {
-                foreach($dados as $registro)
-                {
+//            dd($absenteismos, $dtmenos12meses, $dt_job );
 
-                    //$dt         = $this->transformDate($registro['data_evento'])->format('Y-m-d');
+            Try{
+                $job = (new JobAbsenteismo( $absenteismos, $dt_job, $dtmenos12meses))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+
+                dispatch($job);
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'JobAbsenteismo - Frequencia por SE, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+
+                return redirect()->route('importacao');
+            }
+            catch (\Exception $e) {
+                if(substr( $e->getCode(), 0, 2) == 'HY'){
+                    \Session::flash('mensagem', ['msg' => 'JobAbsenteismo - Frequencia por SE, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: '.$e->getCode(), 'class' => 'red white-text']);
+                }else {
+                    \Session::flash('mensagem', ['msg' => 'JobAbsenteismo - Frequencia por SE, não pode ser importado Erro: '.$e->getCode().''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+
+            foreach($absenteismos as $dados) {
+                foreach($dados as $registro) {
+
                     $dt = substr($registro['data_evento'],6,4).'-'. substr($registro['data_evento'],3,2) .'-'. substr($registro['data_evento'],0,2);
                     $res = DB::table('absenteismos')
                         ->where('matricula', '=',  $registro['matricula'])
-                        //  ->where('lotacao', '=',  $registro['lotacao'])
                         ->where('data_evento','=', $dt)
                         ->select(
                             'absenteismos.id'
                         )
-                        ->first();
+                    ->first();
 
-                    if(!empty(  $res->id ))
-                    {
+                    if(!empty(  $res->id )) {
                         $absenteismos = Absenteismo::find($res->id);
                     }
-                    else
-                    {
+                    else {
                         $absenteismos = new Absenteismo;
                     }
                     $absenteismos->matricula = $registro['matricula'];
@@ -1255,20 +1290,19 @@ class ImportacaoController extends Controller
                     $row++;
                 }
             }
-            $affected = DB::table('absenteismos')
+            DB::table('absenteismos')
                 ->where('data_evento', '<', $dtmenos12meses)
-                ->delete();
-
+            ->delete();
 
             \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
                 ,'class'=>'green white-text']);
             return redirect()->route('importacao');
-        }else{
+        }
+        else{
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-    public function absenteismo()
-    {
+    public function absenteismo() {
         return view('compliance.importacoes.absenteismo');  //
     }
     // #################### FIM ABSENTEISMO  Frequencia por SE ##
@@ -1899,8 +1933,7 @@ class ImportacaoController extends Controller
                 return redirect()->route('importacao');
             }
 
-//            DB::table('proters')->truncate(); //excluir e zerar a tabela
-
+//          DB::table('proters')->truncate(); //excluir e zerar a tabela
             foreach($proters as $registros)  {
                 foreach($registros as $dado) {
 
@@ -2058,16 +2091,15 @@ class ImportacaoController extends Controller
             ini_set('max_execution_time', 350);
             ini_set('memory_limit', '512M');
             $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
+
             $dt_job = Carbon::now();
-
-// ######################################  não ligar  job precisa debugar está dando erro cogigo 0 (zero).
-
             Try{
                 $job = (new JobWebCont( $debitoEmpregados , $dt_job))
                     ->onConnection('importacao')
                     ->onQueue('importacao')
-                    ->delay($dt->addMinutes(1));
+                    ->delay($dt_job->addMinutes(1));
                 dispatch($job);
+
                 \Session::flash('mensagem', ['msg' => 'Job JobWebCont, aguardando processamento.'
                     , 'class' => 'blue white-text']);
                 ini_set('memory_limit', '128M');
@@ -2109,7 +2141,7 @@ class ImportacaoController extends Controller
                     else{
                         $valor = 0.00;
                     }
-//                    dd($dado);
+
                    $res = DebitoEmpregado :: updateOrCreate([
                         'conta' => $dado['conta']
                         , 'matricula' => $dado['matricula_ref2']
@@ -2246,7 +2278,6 @@ class ImportacaoController extends Controller
     {
         return Excel::download(new ExportCadastral, 'cadastrals.xlsx');
     }
-
     public function importCadastral(Request $request)
     {
         $validator = Validator::make($request->all(),[

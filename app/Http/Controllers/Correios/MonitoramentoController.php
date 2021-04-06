@@ -9,6 +9,7 @@ use App\Models\Correios\Inspecao;
 use App\Models\Correios\Itensdeinspecao;
 use App\Models\Correios\ModelsAuxiliares\SL02_bdf;
 use App\Models\Correios\ModelsDto\AcessoFinalSemana;
+use App\Models\Correios\ModelsDto\CompartilhaSenha;
 use App\Models\Correios\SequenceInspecao;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -64,6 +65,7 @@ class MonitoramentoController extends Controller
 //            para ativar a fila no console
 //            php artisan queue:work --queue=avaliaInspecao
 
+
 //            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
 //                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
 //            dispatch($job);
@@ -106,6 +108,301 @@ class MonitoramentoController extends Controller
                         foreach ($registros as $registro) {
                             $consequencias = $registro->consequencias;
                             $orientacao = $registro->orientacao;
+
+//              Início teste Compartilhamento de Senhas
+                            if((($registro->numeroGrupoVerificacao==206) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==335) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==232) && ($registro->numeroDoTeste==4))
+                                || (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3))) {
+                                $aviso = null;
+                                $periodo = array();
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+                                $naoMonitorado = null;
+                                //verifica histórico de inspeções
+
+//                                DB::enableQueryLog();
+//                                dd( DB::getQueryLog());
+
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%As senhas do sistema de alarme são pessoais%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                    ->first();
+
+                                try {
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                        //se houver registros de inspeções anteriores  consulta  com range  entre datas
+
+//                                        ############   Eventos   #################
+                                        $eventos = DB::table('alarmes')
+                                            ->select('alarmes.*')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data', '>', $reincidencia_dt_fim_inspecao)
+                                            ->orderBy('data', 'asc')
+                                            ->orderBy('hora', 'asc')
+                                            ->get();
+
+                                    } else {
+//                                  ############   Eventos  #################
+                                        $eventos = DB::table('alarmes')
+                                            ->select('alarmes.*')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data', '>', $dtmenos12meses)
+                                            ->orderBy('data', 'asc')
+                                            ->orderBy('hora', 'asc')
+                                            ->get();
+                                    }
+
+                                } catch (\Exception $e) {
+//                                  ############   Eventos  #################
+                                    $eventos = DB::table('alarmes')
+                                        ->select('alarmes.*')
+                                        ->where('mcu', '=', $registro->mcu)
+                                        ->where('data', '>', $dtmenos12meses)
+                                        ->orderBy('data', 'asc')
+                                        ->orderBy('hora', 'asc')
+                                        ->get();
+                                }
+
+                                if ($eventos->isEmpty()) {
+                                    $naoMonitorado = 'Não foi possível confrontar os dados obtidos com as informações de férias e afastamentos, com objetivo de identificar possíveis compartilhamentos de  senha recente da utilização do alarme monitorado. Dado que, a unidade não está sendo monitorada há pelo menos 12 meses. Adicionalmente, registra-se que foi pesquisado  a partir do dia ' . date("d/m/Y", strtotime($dtmenos12meses)) . '.';
+                                } else {
+
+                                    $dtmax = $eventos->max('data');
+                                    $periodo = CarbonPeriod::create($dtmax, $dtnow);
+                                    $dataultimoevento = \Carbon\Carbon::parse($dtmax)->format('d/m/Y');
+
+                                    if ($periodo->count() >= 15) $aviso = 'a) A unidade inspecionada não está
+                                    sendo monitorada há '
+                                        . $periodo->count() . ' dias. Adicionalmente, verificaram que o
+                                         último evento transmitido foi no dia '
+                                        . $dataultimoevento . '.';
+
+                                    // Se tem dados de alarme obter a lista de ferias por empregados da unidade
+                                    $ferias_por_mcu = DB::table('ferias_por_mcu')
+                                        ->join('cadastral', 'ferias_por_mcu.matricula', '=', 'cadastral.matricula')
+                                        ->select('ferias_por_mcu.*', 'cadastral.mcu')
+                                        ->where([['cadastral.mcu', '=', $registro->mcu]])
+                                        ->where([['ferias_por_mcu.inicio_fruicao', '<>', null]])
+                                        ->where([['ferias_por_mcu.inicio_fruicao', '>', $dtmenos12meses]])
+                                        ->orderBy('ferias_por_mcu.inicio_fruicao', 'asc')
+                                        ->get();
+
+                                    if (!$ferias_por_mcu->isEmpty()) {
+
+                                        foreach ($ferias_por_mcu as $ferias) {
+
+                                            $inicio_fruicao = Carbon::parse($ferias->inicio_fruicao)->format('Y-m-d');
+                                            $termino_fruicao = Carbon::parse($ferias->termino_fruicao)->format('Y-m-d');
+                                            $compartilhaSenha = DB::table('compartilhasenhas')
+                                                ->where('codigo', '=', $registro->codigo)
+                                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                                                ->delete();
+
+                                            $res = DB::table('alarmes')
+                                                ->select('alarmes.*')
+                                                ->where([['mcu', '=', $registro->mcu]])
+                                                ->where([['matricula', '=', $ferias->matricula]])
+                                                ->whereBetween('data', [$inicio_fruicao, $termino_fruicao])
+                                                ->orderBy('data', 'asc')
+                                                ->orderBy('hora', 'asc')
+                                                ->get();
+
+                                            if ($res->count('matricula') >= 1) {
+
+                                                $motivo = 'Férias';
+
+                                                foreach ($res as $dado) {
+                                                    $compartilhaSenha = new CompartilhaSenha();
+                                                    $compartilhaSenha->codigo = $registro->codigo;
+                                                    $compartilhaSenha->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                                                    $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
+                                                    $compartilhaSenha->matricula = $dado->matricula;
+                                                    $compartilhaSenha->evento = $dado->armedesarme;
+                                                    $compartilhaSenha->data = $dado->data;
+                                                    $compartilhaSenha->tipoafastamento = $motivo;
+                                                    $compartilhaSenha->save();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // Se tem dados de alarme obter a lista de absenteísmo por empregados da unidade
+                                    $frequencias = DB::table('absenteismos')
+                                        ->join('cadastral', 'absenteismos.matricula', '=', 'cadastral.matricula')
+                                        ->select('absenteismos.*', 'cadastral.mcu')
+                                        ->where([['cadastral.mcu', '=', $registro->mcu]])
+                                        ->where([['data_evento', '>', $dtmenos12meses]])
+                                        ->whereBetween('data_evento', [$dtmenos12meses, $dtnow])
+                                        ->get();
+
+                                    if (!$frequencias->isEmpty()) {
+
+                                        foreach ($frequencias as $frequencia) {
+
+                                            $dt = new Carbon($frequencia->data_evento);
+
+                                            if ($frequencia->dias > 1) {
+
+                                                $dt = $dt->addDays($frequencia->dias);
+                                                $dt = $dt->format('Y-m-d');
+                                            }
+
+                                            $res = DB::table('alarmes')
+                                                ->select('alarmes.*')
+                                                ->where([['mcu', '=', $registro->mcu]])
+                                                ->where([['matricula', '=', $frequencia->matricula]])
+                                                ->whereBetween('data', [$frequencia->data_evento, $dt])
+                                                ->orderBy('data', 'asc')
+                                                ->orderBy('hora', 'asc')
+                                                ->get();
+
+                                            if (!$res->isEmpty()) {
+                                                foreach ($res as $dado) {
+                                                    $compartilhaSenha = new CompartilhaSenha();
+                                                    $compartilhaSenha->codigo = $registro->codigo;
+                                                    $compartilhaSenha->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                                                    $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
+                                                    $compartilhaSenha->matricula = $dado->matricula;
+                                                    $compartilhaSenha->evento = $dado->armedesarme;
+                                                    $compartilhaSenha->data = $dado->data;
+                                                    $compartilhaSenha->tipoafastamento = $frequencia->motivo;
+                                                    $compartilhaSenha->save();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $compartilhaSenhas = DB::table('compartilhasenhas')
+                                        ->where('codigo', '=', $registro->codigo)
+                                        ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                        ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                                        ->orderBy('data', 'asc')
+                                        ->get();
+
+                                    $count = $compartilhaSenhas->count('codigo');
+                                    $dtmax = \Carbon\Carbon::parse($eventos->max('data'))->format('d/m/Y');
+                                } //tem dados de alarme
+                                if ($count == null) $compartilhaSenhas = null;
+                                if ($count >= 1) {
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme ' . date("d/m/Y", strtotime($dtmenos12meses)) . ' a ' . date("d/m/Y", strtotime($dtnow)) . ' , constatou-se a utilização da senha de empregado em que no período mencionado não se encontrava na unidade. O que indicava a prática de compartilhamento de senha de alarme para acesso à unidade. Encontraram ' . $count . ' - ocorrência(s) em períodos oficiais de ausência do trabalho conforme a seguir:';
+                                    $evidencia = $evidencia . "\n"
+                                        . 'Evento' . "\t"
+                                        . 'Matricula' . "\t"
+                                        . 'Data' . "\t"
+                                        . 'Tipo Afastamento';
+                                    foreach ($compartilhaSenhas as $compartilhaSenha) {
+                                        $evidencia = $evidencia . "\n"
+                                            . $compartilhaSenha->evento . "\t"
+                                            . $compartilhaSenha->matricula . "\t"
+                                            . date('d/m/Y', strtotime($compartilhaSenha->data)) . "\t"
+                                            . $compartilhaSenha->tipoafastamento;
+                                    }
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                }
+                                else{
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme, do Controle de Férias CEGEP e do Sistema PGP. Período de ' . date( 'd/m/Y' , strtotime($dtmenos12meses)).' a ' .date( 'd/m/Y' , strtotime($dtnow)).', constatou-se que não havia indícios de prática de compartilhamento de senha de alarme para acesso à unidade.';
+                                    $evidencia = null;
+                                    $orientacao = null;
+                                    $consequencias = null;
+                                }
+                                if (!empty($naoMonitorado)) {
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período ' . date("d/m/Y", strtotime($dtmenos12meses)) . ' a ' . date("d/m/Y", strtotime($dtnow)) . ' , constatou-se que:';
+                                    $evidencia = $naoMonitorado;
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                }
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
+                                if( $valorFalta > $quebracaixa){
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+                                    if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
+                                }
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+
+//                                if ($avaliacao == 'Não Conforme') dd('line 2325 -> Não Conforme ', $itensdeinspecao);
+//                                if ($avaliacao == 'Conforme') dd('line 2326 -> Conforme ', $itensdeinspecao);
+//                                if ($naoMonitorado <>'') dd('line 2326 -> Conforme ', $itensdeinspecao);
+//                                dd($registro->sto , $reincidencia, $eventos, $compartilhaSenhas);
+
+                                $itensdeinspecao->update();
+
+
+//                                return view('compliance.inspecao.editar',compact
+//                                (
+//                                    'registro'
+//                                    , 'id'
+//                                    , 'total'
+//                                    , 'compartilhaSenhas'
+//                                    , '$count'
+//                                    , '$dtmenos12meses'
+//                                    , 'dtnow'
+//                                    , 'naoMonitorado'
+//                                ));
+
+                            }
+//             Final teste Compartilhamento de Senhas
+
 
 //  Inicio  do teste Alarme Arme/desarme
 
@@ -547,15 +844,15 @@ class MonitoramentoController extends Controller
                                     $evidencia = $evidencia."\n" . $rowAberturaFinalSemana .' - Ocorrências de desativação do alarme em períodos de finais de semana conforme a seguir:';
                                     $evidencia = $evidencia . "\n" . 'Evento Abertura' . "\t" . 'Data Abertura' . "\t" . 'Hora Abertura' . "\t" . 'Evento Fechamento' . "\t" . 'Hora Fechamento' . "\t" . 'Dia Semana' . "\t" . 'Tempo Permanência';
                                     foreach ($acessos_final_semana as $tabela){
-                                        $evidencia = $evidencia  . "\n" . '$tabela->evAbertura'
-                                            . "\t" . '$tabela->evDataAbertura' . "\t"
-                                            . '$tabela->evHoraAbertura'
+                                        $evidencia = $evidencia  . "\n" . $tabela->evAbertura
+                                            . "\t" . $tabela->evDataAbertura . "\t"
+                                            . $tabela->evHoraAbertura
                                             . "\t"
-                                            . '$tabela->evFechamento'
+                                            . $tabela->evFechamento
                                             . "\t"
-                                            . '$tabela->evHoraFechamento'
-                                            . "\t" . '$tabela->diaSemana'
-                                            . "\t" . '$tabela->tempoPermanencia';
+                                            . $tabela->evHoraFechamento
+                                            . "\t" . $tabela->diaSemana
+                                            . "\t" . $tabela->tempoPermanencia;
                                     }
                                 }
 
@@ -2013,7 +2310,7 @@ class MonitoramentoController extends Controller
 
                     }  // Fim do teste para todas superintendencias se superintendencia = 1
 
-                    // inicio dotestee para uma superintendencias
+                    // inicio do testee para uma superintendencias
                     else {
 
                         $registros = DB::table('itensdeinspecoes')
@@ -2031,36 +2328,329 @@ class MonitoramentoController extends Controller
 //                            ->where([['sto', '=', 16300947 ]])   // Britania  16300947
 //                            ->where([['mcu', '=', 6684 ]]) //ac anicuns
                             //->where([['itensdeinspecoes.testeVerificacao_id', '=', 3678 ]])  //3678  é smb_bdf
-
-
 //                            ->limit(100)
+
                             ->get();
+
+                        ini_set('memory_limit', '512M');
+                        ini_set('max_input_time', 350);
+                        ini_set('max_execution_time', 350);
+//
+//                        proxima avaliação
+
+                        ini_set('memory_limit', '128M');
+                        ini_set('max_input_time', 120);
+                        ini_set('max_execution_time', 120);
 
 //                      Inicio processamento da aavaliação
                         foreach ($registros as $registro) {
                             $consequencias = $registro->consequencias;
                             $orientacao = $registro->orientacao;
 
-                            ini_set('memory_limit', '512M');
-                            ini_set('max_input_time', 350);
-                            ini_set('max_execution_time', 350);
+//              Início teste Compartilhamento de Senhas
+                            if((($registro->numeroGrupoVerificacao==206) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==335) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==232) && ($registro->numeroDoTeste==4))
+                                || (($registro->numeroGrupoVerificacao==272) && ($registro->numeroDoTeste==3))) {
+                                $aviso = null;
+                                $periodo = array();
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+                                $naoMonitorado = null;
+                                //verifica histórico de inspeções
+
+//                                DB::enableQueryLog();
+//                                dd( DB::getQueryLog());
+
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%As senhas do sistema de alarme são pessoais%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                    ->first();
+
+                                try {
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                        //se houver registros de inspeções anteriores  consulta  com range  entre datas
+
+//                                        ############   Eventos   #################
+                                        $eventos = DB::table('alarmes')
+                                            ->select('alarmes.*')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data', '>', $reincidencia_dt_fim_inspecao)
+                                            ->orderBy('data', 'asc')
+                                            ->orderBy('hora', 'asc')
+                                            ->get();
+
+                                    } else {
+//                                  ############   Eventos  #################
+                                        $eventos = DB::table('alarmes')
+                                            ->select('alarmes.*')
+                                            ->where('mcu', '=', $registro->mcu)
+                                            ->where('data', '>', $dtmenos12meses)
+                                            ->orderBy('data', 'asc')
+                                            ->orderBy('hora', 'asc')
+                                            ->get();
+                                    }
+
+                                } catch (\Exception $e) {
+//                                  ############   Eventos  #################
+                                    $eventos = DB::table('alarmes')
+                                        ->select('alarmes.*')
+                                        ->where('mcu', '=', $registro->mcu)
+                                        ->where('data', '>', $dtmenos12meses)
+                                        ->orderBy('data', 'asc')
+                                        ->orderBy('hora', 'asc')
+                                        ->get();
+                                }
+
+                                if ($eventos->isEmpty()) {
+                                    $naoMonitorado = 'Não foi possível confrontar os dados obtidos com as informações de férias e afastamentos, com objetivo de identificar possíveis compartilhamentos de  senha recente da utilização do alarme monitorado. Dado que, a unidade não está sendo monitorada há pelo menos 12 meses. Adicionalmente, registra-se que foi pesquisado  a partir do dia ' . date("d/m/Y", strtotime($dtmenos12meses)) . '.';
+                                } else {
+
+                                    $dtmax = $eventos->max('data');
+                                    $periodo = CarbonPeriod::create($dtmax, $dtnow);
+                                    $dataultimoevento = \Carbon\Carbon::parse($dtmax)->format('d/m/Y');
+
+                                    if ($periodo->count() >= 15) $aviso = 'a) A unidade inspecionada não está
+                                    sendo monitorada há '
+                                        . $periodo->count() . ' dias. Adicionalmente, verificaram que o
+                                         último evento transmitido foi no dia '
+                                        . $dataultimoevento . '.';
+
+                                    // Se tem dados de alarme obter a lista de ferias por empregados da unidade
+                                    $ferias_por_mcu = DB::table('ferias_por_mcu')
+                                        ->join('cadastral', 'ferias_por_mcu.matricula', '=', 'cadastral.matricula')
+                                        ->select('ferias_por_mcu.*', 'cadastral.mcu')
+                                        ->where([['cadastral.mcu', '=', $registro->mcu]])
+                                        ->where([['ferias_por_mcu.inicio_fruicao', '<>', null]])
+                                        ->where([['ferias_por_mcu.inicio_fruicao', '>', $dtmenos12meses]])
+                                        ->orderBy('ferias_por_mcu.inicio_fruicao', 'asc')
+                                        ->get();
+
+                                    if (!$ferias_por_mcu->isEmpty()) {
+
+                                        foreach ($ferias_por_mcu as $ferias) {
+
+                                            $inicio_fruicao = Carbon::parse($ferias->inicio_fruicao)->format('Y-m-d');
+                                            $termino_fruicao = Carbon::parse($ferias->termino_fruicao)->format('Y-m-d');
+                                            $compartilhaSenha = DB::table('compartilhasenhas')
+                                                ->where('codigo', '=', $registro->codigo)
+                                                ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                                ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                                                ->delete();
+
+                                            $res = DB::table('alarmes')
+                                                ->select('alarmes.*')
+                                                ->where([['mcu', '=', $registro->mcu]])
+                                                ->where([['matricula', '=', $ferias->matricula]])
+                                                ->whereBetween('data', [$inicio_fruicao, $termino_fruicao])
+                                                ->orderBy('data', 'asc')
+                                                ->orderBy('hora', 'asc')
+                                                ->get();
+
+                                            if ($res->count('matricula') >= 1) {
+
+                                                $motivo = 'Férias';
+
+                                                foreach ($res as $dado) {
+                                                    $compartilhaSenha = new CompartilhaSenha();
+                                                    $compartilhaSenha->codigo = $registro->codigo;
+                                                    $compartilhaSenha->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                                                    $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
+                                                    $compartilhaSenha->matricula = $dado->matricula;
+                                                    $compartilhaSenha->evento = $dado->armedesarme;
+                                                    $compartilhaSenha->data = $dado->data;
+                                                    $compartilhaSenha->tipoafastamento = $motivo;
+                                                    $compartilhaSenha->save();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // Se tem dados de alarme obter a lista de absenteísmo por empregados da unidade
+                                    $frequencias = DB::table('absenteismos')
+                                        ->join('cadastral', 'absenteismos.matricula', '=', 'cadastral.matricula')
+                                        ->select('absenteismos.*', 'cadastral.mcu')
+                                        ->where([['cadastral.mcu', '=', $registro->mcu]])
+                                        ->where([['data_evento', '>', $dtmenos12meses]])
+                                        ->whereBetween('data_evento', [$dtmenos12meses, $dtnow])
+                                        ->get();
+
+                                    if (!$frequencias->isEmpty()) {
+
+                                        foreach ($frequencias as $frequencia) {
+
+                                            $dt = new Carbon($frequencia->data_evento);
+
+                                            if ($frequencia->dias > 1) {
+
+                                                $dt = $dt->addDays($frequencia->dias);
+                                                $dt = $dt->format('Y-m-d');
+                                            }
+
+                                            $res = DB::table('alarmes')
+                                                ->select('alarmes.*')
+                                                ->where([['mcu', '=', $registro->mcu]])
+                                                ->where([['matricula', '=', $frequencia->matricula]])
+                                                ->whereBetween('data', [$frequencia->data_evento, $dt])
+                                                ->orderBy('data', 'asc')
+                                                ->orderBy('hora', 'asc')
+                                                ->get();
+
+                                            if (!$res->isEmpty()) {
+                                                foreach ($res as $dado) {
+                                                    $compartilhaSenha = new CompartilhaSenha();
+                                                    $compartilhaSenha->codigo = $registro->codigo;
+                                                    $compartilhaSenha->numeroGrupoVerificacao = $registro->numeroGrupoVerificacao;
+                                                    $compartilhaSenha->numeroDoTeste = $registro->numeroDoTeste;
+                                                    $compartilhaSenha->matricula = $dado->matricula;
+                                                    $compartilhaSenha->evento = $dado->armedesarme;
+                                                    $compartilhaSenha->data = $dado->data;
+                                                    $compartilhaSenha->tipoafastamento = $frequencia->motivo;
+                                                    $compartilhaSenha->save();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $compartilhaSenhas = DB::table('compartilhasenhas')
+                                        ->where('codigo', '=', $registro->codigo)
+                                        ->where('numeroGrupoVerificacao', '=', $registro->numeroGrupoVerificacao)
+                                        ->where('numeroDoTeste', '=', $registro->numeroDoTeste)
+                                        ->orderBy('data', 'asc')
+                                        ->get();
+
+                                    $count = $compartilhaSenhas->count('codigo');
+                                    $dtmax = \Carbon\Carbon::parse($eventos->max('data'))->format('d/m/Y');
+                                } //tem dados de alarme
+                                if ($count == null) $compartilhaSenhas = null;
+                                if ($count >= 1) {
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme ' . date("d/m/Y", strtotime($dtmenos12meses)) . ' a ' . date("d/m/Y", strtotime($dtnow)) . ' , constatou-se a utilização da senha de empregado em que no período mencionado não se encontrava na unidade. O que indicava a prática de compartilhamento de senha de alarme para acesso à unidade. Encontraram ' . $count . ' - ocorrência(s) em períodos oficiais de ausência do trabalho conforme a seguir:';
+                                    $evidencia = $evidencia . "\n"
+                                        . 'Evento' . "\t"
+                                        . 'Matricula' . "\t"
+                                        . 'Data' . "\t"
+                                        . 'Tipo Afastamento';
+                                    foreach ($compartilhaSenhas as $compartilhaSenha) {
+                                        $evidencia = $evidencia . "\n"
+                                            . $compartilhaSenha->evento . "\t"
+                                            . $compartilhaSenha->matricula . "\t"
+                                            . date('d/m/Y', strtotime($compartilhaSenha->data)) . "\t"
+                                            . $compartilhaSenha->tipoafastamento;
+                                    }
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                }
+                                else{
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme, do Controle de Férias CEGEP e do Sistema PGP. Período de ' . date( 'd/m/Y' , strtotime($dtmenos12meses)).' a ' .date( 'd/m/Y' , strtotime($dtnow)).', constatou-se que não havia indícios de prática de compartilhamento de senha de alarme para acesso à unidade.';
+                                    $evidencia = null;
+                                    $orientacao = null;
+                                    $consequencias = null;
+                                }
+                                if (!empty($naoMonitorado)) {
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período ' . date("d/m/Y", strtotime($dtmenos12meses)) . ' a ' . date("d/m/Y", strtotime($dtnow)) . ' , constatou-se que:';
+                                    $evidencia = $naoMonitorado;
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                }
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
+                                if( $valorFalta > $quebracaixa){
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+                                    if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
+                                }
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+
+//                                if ($avaliacao == 'Não Conforme') dd('line 2325 -> Não Conforme ', $itensdeinspecao);
+//                                if ($avaliacao == 'Conforme') dd('line 2326 -> Conforme ', $itensdeinspecao);
+//                                if ($naoMonitorado <>'') dd('line 2326 -> Conforme ', $itensdeinspecao);
+//                                dd($registro->sto , $reincidencia, $eventos, $compartilhaSenhas);
+
+                                $itensdeinspecao->update();
 
 
-                            //  proximo teste
+//                                return view('compliance.inspecao.editar',compact
+//                                (
+//                                    'registro'
+//                                    , 'id'
+//                                    , 'total'
+//                                    , 'compartilhaSenhas'
+//                                    , '$count'
+//                                    , '$dtmenos12meses'
+//                                    , 'dtnow'
+//                                    , 'naoMonitorado'
+//                                ));
+
+                            }
+//             Final teste Compartilhamento de Senhas
 
 
-                            ini_set('memory_limit', '128M');
-                            ini_set('max_input_time', 120);
-                            ini_set('max_execution_time', 120);
+
 
 //  Inicio  do teste Alarme Arme/desarme
-
                             if((($registro->numeroGrupoVerificacao == 206 )&&($registro->numeroDoTeste == 1 ))
                                 || (( $registro->numeroGrupoVerificacao == 335 ) && ( $registro->numeroDoTeste == 1 ))
                                 || (($registro->numeroGrupoVerificacao == 232)&&($registro->numeroDoTeste == 3 ))
                                 || (( $registro->numeroGrupoVerificacao == 272 ) && ( $registro->numeroDoTeste == 2 )))
                             {
-                                $now=$dtnow->format('Y-m-d');
+                                $now = $dtnow->format('Y-m-d');
                                 $rowAberturaFinalSemana=0;
                                 $tempoDesarme='';
                                 $tempoDePermanencia=0;
@@ -2076,8 +2666,8 @@ class MonitoramentoController extends Controller
                                 $rowtempoAberturaPosExpediente=0;
                                 $tempoAberturaPosExpediente='';
                                 $tempoAberturaAntecipada='';
-                                $naoMonitorado='';
                                 $acessos_final_semana ='';
+
                                 $codVerificacaoAnterior = null;
                                 $numeroGrupoReincidente = null;
                                 $numeroItemReincidente = null;
@@ -2493,15 +3083,15 @@ class MonitoramentoController extends Controller
                                     $evidencia = $evidencia."\n" . $rowAberturaFinalSemana .' - Ocorrências de desativação do alarme em períodos de finais de semana conforme a seguir:';
                                     $evidencia = $evidencia . "\n" . 'Evento Abertura' . "\t" . 'Data Abertura' . "\t" . 'Hora Abertura' . "\t" . 'Evento Fechamento' . "\t" . 'Hora Fechamento' . "\t" . 'Dia Semana' . "\t" . 'Tempo Permanência';
                                     foreach ($acessos_final_semana as $tabela){
-                                        $evidencia = $evidencia  . "\n" . '$tabela->evAbertura'
-                                            . "\t" . '$tabela->evDataAbertura' . "\t"
-                                            . '$tabela->evHoraAbertura'
+                                        $evidencia = $evidencia  . "\n" . $tabela->evAbertura
+                                            . "\t" . $tabela->evDataAbertura . "\t"
+                                            . $tabela->evHoraAbertura
                                             . "\t"
-                                            . '$tabela->evFechamento'
+                                            . $tabela->evFechamento
                                             . "\t"
-                                            . '$tabela->evHoraFechamento'
-                                            . "\t" . '$tabela->diaSemana'
-                                            . "\t" . '$tabela->tempoPermanencia';
+                                            . $tabela->evHoraFechament
+                                            . "\t" . $tabela->diaSemana
+                                            . "\t" . $tabela->tempoPermanencia;
                                      }
                                 }
 
@@ -2634,12 +3224,9 @@ class MonitoramentoController extends Controller
 
 
                             }
-
 //  Final  do teste Alarme Arme/desarme
 
-                            ini_set('memory_limit', '128M');
-                            ini_set('max_input_time', 120);
-                            ini_set('max_execution_time', 120);
+
 
 //                      Inicio  do teste Extravio Responsabilidade Definida
                             if((($registro->numeroGrupoVerificacao == 205)&&($registro->numeroDoTeste == 2))

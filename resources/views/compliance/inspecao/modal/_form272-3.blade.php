@@ -2,18 +2,18 @@
 
     <div id="aprimoramento">
         <span>
-            Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período de 01/2020 a {{ $dtmax }}, constatou-se que:
+            Em análise aos dados do Relatório de “Arme e Desarme” do Sistema de Alarme do período {{date("d/m/Y", strtotime($dtmenos12meses))}}  a {{date("d/m/Y", strtotime($dtnow))}} , constatou-se que:
         </span>
     </div>
     <div id="historico">{{ $naoMonitorado }}</div>
     <div id="historico1"></div>
 @else
 
-    @if ($row >= 1)
+    @if ($count >= 1)
        <!--- nem nulo nem vazio-->
     <div id="aprimoramento">
         <span>
-           Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme, do Controle de Férias CEGEP e do Sistema PGP. Período de {{  \Carbon\Carbon::parse($dtini)->format('d/m/Y') }}  a {{  \Carbon\Carbon::parse($dtfim)->format('d/m/Y') }}, constataram a utilização da senha de empregado em que no período mencionado não se encontrava na unidade. O que indicava a prática de compartilhamento de senha de alarme para acesso à unidade. Encontraram {{$row}} - ocorrência(s) em períodos oficiais de ausência do trabalho conforme a seguir:
+           Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme, do Controle de Férias CEGEP e do Sistema PGP. Período de {{  \Carbon\Carbon::parse($dtnow)->format('d/m/Y') }}  a {{  \Carbon\Carbon::parse($dtfim)->format('d/m/Y') }}, constataram a utilização da senha de empregado em que no período mencionado não se encontrava na unidade. O que indicava a prática de compartilhamento de senha de alarme para acesso à unidade. Encontraram {{$count}} - ocorrência(s) em períodos oficiais de ausência do trabalho conforme a seguir:
         </span>
     </div>
     <div id="historico">
@@ -46,10 +46,6 @@
         <div id="aprimoramento">
             <span>
                 Em análise aos dados do Relatório de Arme/Desarme do Sistema de Alarme, do Controle de Férias CEGEP e do Sistema PGP. Período de {{ date( 'd/m/Y' , strtotime($dtini))}} a {{ date( 'd/m/Y' , strtotime($dtfim))}}, constataram que não havia indícios de prática de compartilhamento de senha de alarme para acesso à unidade.
-            <br> @if ( $aviso != null)
-                    NOTA: {{ $aviso }}
-                 @endif
-
             </span>
         </div>
         <div id="historico">  </div>
