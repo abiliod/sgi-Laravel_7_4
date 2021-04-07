@@ -107,6 +107,176 @@ class AvaliaInspecao implements ShouldQueue
                         $consequencias = $registro->consequencias;
                         $orientacao = $registro->orientacao;
 
+// Início teste PLPs Pendentes
+                        if((($registro->numeroGrupoVerificacao==212) && ($registro->numeroDoTeste==2))
+                            || (($registro->numeroGrupoVerificacao==350) && ($registro->numeroDoTeste==1))
+                            || (($registro->numeroGrupoVerificacao==235) && ($registro->numeroDoTeste==4))
+                            || (($registro->numeroGrupoVerificacao==274) && ($registro->numeroDoTeste==1))) {
+
+                            $codVerificacaoAnterior = null;
+                            $numeroGrupoReincidente = null;
+                            $numeroItemReincidente = null;
+                            $evidencia = null;
+                            $valorSobra = null;
+                            $valorFalta = null;
+                            $valorRisco = null;
+                            $total = 0;
+                            $pontuado = null;
+                            $itemQuantificado = 'Não';
+                            $reincidente = 0;
+                            $reinc = 'Não';
+                            $dtmin = $dtnow;
+                            $count = 0;
+
+                            $reincidencia = DB::table('snci')
+                                ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                ->where([['descricao_item', 'like', '%constantes nas PLP%']])
+                                ->where([['sto', '=', $registro->sto]])
+                                ->orderBy('no_inspecao', 'desc')
+                                ->first();
+
+                            try {
+                                if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                    $reincidente = 1;
+                                    $reinc = 'Sim';
+                                    $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                    $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                    $numeroItemReincidente = $reincidencia->no_item;
+                                    $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                    $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+//                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+//                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                    //se houver registros de inspeções anteriores  consulta  com data superior ao termino da inspeção reincidente
+                                    $plplistapendentes = DB::table('plplistapendentes')
+                                        ->select( 'plplistapendentes.*' )
+                                        ->where([['stomcu', '=',  $registro->mcu  ]])
+                                        ->where([['dh_lista_postagem', '>=',  $reincidencia_dt_fim_inspecao ]])
+                                        ->get();
+                                } else {
+
+                                    $plplistapendentes = DB::table('plplistapendentes')
+                                        ->select( 'plplistapendentes.*' )
+                                        ->where([['stomcu', '=',  $registro->mcu  ]])
+                                        ->get();
+                                }
+                            } catch (\Exception $e) {
+
+                                $plplistapendentes = DB::table('plplistapendentes')
+                                    ->select( 'plplistapendentes.*' )
+                                    ->where([['stomcu', '=',  $registro->mcu  ]])
+                                    ->get();
+
+                            }
+
+                            if( !empty($plplistapendentes->dh_lista_postagem )) {
+
+                                $count = $plplistapendentes->count('lista');
+                                $dtfim = $plplistapendentes->max('dh_lista_postagem');
+                            }
+                            else {
+                                $dtfim = Carbon::now();
+                            }
+
+                            if ($count >= 1) {
+
+                                if (! $plplistapendentes->isEmpty()) {
+
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise à Relação de Listas Pendentes do sistema SARA, consulta em ' .date( 'd/m/Y' , strtotime($dtfim)).', e aos eventos registrados no sistema SRO, constatou-se as inconsistências relacionadas a seguir:';
+                                    $evidencia = $evidencia . "\n"
+                                        . 'Lista' . "\t"
+                                        . 'PLP' . "\t"
+                                        . 'Cliente' . "\t"
+                                        . 'Data da Postagem' . "\t"
+                                        . 'Situação';
+
+                                    foreach($plplistapendentes as $plplistapendente) {
+                                        $evidencia = $evidencia . "\n"
+                                            . $plplistapendente->lista . "\t"
+                                            . $plplistapendente->plp . "\t"
+                                            . $plplistapendente->objeto . "\t"
+                                            . $plplistapendente->cliente . "\t"
+                                            . $plplistapendente->matricula . "\t"
+                                            . (isset($plplistapendente->dh_lista_postagem) && $plplistapendente->dh_lista_postagem == '' ? '   ----------  ' : date( 'd/m/Y' , strtotime($plplistapendente->dh_lista_postagem))) . "\t"
+                                            . 'Falta de Conferencia ou Sem Contabilização';
+                                    }
+                                    $consequencias = $registro->consequencias;
+                                    $orientacao = $registro->orientacao;
+                                }
+                            }
+                            else {
+                                $avaliacao = 'Conforme';
+                                $oportunidadeAprimoramento = 'Em análise à Relação de Listas Pendentes do sistema SARA, Planilha disponibilizada em \sac3063\INSTITUCIONAL\DIOPE\DERAT\PUBLICO\GMAT_pub\LISTA_PENDENTE, planilha acessada em data anterior à ' . date( 'd/m/Y' , strtotime($dtfim)). ' e aos eventos registrados no sistema SRO, constatou-se que não havia pendência para a unidade inspecionada.';
+                                $evidencia = null;
+                                $orientacao = null;
+                                $consequencias = null;
+                            }
+
+                            $quebra = DB::table('relevancias')
+                                ->select('valor_final')
+                                ->where('fator_multiplicador', '=', 1)
+                                ->first();
+                            $quebracaixa = $quebra->valor_final * 0.1;
+
+                            if( $valorFalta > $quebracaixa){
+
+                                $fm = DB::table('relevancias')
+                                    ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                    ->where('valor_inicio', '<=', $total)
+                                    ->orderBy('valor_final', 'desc')
+                                    ->first();
+                                $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                            }
+                            else{
+
+                                if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
+                            }
+
+                            $dto = DB::table('itensdeinspecoes')
+                                ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                ->select('itensdeinspecoes.*')
+                                ->first();
+
+                            $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                            $itensdeinspecao->avaliacao = $avaliacao;
+                            $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                            $itensdeinspecao->evidencia = $evidencia;
+                            $itensdeinspecao->valorFalta = $valorFalta;
+                            $itensdeinspecao->valorSobra = $valorSobra;
+                            $itensdeinspecao->valorRisco = $valorRisco;
+                            $itensdeinspecao->situacao = 'Inspecionado';
+                            $itensdeinspecao->pontuado = $pontuado;
+                            $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                            $itensdeinspecao->orientacao = $registro->orientacao;
+                            $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                            $itensdeinspecao->reincidencia = $reinc;
+                            $itensdeinspecao->consequencias = $consequencias;
+                            $itensdeinspecao->orientacao = $orientacao;
+                            $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                            $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                            $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+
+//                                echo $avaliacao , $dto->id.' - '.$avaliacao.' ,';
+//                                if ($avaliacao == 'Não Conforme') dd('line 2495 -> Não Conforme ', $itensdeinspecao);
+//                                if ($avaliacao == 'Conforme') dd('line 2496 -> Conforme ', $itensdeinspecao);
+//                                dd($registro->sto , $reincidencia);
+
+                            $itensdeinspecao->update();
+
+//                                return view('compliance.inspecao.editar',
+//                                    compact(
+//                                        'registro'
+//                                        , 'id'
+//                                        , 'total'
+//                                        , 'plplistapendentes'
+//                                        ,'count'
+//                                        ,'dtfim'
+//                                    ));
+                        }
+// Final teste PLPs Pendentes
+
 //              Início teste Compartilhamento de Senhas
                         if((($registro->numeroGrupoVerificacao==206) && ($registro->numeroDoTeste==2))
                             || (($registro->numeroGrupoVerificacao==335) && ($registro->numeroDoTeste==2))
@@ -2316,6 +2486,176 @@ class AvaliaInspecao implements ShouldQueue
                         foreach ($registros as $registro) {
                             $consequencias = $registro->consequencias;
                             $orientacao = $registro->orientacao;
+
+// Início teste PLPs Pendentes
+                            if((($registro->numeroGrupoVerificacao==212) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==350) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==235) && ($registro->numeroDoTeste==4))
+                                || (($registro->numeroGrupoVerificacao==274) && ($registro->numeroDoTeste==1))) {
+
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%constantes nas PLP%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                    ->first();
+
+                                try {
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+//                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+//                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                        //se houver registros de inspeções anteriores  consulta  com data superior ao termino da inspeção reincidente
+                                        $plplistapendentes = DB::table('plplistapendentes')
+                                            ->select( 'plplistapendentes.*' )
+                                            ->where([['stomcu', '=',  $registro->mcu  ]])
+                                            ->where([['dh_lista_postagem', '>=',  $reincidencia_dt_fim_inspecao ]])
+                                            ->get();
+                                    } else {
+
+                                        $plplistapendentes = DB::table('plplistapendentes')
+                                            ->select( 'plplistapendentes.*' )
+                                            ->where([['stomcu', '=',  $registro->mcu  ]])
+                                            ->get();
+                                    }
+                                } catch (\Exception $e) {
+
+                                    $plplistapendentes = DB::table('plplistapendentes')
+                                        ->select( 'plplistapendentes.*' )
+                                        ->where([['stomcu', '=',  $registro->mcu  ]])
+                                        ->get();
+
+                                }
+
+                                if( !empty($plplistapendentes->dh_lista_postagem )) {
+
+                                    $count = $plplistapendentes->count('lista');
+                                    $dtfim = $plplistapendentes->max('dh_lista_postagem');
+                                }
+                                else {
+                                    $dtfim = Carbon::now();
+                                }
+
+                                if ($count >= 1) {
+
+                                    if (! $plplistapendentes->isEmpty()) {
+
+                                        $avaliacao = 'Não Conforme';
+                                        $oportunidadeAprimoramento = 'Em análise à Relação de Listas Pendentes do sistema SARA, consulta em ' .date( 'd/m/Y' , strtotime($dtfim)).', e aos eventos registrados no sistema SRO, constatou-se as inconsistências relacionadas a seguir:';
+                                        $evidencia = $evidencia . "\n"
+                                            . 'Lista' . "\t"
+                                            . 'PLP' . "\t"
+                                            . 'Cliente' . "\t"
+                                            . 'Data da Postagem' . "\t"
+                                            . 'Situação';
+
+                                        foreach($plplistapendentes as $plplistapendente) {
+                                            $evidencia = $evidencia . "\n"
+                                                . $plplistapendente->lista . "\t"
+                                                . $plplistapendente->plp . "\t"
+                                                . $plplistapendente->objeto . "\t"
+                                                . $plplistapendente->cliente . "\t"
+                                                . $plplistapendente->matricula . "\t"
+                                                . (isset($plplistapendente->dh_lista_postagem) && $plplistapendente->dh_lista_postagem == '' ? '   ----------  ' : date( 'd/m/Y' , strtotime($plplistapendente->dh_lista_postagem))) . "\t"
+                                                . 'Falta de Conferencia ou Sem Contabilização';
+                                        }
+                                        $consequencias = $registro->consequencias;
+                                        $orientacao = $registro->orientacao;
+                                    }
+                                }
+                                else {
+                                    $avaliacao = 'Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise à Relação de Listas Pendentes do sistema SARA, Planilha disponibilizada em \sac3063\INSTITUCIONAL\DIOPE\DERAT\PUBLICO\GMAT_pub\LISTA_PENDENTE, planilha acessada em data anterior à ' . date( 'd/m/Y' , strtotime($dtfim)). ' e aos eventos registrados no sistema SRO, constatou-se que não havia pendência para a unidade inspecionada.';
+                                    $evidencia = null;
+                                    $orientacao = null;
+                                    $consequencias = null;
+                                }
+
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
+
+                                if( $valorFalta > $quebracaixa){
+
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+
+                                    if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
+                                }
+
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
+
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+
+//                                echo $avaliacao , $dto->id.' - '.$avaliacao.' ,';
+//                                if ($avaliacao == 'Não Conforme') dd('line 2495 -> Não Conforme ', $itensdeinspecao);
+//                                if ($avaliacao == 'Conforme') dd('line 2496 -> Conforme ', $itensdeinspecao);
+//                                dd($registro->sto , $reincidencia);
+
+                                $itensdeinspecao->update();
+
+//                                return view('compliance.inspecao.editar',
+//                                    compact(
+//                                        'registro'
+//                                        , 'id'
+//                                        , 'total'
+//                                        , 'plplistapendentes'
+//                                        ,'count'
+//                                        ,'dtfim'
+//                                    ));
+                            }
+// Final teste PLPs Pendentes
 
 
 //              Início teste Compartilhamento de Senhas

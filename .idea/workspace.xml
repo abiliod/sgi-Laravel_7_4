@@ -3,12 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobAbsenteismo.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobAbsenteismo.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobAlarmes.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobAlarmes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobProter.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobProter.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobWebCont.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobWebCont.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/DebitoEmpregado.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Correios/ModelsAuxiliares/DebitoEmpregado.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecionados/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecionados/index.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -378,7 +376,14 @@
       <workItem from="1617749740867" duration="1781000" />
       <workItem from="1617751605274" duration="2773000" />
       <workItem from="1617754522342" duration="1782000" />
-      <workItem from="1617756361862" duration="944000" />
+      <workItem from="1617756361862" duration="1259000" />
+      <workItem from="1617813860813" duration="1827000" />
+      <workItem from="1617815782442" duration="1778000" />
+      <workItem from="1617817586215" duration="1787000" />
+      <workItem from="1617819426689" duration="995000" />
+      <workItem from="1617821984313" duration="1788000" />
+      <workItem from="1617832118965" duration="1549000" />
+      <workItem from="1617834628137" duration="1229000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -485,7 +490,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617749081680</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="06/04/2020  22:03 - Ajuste da rotina  de importação absenteismo e correção de bug job webcont.">
+      <created>1617757431451</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1617757431451</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -506,7 +518,8 @@
     <MESSAGE value="05/04/2020 Correção." />
     <MESSAGE value="06/04/2020  19:42 - inclusão de rotina inspeção monitorada para avaliação de compartilhamento de senha de alarmes, ajuste na funcionalidade para avaliação presencial criação de job para importação de absenteísmo e correção de bug para job webCont." />
     <MESSAGE value="06/04/2020  19:42 - inclusão de rotina criação de job para importação de absenteísmo." />
-    <option name="LAST_COMMIT_MESSAGE" value="06/04/2020  19:42 - inclusão de rotina criação de job para importação de absenteísmo." />
+    <MESSAGE value="06/04/2020  22:03 - Ajuste da rotina  de importação absenteismo e correção de bug job webcont." />
+    <option name="LAST_COMMIT_MESSAGE" value="06/04/2020  22:03 - Ajuste da rotina  de importação absenteismo e correção de bug job webcont." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -521,10 +534,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617746624389" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617749080762">
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1617757429872">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617749080762" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1617757429872" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -537,10 +550,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617751763268" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617749023085">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1617757440268">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617749023085" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1617757440268" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1617107473731">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
