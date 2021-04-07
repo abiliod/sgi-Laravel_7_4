@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DebitoEmpregado extends Model
 {
-
     protected $table = 'debitoempregados';
-
     protected $fillable=
     [
         'cia',
@@ -23,14 +21,13 @@ class DebitoEmpregado extends Model
         'valor',
         'observacoes',
         'documento',
-        'matriculaEmpregado',
+        'matricula',
         'nomeEmpregado',
         'justificativa',
         'regularizacao',
         'acao',
         'regularizacao',
         'anexo',
-
     ];
 
     protected $casts =

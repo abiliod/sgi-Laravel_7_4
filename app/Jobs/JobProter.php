@@ -38,8 +38,6 @@ class JobProter implements ShouldQueue
     public function handle()  {
         $proters = $this->proters;
 
-
-
         ini_set('memory_limit', '512M');
 
 //  Inicio importar PROTERS
@@ -160,7 +158,8 @@ class JobProter implements ShouldQueue
 //          Final importar PROTERS
         DB::table('proters')
             ->where('status_da_pendencia', '<>', 'Pendente')
-            ->delete();    //    Higieniza tabela PROTER
+            ->delete();
+        //    Higieniza tabela PROTER
 //   FIM importar PROTERS
 
         ini_set('memory_limit', '128M');

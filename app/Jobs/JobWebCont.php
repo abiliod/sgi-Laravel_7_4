@@ -9,6 +9,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 
 
@@ -42,12 +44,21 @@ class JobWebCont implements ShouldQueue
 
         foreach($debitoEmpregados as $dados) {
             foreach($dados as $dado) {
-                if(! $dado['data']=='') {
-                    $data = $this->transformDate($dado['data']);
+
+//                if(! $dado['data']=='') {
+////                    $data = $this->transformDate($dado['data']);
+//                    $data = substr($dado['data'],6,4).'-'. substr($dado['data'],3,2) .'-'. substr($dado['data'],0,2);
+//                }
+//                else {
+//                    $data = null;
+//                }
+
+                $dt_number = intVal($dado['data']);
+                if (is_numeric($dt_number)) {
+                    $dt = new Carbon('1899-12-30');
+                    $dt = $dt->addDays($dt_number);
                 }
-                else {
-                    $data = null;
-                }
+
                 if( ! empty($dado['valor'])) {
                     try {
                         $valor = str_replace(",", ".", $dado['valor']);
@@ -59,15 +70,16 @@ class JobWebCont implements ShouldQueue
                 else{
                     $valor = 0.00;
                 }
+
                 DebitoEmpregado :: updateOrCreate([
                     'conta' => $dado['conta']
                     , 'matricula' => $dado['matricula_ref2']
-                    , 'data' => $data
+                    , 'data' => $dt
                 ],
                     [
                         'conta' => $dado['conta']
                         , 'matricula' => $dado['matricula_ref2']
-                        , 'data' => $data
+                        , 'data' => $dt
                         , 'cia' => $dado['cia']
                         , 'competencia' => $dado['competencia']
                         , 'lote' => $dado['lote']
@@ -84,7 +96,6 @@ class JobWebCont implements ShouldQueue
                         , 'anexo' => $dado['anexo']
                         , 'valor' => $valor
                     ]);
-//                    dd($res);
             }
 //              higieniza a base de dados  excluindo por regional registros de
 //              competências anteriores que nao foram atualiados.
@@ -99,4 +110,5 @@ class JobWebCont implements ShouldQueue
         ini_set('memory_limit', '128M');
 
     }
+
 }

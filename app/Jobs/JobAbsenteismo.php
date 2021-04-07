@@ -36,36 +36,40 @@ class JobAbsenteismo implements ShouldQueue
     {
         $absenteismos = $this->absenteismos;
         $dtmenos12meses = $this->dtmenos12meses;
-
         DB::table('absenteismos')
-            ->where('data', '<', $dtmenos12meses)
+            ->where('data_evento', '<', $dtmenos12meses)
             ->delete();
 
         ini_set('memory_limit', '512M');
-
         foreach($absenteismos as $dados) {
             foreach($dados as $registro) {
 
                 $dt = substr($registro['data_evento'],6,4).'-'. substr($registro['data_evento'],3,2) .'-'. substr($registro['data_evento'],0,2);
-                $matricula =   $this->deixarNumero($registro['matricula']);
+                $res = DB::table('absenteismos')
+                    ->where('matricula', '=',  $registro['matricula'])
+                    ->where('data_evento','=', $dt)
+                    ->select(
+                        'absenteismos.id'
+                    )
+                    ->first();
 
-                Absenteismo :: updateOrCreate([
-                    'matricula' => $matricula,
-                    'data_evento' => $dt,
-                ],[
-                    'matricula' => $matricula,
-                    'data_evento' => $dt,
-                    'nome' => $registro['nome'],
-                    'lotacao' => $registro['lotacao'],
-                    'cargo' => $registro['cargo'],
-                    'motivo' => $registro['motivo'],
-                    'dias' => $registro['dias'],
-                ]);
+                if(!empty(  $res->id )) {
+                    $absenteismos = Absenteismo::find($res->id);
+                }
+                else {
+                    $absenteismos = new Absenteismo;
+                }
+                $absenteismos->matricula = $registro['matricula'];
+                $absenteismos->nome = $registro['nome'];
+                $absenteismos->lotacao = $registro['lotacao'];
+                $absenteismos->cargo = $registro['cargo'];
+                $absenteismos->motivo = $registro['motivo'];
+                $absenteismos->dias = $registro['dias'];
+                $absenteismos->data_evento = $dt;
+                $absenteismos->save();
+
             }
         }
-        function deixarNumero($string){
-            return preg_replace("/[^0-9]/", "", $string);
-        }
-        ini_set('memory_limit', '128M');
+         ini_set('memory_limit', '128M');
     }
 }

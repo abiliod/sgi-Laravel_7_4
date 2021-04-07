@@ -2091,8 +2091,8 @@ class ImportacaoController extends Controller
             ini_set('max_execution_time', 350);
             ini_set('memory_limit', '512M');
             $debitoEmpregados = Excel::toArray(new ImportDebitoEmpregados,  request()->file('file'));
-
             $dt_job = Carbon::now();
+
             Try{
                 $job = (new JobWebCont( $debitoEmpregados , $dt_job))
                     ->onConnection('importacao')
@@ -2124,12 +2124,13 @@ class ImportacaoController extends Controller
             foreach($debitoEmpregados as $dados) {
                 foreach($dados as $dado) {
 
-                    if(! $dado['data']=='') {
-                        $data = $this->transformDate($dado['data']);
+//                    Alguns sistemas exportam as datas para excel já no formato de data em excel. Visto que as Datas no Excel são armazenadas em números de dias a partir de 1 de Janeiro de 1900, com base em uma das respostas desse tópico.
+                    $dt_number = intVal($dado['data']);
+                    if (is_numeric($dt_number)) {
+                        $dt = new Carbon('1899-12-30');
+                        $dt = $dt->addDays($dt_number);
                     }
-                    else {
-                        $data = null;
-                    }
+
                     if( ! empty($dado['valor'])) {
                         try {
                             $valor = str_replace(",", ".", $dado['valor']);

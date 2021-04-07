@@ -53,6 +53,7 @@ class JobAlarmes implements ShouldQueue
 //                        $dt = $dado['data'];
                         $dateTimeString = $dado['data'] . $dado['hora'];
                         $format = 'Y-m-d';
+
                         $dt = Carbon::createFromFormat($format, $dateTimeString, 'America/São Paulo');
                         $diaSemana    =  $dt->dayOfWeek;
                     }
