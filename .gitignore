@@ -2,7 +2,6 @@
 /public/hot
 /public/storage
 /public/img/*.*
-/public/xml/*.*
 /public/xml/compliance/inspecao/*.xml
 /public/images/*.*
 /migrations_TEMP/*.*

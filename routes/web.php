@@ -225,6 +225,10 @@ Route::get('/compliance/monitoramento/avaliar', 'Correios\MonitoramentoControlle
 Route::post('/compliance/monitoramento/create', 'Correios\MonitoramentoController@create')->name('compliance.monitoramento.create');
 Route::get('/compliance/monitoramento/criar', 'Correios\MonitoramentoController@criar')->name('compliance.monitoramento.criar');
 Route::get('/compliance/monitoramento/show', 'Correios\MonitoramentoController@show')->name('compliance.monitoramento.show');
+Route::get('/compliance/monitoramento/xml', 'Correios\MonitoramentoController@xml')->name('compliance.monitoramento.xml');
+
+Route::post('/compliance/monitoramento/gerar_xml', 'Correios\MonitoramentoController@gerar_xml')->name('compliance.monitoramento.gerar_xml');
+
 
 
 //Route::post('/compliance/monitoramento/create', 'Correios\UnidadesController@salvarInspecao')->name('compliance.unidades.salvarInspecao');

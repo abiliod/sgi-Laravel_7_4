@@ -22,14 +22,11 @@ class InspecionadosController extends Controller {
         $inspecao = Inspecao::find($id);
         $situacao = 'AN';
         $dtEncerramento = '00:00:00';
-
         $businessUnit = DB::table('unidades')
             ->Where([['id', '=',  $inspecao->unidade_id]])
             ->select('unidades.*')
             ->first();
         $vazio = ' ';
-
-
 
         $registros = DB::table('itensdeinspecoes')
             ->join('inspecoes', 'itensdeinspecoes.inspecao_id', '=', 'inspecoes.id')
@@ -163,6 +160,7 @@ class InspecionadosController extends Controller {
         fwrite($fp, $xml);
         fclose($fp);
         return response()->download($diretorio.$arquivo);
+//
     }
 
     public function recusar ($id) {

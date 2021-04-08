@@ -27,18 +27,31 @@
                     </div>
                 </div>
 
-                @can('gerar_inspecao_automatica') @endcan
-                <div class="col s12 m6">
-                    <div class="card orange darken-1">
-                        <div class="card-content white-text">
-                            <span class="card-title">Avaliar Inspeções</span>
-                            <p>Unidades<br>Assunto: Avaliar inspeções por tipo de unidade e por Superintendência.</p>
-                        </div>
-                        <div class="card-action">
-                            <a class="white-text" href="{{route('compliance.monitoramento.avaliar')}}">Avalia Inspeçao</a>
-                        </div>
+            @can('avaliar_inspecao_automatica') @endcan
+            <div class="col s12 m6">
+                <div class="card orange darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">Avaliar Inspeções</span>
+                        <p>Unidades<br>Assunto: Avaliar inspeções por tipo de unidade e por Superintendência.</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" href="{{route('compliance.monitoramento.avaliar')}}">Avalia Inspeçao</a>
                     </div>
                 </div>
+            </div>
+
+            @can('integrar_XML_inspecao_automatica') @endcan
+            <div class="col s12 m6">
+                <div class="card green darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">Integrar Inspeções via XML</span>
+                        <p>Unidades<br>Assunto: Integração das inspeções por tipo de unidade e por Superintendência via método XML.</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" href="{{route('compliance.monitoramento.xml')}}">Gerar XML</a>
+                    </div>
+                </div>
+            </div>
 
 
         </div>

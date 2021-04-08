@@ -62,6 +62,14 @@ return [
             'retry_after' => 720,
         ],
 
+// php artisan queue:work --queue= geraXmlInspecao
+        'geraXmlInspecao' => [
+    'driver' => 'database',
+    'table' => 'jobs',
+    'queue' => 'geraXmlInspecao',
+    'retry_after' => 720,
+],
+
         'database' => [
         'driver' => 'database',
         'table' => 'jobs',
