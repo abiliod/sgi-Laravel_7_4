@@ -71,7 +71,7 @@ class JobXml_Inspecao implements ShouldQueue
                         $vazio = ' ';
                         $totalPontosNaInspeção = null;
 //                        $diretorio = "xml/compliance/inspecao/";
-                        $diretorio = "D:/webpages/sgiweb-Laravel_7_4/public/xml/compliance/inspecao";
+                        $diretorio = "D:/webpages/sgiweb-Laravel_7_4/public/xml/compliance/inspecao/";
 
 //                        D:webpages\sgiweb-Laravel_7_4\public\xml\compliance\inspecao
 
@@ -230,7 +230,7 @@ class JobXml_Inspecao implements ShouldQueue
 
                     //   final da geração do arqquivo XML
                     ini_set('memory_limit', '128M');
-                    
+
 
 
                 }  // Fim do teste para todas superintendencias se superintendencia = 1
@@ -269,7 +269,7 @@ class JobXml_Inspecao implements ShouldQueue
                         $vazio = ' ';
                         $totalPontosNaInspeção = null;
 //                      $diretorio = "xml/compliance/inspecao/";
-                        $diretorio = "D:/webpages/sgiweb-Laravel_7_4/public/xml/compliance/inspecao";
+                        $diretorio = "D:/webpages/sgiweb-Laravel_7_4/public/xml/compliance/inspecao/";
 
                         $businessUnit = DB::table('unidades')
                             ->Where([['id', '=',  $inspecao->unidade_id]])

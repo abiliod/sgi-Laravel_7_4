@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Correios\ModelsAuxiliares\Absenteismo;
-use App\Models\Correios\ModelsAuxiliares\Alarme;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

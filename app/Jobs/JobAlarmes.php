@@ -49,8 +49,6 @@ class JobAlarmes implements ShouldQueue
                 $diaSemana    = null;
                 if(!empty($dado['data'])) {
                     try {
-//                        $dt = substr($dado['data'], 6, 4) . '-' . substr($dado['data'], 3, 2) . '-' . substr($dado['data'], 0, 2);
-//                        $dt = $dado['data'];
                         $dateTimeString = $dado['data'] . $dado['hora'];
                         $format = 'Y-m-d';
 
