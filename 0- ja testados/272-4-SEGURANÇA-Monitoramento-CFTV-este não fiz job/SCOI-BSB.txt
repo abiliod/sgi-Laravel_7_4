@@ -1,0 +1,30 @@
+AM
+BSB
+GO
+PA
+RO
+TO
+
+
+Proter
+
+Endereço:  http://app.correiosnet.int/SPNWEB/pages/inicio.jsf
+Fazer o download por SE, período no formato (CSV)
+As informações são obtidas por meio: Sistema SPN->Itens Monitorados->Objeto Postal->Relatório Pendências Geral.
+As pendências apresentadas no PROTER referem-se ao período de Janeiro/2017 em diante.
+Efetuar as pesquisas a partir desta data. Ao gerar o arquivo (SELECIONE TODAS SEs).
+Fazer o download no formato (CSV). Importar os dados para uma Planilha formato xlsx.  Abrir o Arquivo excluir a primeira linha.
+Manteha sempre esse lay-out observe as palavras quando da importação: [TIPO DE PENDÊNCIA	STATUS DA PENDÊNCIA	DATA DA PENDÊNCIA	DIVERGÊNCIA PESO	DIVERGÊNCIA CEP	ORIGEM PENDÊNCIA	SE	TIPO DE UNIDADE	STO/MCU	NOME DA UNIDADE	STATUS DA UNIDADE	TIPO DE ATENDIMENTO	MATRÍCULA ATENDENTE	Nº DO OBJETO	DATA DA POSTAGEM	DATA DA ENTREGA	CÓDIGO DO SERVIÇO	CEP CONTABILIZADO (SARA)	CEP ENTREGA SRO	PESO TARIFADO FINANCEIRO	COMPRIMENTO FINANCEIRO	LARGURA FINANCEIRO	ALTURA FINANCEIRO	PESO CÚBICO FINANCEIRO	PESO REAL MECTRI	COMPRIMENTO MECTRI	LARGURA MECTRI	ALTURA MECTRI	PESO CÚBICO MECTRI	PESO TARIFADO MECTRI	VALOR TARIFADO FINANCEIRO	VALOR TARIFADO MECTRI	DIFERENÇA A RECOLHER	CNPJ DO CLIENTE	CONTRATO	CARTÃO POSTAGEM	NOME DO CLIENTE	QTD DUPLICIDADES	ÚLTIMA MANIFESTAÇÃO	[MCU Triagem	Centro	Peso	Volume	Altura	Largura	Comprimento	Data de leitura	Tipo do objeto	Cep destino	Tipo de indução	Número da máquina	Código da estação]
+Abrir o arquivo e excluir a primeira linha;
+Aplicar Filtro na coluna [TIPO DE PENDÊNCIA], desmarque as opções CON e DPC Click em OK
+em seguida exclua todas linhas cujo o tipo de pendência não seja CON e DPC, em seguida desative o filtro e salve o arquivo.
+
+
+
+
+
+
+lay-out: [Cia	Conta	competencia	Data	Lote	Tp	MCU (Doc1)	nome_agencia_doc2	historico	Valor	observacoes	Documento (Ref1)	matricula_ref2	Nome Empregado (Ref3)	Ação	Justificativa (Ad1)	Ad2	Ad3	Ad4	Ad5	Ad6	Ad7	regularizacao	Anexo]
+Sugestão de nome do Arquivo modelo : 270-1-WebCont_DebitoEmpregado.xlsx .
+Frequencia: Mensal. ultima prévia.
+

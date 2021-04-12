@@ -1,0 +1,19 @@
+AM 00434111
+BSB 00434113
+GO 00434116
+PA 00434123
+RR 00434131
+RO 00434122
+TO 00434135
+
+                                
+Fruicao de ferias por MCU
+Sistema: http://intranetmg2/WebSGQ3/principal.asp MENU Férias -> Fruição por MCU.
+Pesquisar  Superintendencia, selecionar a SE interessada ex:[00434122] marcar incluir orgãos subordinados, em seguida importar para o excel.
+Ao salvar  renomeie para sua Regional  ex de nome: (WebSGQ3 - Fruicao de ferias por MCU-GO.xlsx).
+Frequencia: MENSAL.
+Pré requisito: Cadastral deve estar atualizada; caso o processo seja interrompido por timeout fraguimente o arquivo tomado cuidado para não dividir registros de mesma matrícula em duas importações, dado que o empregado pode programar a férias para dois períodos distintos.
+O sistema exclui por unidade a programação das férias e cria novos registros.
+VEJA o lay-out:
+[Matrícula	Nome	Lotação	Função	Início fruição	Término fruição	Dias	Saldo	Abono]
+                                
