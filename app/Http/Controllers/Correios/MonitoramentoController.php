@@ -66,14 +66,14 @@ class MonitoramentoController extends Controller
 //            para ativar a fila no console
 //            php artisan queue:work --queue=avaliaInspecao
 
-
-            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
-                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
-            dispatch($job);
-
-            \Session::flash('mensagem', ['msg' => 'Job AvaliaInspecao aguardando processamento.'
-                , 'class' => 'blue white-text']);
-            return redirect()->back();
+//
+//            $job = (new AvaliaInspecao($superintendencias, $tipodeunidade , $ciclo))
+//                ->onQueue('avaliaInspecao')->delay($dtnow->addMinutes(1));
+//            dispatch($job);
+//
+//            \Session::flash('mensagem', ['msg' => 'Job AvaliaInspecao aguardando processamento.'
+//                , 'class' => 'blue white-text']);
+//            return redirect()->back();
 
 //   O valor de 134217728 bytes é equivalente a 128M
 
@@ -2477,7 +2477,7 @@ class MonitoramentoController extends Controller
 
                     }  // Fim do teste para todas superintendencias se superintendencia = 1
 
-                    // inicio do testee para uma superintendencias
+                    // inicio do teste para uma superintendencias
                     else {
 
                         $registros = DB::table('itensdeinspecoes')
@@ -2499,8 +2499,6 @@ class MonitoramentoController extends Controller
 
                             ->get();
 
-
-
 //                      Inicio processamento da aavaliação
                         foreach ($registros as $registro) {
                             $consequencias = $registro->consequencias;
@@ -2509,6 +2507,108 @@ class MonitoramentoController extends Controller
                             ini_set('memory_limit', '512M');
                             ini_set('max_input_time', 350);
                             ini_set('max_execution_time', 350);
+// Inicio Controle de viagem
+                            if((($registro->numeroGrupoVerificacao==200) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==330) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==287) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==222) && ($registro->numeroDoTeste==4))
+                                || (($registro->numeroGrupoVerificacao==239) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1))) {
+
+                                $dtfim = $dtnow;
+                                $dtini = $dtmenos3meses;
+                                $count=0;
+
+
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%Os procedimentos de embarque e desembarque da carga%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                    ->first();
+
+                                try {
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+//                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+//                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                        //se houver registros de inspeções anteriores  consulta  com data superior ao termino da inspeção reincidente
+
+                                        $controle_de_viagens = DB::table('controle_de_viagens')
+                                            ->select( 'controle_de_viagens.*' )
+                                            ->where('ponto_parada', '=', $registro->an8)
+                                            ->where('inicio_viagem', '>=', $reincidencia_dt_fim_inspecao)
+                                        ->get();
+                                        $dtini = $reincidencia_dt_fim_inspecao;
+
+                                    } else {
+
+                                        $controle_de_viagens = DB::table('controle_de_viagens')
+                                            ->select( 'controle_de_viagens.*' )
+                                            ->where('ponto_parada', '=', $registro->an8)
+                                            ->where('inicio_viagem', '=', $dtmenos3meses)
+                                            ->get();
+                                        $dtini = $dtmenos3meses;
+
+                                    }
+                                }
+                                catch (\Exception $e) {
+
+                                    $controle_de_viagens = DB::table('controle_de_viagens')
+                                        ->select( 'controle_de_viagens.*' )
+                                        ->where('ponto_parada', '=', $registro->an8)
+                                        ->where('inicio_viagem', '>=', $dtmenos3meses)
+                                        ->get();
+                                    $dtini = $dtmenos3meses;
+                                }
+
+
+                                if( !empty ( $controle_de_viagens->ponto_parada )) {
+                                    $count = $controle_de_viagens->count('ponto_parada');
+                                }
+
+                                $periodo = new CarbonPeriod();
+                                $periodo = CarbonPeriod::create( $dtini ,  $dtfim );
+                                $dias =$periodo->count()-1;
+
+                                if ($dias >=7 ) {
+                                    $dias = intdiv($dias, 7)*5;
+                                } elseif($dias == 6) {
+                                    $dias=5;
+                                }
+
+                                $viagens = $dias*2;
+                                $viagemNaorealizada =   $viagens-$count;
+
+
+
+//                                dd($dias );
+//                                return view('compliance.inspecao.editar',compact
+//                                (
+//                                    'registro'
+//                                    , 'id'
+//                                    , 'total'
+//                                    , 'controle_de_viagens'
+//                                    ,'dtini'
+//                                    ,'dtfim'
+//                                    ,'count'
+//                                    ,'viagens'
+//                                    ,'viagemNaorealizada'
+//
+//                                ));
+                            }
+// Final Controle de viagem
+                            ini_set('memory_limit', '128M');
+                            ini_set('max_input_time', 120);
+                            ini_set('max_execution_time', 120);
 
 // Início teste PLPs Pendentes
                             if((($registro->numeroGrupoVerificacao==212) && ($registro->numeroDoTeste==2))
@@ -2563,7 +2663,8 @@ class MonitoramentoController extends Controller
                                             ->where([['stomcu', '=',  $registro->mcu  ]])
                                             ->get();
                                     }
-                                } catch (\Exception $e) {
+                                }
+                                catch (\Exception $e) {
 
                                     $plplistapendentes = DB::table('plplistapendentes')
                                         ->select( 'plplistapendentes.*' )
@@ -2680,9 +2781,7 @@ class MonitoramentoController extends Controller
                             }
 // Final teste PLPs Pendentes
 
-                            ini_set('memory_limit', '128M');
-                            ini_set('max_input_time', 120);
-                            ini_set('max_execution_time', 120);
+
 
 //              Início teste Compartilhamento de Senhas
                             if((($registro->numeroGrupoVerificacao==206) && ($registro->numeroDoTeste==2))
@@ -5342,7 +5441,7 @@ class MonitoramentoController extends Controller
 //                            $dtEncerramento = '00:00:00';
                             $vazio = ' ';
                             $totalPontosNaInspeção = null;
-                            $diretorio = "xml/compliance/inspecao/";
+                            $diretorio = "/xml/compliance/inspecao/";
 
                             $businessUnit = DB::table('unidades')
                                 ->Where([['id', '=',  $inspecao->unidade_id]])
@@ -5540,7 +5639,7 @@ class MonitoramentoController extends Controller
 //                            $dtEncerramento = '00:00:00';
                             $vazio = ' ';
                             $totalPontosNaInspeção = null;
-                            $diretorio = "xml/compliance/inspecao/";
+                            $diretorio = "/xml/compliance/inspecao/";
 
                             $businessUnit = DB::table('unidades')
                                 ->Where([['id', '=',  $inspecao->unidade_id]])

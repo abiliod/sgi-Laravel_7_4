@@ -2927,13 +2927,14 @@ class InspecaoController extends Controller
         }
 // Final teste PLPs Pendentes
 
-
+// Inicio Controle de viagem
             if((($registro->numeroGrupoVerificacao==200) && ($registro->numeroDoTeste==1))
                 || (($registro->numeroGrupoVerificacao==330) && ($registro->numeroDoTeste==1))
                 || (($registro->numeroGrupoVerificacao==287) && ($registro->numeroDoTeste==2))
                 || (($registro->numeroGrupoVerificacao==222) && ($registro->numeroDoTeste==4))
                 || (($registro->numeroGrupoVerificacao==239) && ($registro->numeroDoTeste==1))
                 || (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1)))
+
             {
                 $controle_de_viagens = DB::table('controle_de_viagens')
                    ->select( 'controle_de_viagens.*' )
@@ -2970,6 +2971,8 @@ class InspecaoController extends Controller
 
                    ));
             }
+// Final Controle de viagem
+
             if((($registro->numeroGrupoVerificacao==201) && ($registro->numeroDoTeste==1))
                 || (($registro->numeroGrupoVerificacao==331) && ($registro->numeroDoTeste==1))
                 || (($registro->numeroGrupoVerificacao==240) && ($registro->numeroDoTeste==1))
