@@ -149,6 +149,9 @@ Route::get('/compliance/importacoes/cadastral', 'Correios\Importacao\ImportacaoC
 Route::post('/compliance/importacoes/unidades', 'Correios\Importacao\ImportacaoController@importUnidades')->name('compliance.importacao.unidades');
 Route::get('/compliance/importacoes/unidades', 'Correios\Importacao\ImportacaoController@unidades')->name('importacao.unidades');
 
+Route::post('/compliance/importacoes/unidadesAdicional', 'Correios\Importacao\ImportacaoController@importAdicionalUnidades')->name('compliance.importacao.adicionalunidades');
+Route::get('/compliance/importacoes/unidadesAdicional', 'Correios\Importacao\ImportacaoController@unidadesAdicional')->name('importacao.adicionalunidades');
+
 Route::get('/compliance/importacoes/smb_bdf/export', 'Correios\Importacao\ImportacaoController@exportSmb_bdf')->name('compliance.export.smb_bdf');
 Route::post('/compliance/importacoes/smb_bdf', 'Correios\Importacao\ImportacaoController@importSmb_bdf')->name('compliance.importacao.smb_bdf');
 Route::get('/compliance/importacoes/smb_bdf', 'Correios\Importacao\ImportacaoController@smb_bdf')->name('importacao.smb_bdf');

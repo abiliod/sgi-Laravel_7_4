@@ -29,6 +29,21 @@
             </div>
         @endcan
 
+        @can('importar_unidades')
+            <div class="col s12 m6">
+                <div class="card blue darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">Dados Adicionais de Unidades</span>
+                        <p>Unidades<br>Assunto: Cadastro de Dados Adicionais Unidades.</p>
+                        <p>GCAD | PARÂMETROS_CADASTRAIS-ORGAOS-HORÁRIOS.xlsx</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="white-text" href="{{route('importacao.adicionalunidades')}}">Importar Planilha</a>
+                    </div>
+                </div>
+            </div>
+        @endcan
+
         @can('importar_bdSNCI')
             <div class="col s12 m6">
                 <div class="card #dd2c00 deep-orange accent-4">

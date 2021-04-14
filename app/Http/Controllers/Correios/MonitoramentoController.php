@@ -109,6 +109,210 @@ class MonitoramentoController extends Controller
                         foreach ($registros as $registro) {
                             $consequencias = $registro->consequencias;
                             $orientacao = $registro->orientacao;
+// Inicio Controle de viagem
+                            if((($registro->numeroGrupoVerificacao==200) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==330) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==287) && ($registro->numeroDoTeste==2))
+                                || (($registro->numeroGrupoVerificacao==222) && ($registro->numeroDoTeste==4))
+                                || (($registro->numeroGrupoVerificacao==239) && ($registro->numeroDoTeste==1))
+                                || (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1))) {
+
+
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+
+                                $dtfim = $dtnow;
+                                $dtini = $dtmenos3meses;
+                                $reg=0;
+
+                                $reincidencia = DB::table('snci')
+                                    ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
+                                    ->where([['descricao_item', 'like', '%Os procedimentos de embarque e desembarque da carga%']])
+                                    ->where([['sto', '=', $registro->sto]])
+                                    ->orderBy('no_inspecao', 'desc')
+                                    ->first();
+
+                                try {
+                                    if ($reincidencia->no_inspecao > 1) {
+//                                        dd($reincidencia);
+                                        $reincidente = 1;
+                                        $reinc = 'Sim';
+                                        $periodo = new CarbonPeriod();
+                                        $codVerificacaoAnterior = $reincidencia->no_inspecao;
+                                        $numeroGrupoReincidente = $reincidencia->no_grupo;
+                                        $numeroItemReincidente = $reincidencia->no_item;
+                                        $reincidencia_dt_fim_inspecao = new Carbon($reincidencia->dt_fim_inspecao);
+                                        $reincidencia_dt_inic_inspecao = new Carbon($reincidencia->dt_inic_inspecao);
+//                                        $reincidencia_dt_fim_inspecao->subMonth(3);
+//                                        $reincidencia_dt_inic_inspecao->subMonth(3);
+                                        //se houver registros de inspeções anteriores  consulta  com data superior ao termino da inspeção reincidente
+
+                                        $controle_de_viagens = DB::table('controle_de_viagens')
+                                            ->select('controle_de_viagens.*')
+                                            ->where('ponto_parada', '=', $registro->an8)
+                                            ->where('inicio_viagem', '>=', $reincidencia_dt_fim_inspecao)
+                                            ->get();
+                                        $dtini = $reincidencia_dt_fim_inspecao;
+                                    } else {
+                                        $controle_de_viagens = DB::table('controle_de_viagens')
+                                            ->select('controle_de_viagens.*')
+                                            ->where('ponto_parada', '=', $registro->an8)
+                                            ->where('inicio_viagem', '=', $dtmenos3meses)
+                                            ->get();
+                                        $dtini = $dtmenos3meses;
+                                    }
+                                }
+                                catch (\Exception $e) {
+                                    $controle_de_viagens = DB::table('controle_de_viagens')
+                                        ->select('controle_de_viagens.*')
+                                        ->where('ponto_parada', '=', $registro->an8)
+                                        ->where('inicio_viagem', '>=', $dtmenos3meses)
+                                        ->get();
+                                    $dtini = $dtmenos3meses;
+                                }
+
+                                if(! $controle_de_viagens->isEmpty()) {
+                                    $count = $controle_de_viagens->count('ponto_parada');
+                                    foreach($controle_de_viagens as $dados){
+                                        if( ( $controle_de_viagen->tipo_de_operacao == '' )
+                                            || ($controle_de_viagen->quantidade == '')
+                                            || ($controle_de_viagen->peso == '' )
+                                            || ($controle_de_viagen->unitizador == '')
+                                            || ($controle_de_viagen->descricao_do_servico == '')
+                                            || ($controle_de_viagen->local_de_destino == '')){
+
+                                            $reg ++;
+                                        }
+                                    }
+                                    $periodo = CarbonPeriod::create($dtini, $dtfim);
+                                    $dias = $periodo->count() - 1;
+                                    if ($dias >= 7) {
+                                        $dias = intdiv($dias, 7) * 5;
+                                    } elseif ($dias == 6) {
+                                        $dias = 5;
+                                    }
+
+                                    $viagens = $dias * 2;
+                                    $viagemNaorealizada = $viagens - $count;
+
+                                    if($reg >=1){
+
+                                        $avaliacao = 'Não Conforme';
+                                        $oportunidadeAprimoramento = ' Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constatou-se o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir: ' . $viagens . ' - viagens prevista(s).';
+
+                                        $evidencia = $evidencia
+                                            . "\n"
+                                            . 'Data Viagem' . "\t"
+                                            . 'Número da Viagem' . "\t"
+                                            . 'Tipo Operação' . "\t"
+                                            . 'Quantidade Unitizadores' . "\t"
+                                            . 'Peso Unitizadores' . "\t"
+                                            . 'Tipo Unitizador' . "\t"
+                                            . 'Tipo Serviço' . "\t"
+                                            . 'Destino';
+                                        foreach ($controle_de_viagens as $controle_de_viagen) {
+                                            $evidencia = $evidencia
+                                                . "\n"
+                                                . ($controle_de_viagen->inicio_viagem == '' ? '   ----------  ' : \Carbon\Carbon::parse($controle_de_viagen->inicio_viagem)->format('d/m/Y')) . "\t"
+                                                . ($controle_de_viagen->controle_viagem == '' ? '   ----------  ' : $controle_de_viagen->controle_viagem) . "\t"
+                                                . ($controle_de_viagen->tipo_de_operacao == '' ? '   ----------  ' : $controle_de_viagen->tipo_de_operacao) . "\t"
+                                                . ($controle_de_viagen->quantidade == '' ? '   ----------  ' : $controle_de_viagen->quantidade) . "\t"
+                                                . ($controle_de_viagen->peso == '' ? '   ----------  ' : $controle_de_viagen->peso) . "\t"
+                                                . ($controle_de_viagen->unitizador == '' ? '   ----------  ' : $controle_de_viagen->unitizador) . "\t"
+                                                . ($controle_de_viagen->descricao_do_servico == '' ? '   ----------  ' : $controle_de_viagen->descricao_do_servico) . "\t"
+                                                . ($controle_de_viagen->local_de_destino == '' ? '   ----------  ' : $controle_de_viagen->local_de_destino);
+                                        }
+
+                                        $evidencia = $evidencia. "\n" . ' Foram verificada(s) todas programações de viagens no período do dia '
+                                            . \Carbon\Carbon::parse($dtini)->format('d/m/Y') . ' até ' . \Carbon\Carbon::parse($dtfim)->format('d/m/Y')
+                                            . "\n" . ' a) verificou-se que houve ' . $count . ' viagen(s) realizadas e com possíveis operações de Embarque/Desembarque a serem realizadas.'
+                                            . "\n" . ' b) Verificou a necessidade de aprimoramento na qualidade do apontamento colunas com falhas ou informações genéricas/incompletas.';
+
+                                        if (intval($viagemNaorealizada / $viagens) >= 10) {
+                                            // como trabalhamos com previsões se houver 10 % de viagens não realizadas adiciona a letra C.
+                                            $evidencia = $evidencia  . "\n" . 'c) Adicionalmente no período havia '
+                                                . $viagens. ' viagen(s) prevista(s) sendo que não houve apontamento de EMBARQUE/DESEMBARQUE para '
+                                                . $viagemNaorealizada . ' viagens.';
+                                        }
+//
+                                    }
+                                    else{
+                                        $avaliacao = 'Conforme';
+                                        $oportunidadeAprimoramento = 'Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constatou-se que não havia operações de Embarque/Desembarque em falta ou incompletas.' .' Foram verificada(s) todas programações de viagens no período do dia ' .\Carbon\Carbon::parse($dtini)->format('d/m/Y').' até '.\Carbon\Carbon::parse($dtfim)->format('d/m/Y').'.';
+                                    }
+
+                                }
+                                else  {
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constatou-se o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir:';
+                                    $evidencia = $evidencia . "\n" . '- Verificou-se que a unidade não está executando os lançamentos obrigatórios das informações de embarque e desembarque da carga no Sistema ERP. Não há histórico de registro de embarque/desembarque para troca de expedições. - Foram verificadas as programações de viagens no período de ' . \Carbon\Carbon::parse($dtini)->format('d/m/Y') . ' até ' . \Carbon\Carbon::parse($dtfim)->format('d/m/Y') .', sendo que em 100% das viagens não foi encontrado registros de apontamentos de Embarque/Desembarque.';
+                                }
+
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
+
+                                if( $valorFalta > $quebracaixa){
+
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+
+                                    if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
+                                }
+
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
+
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
+
+//                              echo $avaliacao , $dto->id.' - '.$avaliacao.' ,';
+//                              if ($avaliacao == 'Não Conforme') dd('line 2495 -> Não Conforme ', $itensdeinspecao);
+//                              if ($avaliacao == 'Conforme') dd('line 2496 -> Conforme ', $itensdeinspecao);
+//                              dd($registro->sto , $reincidencia);
+
+                                $itensdeinspecao->update();
+                            }
+// Final Controle de viagem
 
 // Início teste PLPs Pendentes
                             if((($registro->numeroGrupoVerificacao==212) && ($registro->numeroDoTeste==2))
@@ -260,24 +464,8 @@ class MonitoramentoController extends Controller
                                 $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
                                 $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
                                 $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
-
-//                                echo $avaliacao , $dto->id.' - '.$avaliacao.' ,';
-//                                if ($avaliacao == 'Não Conforme') dd('line 2495 -> Não Conforme ', $itensdeinspecao);
-//                                if ($avaliacao == 'Conforme') dd('line 2496 -> Conforme ', $itensdeinspecao);
-//                                dd($registro->sto , $reincidencia);
-
                                 $itensdeinspecao->update();
-
-//                                return view('compliance.inspecao.editar',
-//                                    compact(
-//                                        'registro'
-//                                        , 'id'
-//                                        , 'total'
-//                                        , 'plplistapendentes'
-//                                        ,'count'
-//                                        ,'dtfim'
-//                                    ));
-                            }
+                             }
 // Final teste PLPs Pendentes
 
 //              Início teste Compartilhamento de Senhas
@@ -553,19 +741,6 @@ class MonitoramentoController extends Controller
 //                                dd($registro->sto , $reincidencia, $eventos, $compartilhaSenhas);
 
                                 $itensdeinspecao->update();
-
-
-//                                return view('compliance.inspecao.editar',compact
-//                                (
-//                                    'registro'
-//                                    , 'id'
-//                                    , 'total'
-//                                    , 'compartilhaSenhas'
-//                                    , '$count'
-//                                    , '$dtmenos12meses'
-//                                    , 'dtnow'
-//                                    , 'naoMonitorado'
-//                                ));
 
                             }
 //             Final teste Compartilhamento de Senhas
@@ -1125,32 +1300,6 @@ class MonitoramentoController extends Controller
                                 $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
 //                          echo 'line 1400 -> '.$dto->id , $itensdeinspecao;
                                 $itensdeinspecao->update();
-
-
-//                                dd( $naoMonitorado , $aviso , $alarmesFinalSemana, $feriadoporUnidades,  $eventosf , $eventos);
-
-
-
-//                                return view('compliance.inspecao.editar',compact
-//                                (
-//                                    'registro'
-//                                    , 'id'
-//                                    , 'total'
-//                                    , 'acessos_final_semana'
-//                                    , 'rowAberturaFinalSemana'
-//                                    , 'count_alarmesFinalSemana'
-//                                    , 'acessosEmFeriados'
-//                                    , 'tempoAbertura'
-//                                    , 'tempoAberturaAntecipada'
-//                                    , 'tempoAberturaPosExpediente'
-//                                    , 'aviso'
-//                                    , 'dtmax'
-//                                    , 'now'
-//                                    ,'dtmenos12meses'
-//                                    ,'naoMonitorado'
-//                                ));
-
-
                             }
 
 //  Final  do teste Alarme Arme/desarme
@@ -2494,7 +2643,7 @@ class MonitoramentoController extends Controller
 //                            ->where([['sto', '=', 16303407 ]]) // alto horizonte
 //                            ->where([['sto', '=', 16300947 ]])   // Britania  16300947
 //                            ->where([['mcu', '=', 6684 ]]) //ac anicuns
-                            //->where([['itensdeinspecoes.testeVerificacao_id', '=', 3678 ]])  //3678  é smb_bdf
+                            ->where([['itensdeinspecoes.testeVerificacao_id', '=', 3699 ]])  //3678  é smb_bdf
 //                            ->limit(100)
 
                             ->get();
@@ -2507,6 +2656,15 @@ class MonitoramentoController extends Controller
                             ini_set('memory_limit', '512M');
                             ini_set('max_input_time', 350);
                             ini_set('max_execution_time', 350);
+
+//                            proximaavaliação
+
+                            ini_set('memory_limit', '128M');
+                            ini_set('max_input_time', 120);
+                            ini_set('max_execution_time', 120);
+
+
+
 // Inicio Controle de viagem
                             if((($registro->numeroGrupoVerificacao==200) && ($registro->numeroDoTeste==1))
                                 || (($registro->numeroGrupoVerificacao==330) && ($registro->numeroDoTeste==1))
@@ -2515,10 +2673,24 @@ class MonitoramentoController extends Controller
                                 || (($registro->numeroGrupoVerificacao==239) && ($registro->numeroDoTeste==1))
                                 || (($registro->numeroGrupoVerificacao==276) && ($registro->numeroDoTeste==1))) {
 
+                                $codVerificacaoAnterior = null;
+                                $numeroGrupoReincidente = null;
+                                $numeroItemReincidente = null;
+                                $evidencia = null;
+                                $valorSobra = null;
+                                $valorFalta = null;
+                                $valorRisco = null;
+                                $total = 0;
+                                $pontuado = null;
+                                $itemQuantificado = 'Não';
+                                $reincidente = 0;
+                                $reinc = 'Não';
+                                $dtmin = $dtnow;
+                                $count = 0;
+
                                 $dtfim = $dtnow;
                                 $dtini = $dtmenos3meses;
-                                $count=0;
-
+                                $reg=0;
 
                                 $reincidencia = DB::table('snci')
                                     ->select('no_inspecao', 'no_grupo', 'no_item', 'dt_fim_inspecao', 'dt_inic_inspecao')
@@ -2526,13 +2698,12 @@ class MonitoramentoController extends Controller
                                     ->where([['sto', '=', $registro->sto]])
                                     ->orderBy('no_inspecao', 'desc')
                                     ->first();
-
                                 try {
                                     if ($reincidencia->no_inspecao > 1) {
 //                                        dd($reincidencia);
                                         $reincidente = 1;
                                         $reinc = 'Sim';
-
+                                        $periodo = new CarbonPeriod();
                                         $codVerificacaoAnterior = $reincidencia->no_inspecao;
                                         $numeroGrupoReincidente = $reincidencia->no_grupo;
                                         $numeroItemReincidente = $reincidencia->no_item;
@@ -2543,72 +2714,153 @@ class MonitoramentoController extends Controller
                                         //se houver registros de inspeções anteriores  consulta  com data superior ao termino da inspeção reincidente
 
                                         $controle_de_viagens = DB::table('controle_de_viagens')
-                                            ->select( 'controle_de_viagens.*' )
+                                            ->select('controle_de_viagens.*')
                                             ->where('ponto_parada', '=', $registro->an8)
                                             ->where('inicio_viagem', '>=', $reincidencia_dt_fim_inspecao)
-                                        ->get();
+                                            ->get();
                                         $dtini = $reincidencia_dt_fim_inspecao;
-
                                     } else {
-
                                         $controle_de_viagens = DB::table('controle_de_viagens')
-                                            ->select( 'controle_de_viagens.*' )
+                                            ->select('controle_de_viagens.*')
                                             ->where('ponto_parada', '=', $registro->an8)
                                             ->where('inicio_viagem', '=', $dtmenos3meses)
                                             ->get();
-                                        $dtini = $dtmenos3meses;
-
                                     }
                                 }
                                 catch (\Exception $e) {
-
                                     $controle_de_viagens = DB::table('controle_de_viagens')
-                                        ->select( 'controle_de_viagens.*' )
+                                        ->select('controle_de_viagens.*')
                                         ->where('ponto_parada', '=', $registro->an8)
                                         ->where('inicio_viagem', '>=', $dtmenos3meses)
-                                        ->get();
-                                    $dtini = $dtmenos3meses;
+                                    ->get();
                                 }
-
-
-                                if( !empty ( $controle_de_viagens->ponto_parada )) {
+                                if(! $controle_de_viagens->isEmpty()) {
                                     $count = $controle_de_viagens->count('ponto_parada');
+                                    dd('linha2749  -> ',$count);
+                                    foreach($controle_de_viagens as $dados){
+                                        if( ( $controle_de_viagen->tipo_de_operacao == '' )
+                                            || ($controle_de_viagen->quantidade == '')
+                                            || ($controle_de_viagen->peso == '' )
+                                            || ($controle_de_viagen->unitizador == '')
+                                            || ($controle_de_viagen->descricao_do_servico == '')
+                                            || ($controle_de_viagen->local_de_destino == '')){
+
+                                            $reg ++;
+                                        }
+                                    }
+                                    $periodo = CarbonPeriod::create($dtini, $dtfim);
+                                    $dias = $periodo->count() - 1;
+                                    if ($dias >= 7) {
+                                        $dias = intdiv($dias, 7) * 5;
+                                    } elseif ($dias == 6) {
+                                        $dias = 5;
+                                    }
+                                    $viagens = $dias * 2;
+                                    $viagemNaorealizada = $viagens - $count;
+                                    if($reg >=1) {
+                                        $avaliacao = 'Não Conforme';
+                                        $oportunidadeAprimoramento = ' Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constatou-se o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir: ' . $viagens . ' - viagens prevista(s).';
+                                        $evidencia = $evidencia
+                                            . "\n"
+                                            . 'Data Viagem' . "\t"
+                                            . 'Número da Viagem' . "\t"
+                                            . 'Tipo Operação' . "\t"
+                                            . 'Quantidade Unitizadores' . "\t"
+                                            . 'Peso Unitizadores' . "\t"
+                                            . 'Tipo Unitizador' . "\t"
+                                            . 'Tipo Serviço' . "\t"
+                                            . 'Destino';
+                                        foreach ($controle_de_viagens as $controle_de_viagen) {
+                                            $evidencia = $evidencia
+                                                . "\n"
+                                                . ($controle_de_viagen->inicio_viagem == '' ? '   ----------  ' : \Carbon\Carbon::parse($controle_de_viagen->inicio_viagem)->format('d/m/Y')) . "\t"
+                                                . ($controle_de_viagen->controle_viagem == '' ? '   ----------  ' : $controle_de_viagen->controle_viagem) . "\t"
+                                                . ($controle_de_viagen->tipo_de_operacao == '' ? '   ----------  ' : $controle_de_viagen->tipo_de_operacao) . "\t"
+                                                . ($controle_de_viagen->quantidade == '' ? '   ----------  ' : $controle_de_viagen->quantidade) . "\t"
+                                                . ($controle_de_viagen->peso == '' ? '   ----------  ' : $controle_de_viagen->peso) . "\t"
+                                                . ($controle_de_viagen->unitizador == '' ? '   ----------  ' : $controle_de_viagen->unitizador) . "\t"
+                                                . ($controle_de_viagen->descricao_do_servico == '' ? '   ----------  ' : $controle_de_viagen->descricao_do_servico) . "\t"
+                                                . ($controle_de_viagen->local_de_destino == '' ? '   ----------  ' : $controle_de_viagen->local_de_destino);
+                                        }
+                                        $evidencia = $evidencia. "\n" . ' Foram verificada(s) todas programações de viagens no período do dia '
+                                            . \Carbon\Carbon::parse($dtini)->format('d/m/Y') . ' até ' . \Carbon\Carbon::parse($dtfim)->format('d/m/Y')
+                                            . "\n" . ' a) verificou-se que houve ' . $count . ' viagen(s) realizadas e com possíveis operações de Embarque/Desembarque a serem realizadas.'
+                                            . "\n" . ' b) Verificou a necessidade de aprimoramento na qualidade do apontamento colunas com falhas ou informações genéricas/incompletas.';
+                                        if (intval($viagemNaorealizada / $viagens) >= 10) {
+                                            // como trabalhamos com previsões se houver 10 % de viagens não realizadas adiciona a letra C.
+                                            $evidencia = $evidencia  . "\n" . 'c) Adicionalmente no período havia '
+                                                . $viagens. ' viagen(s) prevista(s) sendo que não houve apontamento de EMBARQUE/DESEMBARQUE para '
+                                                . $viagemNaorealizada . ' viagens.';
+                                        }
+
+                                    }
+                                    else{
+                                        $avaliacao = 'Conforme';
+                                        $oportunidadeAprimoramento = 'Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constatou-se que não havia operações de Embarque/Desembarque em falta ou incompletas.' .' Foram verificada(s) todas programações de viagens no período do dia ' .\Carbon\Carbon::parse($dtini)->format('d/m/Y').' até '.\Carbon\Carbon::parse($dtfim)->format('d/m/Y').'.';
+                                    }
+
+                                }
+                                else  {
+//                                    dd( '  linha 2827  nao tem apontamento' ,$controle_de_viagens);
+                                    $avaliacao = 'Não Conforme';
+                                    $oportunidadeAprimoramento = 'Em análise aos dados do sistema ERP - GESTÃO DE LINHAS DE TRANSPORTE, constatou-se o descumprimento dos procedimentos de embarque e desembarque da carga, conforme relatado a seguir:';
+                                    $evidencia = $evidencia . "\n" . '- Verificou-se que a unidade não está executando os lançamentos obrigatórios das informações de embarque e desembarque da carga no Sistema ERP. Não há histórico de registro de embarque/desembarque para troca de expedições. - Foram verificadas as programações de viagens no período de ' . \Carbon\Carbon::parse($dtini)->format('d/m/Y') . ' até ' . \Carbon\Carbon::parse($dtfim)->format('d/m/Y') .', sendo que em 100% das viagens não foi encontrado registros de apontamentos de Embarque/Desembarque.';
                                 }
 
-                                $periodo = new CarbonPeriod();
-                                $periodo = CarbonPeriod::create( $dtini ,  $dtfim );
-                                $dias =$periodo->count()-1;
+                                $quebra = DB::table('relevancias')
+                                    ->select('valor_final')
+                                    ->where('fator_multiplicador', '=', 1)
+                                    ->first();
+                                $quebracaixa = $quebra->valor_final * 0.1;
 
-                                if ($dias >=7 ) {
-                                    $dias = intdiv($dias, 7)*5;
-                                } elseif($dias == 6) {
-                                    $dias=5;
+                                if( $valorFalta > $quebracaixa){
+
+                                    $fm = DB::table('relevancias')
+                                        ->select('fator_multiplicador', 'valor_final', 'valor_inicio')
+                                        ->where('valor_inicio', '<=', $total)
+                                        ->orderBy('valor_final', 'desc')
+                                        ->first();
+                                    $pontuado = $registro->totalPontos * $fm->fator_multiplicador;
+                                }
+                                else{
+
+                                    if($avaliacao == 'Não Conforme') $pontuado = $registro->totalPontos * 1;
                                 }
 
-                                $viagens = $dias*2;
-                                $viagemNaorealizada =   $viagens-$count;
+                                $dto = DB::table('itensdeinspecoes')
+                                    ->Where([['inspecao_id', '=', $registro->inspecao_id]])
+                                    ->Where([['testeVerificacao_id', '=', $registro->testeVerificacao_id]])
+                                    ->select('itensdeinspecoes.*')
+                                    ->first();
 
+                                $itensdeinspecao = Itensdeinspecao::find($dto->id);
+                                $itensdeinspecao->avaliacao = $avaliacao;
+                                $itensdeinspecao->oportunidadeAprimoramento = $oportunidadeAprimoramento;
+                                $itensdeinspecao->evidencia = $evidencia;
+                                $itensdeinspecao->valorFalta = $valorFalta;
+                                $itensdeinspecao->valorSobra = $valorSobra;
+                                $itensdeinspecao->valorRisco = $valorRisco;
+                                $itensdeinspecao->situacao = 'Inspecionado';
+                                $itensdeinspecao->pontuado = $pontuado;
+                                $itensdeinspecao->itemQuantificado = $itemQuantificado;
+                                $itensdeinspecao->orientacao = $registro->orientacao;
+                                $itensdeinspecao->eventosSistema = 'Item avaliado Remotamente por Websgi em ' . date('d/m/Y', strtotime($dtnow)) . '.';
+                                $itensdeinspecao->reincidencia = $reinc;
+                                $itensdeinspecao->consequencias = $consequencias;
+                                $itensdeinspecao->orientacao = $orientacao;
+                                $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
+                                $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
+                                $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
 
+//                              echo $avaliacao , $dto->id.' - '.$avaliacao.' ,';
+//                              if ($avaliacao == 'Não Conforme') dd('line 2495 -> Não Conforme ', $itensdeinspecao);
+//                              if ($avaliacao == 'Conforme') dd('line 2496 -> Conforme ', $itensdeinspecao);
+//                              dd($registro->sto , $reincidencia);
 
-//                                dd($dias );
-//                                return view('compliance.inspecao.editar',compact
-//                                (
-//                                    'registro'
-//                                    , 'id'
-//                                    , 'total'
-//                                    , 'controle_de_viagens'
-//                                    ,'dtini'
-//                                    ,'dtfim'
-//                                    ,'count'
-//                                    ,'viagens'
-//                                    ,'viagemNaorealizada'
-//
-//                                ));
+                                $itensdeinspecao->update();
                             }
 // Final Controle de viagem
-                            ini_set('memory_limit', '128M');
-                            ini_set('max_input_time', 120);
-                            ini_set('max_execution_time', 120);
+
 
 // Início teste PLPs Pendentes
                             if((($registro->numeroGrupoVerificacao==212) && ($registro->numeroDoTeste==2))
@@ -2769,15 +3021,6 @@ class MonitoramentoController extends Controller
 
                                 $itensdeinspecao->update();
 
-//                                return view('compliance.inspecao.editar',
-//                                    compact(
-//                                        'registro'
-//                                        , 'id'
-//                                        , 'total'
-//                                        , 'plplistapendentes'
-//                                        ,'count'
-//                                        ,'dtfim'
-//                                    ));
                             }
 // Final teste PLPs Pendentes
 
@@ -3061,20 +3304,6 @@ class MonitoramentoController extends Controller
 //                                dd($registro->sto , $reincidencia, $eventos, $compartilhaSenhas);
 
                                 $itensdeinspecao->update();
-
-
-//                                return view('compliance.inspecao.editar',compact
-//                                (
-//                                    'registro'
-//                                    , 'id'
-//                                    , 'total'
-//                                    , 'compartilhaSenhas'
-//                                    , '$count'
-//                                    , '$dtmenos12meses'
-//                                    , 'dtnow'
-//                                    , 'naoMonitorado'
-//                                ));
-
                             }
 //             Final teste Compartilhamento de Senhas
 
@@ -3633,31 +3862,6 @@ class MonitoramentoController extends Controller
 //                          echo 'line 1400 -> '.$dto->id , $itensdeinspecao;
                                 $itensdeinspecao->update();
 
-
-//                                dd( $naoMonitorado , $aviso , $alarmesFinalSemana, $feriadoporUnidades,  $eventosf , $eventos);
-
-
-
-//                                return view('compliance.inspecao.editar',compact
-//                                (
-//                                    'registro'
-//                                    , 'id'
-//                                    , 'total'
-//                                    , 'acessos_final_semana'
-//                                    , 'rowAberturaFinalSemana'
-//                                    , 'count_alarmesFinalSemana'
-//                                    , 'acessosEmFeriados'
-//                                    , 'tempoAbertura'
-//                                    , 'tempoAberturaAntecipada'
-//                                    , 'tempoAberturaPosExpediente'
-//                                    , 'aviso'
-//                                    , 'dtmax'
-//                                    , 'now'
-//                                    ,'dtmenos12meses'
-//                                    ,'naoMonitorado'
-//                                ));
-
-
                             }
 //  Final  do teste Alarme Arme/desarme
 
@@ -3822,19 +4026,8 @@ class MonitoramentoController extends Controller
                                 $itensdeinspecao->codVerificacaoAnterior = $codVerificacaoAnterior;
                                 $itensdeinspecao->numeroGrupoReincidente = $numeroGrupoReincidente;
                                 $itensdeinspecao->numeroItemReincidente = $numeroItemReincidente;
-//                          dd('line 1400 -> ',$itensdeinspecao);
                                 $itensdeinspecao->update();
-//
-//                                    return view('compliance.inspecao.editar', compact
-//                                    (
-//                                        'registro'
-//                                        , 'id'
-//                                        , 'total'
-//                                        , 'resp_definidas'
-//                                        , 'dtmax'
-//                                        , 'dtmin'
-//                                        , 'count'
-//                                    ));
+
 
                             }
 //                      Final  do teste Extravio Responsabilidade Definida
@@ -4066,10 +4259,7 @@ class MonitoramentoController extends Controller
                                     }
                                     else {
                                         $avaliacao = 'Conforme';
-                                        $oportunidadeAprimoramento = 'Em análise ao Relatório "Saldo de Numerário em relação ao Limite
-                                         de Saldo", do sistema BDF, referente ao período de ' . date('d/m/Y', strtotime($dtnow)) . ' a '
-                                            . date('d/m/Y', strtotime($dtmenos90dias)) . ',
-                                            constatou-se que não houve descumprimento do limite de saldo estabelecido para a unidade.';
+                                        $oportunidadeAprimoramento = 'Em análise ao Relatório "Saldo de Numerário em relação ao Limite de Saldo", do sistema BDF, referente ao período de ' . date('d/m/Y', strtotime($dtnow)) . ' a ' . date('d/m/Y', strtotime($dtmenos90dias)) . ', constatou-se que não houve descumprimento do limite de saldo estabelecido para a unidade.';
                                     }
                                 }
                                 else {
