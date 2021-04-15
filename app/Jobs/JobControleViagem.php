@@ -35,7 +35,6 @@ protected $controle_de_viagens, $dt_job, $dtmenos180dias ;
     public function handle()
     {
         $controle_de_viagens = $this->controle_de_viagens;
-        $dt_job =  $this->dt_job;
         $dtmenos180dias = $this->dt_job;
 
         foreach($controle_de_viagens as $dados) {
@@ -57,7 +56,6 @@ protected $controle_de_viagens, $dt_job, $dtmenos180dias ;
                     try {
                         $dateTimeString = $registro['data_chegada_prevista'] . '00:00:00';
                         $format = 'Y-m-d';
-
                         $data_chegada_prevista = Carbon::createFromFormat($format, $dateTimeString, 'America/São Paulo');
                     }
                     catch (\Exception $e) {

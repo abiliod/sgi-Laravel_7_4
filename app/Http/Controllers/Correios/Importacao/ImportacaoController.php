@@ -80,6 +80,7 @@ use App\Jobs\JobPLPpendente;
 use App\Models\Correios\ModelsAuxiliares\SgdoDistribuicao;
 use App\Imports\ImportSgdoDistribuicao;
 use App\Exports\ExportSgdoDistribuicao;
+use App\Jobs\JobSgdoDistribuicao;
 
 use App\Models\Correios\ModelsAuxiliares\CieEletronica;
 use App\Imports\ImportCieEletronica;
@@ -682,157 +683,78 @@ class ImportacaoController extends Controller
     // ######################### FIM  Microestrategy #######################
 
     // ######################### INICIO SGDO DISTRIBUIÇÃO  ########
-    public function exportSgdoDistribuicao()
-    {
+    public function exportSgdoDistribuicao() {
         return Excel::download(new ExportSgdoDistribuicao, 'sgdoDistribuicao.xlsx');
     }
-    public function importSgdoDistribuicao(Request $request)
-    {
+
+    public function importSgdoDistribuicao(Request $request) {
         $row = 0;
+        $dt_job = Carbon::now();
         $dtmenos180dias = Carbon::now();
-        $dtmenos180dias->subDays(180);
+        $dtmenos180dias = $dtmenos180dias->subDays(180);
 
         $validator = Validator::make($request->all(),[
             'file' => 'required|mimes:xlsx'
         ]);
 
-        if($validator->passes())
-        {
-            $time='350';
-            ini_set('max_input_time', $time);
-            ini_set('max_execution_time', $time);
-            $sgdoDistribuicao = Excel::toArray(new ImportSgdoDistribuicao,  request()->file('file'));
-            foreach($sgdoDistribuicao as $dados)
-            {
-                foreach($dados as $registro)
-                {
-                    $data_incio_atividade       =  null;
+//        $size = $request->file('file')->getSize();
+//        dd($size);
 
-                    if(! Empty($registro['data_inio_atividade']))
-                    {
+        if($validator->passes()) {
+            ini_set('memory_limit', '512M');
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
 
-                        try
-                        {
-                            $data_incio_atividade = $this->transformDate($registro['data_inio_atividade']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $data_incio_atividade       =  null;
-                        }
-                    }
+            $size = $request->file('file')->getSize()/1024;
 
-                    if(! Empty($registro['data_saa']))
-                    {
-                        try
-                        {
-                            $data_saida = $this->transformDate($registro['data_saa']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $data_saida       = null;
-                        }
-                    }
-
-                    if(! Empty($registro['data_retorno']))
-                    {
-                        try
-                        {
-                            $data_retorno = $this->transformDate($registro['data_retorno']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $data_retorno       = null;
-                        }
-                    }     else $data_retorno       = null;
-
-                    if(! Empty($registro['data_tpc']))
-                    {
-                        try
-                        {
-                            $data_tpc = $this->transformDate($registro['data_tpc']);
-                        }
-                        catch (Exception $e)
-                        {
-                            // dd( $registro, $registro['data_tpc'],  $data_tpc);
-                            $data_tpc       = null;
-                        }
-                    } else $data_tpc       = null;
-
-
-                    if(! Empty($registro['data_tmino_atividade']))
-                    {
-                        try
-                        {
-                            $data_termino_atividade = $this->transformDate($registro['data_tmino_atividade']);
-                        }
-                        catch (Exception $e)
-                        {
-                            $data_termino_atividade       = null;
-                        }
-                    }  else $data_termino_atividade       = null;
-
-                    if(! $data_incio_atividade == Null)
-                    {
-                        $reg = SgdoDistribuicao::firstOrCreate(
-                            [
-                                'mcu' =>  $registro['mcu']
-                                , 'matricula' =>  $registro['matrula']
-                                , 'data_incio_atividade' =>  $data_incio_atividade
-                            ],[
-                            'dr' => $registro['dr']
-                            , 'unidade' =>  $registro['unidade']
-                            , 'mcu' =>  $registro['mcu']
-                            , 'centralizadora' =>  $registro['centralizadora']
-                            , 'mcu_centralizadora' => $registro['mcu_centralizadora']
-                            , 'distrito' =>  $registro['distrito']
-                            , 'area' =>  $registro['rea']
-                            , 'locomocao' =>  $registro['locomoo']
-                            , 'funcionario' =>  $registro['funcionio']
-                            , 'matricula' =>  $registro['matrula']
-                            , 'data_incio_atividade' =>  $data_incio_atividade
-                            , 'hora_incio_atividade' => $registro['hora_inio_atividade']
-                            , 'data_saida' =>  $data_saida
-                            , 'hora_saida' =>  $registro['hora_saa']
-                            , 'data_retorno' =>  $data_retorno
-                            , 'hora_retorno' =>   $registro['hora_retorno']
-                            , 'data_tpc' =>  $data_tpc
-                            , 'hora_do_tpc' =>  $registro['hora_do_tpc']
-                            , 'data_termino_atividade' =>  $data_termino_atividade
-                            , 'hora_termino_atividade' =>   $registro['hora_tmino_atividade']
-                            , 'justificado' =>  $registro['justificado']
-                            , 'peso_da_bolsa_kg' =>  $registro['peso_da_bolsa_kg']
-                            , 'peso_do_da_kg' =>  $registro['peso_do_da_kg']
-                            , 'quantidade_de_da' =>  $registro['quantidade_de_da']
-                            , 'quantidade_de_gu' =>  $registro['quantidade_de_gu']
-                            , 'quantidade_de_objetos_qualificados' =>  $registro['quantidade_de_objetos_qualificados']
-                            , 'quantidade_de_objetos_coletados' =>  $registro['quantidade_de_objetos_coletados']
-                            , 'quantidade_de_pontos_de_entregacoleta' =>  $registro['quantidade_de_pontos_de_entregacoleta']
-                            , 'quilometragem_percorrida' =>  $registro['quilometragem_percorrida']
-                            , 'residuo_simples' =>  $registro['resuo_simples']
-                            , 'residuo_qualificado' =>  $registro['resuo_qualificado']
-                            , 'almoca_na_unidade' =>  $registro['almo_na_unidade']
-                            , 'compartilhado' =>  $registro['compartilhado']
-                            , 'tipo_de_distrito' =>  $registro['tipo_de_distrito']
-                        ]);
-//dd(   $reg );
-                        $row ++;
-                    }
-                }
+            if ($size > 6000){
+                \Session::flash('mensagem', ['msg' => 'O arquivo é muito grande. Tente excluir as unidades com Status = Fechado Definitivamente, e Usados pela Contabilidade.'
+                    , 'class' => 'red white-text']);
+                return redirect()->route('importacao');
             }
-            $afected = DB::table('sgdo_distribuicao')
-                ->where('data_incio_atividade', '<',   $dtmenos180dias)
-               // ->where('matricula', '=',   $registro['matrula'])
-                ->delete();
+            else{
+                $sgdoDistribuicao = Excel::toArray(new ImportSgdoDistribuicao, request()->file('file'));
+            }
 
-            \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                ,'class'=>'green white-text']);
-            return redirect()->route('importacao');
-        }else{
+            Try{
+                //  php artisan queue:work --queue=importacao
+                $job = (new JobSgdoDistribuicao( $sgdoDistribuicao, $dt_job, $dtmenos180dias ))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'SgdoDistribuicao, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+                return redirect()->route('importacao');
+            }
+            catch (Exception $e) {
+                if(substr( $e->getCode(), 0, 2) == 'HY'){
+                    \Session::flash('mensagem', ['msg' => 'SgdoDistribuicao, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: '.$e->getCode(), 'class' => 'red white-text']);
+                }else {
+                    \Session::flash('mensagem', ['msg' => 'SgdoDistribuicao, não pode ser importado Erro: '.$e->getCode().''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+
+
+        }
+
+        else{
+
             return back()->with(['errors'=>$validator->errors()->all()]);
         }
     }
-    public function sgdoDistribuicao()
-    {
+    public function sgdoDistribuicao() {
         return view('compliance.importacoes.sgdoDistribuicao');  //
     }
     // ######################### FIM SGDO DISTRIBUICAO ############
@@ -866,6 +788,7 @@ class ImportacaoController extends Controller
             ini_set('max_execution_time', 350);
 
             $controle_de_viagens = Excel::toArray(new ImportControleDeViagem,  request()->file('file'));
+
             Try{
                 //  php artisan queue:work --queue=importacao
                 $job = (new JobControleViagem( $controle_de_viagens, $dt_job, $dtmenos180dias ))

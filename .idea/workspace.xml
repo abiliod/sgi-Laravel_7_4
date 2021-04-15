@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/unidadesAdicional.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/InspecaoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/MonitoramentoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/AvaliaInspecao.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/importacoes/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form276-1.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/compliance/inspecao/modal/_form276-1.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Jobs/JobControleViagem.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobControleViagem.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -441,7 +435,20 @@
       <workItem from="1618400123964" duration="1779000" />
       <workItem from="1618401954432" duration="969000" />
       <workItem from="1618403716530" duration="1405000" />
-      <workItem from="1618405993364" duration="741000" />
+      <workItem from="1618405993364" duration="1564000" />
+      <workItem from="1618425478187" duration="1769000" />
+      <workItem from="1618427281379" duration="1474000" />
+      <workItem from="1618429254948" duration="940000" />
+      <workItem from="1618434687646" duration="1317000" />
+      <workItem from="1618436810540" duration="1716000" />
+      <workItem from="1618438619696" duration="729000" />
+      <workItem from="1618447132129" duration="1829000" />
+      <workItem from="1618448987601" duration="1817000" />
+      <workItem from="1618450835378" duration="3588000" />
+      <workItem from="1618454453691" duration="1819000" />
+      <workItem from="1618456778867" duration="1777000" />
+      <workItem from="1618458598149" duration="1115000" />
+      <workItem from="1618492057813" duration="1213000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -590,7 +597,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618259871086</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="14/04/2021  10:25 - conclusao avaliacao controle de viagem. inicio para importação de dados complementares para unidades porém essa funcionalidade está aguardando um retorno do DEP para dar continuidade ou aproveitar outra solução já existente.">
+      <created>1618406881284</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1618406881284</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -616,7 +630,8 @@
     <MESSAGE value="08/04/2021  15:20 - criação de rotina para gerar a integração com o sistema SNCI, Configuração de fila de job para serviços, criação da wew gerar_xml e do job xml." />
     <MESSAGE value="12/04/2021  15:10 - criação de 3 novos jobs e disponibilização de layout para testes de importação." />
     <MESSAGE value="12/04/2021  17:40 - criação de inicio avaliacao controle de viagem." />
-    <option name="LAST_COMMIT_MESSAGE" value="12/04/2021  17:40 - criação de inicio avaliacao controle de viagem." />
+    <MESSAGE value="14/04/2021  10:25 - conclusao avaliacao controle de viagem. inicio para importação de dados complementares para unidades porém essa funcionalidade está aguardando um retorno do DEP para dar continuidade ou aproveitar outra solução já existente." />
+    <option name="LAST_COMMIT_MESSAGE" value="14/04/2021  10:25 - conclusao avaliacao controle de viagem. inicio para importação de dados complementares para unidades porém essa funcionalidade está aguardando um retorno do DEP para dar continuidade ou aproveitar outra solução já existente." />
   </component>
   <component name="WindowStateProjectService">
     <state x="144" y="0" width="1092" height="728" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617021521486">
@@ -627,14 +642,14 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="470" y="68" key="#com.intellij.ide.macro.MacrosDialog/0.0.1366.728@0.0.1366.728" timestamp="1617021424023" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1618249984049">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1618427337469">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1618249984049" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1618259868751">
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1618427337469" />
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1618406878204">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1618259868751" />
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1618406878204" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -647,10 +662,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="479" y="65" key="RollbackChangesDialog/0.0.1366.728@0.0.1366.728" timestamp="1617751763268" />
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1618259877238">
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2" timestamp="1618406885967">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1618259877238" />
+    <state x="275" y="83" key="Vcs.Push.Dialog.v2/0.0.1366.728@0.0.1366.728" timestamp="1618406885967" />
     <state x="390" y="0" width="585" height="728" key="find.popup" timestamp="1617902884016">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
