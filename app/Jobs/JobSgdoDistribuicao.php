@@ -14,11 +14,17 @@ use Illuminate\Support\Facades\DB;
 class JobSgdoDistribuicao implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-protected $sgdoDistribuicao, $dt_job, $dtmenos180dias;
+
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * @var
+     */
+    protected $sgdoDistribuicao, $dt_job, $dtmenos180dias;
+
+    /**
+     * JobSgdoDistribuicao constructor.
+     * @param $sgdoDistribuicao
+     * @param $dt_job
+     * @param $dtmenos180dias
      */
     public function __construct($sgdoDistribuicao, $dt_job, $dtmenos180dias)
     {
@@ -27,150 +33,175 @@ protected $sgdoDistribuicao, $dt_job, $dtmenos180dias;
         $this->dtmenos180dias  = $dtmenos180dias;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         $sgdoDistribuicao =  $this->sgdoDistribuicao;
         $dtmenos180dias = $this->dtmenos180dias;
 
-//               teste
         foreach($sgdoDistribuicao as $dados) {
             foreach($dados as $registro) {
-
+//trata data inicio atividade
                 if(! Empty($registro['data_inio_atividade'])) {
                     try {
                         $dt_number = intVal($registro['data_inio_atividade']);
                         if (is_numeric($dt_number)) {
                             $data_incio_atividade = new Carbon('1899-12-30');
                             $data_incio_atividade = $data_incio_atividade->addDays($dt_number);
-
-                            $dmt_number = floatVal($registro['hora_inio_atividade']);
-                            $hora_inio_atividade = 1440 * $dmt_number / 60 ;  //15.33;
-
-                            $hora_inio_atividade = sprintf('%02d:%02d', (int) $hora_inio_atividade, fmod($hora_inio_atividade, 1) * 60).':00'; // 15:19
-
-
                         }
                     }
                     catch (\Exception $e) {
                         $data_incio_atividade       =  null;
-                        $hora_inio_atividade    = null;
-
                     }
                 }
                 else {
                     $data_incio_atividade    = null;
+                }
+
+//trata hora inicio atividade
+
+                if(! Empty($registro['hora_inio_atividade'])) {
+                    try {
+                        $dmt_number = floatVal($registro['hora_inio_atividade']);
+                        $hora_inio_atividade = 1440 * $dmt_number / 60 ;  //15.33;
+                        $hora_inio_atividade = sprintf('%02d:%02d', (int) $hora_inio_atividade, fmod($hora_inio_atividade, 1) * 60).':00'; // 15:19
+                    }
+                    catch (\Exception $e) {
+                        $hora_inio_atividade    = null;
+                    }
+                }
+                else {
                     $hora_inio_atividade    = null;
                 }
 
+//trata   inicio data saida
                 if(! Empty($registro['data_saa'])) {
                     try {
-//                        $data_saida = $this->transformDate($registro['data_saa']);
                         $dt_number = intVal($registro['data_saa']);
                         if (is_numeric($dt_number)) {
                             $data_saida = new Carbon('1899-12-30');
                             $data_saida = $data_saida->addDays($dt_number);
-
-                            $dmt_number = floatVal($registro['hora_saa']);
-                            $hora_saa = 1440 * $dmt_number / 60 ;  //15.33;
-//
-                            $hora_saa = sprintf('%02d:%02d', (int) $hora_saa, fmod($hora_saa, 1) * 60).':00'; // 15:19
-
                         }
                     }
                     catch (\Exception $e) {
                         $data_saida       = null;
-                        $hora_saa    = null;
                     }
                 }
                 else {
                     $data_saida    = null;
+                }
+
+//trata   inicio hora saida
+                if(! Empty($registro['hora_saa'])) {
+                    try {
+                        $dmt_number = floatVal($registro['hora_saa']);
+                        $hora_saa = 1440 * $dmt_number / 60 ;  //15.33;
+                        $hora_saa = sprintf('%02d:%02d', (int) $hora_saa, fmod($hora_saa, 1) * 60).':00'; // 15:19
+                    }
+                    catch (\Exception $e) {
+                        $hora_saa    = null;
+                    }
+                }
+                else {
                     $hora_saa    = null;
                 }
 
+//trata   inicio data retorno
                 if(! Empty($registro['data_retorno'])) {
                     try {
-//                        $data_retorno = $this->transformDate($registro['data_retorno']);
                         $dt_number = intVal($registro['data_retorno']);
                         if (is_numeric($dt_number)) {
                             $data_retorno = new Carbon('1899-12-30');
                             $data_retorno = $data_retorno->addDays($dt_number);
-
-                            $dmt_number = floatVal($registro['hora_retorno']);
-                            $hora_retorno = 1440 * $dmt_number / 60 ;  //15.33;
-                            $hora_retorno = sprintf('%02d:%02d', (int) $hora_retorno, fmod($hora_retorno, 1) * 60).':00'; // 15:19
-
                         }
                     }
                     catch (\Exception $e) {
                         $data_retorno       = null;
-                        $hora_retorno    = null;
                     }
                 }
                 else {
                     $data_retorno    = null;
+                }
+
+ //trata   hora_retorno
+                if(! Empty($registro['hora_retorno'])) {
+                    try {
+                        $dmt_number = floatVal($registro['hora_retorno']);
+                        $hora_retorno = 1440 * $dmt_number / 60 ;  //15.33;
+                        $hora_retorno = sprintf('%02d:%02d', (int) $hora_retorno, fmod($hora_retorno, 1) * 60).':00'; // 15:19
+                    }
+                    catch (\Exception $e) {
+                        $hora_retorno    = null;
+                    }
+                }
+                else {
                     $hora_retorno    = null;
                 }
 
+ //trata   data_tpc
                 if(! Empty($registro['data_tpc'])) {
                     try {
-//                        $data_tpc = $this->transformDate($registro['data_tpc']);
                         $dt_number = intVal($registro['data_tpc']);
                         if (is_numeric($dt_number)) {
                             $data_tpc = new Carbon('1899-12-30');
                             $data_tpc = $data_tpc->addDays($dt_number);
-
-                            $dmt_number = floatVal($registro['hora_do_tpc']);
-                            $hora_do_tpc = 1440 * $dmt_number / 60 ;  //15.33;
-
-                            $hora_do_tpc = sprintf('%02d:%02d', (int) $hora_do_tpc, fmod($hora_do_tpc, 1) * 60).':00'; // 15:19
-
-
                         }
                     }
                     catch (\Exception $e) {
                         $data_tpc       = null;
-                        $hora_do_tpc    = null;
                     }
                 }
                 else {
                     $data_tpc    = null;
+                }
+
+//trata   hora_do_tpc
+                if(! Empty($registro['hora_do_tpc'])) {
+                    try {
+                            $dmt_number = floatVal($registro['hora_do_tpc']);
+                            $hora_do_tpc = 1440 * $dmt_number / 60 ;  //15.33;
+                            $hora_do_tpc = sprintf('%02d:%02d', (int) $hora_do_tpc, fmod($hora_do_tpc, 1) * 60).':00'; // 15:19
+                    }
+                    catch (\Exception $e) {
+                        $hora_do_tpc    = null;
+                    }
+                }
+                else {
                     $hora_do_tpc    = null;
                 }
 
+//trata   data_tmino_atividade
                 if(! Empty($registro['data_tmino_atividade'])) {
                     try {
-//                        $data_termino_atividade = $this->transformDate($registro['data_tmino_atividade']);
                         $dt_number = intVal($registro['data_tmino_atividade']);
                         if (is_numeric($dt_number)) {
                             $data_termino_atividade = new Carbon('1899-12-30');
                             $data_termino_atividade = $data_termino_atividade->addDays($dt_number);
-
-                            $dmt_number = floatVal($registro['hora_tmino_atividade']);
-                            $hora_tmino_atividade = 1440 * $dmt_number / 60 ;  //15.33;
-                            $hora_tmino_atividade = sprintf('%02d:%02d', (int) $hora_tmino_atividade, fmod($hora_tmino_atividade, 1) * 60).':00'; // 15:19
-//                                    dd('linha 838 - >',$hora_tmino_atividade );
-
                         }
                     }
                     catch (\Exception $e) {
                         $data_termino_atividade       = null;
-                        $hora_tmino_atividade    = null;
                     }
                 }
                 else {
                     $data_termino_atividade    = null;
+                }
+//trata   hora_tmino_atividade
+                if(! Empty($registro['data_tmino_atividade'])) {
+                    try {
+                        $dmt_number = floatVal($registro['hora_tmino_atividade']);
+                        $hora_tmino_atividade = 1440 * $dmt_number / 60 ;  //15.33;
+                        $hora_tmino_atividade = sprintf('%02d:%02d', (int) $hora_tmino_atividade, fmod($hora_tmino_atividade, 1) * 60).':00'; // 15:19
+                    }
+                    catch (\Exception $e) {
+                        $hora_tmino_atividade    = null;
+                    }
+                }
+                else {
                     $hora_tmino_atividade    = null;
                 }
 
                 if( $data_incio_atividade !== Null) {
-
                     SgdoDistribuicao::UpdateOrCreate(
-
                         [
                             'mcu' =>  $registro['mcu']
                             , 'matricula' =>  $registro['matrula']
@@ -211,14 +242,11 @@ protected $sgdoDistribuicao, $dt_job, $dtmenos180dias;
                         , 'compartilhado' =>  $registro['compartilhado']
                         , 'tipo_de_distrito' =>  $registro['tipo_de_distrito']
                     ]);
-//                    dd(' linha 850' ,$afected);
                 }
             }
         }
         DB::table('sgdo_distribuicao')
             ->where('data_incio_atividade', '<',   $dtmenos180dias)
         ->delete();
-//                teste
-
     }
 }
