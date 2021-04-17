@@ -2,25 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e94e58c-24ac-4542-963a-d288f18d19fe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe - Cópia (2).xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe - Cópia.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SCOI-BSB.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SLD-02_GO.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SLD02-RO_110121.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SLD02=110121_GO.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SLD02=BSB_110121.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SLD02=PA 110121.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/270-4-FINANCEIRO-SLD02_BDF_LimiteEncaixe/Nova pasta/SLD02=TO_110121.CSV" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/Distribuicoes-abr 21 ate dia 13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/Distribuicoes-fev-21.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/Distribuicoes-jan21.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/Distribuicoes-mar21.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/IMPORTAR SGDO.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/ImportarSgdoDistribuição.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/LEIA-ME.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/TRANSACIONAL SGDO.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Jobs/JobCieEletronica.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Jobs/JobMicroStrategy.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Jobs/JobPainelExtravio.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Jobs/JobSgdoDistribuicao.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Jobs/JobSgdoDistribuicao.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/LEIA-ME.txt" beforeDir="false" afterPath="$PROJECT_DIR$/0- ja testados/277-1-SgdoDistribuicao/LEIA-ME.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Correios/Importacao/ImportacaoController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,6 +153,7 @@
     </include_path>
   </component>
   <component name="ProblemsViewState">
+    <option name="proportion" value="0.20424597" />
     <option name="showPreview" value="true" />
   </component>
   <component name="ProjectId" id="1q20UfjGYCoqoYL7ke14PhivnUz" />
@@ -474,6 +462,16 @@
       <workItem from="1618593991761" duration="1778000" />
       <workItem from="1618595818071" duration="1801000" />
       <workItem from="1618603916915" duration="1400000" />
+      <workItem from="1618668245901" duration="1574000" />
+      <workItem from="1618670222611" duration="2629000" />
+      <workItem from="1618672901069" duration="1777000" />
+      <workItem from="1618674732029" duration="1519000" />
+      <workItem from="1618677933780" duration="646000" />
+      <workItem from="1618678866173" duration="1759000" />
+      <workItem from="1618680690068" duration="1775000" />
+      <workItem from="1618683025000" duration="1763000" />
+      <workItem from="1618684845402" duration="1776000" />
+      <workItem from="1618686666819" duration="1667000" />
     </task>
     <task id="LOCAL-00001" summary="20/03/2020 Ajuste de funcionalidade inclusão de rotina de  avaliação automática para Debito de Empregados e Proter. Criação de Job para importação de planilhas de Debito Empregado e Proter. migração para versão 7.4.16 php.">
       <created>1616262868336</created>
@@ -650,7 +648,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618604728180</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="16/04/2021  17:25 - Refatoração de código  Job para importação SGDO Distribuição.">
+      <created>1618668310919</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1618668310920</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -695,14 +700,18 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="488" y="79" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1618596541223" />
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1618427337469">
+    <state x="364" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1618684955641">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1618427337469" />
-    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1618604721624">
+    <state x="364" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1618684955641" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1618681954975">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1618604721624" />
+    <state x="413" y="118" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.728@0.0.1366.728" timestamp="1618681954975" />
+    <state x="0" y="0" key="CommitChangelistDialog2" timestamp="1618668307375">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="0" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1618668307375" />
     <state x="557" y="113" key="EnvironmentVariablesDialog" timestamp="1617021519112">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

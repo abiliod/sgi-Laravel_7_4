@@ -1,1 +1,83 @@
 O arquivo a ser importado deve ter até 500k, ou 3000 linhas.
+
+
+
+
+
+
+
+
+
+        $dt_job = Carbon::now();
+        $emissao       = null;
+        $data_de_resposta      = null;
+        $dtmenos365dias = Carbon::now();
+        $dtmenos365dias->subDays(365);
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        if (empty($request->file('file'))) {
+            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo. Não foi Selecionado
+            O Arquivo de ser 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xlsx ! Selecione Corretamente'
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
+        $size = $request->file('file')->getSize() / 1024;
+
+        if (($size > 500) || ($size == 0)) {
+            \Session::flash('mensagem', ['msg' => 'O arquivo é muito grande. '
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
+        if ($validator->passes()) {
+            ini_set('memory_limit', '512M');
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
+
+            $cie_eletronicas = Excel::toArray(new ImportCieEletronica,  request()->file('file'));
+            try {
+                //  php artisan queue:work --queue=importacao
+                $job = (new JobMicroStrategy($micro_strategy, $dt_job, $dtmenos210dias))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'JobMicroStrategy, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+                return redirect()->route('importacao');
+            } catch (Exception $e) {
+                if (substr($e->getCode(), 0, 2) == 'HY') {
+                    \Session::flash('mensagem', ['msg' => 'JobMicroStrategy, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: ' . $e->getCode(), 'class' => 'red white-text']);
+                } else {
+                    \Session::flash('mensagem', ['msg' => 'JobMicroStrategy, não pode ser importado Erro: ' . $e->getCode() . ''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+
+        }
+        else {
+            \Session::flash('mensagem', ['msg' => 'Arquivo não pode Ser importado Houve um erro.'
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
+
+
+
+
+
+
