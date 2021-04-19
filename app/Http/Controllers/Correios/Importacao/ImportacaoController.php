@@ -17,26 +17,6 @@ use App\Models\Correios\ModelsAuxiliares\FeriasPorMcu;
 use App\Imports\ImportFeriasPorMcu;
 use App\Jobs\JobFeriasPorMCU;
 
-
-use App\Models\Correios\UnidadeEndereco;
-
-
-use App\Models\Correios\ModelsAuxiliares\Feriado;
-use App\Imports\ImportFeriado;
-use App\Exports\ExportFeriado;
-
-use App\Models\Correios\ModelsAuxiliares\RespDefinida;
-use App\Imports\ImportRespDefinida;
-use App\Exports\ExportRespDefinida;
-
-use App\Models\Correios\ModelsAuxiliares\SL02_bdf;
-use App\Imports\ImportSL02_bdf;
-use App\Exports\ExportSL02_bdf;
-
-use App\Models\Correios\ModelsAuxiliares\SMBxBDF_NaoConciliado;
-use App\Imports\ImportSMBxBDF_NaoConciliado;
-use App\Exports\ExportSMBxBDF_NaoConciliado;
-
 use App\Models\Correios\ModelsAuxiliares\Proter;
 use App\Imports\ImportProter;
 use App\Exports\ExportProter;
@@ -57,14 +37,6 @@ use App\Imports\ImportAbsenteismo;
 use App\Exports\ExportAbsenteismo;
 use App\Jobs\JobAbsenteismo;
 
-use App\Models\Correios\ModelsAuxiliares\Evento;
-use App\Imports\ImportEventos;
-use App\Exports\ExportEventos;
-
-
-use App\Models\Correios\ModelsAuxiliares\Cftv;
-use App\Imports\ImportCftv;
-use App\Exports\ExportCftv;
 
 use App\Models\Correios\ModelsAuxiliares\ControleDeViagem;
 use App\Imports\ImportControleDeViagem;
@@ -75,7 +47,6 @@ use App\Models\Correios\ModelsAuxiliares\PLPListaPendente;
 use App\Imports\ImportPLPListaPendente;
 use App\Exports\ExportPLPListaPendente;
 use App\Jobs\JobPLPpendente;
-
 
 use App\Models\Correios\ModelsAuxiliares\SgdoDistribuicao;
 use App\Imports\ImportSgdoDistribuicao;
@@ -96,28 +67,64 @@ use App\Jobs\JobPainelExtravio;
 use App\Models\Correios\ModelsAuxiliares\PagamentosAdicionais;
 use App\Imports\ImportPagamentosAdicionais;
 use App\Exports\ExportPagamentosAdicionais;
+use App\Jobs\JobPagamentosAdicionais;
 
 use App\Models\Correios\ModelsAuxiliares\BDF_FAT_02;
 use App\Imports\ImportBDF_FAT_02;
 use App\Exports\ExportBDF_FAT_02;
+use App\Jobs\Job_BDF_FAT_02;
 
 use App\Models\Correios\ModelsAuxiliares\MicroStrategy;
 use App\Imports\ImportMicroStrategy;
 use App\Exports\ExportMicroStrategy;
 use App\Jobs\JobMicroStrategy;
 
-use App\Models\Correios\Unidade;
-use App\Imports\ImportUnidades;
-
-
 use App\Exports\ExportSnci;
 use App\Imports\ImportSnci;
 use App\Jobs\JobSnci;
 
-
 use App\Imports\ImportCadastral;
 use App\Exports\ExportCadastral;
 use App\Jobs\JobCadastral;
+
+//   ##########################################
+
+use App\Imports\ImportControleDeViagemApontamentos;
+//use App\Exports\ExportControleDeViagem;
+use App\Models\Correios\ModelsAuxiliares\ApontamentoCV;
+use App\Jobs\JobApontamentoCV;
+
+
+use App\Models\Correios\Unidade;
+use App\Imports\ImportUnidades;
+use App\Models\Correios\UnidadeEndereco;
+
+
+use App\Models\Correios\ModelsAuxiliares\Evento;
+use App\Imports\ImportEventos;
+use App\Exports\ExportEventos;
+
+use App\Models\Correios\ModelsAuxiliares\RespDefinida;
+use App\Imports\ImportRespDefinida;
+use App\Exports\ExportRespDefinida;
+
+use App\Models\Correios\ModelsAuxiliares\Feriado;
+use App\Imports\ImportFeriado;
+use App\Exports\ExportFeriado;
+
+use App\Models\Correios\ModelsAuxiliares\SL02_bdf;
+use App\Imports\ImportSL02_bdf;
+use App\Exports\ExportSL02_bdf;
+
+use App\Models\Correios\ModelsAuxiliares\SMBxBDF_NaoConciliado;
+use App\Imports\ImportSMBxBDF_NaoConciliado;
+use App\Exports\ExportSMBxBDF_NaoConciliado;
+
+
+use App\Models\Correios\ModelsAuxiliares\Cftv;
+use App\Imports\ImportCftv;
+use App\Exports\ExportCftv;
+
 
 //use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 
@@ -130,117 +137,77 @@ class ImportacaoController extends Controller
     {
         return Excel::download(new ExportBDF_FAT_02, 'bdf_fat_02.xlsx');
     }
+
     public function importBDF_FAT_02(Request $request) {
 
         $dtmenos210dias = Carbon::now();
         $dtmenos210dias->subDays(210);
-        $row = 0;
-        $dt_mov       = null;
-        $validator = Validator::make($request->all(),[
+        $dt_job = Carbon::now();
+        $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx'
         ]);
 
-        if(empty($request->file('file'))){
-
-            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser 278-2-BDF_FAT_02.xlsx ! Selecione Corretamente'
-                ,'class'=>'red white-text']);
+        if (empty($request->file('file'))) {
+            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo não foi Selecionado.'
+                , 'class' => 'red white-text']);
             return redirect()->route('importacao');
         }
 
-        if($validator->passes())
-        {
+        $size = $request->file('file')->getSize() / 1024;
+        $extencion = $request->file('file')->getClientOriginalExtension();
+
+        if (($size > 500) || ($size == 0)) {
+            \Session::flash('mensagem', ['msg' => 'O arquivo é muito grande. '
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+//dd($extencion);
+
+        if ($validator->passes()) {
+            ini_set('memory_limit', '512M');
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
-            ini_set('memory_limit', '256M');
 
             $bdf_fat_02 = Excel::toArray(new ImportBDF_FAT_02,  request()->file('file'));
-            foreach($bdf_fat_02 as $dados)
-            {
-                foreach($dados as $registro)
-                {
-                    //   dd($registro);
-                    if(!empty($registro['dt_mov']))
-                    {
-                        try
-                        {
-                            $dt_mov = $this->transformDate($registro['dt_mov'])->format('Y-m-d');
-                        }
-                        catch (Exception $e)
-                        {
-                            $dt_mov = null;
-                        }
-                    }
-                    $dt_postagem       = null;
-                    if(!empty($registro['dt_postagem']))
-                    {
-                        try {
-                            $dt_postagem = $this->transformDate($registro['dt_postagem'])->format('Y-m-d');
-                            // $dt_postagem =  Carbon::createFromFormat($registro['dt_postagem'])->format('Y-m-d');
-                        }
-                        catch (Exception $e)
-                        {
-                            $dt_postagem       = null;
-                        }
-                    }
-                    while(! $dt_mov == null )
-                    {
-                        BDF_FAT_02::updateOrCreate([
-                            'dt_mov' => $dt_mov
-                            ,'cd_orgao' => $registro['cd_orgao']
-                            ,'servico' => $registro['servico']
-                            ,'nome_servico' => $registro['nome_servico']
-                            ,'vlr_final' => $registro['vlr_final']
-                        ],[
-                            'dt_mov' => $dt_mov
-                            ,'dr' => $registro['dr']
-                            ,'atendimento' => $registro['atendimento']
-                            ,'ag_postagem' => $registro['ag_postagem']
-                            ,'cd_orgao' => $registro['cd_orgao']
-                            ,'servico' => $registro['servico']
-                            ,'nome_servico' => $registro['nome_servico']
-                            ,'vlr_final' => $registro['vlr_final']
-                            , 'dt_postagem' => $dt_postagem
-                            ,'orgao' => $registro['orgao']
-                            ,'etiqueta' => $registro['etiqueta']
-                            ,'vlr_medida' => $registro['vlr_medida']
-                            ,'cd_grupo_pais_destino' => $registro['cd_grupo_pais_destino']
-                            ,'cep_destino' => $registro['cep_destino']
-                            ,'vlr_cobrado_destinatario' => $registro['vlr_cobrado_destinatario']
-                            ,'vlr_declarado' => $registro['vlr_declarado']
-                            ,'cod_adm' => $registro['cod_adm']
-                            ,'produto' => $registro['produto']
-                            ,'qtde_prestada' => $registro['qtde_prestada']
-                            ,'vlr_servico' => $registro['vlr_servico']
-                            ,'vlr_desconto' => $registro['vlr_desconto']
-                            ,'acrescimo' => $registro['acrescimo']
-                            ,'cartao' => $registro['cartao']
-                            ,'documento' => $registro['documento']
-                            ,'servico_adicional' => $registro['servio_adicional']
-                            ,'contrato' => $registro['contrato']
-                        ]);
-                        $dt_mov = null;
-                        $row ++;
-                    }
+
+            try {
+                //  php artisan queue:work --queue=importacao
+                $job = (new Job_BDF_FAT_02($bdf_fat_02,$dtmenos210dias, $dt_job))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'Job_BDF_FAT_02, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+                return redirect()->route('importacao');
+            } catch (Exception $e) {
+                if (substr($e->getCode(), 0, 2) == 'HY') {
+                    \Session::flash('mensagem', ['msg' => 'Job_BDF_FAT_02, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: ' . $e->getCode(), 'class' => 'red white-text']);
+                } else {
+                    \Session::flash('mensagem', ['msg' => 'Job_BDF_FAT_02, não pode ser importado Erro: ' . $e->getCode() . ''
+                        , 'class' => 'red white-text']);
                 }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
             }
 
-
-            DB::table('bdf_fat_02')->where('dt_postagem', '<=', $dtmenos210dias)->delete();
-            if ($row >= 1){
-                \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                    ,'class'=>'green white-text']);
-            }else{
-                \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
-                    ,'class'=>'green white-text']);
-            }
+        }
+        else {
+            \Session::flash('mensagem', ['msg' => 'Arquivo não pode ser importado formato inválido '. $extencion .' deve ser (xlsx).'
+                , 'class' => 'red white-text']);
             return redirect()->route('importacao');
         }
-        else
-        {
-            return back()->with(['errors'=>$validator->errors()->all()]);
-        }
+
     }
+
     public function bdf_fat_02()
     {
         return view('compliance.importacoes.bdf_fat_02');  //
@@ -248,81 +215,81 @@ class ImportacaoController extends Controller
     // ######################### FIM  BDF_FAT_02 #######################
 
     // ################### INICIO    Pagamentos adicionais  #############
-    public function exportpagamentosAdicionais()
-    {
+    public function exportpagamentosAdicionais() {
         return Excel::download(new ExportPagamentosAdicionais, 'pagamentosAdicionais.xlsx');
     }
-    public function importPagamentosAdicionais(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
+    public function importPagamentosAdicionais(Request $request) {
+        $dtmenos10meses = new Carbon();
+        $dtmenos10meses->subMonth(10);
+        $ref = substr($dtmenos10meses,0,4). substr($dtmenos10meses,5,2);
+        $dt_job = Carbon::now();
+//variaveis
+
+        $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx'
         ]);
 
-        if(empty($request->file('file'))){
-            \Session::flash('mensagem',['msg'=>'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser 278-2-WebSGQ-3-PagamentosAdicionais.xlsx ! Selecione Corretamente'
-                ,'class'=>'red white-text']);
+        if (empty($request->file('file'))) {
+            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo não foi Selecionado.'
+                , 'class' => 'red white-text']);
             return redirect()->route('importacao');
         }
 
-        if($validator->passes())
-        {
-            $dtmenos10meses = new Carbon();
-            $dtmenos10meses->subMonth(10);
-            $row = 0;
-            $ref = substr($dtmenos10meses,0,4). substr($dtmenos10meses,5,2);
-            $time='350';
-            ini_set('max_input_time', $time);
-            ini_set('max_execution_time', $time);
+        $size = $request->file('file')->getSize() / 1024;
+        $extencion = $request->file('file')->getClientOriginalExtension();
+
+        if (($size > 500) || ($size == 0)) {
+            \Session::flash('mensagem', ['msg' => 'O arquivo é muito grande. '
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+//dd($extencion);
+
+        if ($validator->passes()) {
+            ini_set('memory_limit', '512M');
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
 
             $pagamentos_adicionais = Excel::toArray(new ImportPagamentosAdicionais,  request()->file('file'));
 
-            foreach($pagamentos_adicionais as $dados)
-            {
-                foreach($dados as $registro)
-                {
-                    $matricula = $registro['matricula'];
-                    while(! $matricula ==null )
-                    {
-                        PagamentosAdicionais::updateOrCreate([
-                            'se' => $registro['se']
-                            ,'sigla_lotacao' => $registro['sigla_lotacao']
-                            ,'matricula' => $registro['matricula']
-                            ,'rubrica' => $registro['rubrica']
-                            ,'ref' => $registro['ref']
-                        ],[
-                            'se' => $registro['se']
-                            ,'sigla_lotacao' => $registro['sigla_lotacao']
-                            ,'matricula' => $registro['matricula']
-                            ,'rubrica' => $registro['rubrica']
-                            ,'ref' => $registro['ref']
-                            ,'nome' => $registro['nome']
-                            ,'cargo' => $registro['cargo']
-                            ,'espec' => $registro['espec']
-                            ,'titular_da_funcao' => $registro['titular_da_funcao']
-                            ,'dif_mer' => $registro['dif_mer']
-                            ,'qtd' => $registro['qtd']
-                            ,'valor' => $registro['valor']
-                        ]);
-                        $matricula = null;
-                        $row ++;
-                    }
-                }
-            }
-            DB::table('pagamentos_adicionais')->where('ref', '<', $ref)->delete();
+            try {
+                //  php artisan queue:work --queue=importacao
+                $job = (new JobPagamentosAdicionais($pagamentos_adicionais,$ref, $dt_job))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
 
-            if ($row >= 1){
-                \Session::flash('mensagem',['msg'=>'O Arquivo subiu com '.$row.' linhas Corretamente'
-                    ,'class'=>'green white-text']);
-            }else{
-                \Session::flash('mensagem',['msg'=>'O Arquivo lido e encontrado todos registros existentes'
-                    ,'class'=>'green white-text']);
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'JobPagamentosAdicionais, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+                return redirect()->route('importacao');
+            } catch (Exception $e) {
+                if (substr($e->getCode(), 0, 2) == 'HY') {
+                    \Session::flash('mensagem', ['msg' => 'JobPagamentosAdicionais, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: ' . $e->getCode(), 'class' => 'red white-text']);
+                } else {
+                    \Session::flash('mensagem', ['msg' => 'JobPagamentosAdicionais, não pode ser importado Erro: ' . $e->getCode() . ''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
             }
-            return redirect()->route('importacao');
-        }else{
-            return back()->with(['errors'=>$validator->errors()->all()]);
+
         }
+        else {
+            \Session::flash('mensagem', ['msg' => 'Arquivo não pode ser importado formato inválido '. $extencion .' deve ser (xlsx).'
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
     }
+
     public function pagamentosAdicionais()
     {
         return view('compliance.importacoes.pagamentosAdicionais');  //
@@ -364,15 +331,7 @@ class ImportacaoController extends Controller
             ini_set('memory_limit', '512M');
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
-
             $cie_eletronicas = Excel::toArray(new ImportCieEletronica, request()->file('file'));
-
-//
-
-
-
-
-
             try {
                 //  php artisan queue:work --queue=importacao
                 $job = (new JobCieEletronica($cie_eletronicas, $dt_job, $dtmenos365dias))
@@ -380,7 +339,6 @@ class ImportacaoController extends Controller
                     ->onQueue('importacao')
                     ->delay($dt_job->addMinutes(1));
                 dispatch($job);
-
                 ini_set('memory_limit', '128M');
                 ini_set('max_input_time', 60);
                 ini_set('max_execution_time', 60);
@@ -401,7 +359,6 @@ class ImportacaoController extends Controller
                 ini_set('max_execution_time', 60);
                 return redirect()->route('importacao');
             }
-
         }
         else {
             \Session::flash('mensagem', ['msg' => 'Arquivo não pode Ser importado Houve um erro.'
@@ -409,7 +366,6 @@ class ImportacaoController extends Controller
             return redirect()->route('importacao');
         }
     }
-
 
     public function cieEletronica()
     {
@@ -651,7 +607,7 @@ class ImportacaoController extends Controller
     }
     // ######################### FIM SGDO DISTRIBUICAO ############
 
-    // ######################### INICIO Controle de Viagem  ###############
+    // ######################### INICIO Controle de Viagem  Embarque Desembarque ###############
     public function exportControleDeViagem()
     {
         return Excel::download(new ExportControleDeViagem, 'ControleDeViagem.xlsx');
@@ -720,7 +676,90 @@ class ImportacaoController extends Controller
     {
         return view('compliance.importacoes.controleDeViagem');  //
     }
-    // ######################### FIM Controle de Viagem ###################
+    // ######################### FIM Controle de Viagem Embarque Desembarque ###################
+
+
+     ######################### INICIO Controle de Viagem  Apontamento ###############
+    public function exportApontamentoCV()
+    {
+        return Excel::download(new ExportControleDeViagemApontamentos, 'ControleDeViagemApontamento.xlsx');
+    }
+    public function importApontamentoCV(Request $request)
+    {
+        $dt_job = Carbon::now();
+
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        if (empty($request->file('file'))) {
+            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo não foi Selecionado.'
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
+        $size = $request->file('file')->getSize() / 1024;
+        $extension = $request->file('file')->getClientOriginalExtension();
+
+        if (($size > 500) || ($size == 0)) {
+            \Session::flash('mensagem', ['msg' => 'O arquivo é muito grande. '
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+//        dd($size, $extencion);
+        if ($validator->passes()) {
+            ini_set('memory_limit', '512M');
+            ini_set('max_input_time', 350);
+            ini_set('max_execution_time', 350);
+
+            $controle_de_viagens = Excel::toArray(new ImportControleDeViagemApontamentos,  request()->file('file'));
+
+            try {
+                //  php artisan queue:work --queue=importacao
+                $job = (new JobApontamentoCV($controle_de_viagens, $dt_job))
+                    ->onConnection('importacao')
+                    ->onQueue('importacao')
+                    ->delay($dt_job->addMinutes(1));
+                dispatch($job);
+
+
+
+                ini_set('memory_limit', '128M');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+
+                \Session::flash('mensagem', ['msg' => 'JobApontamentoCV, aguardando processamento.'
+                    , 'class' => 'blue white-text']);
+                return redirect()->route('importacao');
+            } catch (Exception $e) {
+                if (substr($e->getCode(), 0, 2) == 'HY') {
+                    \Session::flash('mensagem', ['msg' => 'JobApontamentoCV, tente uma quantidade menor
+                           de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: ' . $e->getCode(), 'class' => 'red white-text']);
+                } else {
+                    \Session::flash('mensagem', ['msg' => 'JobApontamentoCV, não pode ser importado Erro: ' . $e->getCode() . ''
+                        , 'class' => 'red white-text']);
+                }
+                ini_set('memory_limit', '128');
+                ini_set('max_input_time', 60);
+                ini_set('max_execution_time', 60);
+                return redirect()->route('importacao');
+            }
+
+        }
+        else {
+            \Session::flash('mensagem', ['msg' => 'Arquivo não pode ser importado formato inválido '. $extension .' deve ser (xlsx).'
+                , 'class' => 'red white-text']);
+            return redirect()->route('importacao');
+        }
+
+    }
+
+    public function apontamentoCV()
+    {
+        return view('compliance.importacoes.apontamentoCV');  //
+    }
+    // ######################### FIM Controle de Viagem Apontamento ###################
+
 
     // ######################### INICIO plp pendente  ###############
     public function exportPLPListaPendente()

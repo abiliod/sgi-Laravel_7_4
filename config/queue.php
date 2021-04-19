@@ -64,11 +64,11 @@ return [
 
 // php artisan queue:work --queue= geraXmlInspecao
         'geraXmlInspecao' => [
-    'driver' => 'database',
-    'table' => 'jobs',
-    'queue' => 'geraXmlInspecao',
-    'retry_after' => 720,
-],
+        'driver' => 'database',
+        'table' => 'jobs',
+        'queue' => 'geraXmlInspecao',
+        'retry_after' => 720,
+        ],
 
         'database' => [
         'driver' => 'database',

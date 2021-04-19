@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Correios\ModelsAuxiliares\CieEletronica;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -53,6 +54,24 @@ class JobCieEletronica implements ShouldQueue
                             $emissao = null;
                         }
                     }
+
+                    //trata data   data_de_resposta
+                    if(! Empty($registro['data_de_resposta'])) {
+                        try {
+                            $dt_number = intVal($registro['data_de_resposta']);
+                            if (is_numeric($dt_number)) {
+                                $data_de_resposta = new Carbon('1899-12-30');
+                                $data_de_resposta = $data_de_resposta->addDays($dt_number);
+                            }
+                        }
+                        catch (\Exception $e) {
+                            $data_de_resposta       =  null;
+                        }
+                    }
+                    else {
+                        $data_de_resposta    = null;
+                    }
+
                     if ($emissao !== null){
 
                         CieEletronica::updateOrCreate([
@@ -79,7 +98,7 @@ class JobCieEletronica implements ShouldQueue
                             , 'respondida' => $registro['respondida']
                             , 'fora_do_prazo' => $registro['fora_do_prazo']
                             , 'resposta' => $registro['resposta']
-                            , 'data_de_resposta' => null
+                            , 'data_de_resposta' => $data_de_resposta
                         ]);
 
                     }

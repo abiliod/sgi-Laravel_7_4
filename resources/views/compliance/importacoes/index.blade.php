@@ -364,6 +364,22 @@
                 </div>
             </div>
         @endcan
+            @can('importar_cieEletronica')
+{{--                Mario depois vc configura a segurança correta  pois está para importar_cieEletronica Obrigado, Abilio--}}
+                <div class="col s12 m6">
+                    <div class="card #0d47a1 blue darken-4">
+                        <div class="card-content white-text">
+                            <span class="card-title">Sistema: Plano de Encaminhamento da Carga <br></span>
+                            <p>Grupo </p>
+                            <p>Função: Gestão </p>
+                            <p>Assunto: Integridade das Unidades e da Carga</p>
+                        </div>
+                        <div class="card-action">
+                            <a class="white-text" href="{{route('importacao.apontamentoCV')}}">Importar Planilha</a>
+                        </div>
+                    </div>
+                </div>
+            @endcan
 
 
 

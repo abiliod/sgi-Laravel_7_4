@@ -1,47 +1,39 @@
 O arquivo a ser importado deve ter até 500k, ou 3000 linhas.
 
 
-
-
-
-
-
-
+ //variaveis
 
         $dt_job = Carbon::now();
-        $emissao       = null;
-        $data_de_resposta      = null;
-        $dtmenos365dias = Carbon::now();
-        $dtmenos365dias->subDays(365);
-
         $validator = Validator::make($request->all(), [
             'file' => 'required|mimes:xlsx'
         ]);
 
         if (empty($request->file('file'))) {
-            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo. Não foi Selecionado
-            O Arquivo de ser 277-2-4_3-ObjetosNaoEntreguePrimeiraTentativa.xlsx ! Selecione Corretamente'
+            \Session::flash('mensagem', ['msg' => 'Erro o Arquivo não foi Selecionado.'
                 , 'class' => 'red white-text']);
             return redirect()->route('importacao');
         }
 
         $size = $request->file('file')->getSize() / 1024;
+        $extencion = $request->file('file')->getClientOriginalExtension();
 
         if (($size > 500) || ($size == 0)) {
             \Session::flash('mensagem', ['msg' => 'O arquivo é muito grande. '
                 , 'class' => 'red white-text']);
             return redirect()->route('importacao');
         }
+//dd($extencion);
 
         if ($validator->passes()) {
             ini_set('memory_limit', '512M');
             ini_set('max_input_time', 350);
             ini_set('max_execution_time', 350);
 
-            $cie_eletronicas = Excel::toArray(new ImportCieEletronica,  request()->file('file'));
+              $controle_de_viagens = Excel::toArray(new ImportControleDeViagemApontamentos,  request()->file('file'));
+
             try {
                 //  php artisan queue:work --queue=importacao
-                $job = (new JobMicroStrategy($micro_strategy, $dt_job, $dtmenos210dias))
+                $job = (new Job_BDF_FAT_02($pagamentos_adicionais,$ref, $dt_job))
                     ->onConnection('importacao')
                     ->onQueue('importacao')
                     ->delay($dt_job->addMinutes(1));
@@ -51,15 +43,15 @@ O arquivo a ser importado deve ter até 500k, ou 3000 linhas.
                 ini_set('max_input_time', 60);
                 ini_set('max_execution_time', 60);
 
-                \Session::flash('mensagem', ['msg' => 'JobMicroStrategy, aguardando processamento.'
+                \Session::flash('mensagem', ['msg' => 'JobPagamentosAdicionais, aguardando processamento.'
                     , 'class' => 'blue white-text']);
                 return redirect()->route('importacao');
             } catch (Exception $e) {
                 if (substr($e->getCode(), 0, 2) == 'HY') {
-                    \Session::flash('mensagem', ['msg' => 'JobMicroStrategy, tente uma quantidade menor
+                    \Session::flash('mensagem', ['msg' => 'JobPagamentosAdicionais, tente uma quantidade menor
                            de registros. Tente um arquivo de aproximadamente 4.00kb. Erro: ' . $e->getCode(), 'class' => 'red white-text']);
                 } else {
-                    \Session::flash('mensagem', ['msg' => 'JobMicroStrategy, não pode ser importado Erro: ' . $e->getCode() . ''
+                    \Session::flash('mensagem', ['msg' => 'JobPagamentosAdicionais, não pode ser importado Erro: ' . $e->getCode() . ''
                         , 'class' => 'red white-text']);
                 }
                 ini_set('memory_limit', '128');
@@ -70,10 +62,33 @@ O arquivo a ser importado deve ter até 500k, ou 3000 linhas.
 
         }
         else {
-            \Session::flash('mensagem', ['msg' => 'Arquivo não pode Ser importado Houve um erro.'
+            \Session::flash('mensagem', ['msg' => 'Arquivo não pode ser importado formato inválido '. $extencion .' deve ser (xlsx).'
                 , 'class' => 'red white-text']);
             return redirect()->route('importacao');
         }
+
+    }
+    // end
+
+
+ //trata data   $data_postagem
+                if(! Empty($registro['data_postagem'])) {
+                    try {
+                        $dt_number = intVal($registro['data_postagem']);
+                        if (is_numeric($dt_number)) {
+                            $data_postagem = new Carbon('1899-12-30');
+                            $data_postagem = $data_postagem->addDays($dt_number);
+                        }
+                    }
+                    catch (\Exception $e) {
+                        $data_postagem       =  null;
+                    }
+                }
+                else {
+                    $data_postagem    = null;
+                }
+
+
 
 
 

@@ -184,6 +184,7 @@ Route::get('/compliance/importacoes/controleDeViagem/export', 'Correios\Importac
 Route::post('/compliance/importacoes/controleDeViagem', 'Correios\Importacao\ImportacaoController@importControleDeViagem')->name('compliance.importacao.controleDeViagem');
 Route::get('/compliance/importacoes/controleDeViagem', 'Correios\Importacao\ImportacaoController@controleDeViagem')->name('importacao.controleDeViagem');
 
+
 Route::get('/compliance/importacoes/plpListaPendente/export', 'Correios\Importacao\ImportacaoController@exportPLPListaPendente')->name('compliance.export.plpListaPendente');
 Route::post('/compliance/importacoes/plpListaPendente', 'Correios\Importacao\ImportacaoController@importPLPListaPendente')->name('compliance.importacao.plpListaPendente');
 Route::get('/compliance/importacoes/plpListaPendente', 'Correios\Importacao\ImportacaoController@plpListaPendente')->name('importacao.plpListaPendente');
@@ -211,6 +212,15 @@ Route::get('/compliance/importacoes/bdf_fat_02', 'Correios\Importacao\Importacao
 Route::get('/compliance/importacoes/microStrategy/export', 'Correios\Importacao\ImportacaoController@exportMicroStrategy')->name('compliance.export.microStrategy');
 Route::post('/compliance/importacoes/microStrategy', 'Correios\Importacao\ImportacaoController@importMicroStrategy')->name('compliance.importacao.microStrategy');
 Route::get('/compliance/importacoes/microStrategy', 'Correios\Importacao\ImportacaoController@microStrategy')->name('importacao.microStrategy');
+
+
+Route::get('/compliance/importacoes/apontamentoCV/export', 'Correios\Importacao\ImportacaoController@exportApontamentoCV')->name('compliance.export.apontamentoCV');
+Route::post('/compliance/importacoes/apontamentoCV', 'Correios\Importacao\ImportacaoController@importApontamentoCV')->name('compliance.importacao.apontamentoCV');
+Route::get('/compliance/importacoes/apontamentoCV', 'Correios\Importacao\ImportacaoController@apontamentoCV')->name('importacao.apontamentoCV');
+
+
+
+
 
 //importacao.  importSnci exportSnci snci
 
