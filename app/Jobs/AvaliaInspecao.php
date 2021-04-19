@@ -183,7 +183,7 @@ class AvaliaInspecao implements ShouldQueue
 
                             if(! $controle_de_viagens->isEmpty()) {
                                 $count = $controle_de_viagens->count('ponto_parada');
-                                foreach($controle_de_viagens as $dados){
+                                foreach($controle_de_viagens as $controle_de_viagen){
                                     if( ( $controle_de_viagen->tipo_de_operacao == '' )
                                         || ($controle_de_viagen->quantidade == '')
                                         || ($controle_de_viagen->peso == '' )
